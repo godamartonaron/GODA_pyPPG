@@ -44,8 +44,8 @@ class FiducialPoints:
 def getFiducialsPoints(sig,fs):
     '''The function calculates the PPG Fiducials Points.
         - Original signal: List of pulse onset, pea and dicrotic notch
-        - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (a1,b1)
-        - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a2, b2, c2, d2, e2)
+        - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
+        - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
 
     :param sig: a vector of PPG values
     :param fs: the sampling frequency of the PPG in Hz
@@ -57,11 +57,11 @@ def getFiducialsPoints(sig,fs):
 
     peaks, onsets = abdp_beat_detector(sig, fs, peak_detector)
     dicroticnotch = getDicroticNotch(sig, fs, peaks, onsets)
-    a1, b1 = getFirstDerivitivePoints(sig, fs, onsets)
-    a2, b2, c2, d2, e2 =  getSecondDerivitivePoints(sig, fs, onsets)
+    u, v = getFirstDerivitivePoints(sig, fs, onsets)
+    a, b, c, d, e =  getSecondDerivitivePoints(sig, fs, onsets)
 
     fiducials = {'peaks': peaks, 'onsets': onsets, 'dicroticnotch': dicroticnotch,
-                 'a1': a1, 'b1': b1, 'a2': a2, 'b2': b2, 'c2': c2, 'd2': d2, 'e2': e2}
+                 'u': u, 'v': v, 'a': a, 'b': b, 'c': c, 'd': d, 'e': e}
 
     return fiducials
 
@@ -485,7 +485,7 @@ def savitzky_golay_abd(sig, deriv_no, win_size):
     """
 
     ##assign coefficients
-    # From: https: // en.wikipedia.org / wiki / Savitzky % E2 % 80 % 93 Golay_filter  # Tables_of_selected_convolution_coefficients
+    # From: https: // en.wikipedia.org / wiki / Savitzky % e % 80 % 93 Golay_filter  # Tables_of_selected_convolution_coefficients
     # which are calculated from: A., Gorry(1990). "General least-squares smoothing and differentiation by the convolution (Savitzky?Golay) method".Analytical Chemistry. 62(6): 570?3. doi: 10.1021 / ac00205a007.
 
     if deriv_no==0:
@@ -631,10 +631,10 @@ def  IBICorrect(p, m, hr, fs, up):
     d = np.diff(pc1)/fs    # interbeat intervals in secs
     fp = find_reduced_IBIs(d, hr, up)
     # remove FPs
-    pc2 = np.array(pc1)[fp]
+    pc = np.array(pc1)[fp]
 
     # Correct false negatives
-    d = np.diff(pc2)/fs    # interbeat intervals in secs
+    d = np.diff(pc)/fs    # interbeat intervals in secs
     fn = find_prolonged_IBIs(d, hr, up)
 
     pc = pc1
@@ -816,96 +816,122 @@ def getDicroticNotch (sig, fs, peaks, onsets):
 ####################### Get First Derivitive Points #######################
 ###########################################################################
 def getFirstDerivitivePoints(sig, fs, onsets):
-    """Calculate first derivitive points a1 and b1 from the PPG signal
+    """Calculate first derivitive points u and v from the PPG signal
     :param sig: 1-d array, of shape (N,) where N is the length of the signal
     :param fs: sampling frequency
     :type fs: int
     :param onsets: 1-d array, onsets of the signal
 
     :return
-        - a1: Points of 1st maximum slope in 1st derivitive between the onset to onset interval
-        - b1: Points of 1st minimum slope in 1st derivitive between the onset to onset interval
+        - u: Points of 1st maximum slope in 1st derivitive between the onset to onset interval
+        - v: Points of 1st minimum slope in 1st derivitive between the onset to onset interval
     """
 
-    kernel_size = round(fs/20)
-    kernel = np.ones(kernel_size) / kernel_size
-    ma_sig = np.convolve(sig, kernel, mode='same')
-    dx = np.gradient(ma_sig)
+    win = (fs * 0.01).astype(int)
+    B = 1 / win * np.ones(win)
+    dx = np.gradient(sig)
+    dx = filtfilt(B, 1, dx)
 
-    a1, b1 = [], []
+    u, v = [], []
     for i in range(0,len(onsets)-1):
         segment = dx[onsets[i]:onsets[i + 1]]
-        max_locs, _ = find_peaks(segment)
-        min_locs, _ = find_peaks(-segment)
 
-        if len(max_locs)==0:
-            a1.append(onsets[i])
-        else:
-            a1.append(max_locs[0]+onsets[i])
+        # u fiducial point
+        max_loc = np.argmax(dx[onsets[i]:onsets[i + 1]])+onsets[i]
+        u.append(max_loc)
 
-        if len(min_locs)==0:
-            b1.append(onsets[i])
-        else:
-            b1.append(min_locs[0] + onsets[i])
+        # v fiducial point
+        min_loc = np.argmin(dx[u[-1]:onsets[i+1]])+u[-1]-1
+        v.append(min_loc)
 
-    return a1,b1
+    return u,v
 
 ###########################################################################
 ####################### Get Second Derivitive Points ######################
 ###########################################################################
 def getSecondDerivitivePoints(sig, fs, onsets):
-    """Calculate first derivitive points a1 and b1 from the PPG signal
+    """Calculate first derivitive points u and v from the PPG signal
     :param sig: 1-d array, of shape (N,) where N is the length of the signal
     :param fs: sampling frequency
     :type fs: int
     :param onsets: 1-d array, onsets of the signal
 
     :return
-        - a2: Points of 1st maximum slope in 2nd derivitive between the onset to onset interval
-        - b2: Points of 1st minimum slope in 2nd derivitive between the onset to onset interval
-        - c2: Points of 2nd maximum slope in 2nd derivitive between the onset to onset interval
-        - d2: Points of 2nd minimum slope in 2nd derivitive between the onset to onset interval
-        - e2: Points of 3rd maximum slope in 2nd derivitive between the onset to onset interval
+        - a: Points of 1st maximum slope in 2nd derivitive between the onset to onset interval
+        - b: Points of 1st minimum slope in 2nd derivitive between the onset to onset interval
+        - c: Points of 2nd maximum slope in 2nd derivitive between the onset to onset interval
+        - d: Points of 2nd minimum slope in 2nd derivitive between the onset to onset interval
+        - e: Points of 3rd maximum slope in 2nd derivitive between the onset to onset interval
     """
 
-    kernel_size = round(fs/20)
-    kernel = np.ones(kernel_size) / kernel_size
-    ma_sig = np.convolve(sig, kernel, mode='same')
+    win = (fs * 0.01).astype(int)
+    B = 1 / win * np.ones(win)
+    dx = np.gradient(sig)
+    dx = filtfilt(B, 1, dx)
 
-    dx = np.gradient(ma_sig)
-    ma_dx = np.convolve(dx, kernel, mode='same')
-    ddx = np.gradient(ma_dx)
+    ddx = np.gradient(dx)
+    ddx = filtfilt(B, 1, ddx)
 
-    a2, b2, c2, d2, e2 = [], [], [], [], []
+    a, b, c, d, e = [], [], [], [], []
     for i in range(0,len(onsets)-1):
-        segment=ddx[onsets[i]:onsets[i+1]]
-        max_locs, _ = find_peaks(segment)
-        min_locs, _ = find_peaks(-segment)
 
+        # a fiducial point
+        temp_pk=np.argmax(sig[onsets[i]:onsets[i + 1]])+onsets[i]-1
+        temp_segment=ddx[onsets[i]:temp_pk]
+        max_locs, _ = find_peaks(temp_segment)
+        max_loc = max_locs[np.argmax(temp_segment[max_locs])]
+        max_a = max_loc + onsets[i] - 1
+        a.append(max_a)
 
-        if len(max_locs)==0:
-            a2.append(onsets[i])
+        # b fiducial point
+        temp_segment=ddx[a[-1]:onsets[i+1]]
+        min_locs, _ = find_peaks(-temp_segment)
+        min_b = min_locs[0]+a[-1]-1
+        b.append(min_b)
+
+        # e fiducial point
+        temp_dist_e=((onsets[i+1]-onsets[i])*0.7+onsets[i]).astype(int)
+        temp_segment=ddx[b[-1]:temp_dist_e]
+        max_locs, _ = find_peaks(temp_segment)
+        if max_locs.size==0:
+            temp_segment=ddx[b[-1]:onsets[i + 1]]
+            max_locs, _ = find_peaks(temp_segment)
+
+        max_loc = max_locs[np.argmax(temp_segment[max_locs])]
+        max_e = max_loc + b[-1] - 1
+        e.append(max_e)
+
+        # c fiducial point
+        temp_segment=ddx[b[-1]:e[-1]]
+        max_locs, _ = find_peaks(temp_segment)
+        if max_locs.size>0:
+            max_loc = max_locs[np.argmax(temp_segment[max_locs])]
         else:
-            a2.append(max_locs[0]+onsets[i])
+            dddx = np.gradient(ddx)
+            dddx = filtfilt(B, 1, dddx)
+            temp_segment=dddx[b[-1]:e[-1]]
+            min_locs, _ = find_peaks(-temp_segment)
+            if max_locs.size > 0:
+                max_loc = min_locs[np.argmin(temp_segment[min_locs])]
+                #max_loc = min_locs[0]
+            else:
+                max_locs, _ = find_peaks(temp_segment)
+                max_loc = max_locs[np.argmax(temp_segment[max_locs])]
+                #max_loc = max_locs[0]
 
-        if len(min_locs)==0:
-            b2.append(onsets[i])
+        max_c = max_loc + b[-1] - 1
+        c.append(max_c)
+
+
+        # d fiducial point
+        temp_segment = ddx[c[-1]:e[-1]]
+        min_locs, _ = find_peaks(-temp_segment)
+        if min_locs.size > 0:
+            min_loc = min_locs[np.argmax(temp_segment[min_locs])]
+            min_d = min_loc + c[-1] - 1
         else:
-            b2.append(min_locs[0] + onsets[i])
+            min_d = max_c
 
-        if len(max_locs)>1:
-            c2.append(max_locs[1] + onsets[i])
-        else:
-            c2.append(a2[-1])
+        d.append(min_d)
 
-        if len(min_locs)>1:
-            d2.append(min_locs[1]+onsets[i])
-        else:
-            d2.append(b2[-1])
-
-        if len(max_locs)>2:
-            e2.append(max_locs[2]+onsets[i])
-        else:
-            e2.append(c2[-1])
-
-    return a2, b2, c2, d2, e2
+    return a, b, c, d, e

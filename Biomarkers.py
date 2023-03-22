@@ -124,7 +124,7 @@ def get_BM_Derivatives(sig, fs, fiducials):
                     "d2",   # Second minimum peak from 2nd derivative of PPG waveform
                     "td2",  # Time interval from the foot of PPG waveform to the time of with d1 occurs
                     "e2",   # Third maximum peak from 2nd derivative of PPG waveform
-                    "te2",  # Time interval from the foot of PPG waveform to the time of with b1 occurs6
+                    "te2",  # Time interval from the foot of PPG waveform to the time of with b1 occurs
     ]
 
     df, df_features = get_features(sig, fiducials['peaks'], fiducials['onsets'], fs, features_lst)

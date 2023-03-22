@@ -35,16 +35,17 @@ if __name__ == '__main__':
 
     for i in range(0,218):
         hr = input_sig['ppg_data']['filt_sig'][0,i]
-        hr=np.squeeze(hr)
+        hr =np.squeeze(hr)
+
+        fs = input_sig['ppg_data']['fs'][0,0][0][0]
+        fs = np.squeeze(fs)
+
 
         drt1 = input_sig['ppg_data']['d1'][0,i]
         drt1 = np.squeeze(drt1)
 
         drt2 = input_sig['ppg_data']['d2'][0,i]
         drt2 = np.squeeze(drt2)
-
-        fs = input_sig['ppg_data']['fs'][0,0][0][0]
-        fs = np.squeeze(fs)
 
         name=input_sig['ppg_data']['name'][0, i][0]
         annot_file=annot_path+'/'+name+'.mat'
@@ -98,36 +99,33 @@ if __name__ == '__main__':
             if temp_dist[j].size>0:
                 dist_error[i][j] = np.squeeze(temp_dist[j])
 
-
         print(str(i),' Abs errors of',name,': dn=',dn_dist[i],': u=',u_dist[i],' | v=',v_dist[i],' | a=',a_dist[i],
-              ' | b=',b_dist[i],' | c=',v_dist[i],' | d=',d_dist[i],' | e=',e_dist[i])
+             ' | b=',b_dist[i],' | c=',v_dist[i],' | d=',d_dist[i],' | e=',e_dist[i])
 
-        plt.plot(hr,'r')
-        plt.plot(drt1,'b')
-        plt.plot(drt2,'k')
+        plt.plot(hr,'r',label='x')
+        plt.plot(drt1,'b',label='dx')
+        plt.plot(drt2,'k',label='ddx')
 
         plt.plot(onsets_loc, hr[onsets_loc], 'ks', label='onset')
-
         plt.plot(ref_dn, hr[ref_dn], 'ko', label='ref dn')
-        plt.plot(det_dn, hr[det_dn], 'b*', label='det dn')
-
         plt.plot(ref_u, drt1[ref_u], 'go', label='ref u')
         plt.plot(ref_v, drt1[ref_v], 'mo', label='ref v')
-        plt.plot(det_u, drt1[det_u], 'r*', label='det u')
-        plt.plot(det_v, drt1[det_v], 'k*', label='det v')
-
-        plt.plot(ref_a, drt2[ref_a], 'bo', label='ref a')
-        plt.plot(ref_b, drt2[ref_b], 'go', label='ref b')
-        plt.plot(ref_c, drt2[ref_c], 'ko', label='ref c')
+        plt.plot(ref_a, drt2[ref_a], 'bs', label='ref a')
+        plt.plot(ref_b, drt2[ref_b], 'cs', label='ref b')
+        plt.plot(ref_c, drt2[ref_c], 'ks', label='ref c')
         plt.plot(ref_d, drt2[ref_d], 'bs', label='ref d')
         plt.plot(ref_e, drt2[ref_e], 'gs', label='ref e')
-        plt.plot(det_a, drt2[det_a], 'k*', label='det a')
-        plt.plot(det_b, drt2[det_b], 'm*', label='det b')
-        plt.plot(det_c, drt2[det_c], 'r*', label='det c')
-        plt.plot(det_d, drt2[det_d], 'k+', label='det d')
-        plt.plot(det_e, drt2[det_e], 'm*', label='det e')
 
-        plt.legend(loc=4, prop={'size': 15})
+        plt.plot(det_dn, hr[det_dn], 'm*', label='det dn')
+        plt.plot(det_u, drt1[det_u], 'r*', label='det u')
+        plt.plot(det_v, drt1[det_v], 'b*', label='det v')
+        plt.plot(det_a, drt2[det_a], 'mx', label='det a')
+        plt.plot(det_b, drt2[det_b], 'kx', label='det b')
+        plt.plot(det_c, drt2[det_c], 'rx', label='det c')
+        plt.plot(det_d, drt2[det_d], 'cx', label='det d')
+        plt.plot(det_e, drt2[det_e], 'r+', label='det e')
+
+        plt.legend(loc=4, prop={'size': 10})
         plt.title(name,  fontsize=20)
         plt.xlabel('Time [ms]',  fontsize=20)
         plt.ylabel('Pulse Wave',  fontsize=20)
