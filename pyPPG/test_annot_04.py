@@ -43,7 +43,7 @@ if __name__ == '__main__':
         dist_error[n]=temp_v
 
     # Flag for plotting: 0 is off, 1 is on
-    plt_sig=1
+    plt_sig=0
 
     for i in range(0,set_len):
 
