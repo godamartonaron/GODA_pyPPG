@@ -23,14 +23,14 @@ The pyPPG is a python toolbox, which detects beats in a photoplethysmogram (PPG)
 
 3. Engineering of PPG Biomarkers - Using the fiducial points PPG biomarkers are engineered for individual PPG cycles. When a biomarker cannot be engineered because some fiducial points could not be detected by wavedet then the feature was marked as a NaN. For an PPG channel a total of 62 features are extracted from intervals duration and 9 from waves characteristics to describe the ECG morphology.
 
-![alt text](FIGURE PPG)
+![alt text](figs/fiducial_points.svg)
 
 4. Summary Statistics - For a specified time window the 10 summary statistics (duration, mean, median, STD, Percentile25, Percentile75, IQR, Skewness, Kurtosis, MAD) are computed for all PPG biomarkers.
 
 
 ## Installation
-Available on pip, with the command: 
-pip install pyppg
+(Available on pip, with the command: 
+pip install pyppg)
 
 ## Requirements
 
