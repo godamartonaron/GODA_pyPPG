@@ -57,11 +57,11 @@ def getFiducialsPoints(sig,fs):
 
     peaks, onsets = abdp_beat_detector(sig, fs, peak_detector)
     dicroticnotch = getDicroticNotch(sig, fs, peaks, onsets)
-    u, v = getFirstDerivitivePoints(sig, fs, onsets)
-    a, b, c, d, e =  getSecondDerivitivePoints(sig, fs, onsets)
+    u, v, w = getFirstDerivitivePoints(sig, fs, onsets)
+    a, b, c, d, e, f =  getSecondDerivitivePoints(sig, fs, onsets, u, v)
 
     fiducials = {'peaks': peaks, 'onsets': onsets, 'dicroticnotch': dicroticnotch,
-                 'u': u, 'v': v, 'a': a, 'b': b, 'c': c, 'd': d, 'e': e}
+                 'u': u, 'v': v, 'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f}
 
     return fiducials
 
@@ -784,7 +784,11 @@ def getDicroticNotch (sig, fs, peaks, onsets):
         tau[0:i_Pmax] = 0
         beta=5
 
-        t_w=t_wmax(i, peaks, onsets)
+        if len(peaks)>1:
+            t_w=t_wmax(i, peaks, onsets)
+        else:
+            t_w=np.NaN
+
         if t_w!=T_beat:
             tau_wmax=(t_w-t_Pmax)/(T_beat-t_Pmax)
         else:
@@ -832,7 +836,7 @@ def getFirstDerivitivePoints(sig, fs, onsets):
     dx = np.gradient(sig)
     dx = filtfilt(B, 1, dx)
 
-    u, v = [], []
+    u, v, w = [], [], []
     for i in range(0,len(onsets)-1):
         segment = dx[onsets[i]:onsets[i + 1]]
 
@@ -844,7 +848,16 @@ def getFirstDerivitivePoints(sig, fs, onsets):
         min_loc = np.argmin(dx[u[-1]:onsets[i+1]])+u[-1]-1
         v.append(min_loc)
 
-    return u,v
+        # w fiducial point
+        temp_segment=dx[v[-1]:onsets[i+1]]
+        max_locs, _ = find_peaks(temp_segment)
+        if max_locs.size>0:
+            max_w = max_locs[0]+v[-1]-1
+        else:
+            max_w = np.NaN
+        w.append(max_w)
+
+    return u,v,w
 
 ###########################################################################
 ####################### Get Second Derivitive Points ######################
@@ -872,7 +885,7 @@ def getSecondDerivitivePoints(sig, fs, onsets):
     ddx = np.gradient(dx)
     ddx = filtfilt(B, 1, ddx)
 
-    a, b, c, d, e = [], [], [], [], []
+    a, b, c, d, e, f = [], [], [], [], [], []
     for i in range(0,len(onsets)-1):
 
         # a fiducial point
@@ -890,48 +903,60 @@ def getSecondDerivitivePoints(sig, fs, onsets):
         b.append(min_b)
 
         # e fiducial point
-        temp_dist_e=((onsets[i+1]-onsets[i])*0.7+onsets[i]).astype(int)
-        temp_segment=ddx[b[-1]:temp_dist_e]
+        e_lower_bound = b[-1]
+        upper_bound_coeff = 0.7
+        e_upper_bound = ((onsets[i + 1] - onsets[i]) * upper_bound_coeff + onsets[i]).astype(int)
+        temp_segment=ddx[e_lower_bound:e_upper_bound]
         max_locs, _ = find_peaks(temp_segment)
         if max_locs.size==0:
             temp_segment=ddx[b[-1]:onsets[i + 1]]
             max_locs, _ = find_peaks(temp_segment)
 
         max_loc = max_locs[np.argmax(temp_segment[max_locs])]
-        max_e = max_loc + b[-1] - 1
+        max_e = max_loc + e_lower_bound - 1
+
         e.append(max_e)
 
         # c fiducial point
         temp_segment=ddx[b[-1]:e[-1]]
         max_locs, _ = find_peaks(temp_segment)
         if max_locs.size>0:
-            max_loc = max_locs[np.argmax(temp_segment[max_locs])]
+            max_loc = max_locs[0]
         else:
             dddx = np.gradient(ddx)
             dddx = filtfilt(B, 1, dddx)
             temp_segment=dddx[b[-1]:e[-1]]
             min_locs, _ = find_peaks(-temp_segment)
-            if max_locs.size > 0:
+
+            if min_locs.size > 0:
                 max_loc = min_locs[np.argmin(temp_segment[min_locs])]
-                #max_loc = min_locs[0]
             else:
                 max_locs, _ = find_peaks(temp_segment)
-                max_loc = max_locs[np.argmax(temp_segment[max_locs])]
-                #max_loc = max_locs[0]
+                max_loc = max_locs[0]
 
         max_c = max_loc + b[-1] - 1
         c.append(max_c)
-
 
         # d fiducial point
         temp_segment = ddx[c[-1]:e[-1]]
         min_locs, _ = find_peaks(-temp_segment)
         if min_locs.size > 0:
-            min_loc = min_locs[np.argmax(temp_segment[min_locs])]
+            min_loc = min_locs[np.argmin(temp_segment[min_locs])]
             min_d = min_loc + c[-1] - 1
         else:
             min_d = max_c
 
         d.append(min_d)
 
-    return a, b, c, d, e
+        # f fiducial point
+        temp_segment = ddx[e[-1]:onsets[i + 1]]
+        min_locs, _ = find_peaks(-temp_segment)
+        if min_locs.size > 0:
+            min_loc = min_locs[0]
+        else:
+            min_loc = []
+
+        min_f = min_loc + e[-1] - 1
+        f.append(min_f)
+
+    return a, b, c, d, e, f
