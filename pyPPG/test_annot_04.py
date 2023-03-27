@@ -43,7 +43,7 @@ if __name__ == '__main__':
         dist_error[n]=temp_v
 
     # Flag for plotting: 0 is off, 1 is on
-    plt_sig=0
+    plt_sig=1
 
     for i in range(0,set_len):
 
@@ -61,9 +61,11 @@ if __name__ == '__main__':
         drt2 = np.squeeze(drt2)
 
         # Plot filtered signal, 1st and 2nd derivative
-        plt.plot(ppg_v,'r',label='x')
-        plt.plot(drt1,'b',label='dx')
-        plt.plot(drt2,'k',label='ddx')
+        if plt_sig==1:
+            fig = plt.figure(figsize=(15, 7))
+            plt.plot(ppg_v,'r',label='x')
+            plt.plot(drt1,'b',label='dx')
+            plt.plot(drt2,'k',label='ddx')
 
         # Load annotated fiducial points
         name=input_sig['ppg_data']['name'][0, i][0]
@@ -77,8 +79,9 @@ if __name__ == '__main__':
         pks,ons=[],[]
         exec("pks = [ref_pk]")
         exec("ons = ref_os")
-        plt.scatter(pks, ppg_v[pks], s=60, linewidth=2, marker='o',  facecolors='c', edgecolors='r', label='pk')
-        plt.scatter(ons, ppg_v[ons], s=60, linewidth=2, marker='s',  facecolors='c', edgecolors='b', label='os')
+        if plt_sig==1:
+            plt.scatter(pks, ppg_v[pks], s=60, linewidth=2, marker='o',  facecolors='c', edgecolors='r', label='pk')
+            plt.scatter(ons, ppg_v[ons], s=60, linewidth=2, marker='s',  facecolors='c', edgecolors='b', label='os')
 
         # Detect fiducial points
         det_dn=getDicroticNotch(ppg_v, fs, pks, ons)
@@ -99,8 +102,10 @@ if __name__ == '__main__':
             marker = ['s', 'x','o', '*']*5
             color = ['b', 'r', 'c', 'm', 'k', 'g', 'm', 'b', 'r', 'c', 'm']
 
-            if plt_sig==1:
-                # if n=='dn':
+            is_fidu=0
+            exec("is_fidu=~np.isnan(np.squeeze(det_" + n + "))")
+
+            if  plt_sig==1 and is_fidu:
                 exec("plt.scatter(ref_" + n + "," + s_type[ind] + "[ref_" + n + "], s=60,linewidth=2, marker = marker[ind*2], facecolors='none', edgecolors=color[ind], label='ref " + n + "')")
                 exec("plt.scatter(det_" + n + "," + s_type[ind] + "[det_" + n + "], s=60,linewidth=2, marker = marker[ind*2+1], color=color[ind+1], label='det " + n + "')")
 
@@ -111,11 +116,12 @@ if __name__ == '__main__':
             plt.xlabel('Time [ms]', fontsize=20)
             plt.ylabel('Pulse Wave', fontsize=20)
             plt.grid(color='g', linestyle='--', linewidth=0.5)
-            plt.show()
+            plt.savefig(('temp_dir/figs/py_%s.png')%(name))
+            # plt.show()
             plt.close('all')
 
         # Print distance error
-        print(i,'. (',name,') DIFF:')
+        print('\n',name,' DIFF:')
         test_list=dist_error.iloc[i].values
         if sum(np.isnan(test_list))==0:
             temp_error=dist_error.iloc[i].astype(int)
