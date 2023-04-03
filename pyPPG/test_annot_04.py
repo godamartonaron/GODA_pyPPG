@@ -60,6 +60,12 @@ if __name__ == '__main__':
         drt2 = input_sig['ppg_data']['d2'][0,i]
         drt2 = np.squeeze(drt2)
 
+        win = (fs * 0.01).astype(int)
+        B = 1 / win * np.ones(win)
+        drt3 = np.gradient(drt2)
+        drt3 = filtfilt(B, 1, drt3)
+        drt3 = drt3 / max(drt3) * max(ppg_v)
+
         # Plot filtered signal, 1st and 2nd derivative
         if plt_sig==1:
             fig = plt.figure(figsize=(15, 7))
@@ -85,8 +91,13 @@ if __name__ == '__main__':
 
         # Detect fiducial points
         det_dn=getDicroticNotch(ppg_v, fs, pks, ons)
-        det_u, det_v, det_w = getFirstDerivitivePoints(ppg_v, fs, ons)
-        det_a, det_b, det_c, det_d, det_e, det_f = getSecondDerivitivePoints(ppg_v,fs, ons)
+        drt1_fp = getFirstDerivitivePoints(ppg_v, fs, ons)
+        drt2_fp = getSecondDerivitivePoints(ppg_v,fs, ons)
+        drt3_fp = getThirdDerivitivePoints(ppg_v, fs, ons,drt2_fp)
+
+        det_u, det_v, det_w = drt1_fp.u, drt1_fp.w, drt1_fp.w
+        det_a, det_b, det_c, det_d, det_e, det_f = drt2_fp.a, drt2_fp.b, drt2_fp.c, drt2_fp.d, drt2_fp.e, drt2_fp.f
+        det_p1, det_p2 = drt3_fp.p1, drt3_fp.p2
 
         for n in fid_names[2:]:
             # Calculate distance error
@@ -109,6 +120,10 @@ if __name__ == '__main__':
                 exec("plt.scatter(ref_" + n + "," + s_type[ind] + "[ref_" + n + "], s=60,linewidth=2, marker = marker[ind*2], facecolors='none', edgecolors=color[ind], label='ref " + n + "')")
                 exec("plt.scatter(det_" + n + "," + s_type[ind] + "[det_" + n + "], s=60,linewidth=2, marker = marker[ind*2+1], color=color[ind+1], label='det " + n + "')")
 
+        plt.plot(drt3,'g',label='dddx')
+        plt.scatter(det_p1,drt3[det_p1], s=60,linewidth=2, marker = 'o', facecolors='none', edgecolors='r', label='det_p1')
+        plt.scatter(det_p2, drt3[det_p2], s=60, linewidth=2, marker='o', facecolors='none', edgecolors='b', label='det_p2')
+
         # Plot show
         if plt_sig == 1:
             plt.legend(loc=4, prop={'size': 10})
@@ -116,8 +131,8 @@ if __name__ == '__main__':
             plt.xlabel('Time [ms]', fontsize=20)
             plt.ylabel('Pulse Wave', fontsize=20)
             plt.grid(color='g', linestyle='--', linewidth=0.5)
-            plt.savefig(('temp_dir/figs/py_%s.png')%(name))
-            # plt.show()
+            # plt.savefig(('temp_dir/figs/py_%s.png')%(name))
+            plt.show()
             plt.close('all')
 
         # Print distance error

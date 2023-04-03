@@ -55,14 +55,31 @@ def getFiducialsPoints(sig,fs):
 
     peak_detector='abp'
 
+    drt0_fp=pd.DataFrame()
     peaks, onsets = abdp_beat_detector(sig, fs, peak_detector)
     dicroticnotch = getDicroticNotch(sig, fs, peaks, onsets)
-    u, v, w = getFirstDerivitivePoints(sig, fs, onsets)
-    a, b, c, d, e, f =  getSecondDerivitivePoints(sig, fs, onsets, u, v)
 
-    fiducials = {'peaks': peaks, 'onsets': onsets, 'dicroticnotch': dicroticnotch,
-                 'u': u, 'v': v, 'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f}
+    keys=('os', 'pk', 'dn')
+    dummy = np.empty(len(peaks))
+    dummy.fill(np.NaN)
+    n=0
+    for temp_val in (onsets,peaks,dicroticnotch):
+        drt0_fp[keys[n]] = dummy
+        drt0_fp[keys[n]][0:len(temp_val)]=temp_val
+        n=n+1
 
+    drt1_fp = getFirstDerivitivePoints(sig, fs, onsets)
+    drt2_fp = getSecondDerivitivePoints(sig, fs, onsets)
+    drt3_fp = getThirdDerivitivePoints(sig, fs, onsets, drt2_fp)
+
+    fiducials=pd.DataFrame()
+    for temp_drt in (drt0_fp,drt1_fp,drt2_fp,drt3_fp):
+        for key in list(temp_drt.keys()):
+            fiducials[key] = dummy
+            temp_val = temp_drt[key].values
+            fiducials[key][0:len(temp_val)]=temp_val
+
+    fiducials=fiducials.astype('Int64')
     return fiducials
 
 
@@ -820,18 +837,19 @@ def getDicroticNotch (sig, fs, peaks, onsets):
 ####################### Get First Derivitive Points #######################
 ###########################################################################
 def getFirstDerivitivePoints(sig, fs, onsets):
-    """Calculate first derivitive points u and v from the PPG signal
+    """Calculate first derivitive points u and v from the PPG' signal
     :param sig: 1-d array, of shape (N,) where N is the length of the signal
     :param fs: sampling frequency
     :type fs: int
     :param onsets: 1-d array, onsets of the signal
 
     :return
-        - u: Points of 1st maximum slope in 1st derivitive between the onset to onset interval
-        - v: Points of 1st minimum slope in 1st derivitive between the onset to onset interval
+        - u: The greatest maximum peak between the left systolic onset and the systolic peak on PPG'
+        - v: The lowest minimum pits between the systolic peak and the right systolic onset on PPG'
+        - w: The first maximum peak after v on PPG'
     """
 
-    win = (fs * 0.01).astype(int)
+    win = round(fs * 0.02)
     B = 1 / win * np.ones(win)
     dx = np.gradient(sig)
     dx = filtfilt(B, 1, dx)
@@ -857,27 +875,30 @@ def getFirstDerivitivePoints(sig, fs, onsets):
             max_w = np.NaN
         w.append(max_w)
 
-    return u,v,w
+    drt1_fp = pd.DataFrame({"u":[], "v":[], "w":[]})
+    drt1_fp.u, drt1_fp.v, drt1_fp.w = u, v, w
+    return drt1_fp
 
 ###########################################################################
 ####################### Get Second Derivitive Points ######################
 ###########################################################################
 def getSecondDerivitivePoints(sig, fs, onsets):
-    """Calculate first derivitive points u and v from the PPG signal
+    """Calculate Second derivitive points a, b, c, d, e, and f from the PPG" signal
     :param sig: 1-d array, of shape (N,) where N is the length of the signal
     :param fs: sampling frequency
     :type fs: int
     :param onsets: 1-d array, onsets of the signal
 
     :return
-        - a: Points of 1st maximum slope in 2nd derivitive between the onset to onset interval
-        - b: Points of 1st minimum slope in 2nd derivitive between the onset to onset interval
-        - c: Points of 2nd maximum slope in 2nd derivitive between the onset to onset interval
-        - d: Points of 2nd minimum slope in 2nd derivitive between the onset to onset interval
-        - e: Points of 3rd maximum slope in 2nd derivitive between the onset to onset interval
+        - a: The first maximum peak between left systolic onset and systolic peak on PPG"
+        - b: The first minimum pits after a on PPG"
+        - c: The greatest maximum peak between b and e, or if no maximum peak is present then the inflection point on PPG"
+        - d: The lowest minimum pits between c and e, or if no minimum pits is present then the inflection point on PPG"
+        - e: The greatest maximum peak between the systolic peak and  the right systolic onset
+        - f: The first minimum pits after e on PPG"
     """
 
-    win = (fs * 0.01).astype(int)
+    win = round(fs * 0.02)
     B = 1 / win * np.ones(win)
     dx = np.gradient(sig)
     dx = filtfilt(B, 1, dx)
@@ -959,4 +980,75 @@ def getSecondDerivitivePoints(sig, fs, onsets):
         min_f = min_loc + e[-1] - 1
         f.append(min_f)
 
-    return a, b, c, d, e, f
+    drt2_fp = pd.DataFrame({"a":[], "b":[], "c":[],"d":[], "e":[], "f":[]})
+    drt2_fp.a, drt2_fp.b, drt2_fp.c, drt2_fp.d, drt2_fp.e, drt2_fp.f = a, b, c, d, e, f
+    return drt2_fp
+
+def getThirdDerivitivePoints(sig, fs, onsets,drt2_fp):
+    """Calculate third derivitive points p1 and p2 from the PPG''' signal
+        :param sig: 1-d array, of shape (N,) where N is the length of the signal
+        :param fs: sampling frequency
+        :type fs: int
+        :param onsets: 1-d array, onsets of the signal
+
+        :return
+        - p1: The first local maximum of PPG'''  after b.
+        - p2: Identify a candidate p2 at the last local minimum of PPG'''  before d (unless c=d, in which case take the
+        first local minimum of PPG'''  after d). If there is a local maximum of x between this candidate and dic then
+        use this instead.
+
+
+    """
+
+    win = round(fs * 0.02)
+    B = 1 / win * np.ones(win)
+    dx = np.gradient(sig)
+    dx = filtfilt(B, 1, dx)
+
+    ddx = np.gradient(dx)
+    ddx = filtfilt(B, 1, ddx)
+
+    dddx = np.gradient(ddx)
+    dddx = filtfilt(B, 1, dddx)
+
+    p1, p2 = [], []
+    for i in range(0,len(onsets)-1):
+        # p1 fiducial point
+        ref_b=drt2_fp.b[np.squeeze(np.where(np.logical_and(drt2_fp.b>onsets[i],drt2_fp.b<onsets[i+1])))]
+        if ref_b.size==0:
+            ref_b=onsets[i]
+
+        temp_segment=dddx[ref_b:onsets[i+1]]
+        max_locs, _ = find_peaks(temp_segment)
+        max_loc = max_locs[0]
+        max_p1 = max_loc + ref_b - 1
+        p1.append(max_p1)
+
+        # p2 fiducial point
+        ref_start = p1[-1]
+        if ref_start.size>0:
+            ref_c = drt2_fp.c[np.squeeze(np.where(np.logical_and(drt2_fp.c>onsets[i],drt2_fp.c<onsets[i+1])))]
+            ref_d = drt2_fp.d[np.squeeze(np.where(np.logical_and(drt2_fp.d>onsets[i],drt2_fp.d<onsets[i+1])))]
+
+            if ref_d>ref_c:
+                ref_end=ref_d
+                min_ind=-1
+            elif ref_c.size>0:
+                ref_start=ref_c
+                ref_end = onsets[i+1]
+                min_ind = 0
+            elif drt2_fp.e.size>0:
+                ref_end = onsets[i+1]
+                min_ind = 0
+
+            temp_segment=dddx[ref_start:ref_end]
+            min_locs, _ = find_peaks(-temp_segment)
+            min_p2 = min_locs[min_ind]+ref_start-1
+            p2.append(min_p2)
+        else:
+            p2.append(ref_start)
+
+    drt3_fp = pd.DataFrame({"p1": [], "p2": []})
+    drt3_fp.p1, drt3_fp.p2 = p1, p2
+
+    return drt3_fp
