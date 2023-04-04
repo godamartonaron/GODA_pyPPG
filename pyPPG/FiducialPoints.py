@@ -58,12 +58,13 @@ def getFiducialsPoints(sig,fs):
     drt0_fp=pd.DataFrame()
     peaks, onsets = abdp_beat_detector(sig, fs, peak_detector)
     dicroticnotch = getDicroticNotch(sig, fs, peaks, onsets)
+    diastolicpeak = getDiastolicPeak(sig, fs, peaks, onsets, dicroticnotch)
 
-    keys=('os', 'pk', 'dn')
+    keys=('os', 'pk', 'dn','dp')
     dummy = np.empty(len(peaks))
     dummy.fill(np.NaN)
     n=0
-    for temp_val in (onsets,peaks,dicroticnotch):
+    for temp_val in (onsets,peaks,dicroticnotch,diastolicpeak):
         drt0_fp[keys[n]] = dummy
         drt0_fp[keys[n]][0:len(temp_val)]=temp_val
         n=n+1
@@ -832,6 +833,27 @@ def getDicroticNotch (sig, fs, peaks, onsets):
         dic_not.append(max_pp_i+onsets[i]+5)
 
     return dic_not
+
+###########################################################################
+########################## Detect diastolic peak ##########################
+###########################################################################
+def getDiastolicPeak(sig, fs, peaks, onsets, dicroticnotch):
+    """
+    Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak
+
+    :param sig: 1-d array, of shape (N,) where N is the length of the signal
+    :param fs: sampling frequency
+    :type fs: int
+    :param peaks: 1-d array, peaks of the signal
+    :param onsets: 1-d array, onsets of the signal
+    :param dicroticnotches: 1-d array, onsets of the signal
+
+    :return diastolicpeak: location of dicrotic notches, 1-d numpy array.
+    """
+
+    diastolicpeak=dicroticnotch
+
+    return diastolicpeak
 
 ###########################################################################
 ####################### Get First Derivitive Points #######################
