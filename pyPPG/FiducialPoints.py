@@ -503,7 +503,7 @@ def savitzky_golay_abd(sig, deriv_no, win_size):
     """
 
     ##assign coefficients
-    # From: https: // en.wikipedia.org / wiki / Savitzky % e % 80 % 93 Golay_filter  # Tables_of_selected_convolution_coefficients
+    # From: https: // en.wikipedia.org / wiki / Savitzky % E2 % 80 % 93 Golay_filter  # Tables_of_selected_convolution_coefficients
     # which are calculated from: A., Gorry(1990). "General least-squares smoothing and differentiation by the convolution (Savitzky?Golay) method".Analytical Chemistry. 62(6): 570?3. doi: 10.1021 / ac00205a007.
 
     if deriv_no==0:
@@ -870,7 +870,7 @@ def getFirstDerivitivePoints(sig, fs, onsets):
         - v: The lowest minimum pits between the systolic peak and the right systolic onset on PPG'
         - w: The first maximum peak after v on PPG'
     """
-
+    ## 10 ms is optimal with higher fs
     win = round(fs * 0.02)
     B = 1 / win * np.ones(win)
     dx = np.gradient(sig)
@@ -917,9 +917,9 @@ def getSecondDerivitivePoints(sig, fs, onsets):
         - c: The greatest maximum peak between b and e, or if no maximum peak is present then the inflection point on PPG"
         - d: The lowest minimum pits between c and e, or if no minimum pits is present then the inflection point on PPG"
         - e: The greatest maximum peak between the systolic peak and  the right systolic onset
-        - f: The first minimum pits after e on PPG"
+        - f: The first minimum pits after e and before 0.8 CP (cardiac period) on PPG"
     """
-
+    ## 5 ms is optimal with higher fs
     win = round(fs * 0.02)
     B = 1 / win * np.ones(win)
     dx = np.gradient(sig)
@@ -947,7 +947,7 @@ def getSecondDerivitivePoints(sig, fs, onsets):
 
         # e fiducial point
         e_lower_bound = b[-1]
-        upper_bound_coeff = 0.7
+        upper_bound_coeff = 0.6
         e_upper_bound = ((onsets[i + 1] - onsets[i]) * upper_bound_coeff + onsets[i]).astype(int)
         temp_segment=ddx[e_lower_bound:e_upper_bound]
         max_locs, _ = find_peaks(temp_segment)
@@ -994,7 +994,7 @@ def getSecondDerivitivePoints(sig, fs, onsets):
         # f fiducial point
         temp_segment = ddx[e[-1]:onsets[i + 1]]
         min_locs, _ = find_peaks(-temp_segment)
-        if min_locs.size > 0:
+        if (min_locs.size > 0) and (min_locs[0]<len(sig)*0.8):
             min_loc = min_locs[0]
         else:
             min_loc = []
@@ -1007,21 +1007,20 @@ def getSecondDerivitivePoints(sig, fs, onsets):
     return drt2_fp
 
 def getThirdDerivitivePoints(sig, fs, onsets,drt2_fp):
-    """Calculate third derivitive points p1 and p2 from the PPG''' signal
+    """Calculate third derivitive points p1 and p2 from the PPG'" signal
         :param sig: 1-d array, of shape (N,) where N is the length of the signal
         :param fs: sampling frequency
         :type fs: int
         :param onsets: 1-d array, onsets of the signal
 
         :return
-        - p1: The first local maximum of PPG'''  after b.
-        - p2: Identify a candidate p2 at the last local minimum of PPG'''  before d (unless c=d, in which case take the
-        first local minimum of PPG'''  after d). If there is a local maximum of x between this candidate and dic then
+        - p1: The first local maximum of PPG'"  after b.
+        - p2: Identify a candidate p2 at the last local minimum of PPG'"  before d (unless c=d, in which case take the
+        first local minimum of PPG'"  after d). If there is a local maximum of PPG'" between this candidate and dic then
         use this instead.
 
-
     """
-
+    ## 10 ms is optimal with higher fs
     win = round(fs * 0.02)
     B = 1 / win * np.ones(win)
     dx = np.gradient(sig)
@@ -1065,7 +1064,12 @@ def getThirdDerivitivePoints(sig, fs, onsets,drt2_fp):
 
             temp_segment=dddx[ref_start:ref_end]
             min_locs, _ = find_peaks(-temp_segment)
-            min_p2 = min_locs[min_ind]+ref_start-1
+            # min_p2 = min_locs[min_ind] + ref_start - 1
+            if min_locs.size>0:
+                min_p2 = min_locs[min_ind]+ref_start-1
+            else:
+                min_p2 = ref_end
+
             p2.append(min_p2)
         else:
             p2.append(ref_start)

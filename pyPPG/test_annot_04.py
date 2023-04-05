@@ -37,13 +37,13 @@ if __name__ == '__main__':
     for n in fid_names[2:]:
         exec(n+"=[]")
         exec(n + "r=[]")
-        exec(n + "_dist=[]")
+        exec("dist_"+ n +"=[]")
         temp_v=np.empty(set_len)
         temp_v[:] = np.NaN
         dist_error[n]=temp_v
 
     # Flag for plotting: 0 is off, 1 is on
-    plt_sig=1
+    plt_sig=0
 
     for i in range(0,set_len):
 
@@ -95,17 +95,18 @@ if __name__ == '__main__':
         drt2_fp = getSecondDerivitivePoints(ppg_v,fs, ons)
         drt3_fp = getThirdDerivitivePoints(ppg_v, fs, ons,drt2_fp)
 
-        det_u, det_v, det_w = drt1_fp.u, drt1_fp.w, drt1_fp.w
+        det_u, det_v, det_w = drt1_fp.u, drt1_fp.v, drt1_fp.w
         det_a, det_b, det_c, det_d, det_e, det_f = drt2_fp.a, drt2_fp.b, drt2_fp.c, drt2_fp.d, drt2_fp.e, drt2_fp.f
         det_p1, det_p2 = drt3_fp.p1, drt3_fp.p2
 
         for n in fid_names[2:]:
             # Calculate distance error
             exec (n+".append(np.squeeze(det_"+n+"))")
-            exec("temp_dist=np.squeeze(ref_"+n+" - det_"+n+")")
-            if eval("temp_dist.size") > 0:
-                exec(n + "_dist.append(temp_dist)")
-                exec ("dist_error['"+n+"'][i] = temp_dist")
+            if eval("ref_"+n+".size") > 0:
+                exec("temp_dist=np.squeeze(ref_"+n+" - det_"+n+")")
+                if eval("temp_dist.size") > 0:
+                    exec("dist_"+ n + ".append(temp_dist)")
+                    exec ("dist_error['"+n+"'][i] = temp_dist")
 
             # Plot fiducial points
             ind = fid_names.index(n)-2
@@ -148,14 +149,15 @@ if __name__ == '__main__':
         OutData['dist_error'] = dist_error.to_numpy()
         scipy.io.savemat(file_name, OutData)
 
+
     # Calculate Mean Absolute Error (MAE), Standard Deviation (STD), and Mean Error (BIAS)
     MAE={}
     STD={}
     BIAS={}
     for n in fid_names[2:]:
-        exec("MAE['" + n + "'] = np.round(np.nanmean(np.absolute(" + n + "_dist)),2)")
-        exec("STD['" + n + "'] = np.round(np.nanstd(" + n + "_dist), 2)")
-        exec("BIAS['" + n + "'] = np.round(np.nanmean(" + n + "_dist),2)")
+        exec("MAE['" + n + "'] = np.round(np.nanmean(np.absolute(dist_"+ n + ")),2)")
+        exec("STD['" + n + "'] = np.round(np.nanstd(dist_"+ n + "), 2)")
+        exec("BIAS['" + n + "'] = np.round(np.nanmean(dist_"+ n + "),2)")
 
     # Print results
     print('-------------------------------------------')
