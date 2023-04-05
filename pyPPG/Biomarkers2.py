@@ -75,7 +75,6 @@ def get_BM_OSignal(sig, fs, fiducials):
                     "PIR",       # PPG Intensity Ratio, the ratio of Systolic Peak intensity and PPG valley intensity, reflects on the arterial diameter changes during one cardiac cycle from systole to diastole
                     "SPA",       # Systolic Peak Amplitude
                     "DPA",       # Diastolic Peak Amplitude
-                    "SOC"        # Systolic Peak Output Curve, Ratio between SUT and SPA
                     ]
     df, df_features = get_features(sig, fiducials, fs, features_lst)
 
@@ -99,10 +98,11 @@ def get_BM_ROSignal(sig, fs, fiducials):
                     "width_50_SUT", # The ratio of Width 50% and SUT
                     "width_50_Tpi", # The ratio of Width 50% and Tpi
                     "width_75_SUT", # The ratio of Width 75% and SUT
-                    "width_75_Tpi" # The ratio of Width 75% and Tpi
-                    # "RI",           # Reflection Index is the ratio of DPA and SPA
-                    # "SI",           # Stiffness Index is the ratio of SPA and the difference between DPT and SUT
-                    # "SC"            # Spring constant defined as x’’(sys) / (SPA - MS) / SPA, derived from a physical model of the elasticity of peripheral arteries
+                    "width_75_Tpi", # The ratio of Width 75% and Tpi
+                    "RI",           # Reflection Index is the ratio of DPA and SPA
+                    "SI",           # Stiffness Index is the ratio of SPA and the difference between DPT and SUT
+                    "SOC",          # Systolic Peak Output Curve, Ratio between SUT and SPA
+                    "IPR",          # Instantaneous pulse rate, 60/CP
     ]
 
     df, df_features = get_features(sig, fiducials, fs, features_lst)
@@ -113,15 +113,16 @@ def get_BM_ROSignal(sig, fs, fiducials):
 ################# Get Biomarkers of 1st and 2nd Derivatives ###############
 ###########################################################################
 def get_BM_Derivatives(sig, fs, fiducials):
-    features_lst = ["Tu",  # Time interval from the systolic onset to the time of with u occurs on PPG'.
-                    "Tv",  # Time interval from the systolic onset to the time of with v occurs on PPG'.
-                    "Tw",  # Time interval from the systolic onset to the time of with w occurs on PPG'.
-                    "Ta",  # Time interval from the systolic onset to the time of with a occurs on PPG".
-                    "Tb",  # Time interval from the systolic onset to the time of with b occurs on PPG".
-                    "Tc",  # Time interval from the systolic onset to the time of with c occurs on PPG".
-                    "Td",  # Time interval from the systolic onset to the time of with d occurs on PPG".
-                    "Te",  # Time interval from the systolic onset to the time of with e occurs on PPG".
-                    "Tf",  # Time interval from the systolic onset to the time of with f occurs on PPG".
+    features_lst = ["Tu",  # Time interval from the systolic onset to the time of with u occurs on PPG'
+                    "Tv",  # Time interval from the systolic onset to the time of with v occurs on PPG'
+                    "Tw",  # Time interval from the systolic onset to the time of with w occurs on PPG'
+                    "Ta",  # Time interval from the systolic onset to the time of with a occurs on PPG"
+                    "Tb",  # Time interval from the systolic onset to the time of with b occurs on PPG"
+                    "Tc",  # Time interval from the systolic onset to the time of with c occurs on PPG"
+                    "Td",  # Time interval from the systolic onset to the time of with d occurs on PPG"
+                    "Te",  # Time interval from the systolic onset to the time of with e occurs on PPG"
+                    "Tf",  # Time interval from the systolic onset to the time of with f occurs on PPG"
+                    "AI",  # Augmentation index is (x(p2) − x(p1))/(x(sys) − x(0)), where is x the amplitude
     ]
 
     df, df_features = get_features(sig, fiducials, fs, features_lst)
@@ -133,23 +134,30 @@ def get_BM_Derivatives(sig, fs, fiducials):
 ############### Get Ratios of 1st and 2nd derivative’s points #############
 ###########################################################################
 def get_BM_RDerivatives(sig, fs, fiducials):
-    features_lst = ["v/u",        # The ratio between minimum and maximum peaks of 1st PPG derivative
-                    "Tu/CP",       # Ratio between Tu and CP
-                    "Tv/CP",       # Ratio between Tv and CP
-                    "Ta/CP",       # Ratio between Ta and CP
-                    "b/a",        # The ratio between minimum and maximum peaks of the second PPG derivative
-                    "Tb/CP",       # Ratio between Tb and CP
-                    "c/a",        # The ratio between second maximum and maximum peaks of the second PPG derivative
-                    "Tc/CP",       # Ratio between Tc and CP
-                    "d/a",        # The ratio between second minimum and maximum peaks of the second PPG derivative
-                    "Td/CP",       # Ratio between Td and CP
-                    "e/a",        # The ratio between third maximum and maximum peaks of the second PPG derivative
-                    "Te/CP",       # Ratio between Te and CP
+    features_lst = ["Tu/CP",      # Ratio between Tu and CP
+                    "Tv/CP",      # Ratio between Tv and CP
+                    "Tw/CP",      # Ratio between Tw and CP
+                    "Ta/CP",      # Ratio between Ta and CP
+                    "Tb/CP",      # Ratio between Tb and CP
+                    "Tc/CP",      # Ratio between Tc and CP
+                    "Td/CP",      # Ratio between Td and CP
+                    "Te/CP",      # Ratio between Te and CP
+                    "Tf/CP",      # Ratio between Te and CP
                     "(Tu-Ta)/CP", # The ratio between the interval maximum/minimum peaks of 1st derivative and CP
                     "(Tv-Tb)/CP", # The ratio between the interval
-                    "(b-c-d-e)/a", # Aging index of (b-c-d-e)/a
-                    "(b-e)=a"        # Aging index of (b-e)/a, instead of (b-c-d-e)/a, when the c and d waves are missing
-    ]
+                    "AGI_bcdef/a",# Aging index of (b-c-d-e-f)/a
+                    "AGI_bcde/a", # Aging index of (b-c-d-e)/a
+                    "AGI_bcd/a",  # Aging index of (b-c-d)/a
+                    "AGI_be/a",   # Aging index of (b-e)/a, instead of (b-c-d-e)/a, when the c and d waves are missing
+                    "v/u",  # The ratio v and u of the PPG'
+                    "w/u",  # The ratio w and u of the PPG'
+                    "b/a",  # The ratio between b and a of the PPG"
+                    "c/a",  # The ratio between c and a of the PPG"
+                    "d/a",  # The ratio between d and a of the PPG"
+                    "e/a",  # The ratio between e and a of the PPG"
+                    "f/a",  # The ratio between e and a of the PPG"
+                    # "SC"            # Spring constant defined as x’’(sys) / (SPA - MS) / SPA, derived from a physical model of the elasticity of peripheral arteries
+                    ]
 
     df, df_features = get_features(sig, fiducials, fs, features_lst)
 
@@ -189,6 +197,7 @@ class features_extract_PPG:
         self.dn, self.dp, self.Tdn, self.Tdp = self._getDicroticNotchDiastolicPeak()
         self.u, self.v, self.w, self.Tu, self.Tv, self.Tw = self._getFirstDerivitivePoints()
         self.a, self.b, self.c, self.d, self.e, self.f, self.Ta, self.Tb, self.Tc, self.Td, self.Te, self.Tf = self._getSecondDerivitivePoints()
+        self.p1, self.p2, self.Tp1, self.Tp2 = self._getThirdDerivitivePoints()
 
     def map_func(self):
         """ This function assign for each name of features a function that calculates it
@@ -247,39 +256,49 @@ class features_extract_PPG:
                     "width_75_SUT": self.getRatioWidth_SUT(75),
                     "width_75_Tpi": self.getRatioWidth_Tpi(75),
                     "u": self.get_u(),
-                    "Tu": self.get_Tu(),
                     "v": self.get_v(),
-                    "Tv": self.get_Tv(),
                     "w": self.get_v(),
-                    "Tw": self.get_Tv(),
                     "a": self.get_a(),
-                    "Ta": self.get_Ta(),
                     "b": self.get_b(),
-                    "Tb": self.get_Tb(),
                     "c": self.get_c(),
-                    "Tc": self.get_Tc(),
                     "d": self.get_d(),
-                    "Td": self.get_Td(),
                     "e": self.get_e(),
+                    "f": self.get_f(),
+                    "Tu": self.get_Tu(),
+                    "Tv": self.get_Tv(),
+                    "Tw": self.get_Tv(),
+                    "Ta": self.get_Ta(),
+                    "Tb": self.get_Tb(),
+                    "Tc": self.get_Tc(),
+                    "Td": self.get_Td(),
                     "Te": self.get_Te(),
-                    "f": self.get_e(),
-                    "Tf": self.get_Te(),
+                    "Tf": self.get_Tf(),
                     "Tu/CP": self.get_ratio_Tu_CP(),
-                    "v/u": self.get_ratio_u_v(),
                     "Tv/CP": self.get_ratio_Tv_CP(),
+                    "Tw/CP": self.get_ratio_Tw_CP(),
                     "Ta/CP": self.get_ratio_Ta_CP(),
-                    "b/a": self.get_ratio_a_b(),
                     "Tb/CP": self.get_ratio_Tb_CP(),
-                    "c/a": self.get_ratio_a_c(),
                     "Tc/CP": self.get_ratio_Tc_CP(),
-                    "d/a": self.get_ratio_a_d(),
                     "Td/CP": self.get_ratio_Td_CP(),
-                    "e/a": self.get_ratio_a_e(),
                     "Te/CP": self.get_ratio_Te_CP(),
+                    "Tf/CP": self.get_ratio_Tf_CP(),
                     "(Tu-Ta)/CP": self.get_ratio_Tu_Ta_CP(),
                     "(Tv-Tb)/CP": self.get_ratio_Tv_Tb_CP(),
-                    "(b-c-d-e)/a": self.get_aging_index1(),
-                    "(b-e)=a": self.get_aging_index1()
+                    "AGI_bcdef/a": self.get_aging_index0(),
+                    "AGI_bcde/a": self.get_aging_index1(),
+                    "AGI_bcd/a": self.get_aging_index2(),
+                    "AGI_be/a": self.get_aging_index3(),
+                    "v/u": self.get_ratio_v_u(),
+                    "w/u": self.get_ratio_w_u(),
+                    "b/a": self.get_ratio_b_a(),
+                    "c/a": self.get_ratio_c_a(),
+                    "d/a": self.get_ratio_d_a(),
+                    "e/a": self.get_ratio_e_a(),
+                    "f/a": self.get_ratio_f_a(),
+                    "SI": self.getSI(),
+                    "RI": self.getRI(),
+                    "IPR": self.getIPR(),
+                    "AI": self.getAI(),
         }
         return my_funcs
 
@@ -369,6 +388,20 @@ class features_extract_PPG:
 
         return a, b, c, d, e, f, Ta, Tb, Tc, Td, Te, Tf
 
+    def _getThirdDerivitivePoints(self):
+        """Calculate third derivitive points from a SINGLE Onset-Onset segment of PPG'"
+        :return p1: Sample distance from PPG onset to the first local maximum after b on PPG'"
+        :return p2: Sample distance from PPG onset to the last local minimum before d, if c = d, then the first local minimum after d on PPG'"
+        :return Tp1: Time from PPG onset to the first local maximum after b on PPG'"
+        :return Tp2: Time from PPG onset to last local minimum before d, if c = d, then the first local minimum after d on PPG'"
+        """
+
+        p1 = (self.fiducials.p1-self.fiducials.os).values[0]
+        p2 = (self.fiducials.p2-self.fiducials.os).values[0]
+        Tp1 = p1 / self.sample_rate
+        Tp2 = p2 / self.sample_rate
+
+        return p1, p2, Tp1, Tp2
     def _find_nearest(self, arr, value):
         """ This function calculates the index in an array of the closest value to the arg value
             :param arr: the array where to find the index
@@ -534,6 +567,32 @@ class features_extract_PPG:
         pir = self.peak_value/self.onsets_values[1]
         return pir
 
+    def getSI(self):
+        """ The function calculates the Stiffness Index, which is SPA/(DPT-SUT)
+            :return SI feature:
+        """
+        SI = self.getSystolicPeak()/(self.getDPT()-self.getSUT())
+        return SI
+
+    def getRI(self):
+        """ The function calculates Reflection Index, which is the ratio of DPA and SPA
+            :return RI feature:
+        """
+        RI = self.getDiastolicPeak()/self.getSystolicPeak()
+        return RI
+    def getAI(self):
+        """ The function calculates the Augmentation index, which is (x(p2) − x(p1))/(x(sys) − x(0)), where is x the amplitude
+            :return pir feature:
+        """
+        AI = (self.segment[self.p2]-self.segment[self.p1])/self.peak_value
+        return AI
+
+    def getIPR(self):
+        """ The function calculates Instantaneous pulse rate, 60/CP
+            :return IPR feature:
+        """
+        IPR = 60/self.getCP()
+        return IPR
 
     def getAUCPPG(self):
         """ The function calculates the area under the curve of a PPG waveform
@@ -639,7 +698,6 @@ class features_extract_PPG:
         """
         return self.onsets_times[1] - self.onsets_times[0]
 
-
     def getRatioSUTCP(self):
         """ T1/CP is ratio between SUT and CP.
             :return T1/CP feature:
@@ -648,7 +706,6 @@ class features_extract_PPG:
         CP = self.getCP()
         # print(CP)
         return T1/CP
-
 
     def getRatioSysPeakTpiSysTime(self):
         """ The function calculates the ratio of Systolic Peak Amplitude and the difference between Tpi and SUT.
@@ -796,13 +853,6 @@ class features_extract_PPG:
         T1 = self.get_Tu()
         return T1 / self.getCP()
 
-    def get_ratio_u_v(self):
-        """ The u and v ratio is between minimum and maximum peaks of 1st PPG derivative.
-            :return u and v ratio:
-        """
-        max_val = self.get_u()
-        min_val = self.get_v()
-        return min_val / max_val
 
     def get_ratio_Tv_CP(self):
         """ The function calculates the ratio of Tv and CP.
@@ -811,23 +861,19 @@ class features_extract_PPG:
         Tv = self.get_Tv()
         return Tv / self.getCP()
 
+    def get_ratio_Tw_CP(self):
+        """ The function calculates the ratio of Tw and CP.
+            :return Tw and CP ratio:
+        """
+        Tw = self.get_Tw()
+        return Tw / self.getCP()
+
     def get_ratio_Ta_CP(self):
         """ The function calculates the ratio of Ta and CP.
             :return Ta and CP ratio feature:
         """
         Ta = self.get_Ta()
         return Ta / self.getCP()
-
-    def get_ratio_a_b(self):
-        """ The a and b ratio means ratio between minimum and maximum peaks of second PPG derivative.
-            An important feature that reflects increased arterial stiffness. Related to distensibility of
-            the peripheral artery and suggested that it is a useful index of atherosclerosis and altered
-            arterial distensibility.
-            :return a b ratio feature:
-        """
-        max_val = self.get_a()
-        min_val = self.get_b()
-        return min_val / max_val
 
     def get_ratio_Tb_CP(self):
         """ The function calculates the ratio of Tb and CP.
@@ -836,28 +882,12 @@ class features_extract_PPG:
         Tb = self.get_Tb()
         return Tb / self.getCP()
 
-    def get_ratio_a_c(self):
-        """ The ratio between second maximum and maximum peaks of the second PPG derivative.
-            :return a c ratio feature:
-        """
-        max_val1 = self.get_a()
-        max_val2 = self.get_c()
-        return max_val1 / max_val2
-
     def get_ratio_Tc_CP(self):
         """ The function calculates the ratio of Tc and CP.
             :return Tc and CP ratio feature:
         """
         Tc = self.get_Tc()
         return Tc / self.getCP()
-
-    def get_ratio_a_d(self):
-        """ The ratio between second minimum and maximum peaks of the second PPG derivative.
-            :return a d ratio feature:
-        """
-        max_val = self.get_a()
-        min_val = self.get_d()
-        return max_val / min_val
 
     def get_ratio_Td_CP(self):
         """ The function calculates the ratio of Td and CP.
@@ -866,20 +896,19 @@ class features_extract_PPG:
         Td = self.get_Td()
         return Td / self.getCP()
 
-    def get_ratio_a_e(self):
-        """ The ratio between third maximum and maximum peaks of the second PPG derivative.
-            :return a e ratio feature:
-        """
-        max_val1 = self.get_a()
-        max_val2 = self.get_e()
-        return max_val1 / max_val2
-
     def get_ratio_Te_CP(self):
         """ The function calculates the ratio of Te and CP.
             :return Te and CP ratio feature:
         """
         Te = self.get_Te()
         return Te / self.getCP()
+
+    def get_ratio_Tf_CP(self):
+        """ The function calculates the ratio of Tf and CP.
+            :return Tf and CP ratio feature:
+        """
+        Tf = self.get_Tf()
+        return Tf / self.getCP()
 
     def get_ratio_Tu_Ta_CP(self):
         """ The function calculates the ratio between the interval maximum/minimum peaks of 1st derivative and CP
@@ -897,25 +926,102 @@ class features_extract_PPG:
         Tb = self.get_Tb()
         return (self.get_Tv() - Tb) / self.getCP()
 
-    def get_aging_index1(self):
-        """ The function calculates the Aging index of (b-c-d-e)/a
-            :return (b-c-d-e)/a:
+    def get_aging_index0(self):
+        """ The function calculates the aging index of (PPG"(b)-PPG"(c)-PPG"(d)-PPG"(e)-PPG"(f))/PPG"(a).
+            :return (B-C-D-E-F)/A:
         """
-        a = self.get_a()
-        b = self.get_b()
-        c = self.get_c()
-        d = self.get_d()
-        e = self.get_e()
-        return (b-c-d-e)/a
+        A = self.segment[self.get_a()]
+        B = self.segment[self.get_b()]
+        C = self.segment[self.get_c()]
+        D = self.segment[self.get_d()]
+        E = self.segment[self.get_e()]
+        F = self.segment[self.get_f()]
+        return (B-C-D-E-F)/A
+    def get_aging_index1(self):
+        """ The function calculates the aging index of (PPG"(b)-PPG"(c)-PPG"(d)-PPG"(e))/PPG"(a).
+            :return (B-C-D-E)/A:
+        """
+        A = self.segment[self.get_a()]
+        B = self.segment[self.get_b()]
+        C = self.segment[self.get_c()]
+        D = self.segment[self.get_d()]
+        E = self.segment[self.get_e()]
+        return (B-C-D-E)/A
 
     def get_aging_index2(self):
-        """ The function calculates the Aging index of (b-e)/a, instead of (b-c-d-e)/a, when the c and d waves are missing
-            :return (b-e)/a:
+        """ The function calculates the aging index of (PPG"(b)-PPG"(c)-PPG"(d))/PPG"(a).
+            :return (B-C-D)/A:
         """
-        a = self.get_a()
-        b = self.get_b()
-        e = self.get_e()
-        return (b-e)/a
+        A = self.segment[self.get_a()]
+        B = self.segment[self.get_b()]
+        C = self.segment[self.get_c()]
+        D = self.segment[self.get_d()]
+        return (B-C-D)/A
+
+    def get_aging_index3(self):
+        """ The function calculates the aging index of (PPG"(b)-PPG"(e))/PPG"(a).
+            :return (B-E)/A:
+        """
+        A = self.segment[self.get_a()]
+        B = self.segment[self.get_b()]
+        E = self.segment[self.get_e()]
+        return (B-E)/A
+
+    def get_ratio_v_u(self):
+        """ This function calculates PPG'(v)/PPG'(u).
+            :return u_max and u_max ratio:
+        """
+        u_max = self.segment[self.get_u()]
+        v_min = self.segment[self.get_v()]
+        return v_min / u_max
+
+    def get_ratio_w_u(self):
+        """ This function calculates PPG'(w)/PPG'(u).
+            :return u_max and u_max ratio:
+        """
+        u_max = self.segment[self.get_u()]
+        w_max = self.segment[self.get_w()]
+        return w_max / u_max
+
+    def get_ratio_b_a(self):
+        """ This function calculates PPG"(b)/PPG"(a).
+            :return b_min and a_max ratio feature:
+        """
+        a_max = self.segment[self.get_a()]
+        b_min = self.segment[self.get_b()]
+        return b_min / a_max
+
+    def get_ratio_c_a(self):
+        """ This function calculates PPG"(c)/PPG"(a).
+            :return c_max and a_max ratio feature:
+        """
+        a_max = self.segment[self.get_a()]
+        c_max = self.segment[self.get_c()]
+        return c_max / a_max
+
+    def get_ratio_d_a(self):
+        """ This function calculates PPG"(d)/PPG"(a).
+            :return d_min and a_max ratio feature:
+        """
+        a_max = self.segment[self.get_a()]
+        d_min = self.segment[self.get_d()]
+        return d_min / a_max
+
+    def get_ratio_e_a(self):
+        """ This function calculates PPG"(e)/PPG"(a).
+            :return e_max and a_max ratio feature:
+        """
+        a_max = self.segment[self.get_a()]
+        e_max = self.segment[self.get_e()]
+        return e_max / a_max
+
+    def get_ratio_f_a(self):
+        """ This function calculates PPG"(f)/PPG"(a).
+            :return f_min and a_max ratio feature:
+        """
+        a_max = self.segment[self.get_a()]
+        f_min = self.segment[self.get_f()]
+        return f_min / a_max
 
 ###########################################################################
 ############################# Get PPG features ############################
