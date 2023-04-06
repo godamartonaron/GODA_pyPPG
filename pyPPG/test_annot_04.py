@@ -90,7 +90,7 @@ if __name__ == '__main__':
             plt.scatter(ons, ppg_v[ons], s=60, linewidth=2, marker='s',  facecolors='c', edgecolors='b', label='os')
 
         # Detect fiducial points
-        det_dn=getDicroticNotch(ppg_v, fs, pks, ons)
+        det_dn = getDicroticNotch(ppg_v, fs, pks, ons)
         drt1_fp = getFirstDerivitivePoints(ppg_v, fs, ons)
         drt2_fp = getSecondDerivitivePoints(ppg_v,fs, ons)
         drt3_fp = getThirdDerivitivePoints(ppg_v, fs, ons,drt2_fp)
