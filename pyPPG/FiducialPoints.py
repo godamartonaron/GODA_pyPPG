@@ -41,14 +41,19 @@ class FiducialPoints:
 ###########################################################################
 ############################ Get Fiducials Points #########################
 ###########################################################################
-def getFiducialsPoints(sig,fs):
+def getFiducialsPoints(s):
     '''The function calculates the PPG Fiducials Points.
         - Original signal: List of pulse onset, pea and dicrotic notch
         - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
         - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
 
-    :param sig: a vector of PPG values
-    :param fs: the sampling frequency of the PPG in Hz
+    :param s: a struct of PPG signal:
+        - s.v: a vector of PPG values
+        - s.fs: the sampling frequency of the PPG in Hz
+        - s.filt_sig: a vector of PPG values
+        - s.filt_d1: a vector of PPG values
+        - s.filt_d2: a vector of PPG values
+        - s.filt_d3: a vector of PPG values
 
     :return fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
     '''
@@ -56,9 +61,9 @@ def getFiducialsPoints(sig,fs):
     peak_detector='abp'
 
     drt0_fp=pd.DataFrame()
-    peaks, onsets = abdp_beat_detector(sig, fs, peak_detector)
-    dicroticnotch = getDicroticNotch(sig, fs, peaks, onsets)
-    diastolicpeak = getDiastolicPeak(sig, fs, peaks, onsets, dicroticnotch)
+    peaks, onsets = abdp_beat_detector(s, peak_detector)
+    dicroticnotch = getDicroticNotch(s, peaks, onsets)
+    diastolicpeak = getDiastolicPeak(s, peaks, onsets, dicroticnotch)
 
     keys=('os', 'pk', 'dn','dp')
     dummy = np.empty(len(peaks))
@@ -69,9 +74,9 @@ def getFiducialsPoints(sig,fs):
         drt0_fp[keys[n]][0:len(temp_val)]=temp_val
         n=n+1
 
-    drt1_fp = getFirstDerivitivePoints(sig, fs, onsets)
-    drt2_fp = getSecondDerivitivePoints(sig, fs, onsets)
-    drt3_fp = getThirdDerivitivePoints(sig, fs, onsets, drt2_fp)
+    drt1_fp = getFirstDerivitivePoints(s, onsets)
+    drt2_fp = getSecondDerivitivePoints(s, onsets)
+    drt3_fp = getThirdDerivitivePoints(s, onsets, drt2_fp)
 
     fiducials=pd.DataFrame()
     for temp_drt in (drt0_fp,drt1_fp,drt2_fp,drt3_fp):
@@ -87,12 +92,18 @@ def getFiducialsPoints(sig,fs):
 ###########################################################################
 ############################ PPG beat detector ############################
 ###########################################################################
-def abdp_beat_detector(sig, fs, peak_detector):
+def abdp_beat_detector(s, peak_detector):
     '''ABDP_BEAT_DETECTOR detects beats in a photoplethysmogram (PPG) signal
     using the improved 'Automatic Beat Detection' beat detector of Aboy M et al.
 
-    :param sig: a vector of PPG values
-    :param fs: the sampling frequency of the PPG in Hz
+    :param s: a struct of PPG signal:
+        - s.v: a vector of PPG values
+        - s.fs: the sampling frequency of the PPG in Hz
+        - s.filt_sig: a vector of PPG values
+        - s.filt_d1: a vector of PPG values
+        - s.filt_d2: a vector of PPG values
+        - s.filt_d3: a vector of PPG values
+
 
     :return:
         - peaks: indices of detected pulse peaks
@@ -126,10 +137,10 @@ def abdp_beat_detector(sig, fs, peak_detector):
     '''
 
     # inputs
-    x = copy.deepcopy(sig)                          #signal
-    fso=fs
+    x = copy.deepcopy(s.filt_sig)                          #signal
+    fso=s.fs
     fs = 75
-    x = resample(x, int(len(sig)*(fs/fso)))
+    x = resample(x, int(len(s.filt_sig)*(fs/fso)))
     up = setup_up_abdp_algorithm()                  #settings
     win_sec=10
     w = fs * win_sec                                #window length(number of samples)
@@ -206,7 +217,7 @@ def abdp_beat_detector(sig, fs, peak_detector):
     # print('IBICorrect Time: ' + str(time.time() - IBT_0))
 
     peaks = (all_p4/fs*fso).astype(int)
-    onsets, peaks = find_onsets(sig, fso, up, peaks,60/np.median(all_hr)*fs)
+    onsets, peaks = find_onsets(s.filt_sig, fso, up, peaks,60/np.median(all_hr)*fs)
 
     temp_i = np.where(np.diff(onsets) == 0)[0]
     if len(temp_i) > 0:
@@ -753,13 +764,17 @@ def find_onsets(sig,fs,up,peaks,med_hr):
 ###########################################################################
 ########################## Detect dicrotic notch ##########################
 ###########################################################################
-def getDicroticNotch (sig, fs, peaks, onsets):
+def getDicroticNotch (s, peaks, onsets):
     """
     Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak
 
-    :param sig: 1-d array, of shape (N,) where N is the length of the signal
-    :param fs: sampling frequency
-    :type fs: int
+    :param s: a struct of PPG signal:
+        - s.v: a vector of PPG values
+        - s.fs: the sampling frequency of the PPG in Hz
+        - s.filt_sig: a vector of PPG values
+        - s.filt_d1: a vector of PPG values
+        - s.filt_d2: a vector of PPG values
+        - s.filt_d3: a vector of PPG values
     :param peaks: 1-d array, peaks of the signal
     :param onsets: 1-d array, onsets of the signal
 
@@ -767,7 +782,8 @@ def getDicroticNotch (sig, fs, peaks, onsets):
     """
 
     ## The 2nd derivative and Hamming low pass filter is calculated.
-    dxx = np.diff(np.diff(sig))
+    dxx = np.diff(np.diff(s.filt_sig))
+    fs = s.fs
 
     # Make filter
     Fn = fs / 2                                 # Nyquist Frequency
@@ -837,13 +853,17 @@ def getDicroticNotch (sig, fs, peaks, onsets):
 ###########################################################################
 ########################## Detect diastolic peak ##########################
 ###########################################################################
-def getDiastolicPeak(sig, fs, peaks, onsets, dicroticnotch):
+def getDiastolicPeak(s, peaks, onsets, dicroticnotch):
     """
     Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak
 
-    :param sig: 1-d array, of shape (N,) where N is the length of the signal
-    :param fs: sampling frequency
-    :type fs: int
+    :param s: a struct of PPG signal:
+        - s.v: a vector of PPG values
+        - s.fs: the sampling frequency of the PPG in Hz
+        - s.filt_sig: a vector of PPG values
+        - s.filt_d1: a vector of PPG values
+        - s.filt_d2: a vector of PPG values
+        - s.filt_d3: a vector of PPG values
     :param peaks: 1-d array, peaks of the signal
     :param onsets: 1-d array, onsets of the signal
     :param dicroticnotches: 1-d array, onsets of the signal
@@ -858,11 +878,16 @@ def getDiastolicPeak(sig, fs, peaks, onsets, dicroticnotch):
 ###########################################################################
 ####################### Get First Derivitive Points #######################
 ###########################################################################
-def getFirstDerivitivePoints(sig, fs, onsets):
+def getFirstDerivitivePoints(s, onsets):
     """Calculate first derivitive points u and v from the PPG' signal
-    :param sig: 1-d array, of shape (N,) where N is the length of the signal
-    :param fs: sampling frequency
-    :type fs: int
+
+    :param s: a struct of PPG signal:
+        - s.v: a vector of PPG values
+        - s.fs: the sampling frequency of the PPG in Hz
+        - s.filt_sig: a vector of PPG values
+        - s.filt_d1: a vector of PPG values
+        - s.filt_d2: a vector of PPG values
+        - s.filt_d3: a vector of PPG values
     :param onsets: 1-d array, onsets of the signal
 
     :return
@@ -870,12 +895,8 @@ def getFirstDerivitivePoints(sig, fs, onsets):
         - v: The lowest minimum pits between the systolic peak and the right systolic onset on PPG'
         - w: The first maximum peak after v on PPG'
     """
-    ## 10 ms is optimal with higher fs
-    win = round(fs * 0.02)
-    B = 1 / win * np.ones(win)
-    dx = np.gradient(sig)
-    dx = filtfilt(B, 1, dx)
 
+    dx = s.filt_d1
     u, v, w = [], [], []
     for i in range(0,len(onsets)-1):
         segment = dx[onsets[i]:onsets[i + 1]]
@@ -904,11 +925,15 @@ def getFirstDerivitivePoints(sig, fs, onsets):
 ###########################################################################
 ####################### Get Second Derivitive Points ######################
 ###########################################################################
-def getSecondDerivitivePoints(sig, fs, onsets):
+def getSecondDerivitivePoints(s, onsets):
     """Calculate Second derivitive points a, b, c, d, e, and f from the PPG" signal
-    :param sig: 1-d array, of shape (N,) where N is the length of the signal
-    :param fs: sampling frequency
-    :type fs: int
+    :param s: a struct of PPG signal:
+        - s.v: a vector of PPG values
+        - s.fs: the sampling frequency of the PPG in Hz
+        - s.filt_sig: a vector of PPG values
+        - s.filt_d1: a vector of PPG values
+        - s.filt_d2: a vector of PPG values
+        - s.filt_d3: a vector of PPG values
     :param onsets: 1-d array, onsets of the signal
 
     :return
@@ -919,14 +944,10 @@ def getSecondDerivitivePoints(sig, fs, onsets):
         - e: The greatest maximum peak between the systolic peak and  the right systolic onset
         - f: The first minimum pits after e and before 0.8 CP (cardiac period) on PPG"
     """
-    ## 5 ms is optimal with higher fs
-    win = round(fs * 0.02)
-    B = 1 / win * np.ones(win)
-    dx = np.gradient(sig)
-    dx = filtfilt(B, 1, dx)
 
-    ddx = np.gradient(dx)
-    ddx = filtfilt(B, 1, ddx)
+    sig = s.filt_sig
+    ddx = s.filt_d2
+    dddx = s.filt_d3
 
     a, b, c, d, e, f = [], [], [], [], [], []
     for i in range(0,len(onsets)-1):
@@ -966,8 +987,6 @@ def getSecondDerivitivePoints(sig, fs, onsets):
         if max_locs.size>0:
             max_loc = max_locs[0]
         else:
-            dddx = np.gradient(ddx)
-            dddx = filtfilt(B, 1, dddx)
             temp_segment=dddx[b[-1]:e[-1]]
             min_locs, _ = find_peaks(-temp_segment)
 
@@ -1006,11 +1025,15 @@ def getSecondDerivitivePoints(sig, fs, onsets):
     drt2_fp.a, drt2_fp.b, drt2_fp.c, drt2_fp.d, drt2_fp.e, drt2_fp.f = a, b, c, d, e, f
     return drt2_fp
 
-def getThirdDerivitivePoints(sig, fs, onsets,drt2_fp):
+def getThirdDerivitivePoints(s, onsets,drt2_fp):
     """Calculate third derivitive points p1 and p2 from the PPG'" signal
-        :param sig: 1-d array, of shape (N,) where N is the length of the signal
-        :param fs: sampling frequency
-        :type fs: int
+        :param s: a struct of PPG signal:
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: a vector of PPG values
+            - s.filt_d1: a vector of PPG values
+            - s.filt_d2: a vector of PPG values
+            - s.filt_d3: a vector of PPG values
         :param onsets: 1-d array, onsets of the signal
 
         :return
@@ -1020,17 +1043,7 @@ def getThirdDerivitivePoints(sig, fs, onsets,drt2_fp):
         use this instead.
 
     """
-    ## 10 ms is optimal with higher fs
-    win = round(fs * 0.02)
-    B = 1 / win * np.ones(win)
-    dx = np.gradient(sig)
-    dx = filtfilt(B, 1, dx)
-
-    ddx = np.gradient(dx)
-    ddx = filtfilt(B, 1, ddx)
-
-    dddx = np.gradient(ddx)
-    dddx = filtfilt(B, 1, dddx)
+    dddx = s.filt_d3
 
     p1, p2 = [], []
     for i in range(0,len(onsets)-1):
