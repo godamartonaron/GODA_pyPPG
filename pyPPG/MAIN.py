@@ -1,3 +1,4 @@
+from Prefiltering import*
 from FiducialPoints import*
 from Biomarkers2 import*
 from Summary import*
@@ -40,16 +41,15 @@ if __name__ == '__main__':
     s.v=hr
     s.fs=fs
 
-    Fid_time = time.time()
-    fiducials = getFiducialsPoints(s.v,s.fs)
+    s.filt_sig, s.filt_d1, s.filt_d2, s.filt_d3 = Prefiltering(s)
+    fiducials = getFiducialsPoints(s)
 
     #######
-    ppg_biomarkers = Biomarkers2(s.v, s.fs, fiducials)
+    ppg_biomarkers = Biomarkers2(s, fiducials)
     ppg_summary = Summary(s.v, fiducials['peaks'], fiducials['onsets'], s.fs)
     ppg_statistics = Statistics(fiducials['peaks'], fiducials['onsets'], ppg_biomarkers)
 
     ##
-    print('Detection time of fiducial points: '+str(round(time.time()-Fid_time,2))+' sec')
 
     plt.plot(hr,'k',linewidth=0.7)
     plt.plot(fiducials['peaks'], hr[fiducials['peaks']], 'ro')
