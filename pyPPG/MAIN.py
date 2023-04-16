@@ -20,8 +20,7 @@ import matplotlib.mlab
 ####################### Data Acquisition from Files #######################
 ###########################################################################
 if __name__ == '__main__':
-    sig_path = 'D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/GODA_pyPPG/sample_data/PPG_sample_00.mat'
-    #sig_path = filedialog.askopenfilename(title='Select SIGNAL file', filetypes=[("Input Files", ".mat .csv .edf .pkl")])
+    sig_path = filedialog.askopenfilename(title='Select SIGNAL file', filetypes=[("Input Files", ".mat .csv .edf .pkl")])
 
     sig_format=sig_path[len(sig_path)-sig_path[::-1].index('.'):]
     if sig_format=='mat':
@@ -46,15 +45,15 @@ if __name__ == '__main__':
 
     #######
     ppg_biomarkers = Biomarkers2(s, fiducials)
-    ppg_summary = Summary(s.v, fiducials['peaks'], fiducials['onsets'], s.fs)
-    ppg_statistics = Statistics(fiducials['peaks'], fiducials['onsets'], ppg_biomarkers)
+    ppg_summary = Summary(s.v, fiducials['pk'], fiducials['os'], s.fs)
+    ppg_statistics = Statistics(fiducials['pk'], fiducials['os'], ppg_biomarkers)
 
     ##
 
     plt.plot(hr,'k',linewidth=0.7)
-    plt.plot(fiducials['peaks'], hr[fiducials['peaks']], 'ro')
-    plt.plot(fiducials['onsets'], hr[fiducials['onsets']], 'bs')
-    plt.plot(fiducials['dicroticnotch'], hr[fiducials['dicroticnotch']], 'm*')
+    plt.plot(fiducials['pk'].dropna().values, hr[fiducials['pk'].dropna().values.astype(int)], 'ro')
+    plt.plot(fiducials['os'].dropna().values, hr[fiducials['os'].dropna().values.astype(int)], 'bs')
+    plt.plot(fiducials['dn'].dropna().values, hr[fiducials['dn'].dropna().values.astype(int)], 'm*')
 
     plt.legend(['sigal', 'peak','onset','dic.notch'])
     plt.xlabel('Sample (Fs='+str(s.fs)+' Hz)')
