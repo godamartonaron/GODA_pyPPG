@@ -23,6 +23,7 @@ The following steps are implemented in the ***pyPPG*** toolbox:
     - ***PPG***: *systolic onset, systolic peak, dicrotic notch*
     - ***PPG'***: *u, v, w*
     - ***PPG"***: *a, b, c, d, e, f*
+    - ***PPG'"***: *p1, p2*
    
 ![alt text](figs/fiducial_points.svg)
 ![img.png](figs/fiducial_points_def.png)
