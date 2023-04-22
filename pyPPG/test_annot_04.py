@@ -43,7 +43,7 @@ if __name__ == '__main__':
         dist_error[n]=temp_v
 
     # Flag for plotting: 0 is off, 1 is on
-    plt_sig=0
+    plt_sig=1
 
     for i in range(0,set_len):
 
@@ -90,10 +90,17 @@ if __name__ == '__main__':
             plt.scatter(ons, ppg_v[ons], s=60, linewidth=2, marker='s',  facecolors='c', edgecolors='b', label='os')
 
         # Detect fiducial points
-        det_dn = getDicroticNotch(ppg_v, fs, pks, ons)
-        drt1_fp = getFirstDerivitivePoints(ppg_v, fs, ons)
-        drt2_fp = getSecondDerivitivePoints(ppg_v,fs, ons)
-        drt3_fp = getThirdDerivitivePoints(ppg_v, fs, ons,drt2_fp)
+        s = DotMap()
+        s.fs = fs
+        s.filt_sig = ppg_v
+        s.filt_d1 = drt1
+        s.filt_d2 = drt2
+        s.filt_d3 = drt3
+
+        det_dn = getDicroticNotch(s, pks, ons)
+        drt1_fp = getFirstDerivitivePoints(s, ons)
+        drt2_fp = getSecondDerivitivePoints(s, ons)
+        drt3_fp = getThirdDerivitivePoints(s, ons,drt2_fp)
 
         det_u, det_v, det_w = drt1_fp.u, drt1_fp.v, drt1_fp.w
         det_a, det_b, det_c, det_d, det_e, det_f = drt2_fp.a, drt2_fp.b, drt2_fp.c, drt2_fp.d, drt2_fp.e, drt2_fp.f
@@ -132,7 +139,7 @@ if __name__ == '__main__':
             plt.xlabel('Time [ms]', fontsize=20)
             plt.ylabel('Pulse Wave', fontsize=20)
             plt.grid(color='g', linestyle='--', linewidth=0.5)
-            # plt.savefig(('temp_dir/figs/py_%s.png')%(name))
+            plt.savefig(('temp_dir/figs/py_%s.png')%(name))
             plt.show()
             plt.close('all')
 
