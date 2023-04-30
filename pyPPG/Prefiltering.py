@@ -48,10 +48,10 @@ def Prefiltering(s):
         filt_d2 = filtfilt(B2, 1, ddx)
 
         ## PPG'" filtering
-        dddx = np.gradient(ddx)
+        filt_d3 = np.gradient(ddx)
     else:
         filt_d1 = np.gradient(filt_sig)
         filt_d2 = np.gradient(filt_d1)
-        filt_d3 = np.gradient(filt_d1)
+        filt_d3 = np.gradient(filt_d2)
 
     return filt_sig, filt_d1, filt_d2, filt_d3
