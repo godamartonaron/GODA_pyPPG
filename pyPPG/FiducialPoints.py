@@ -475,6 +475,7 @@ def EstimateHeartRate(sig, fs, up, hr_past):
     rel_f = fh[rel_els]
     max_el = np.where(rel_p==max(rel_p))
     hr = rel_f[max_el]*60
+    hr = int(hr[0])
 
     return hr
 
