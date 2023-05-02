@@ -981,7 +981,11 @@ def getSecondDerivitivePoints(s, onsets):
             temp_segment=ddx[b[-1]:onsets[i + 1]]
             max_locs, _ = find_peaks(temp_segment)
 
-        max_loc = max_locs[np.argmax(temp_segment[max_locs])]
+        try:
+            max_loc = max_locs[np.argmax(temp_segment[max_locs])]
+        except:
+            max_loc = temp_segment.argmax()
+
         max_e = max_loc + e_lower_bound - 1
 
         e.append(max_e)
@@ -1062,7 +1066,11 @@ def getThirdDerivitivePoints(s, onsets,drt2_fp):
 
         temp_segment=dddx[ref_b:onsets[i+1]]
         max_locs, _ = find_peaks(temp_segment)
-        max_loc = max_locs[0]
+        try:
+            max_loc = max_locs[0]
+        except:
+            max_loc = temp_segment.argmax()
+
         max_p1 = max_loc + ref_b - 1
         p1.append(max_p1)
 
