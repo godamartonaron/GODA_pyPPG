@@ -957,7 +957,11 @@ def getSecondDerivitivePoints(s, onsets):
         temp_pk=np.argmax(sig[onsets[i]:onsets[i + 1]])+onsets[i]-1
         temp_segment=ddx[onsets[i]:temp_pk]
         max_locs, _ = find_peaks(temp_segment)
-        max_loc = max_locs[np.argmax(temp_segment[max_locs])]
+        try:
+            max_loc = max_locs[np.argmax(temp_segment[max_locs])]
+        except:
+            max_loc = temp_segment.argmax()
+
         max_a = max_loc + onsets[i] - 1
         a.append(max_a)
 
@@ -995,7 +999,10 @@ def getSecondDerivitivePoints(s, onsets):
                 max_loc = min_locs[np.argmin(temp_segment[min_locs])]
             else:
                 max_locs, _ = find_peaks(temp_segment)
-                max_loc = max_locs[0]
+                try:
+                    max_loc = max_locs[0]
+                except:
+                    max_loc = temp_segment.argmax()
 
         max_c = max_loc + b[-1] - 1
         c.append(max_c)
@@ -1017,7 +1024,7 @@ def getSecondDerivitivePoints(s, onsets):
         if (min_locs.size > 0) and (min_locs[0]<len(sig)*0.8):
             min_loc = min_locs[0]
         else:
-            min_loc = []
+            min_loc = 0
 
         min_f = min_loc + e[-1] - 1
         f.append(min_f)
