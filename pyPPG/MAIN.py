@@ -20,6 +20,7 @@ import matplotlib.mlab
 ####################### Data Acquisition from Files #######################
 ###########################################################################
 if __name__ == '__main__':
+    # sig_path = 'D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/GODA_pyPPG/sample_data/PPG_sample_00.mat'
     sig_path = filedialog.askopenfilename(title='Select SIGNAL file', filetypes=[("Input Files", ".mat .csv .edf .pkl")])
 
     sig_format=sig_path[len(sig_path)-sig_path[::-1].index('.'):]
