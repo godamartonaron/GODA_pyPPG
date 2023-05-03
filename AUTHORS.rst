@@ -2,4 +2,4 @@
 Contributors
 ============
 
-* Marton Aron GODA, PhD <smarton.goda@campus.technion.ac.il>
+* Marton Aron GODA, PhD <marton.goda@campus.technion.ac.il>
