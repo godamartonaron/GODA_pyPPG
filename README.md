@@ -25,7 +25,7 @@ The following steps are implemented in the ***pyPPG*** toolbox:
     - ***PPG"***: *a, b, c, d, e, f*
     - ***PPG'"***: *p1, p2*
    
-![alt text](figs/fiducial_points.svg)
+![alt text](figs/PPG_sample.svg)
 ![img.png](figs/fiducial_points_def.png)
 
 
