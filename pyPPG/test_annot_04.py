@@ -22,9 +22,10 @@ from scipy.io import savemat
 if __name__ == '__main__':
 
     # Define input directories and files
-    ppg_sig_dir='D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/PETE_Matlab'
+    # ppg_sig_dir='D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/PETE_Matlab'
+    ppg_sig_dir = 'D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/GIT_PPG_annot'
     ppg_file = '/PPG-BP1.mat'
-    annot_path = ppg_sig_dir+'/ANNOTS/MG_PPG-BP_annot/merged'
+    annot_path = ppg_sig_dir+'/temp_dir/MG00_PPG-BP_annot/merged' #'/ANNOTS/MG_PPG-BP_annot/merged'
     sig_path=(ppg_sig_dir + ppg_file)
     input_sig = scipy.io.loadmat(sig_path)
 
@@ -32,7 +33,7 @@ if __name__ == '__main__':
     OutData = {}
     set_len=input_sig['ppg_data'].size
 
-    fid_names = ('pk','os','dn', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e', 'f')
+    fid_names = ('pk','os','dn', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e', 'f','p1','p2')
     dist_error= pd.DataFrame()
     for n in fid_names[2:]:
         exec(n+"=[]")
@@ -69,9 +70,10 @@ if __name__ == '__main__':
         # Plot filtered signal, 1st and 2nd derivative
         if plt_sig==1:
             fig = plt.figure(figsize=(15, 7))
-            plt.plot(ppg_v,'r',label='x')
-            plt.plot(drt1,'b',label='dx')
-            plt.plot(drt2,'k',label='ddx')
+            plt.plot(ppg_v,'k',label='PPG')
+            plt.plot(drt1,'k--',label='PPG''')
+            plt.plot(drt2,'k:',label='PPG"')
+            plt.plot(drt3, 'k-.', label='PPG''"')
 
         # Load annotated fiducial points
         name=input_sig['ppg_data']['name'][0, i][0]
@@ -86,8 +88,8 @@ if __name__ == '__main__':
         exec("pks = [ref_pk]")
         exec("ons = ref_os")
         if plt_sig==1:
-            plt.scatter(pks, ppg_v[pks], s=60, linewidth=2, marker='o',  facecolors='c', edgecolors='r', label='pk')
-            plt.scatter(ons, ppg_v[ons], s=60, linewidth=2, marker='s',  facecolors='c', edgecolors='b', label='os')
+            plt.scatter(pks, ppg_v[pks], s=150, linewidth=2, marker='o',  facecolors='c', edgecolors='r', label='pk')
+            plt.scatter(ons, ppg_v[ons], s=150, linewidth=2, marker='s',  facecolors='c', edgecolors='b', label='os')
 
         # Detect fiducial points
         s = DotMap()
@@ -117,29 +119,32 @@ if __name__ == '__main__':
 
             # Plot fiducial points
             ind = fid_names.index(n)-2
-            s_type = ['ppg_v', 'drt1', 'drt1', 'drt1', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2']
-            marker = ['s', 'x','o', '*']*5
-            color = ['b', 'r', 'c', 'm', 'k', 'g', 'm', 'b', 'r', 'c', 'm']
+            s_type = ['ppg_v', 'drt1', 'drt1', 'drt1', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt3', 'drt3']
+            marker = ['s', 'x', 'o', '+']*7
+            color = ['b', 'r', 'c', 'm', 'k', 'g', 'm', 'b', 'r', 'c', 'g', 'k', 'b']
+
 
             is_fidu=0
             exec("is_fidu=~np.isnan(np.squeeze(det_" + n + "))")
 
             if  plt_sig==1 and is_fidu:
-                exec("plt.scatter(ref_" + n + "," + s_type[ind] + "[ref_" + n + "], s=60,linewidth=2, marker = marker[ind*2], facecolors='none', edgecolors=color[ind], label='ref " + n + "')")
-                exec("plt.scatter(det_" + n + "," + s_type[ind] + "[det_" + n + "], s=60,linewidth=2, marker = marker[ind*2+1], color=color[ind+1], label='det " + n + "')")
+                exec("plt.scatter(ref_" + n + "," + s_type[ind] + "[ref_" + n + "], s=150,linewidth=2, marker = marker[ind*2], facecolors='none', edgecolors=color[ind], label='ref " + n + "')")
+                exec("plt.scatter(det_" + n + "," + s_type[ind] + "[det_" + n + "], s=150,linewidth=2, marker = marker[ind*2+1], color=color[ind+1], label='det " + n + "')")
 
-        plt.plot(drt3,'g',label='dddx')
-        plt.scatter(det_p1,drt3[det_p1], s=60,linewidth=2, marker = 'o', facecolors='none', edgecolors='r', label='det_p1')
-        plt.scatter(det_p2, drt3[det_p2], s=60, linewidth=2, marker='o', facecolors='none', edgecolors='b', label='det_p2')
+
+        # plt.scatter(det_p1,drt3[det_p1], s=60,linewidth=2, marker = 'o', facecolors='none', edgecolors='r', label='det_p1')
+        # plt.scatter(det_p2, drt3[det_p2], s=60, linewidth=2, marker='o', facecolors='none', edgecolors='b', label='det_p2')
 
         # Plot show
         if plt_sig == 1:
-            plt.legend(loc=4, prop={'size': 10})
+            plt.legend(loc=4, prop={'size': 11.8})
             plt.title(name, fontsize=20)
-            plt.xlabel('Time [ms]', fontsize=20)
-            plt.ylabel('Pulse Wave', fontsize=20)
-            plt.grid(color='g', linestyle='--', linewidth=0.5)
-            plt.savefig(('temp_dir/figs/py_%s.png')%(name))
+            plt.xlabel('Time [ms]', fontsize=35)
+            plt.ylabel('Amplitude [nu]', fontsize=35)
+            plt.yticks([])
+            plt.xticks(fontsize=30)
+            # plt.grid(color='g', linestyle='--', linewidth=0.5)
+            # plt.savefig(('temp_dir/figs/py_%s.png')%(name))
             plt.show()
             plt.close('all')
 
