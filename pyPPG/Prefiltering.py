@@ -40,7 +40,7 @@ def Prefiltering(s):
         filt_d1 = filtfilt(B1, 1, dx)
 
         ## PPG" filtering
-        win = round(s.fs * 0.005)
+        win = round(s.fs * 0.02)
         B2 = 1 / win * np.ones(win)
         dx = np.gradient(s.v)
         dx = filtfilt(B, 1, dx)
