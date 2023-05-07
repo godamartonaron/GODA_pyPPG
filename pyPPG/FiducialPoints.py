@@ -960,7 +960,10 @@ def getSecondDerivitivePoints(s, onsets):
         try:
             max_loc = max_locs[np.argmax(temp_segment[max_locs])]
         except:
-            max_loc = temp_segment.argmax()
+            try:
+                max_loc = temp_segment.argmax()
+            except:
+                max_loc = 0
 
         max_a = max_loc + onsets[i] - 1
         a.append(max_a)
