@@ -9,6 +9,7 @@ The *pyPPG* using the improved *Automatic Beat Detector* [(*Aboy et al. 2005*)](
 
 ## Description
 The following steps are implemented in the ***pyPPG*** toolbox:
+
 ![img.png](figs/pyPPG_pipeline.svg)
 
 1. **Prefiltering** 
