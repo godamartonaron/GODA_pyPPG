@@ -892,9 +892,9 @@ def getFirstDerivitivePoints(s, onsets):
     :param onsets: 1-d array, onsets of the signal
 
     :return
-        - u: The greatest maximum peak between the left systolic onset and the systolic peak on PPG'
-        - v: The lowest minimum pits between the systolic peak and the right systolic onset on PPG'
-        - w: The first maximum peak after v on PPG'
+        - u: The highest amplitude between the pulse onset and systolic peak on PPG'
+        - v: The lowest amplitude between the u-point and diastolic peak on PPG'
+        - w: The first local maximum or inflection point after the dicrotic notch on PPG’
     """
 
     dx = s.filt_d1
@@ -938,12 +938,14 @@ def getSecondDerivitivePoints(s, onsets):
     :param onsets: 1-d array, onsets of the signal
 
     :return
-        - a: The first maximum peak between left systolic onset and systolic peak on PPG"
-        - b: The first minimum pits after a on PPG"
-        - c: The greatest maximum peak between b and e, or if no maximum peak is present then the inflection point on PPG"
-        - d: The lowest minimum pits between c and e, or if no minimum pits is present then the inflection point on PPG"
-        - e: The greatest maximum peak between the systolic peak and  the right systolic onset
-        - f: The first minimum pits after e and before 0.8 CP (cardiac period) on PPG"
+        - a: The highest amplitude between pulse onset and systolic peak on PPG"
+        - b: The first local minimum after the a-point on PPG"
+        - c: The local maximum with the highest amplitude between the b-point and e-point,
+                or if no local maximum is present then the inflection point on PPG"
+        - d: The local minimum with the lowest amplitude between the c-point and e-point,
+                or if no local minimum is present then the inflection point on PPG"
+        - e: The local maximum with the highest amplitude after the b-point and before the diastolic peak on PPG"
+        - f: The first local minimum after the e-point on PPG"
     """
 
     sig = s.filt_sig
@@ -1052,10 +1054,8 @@ def getThirdDerivitivePoints(s, onsets,drt2_fp):
         :param onsets: 1-d array, onsets of the signal
 
         :return
-        - p1: The first local maximum of PPG'"  after b.
-        - p2: Identify a candidate p2 at the last local minimum of PPG'"  before d (unless c=d, in which case take the
-        first local minimum of PPG'"  after d). If there is a local maximum of PPG'" between this candidate and dic then
-        use this instead.
+        - p1: The first local maximum after the b-point on PPG'"
+        - p2: The last local minimum after the b-point and before the d-point on PPG'"
 
     """
     dddx = s.filt_d3
