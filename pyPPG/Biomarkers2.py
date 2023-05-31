@@ -176,38 +176,9 @@ def get_BM_RDerivatives(s, fiducials):
                     "AI",           # Augmentation Index, (PPG(Tp2) − PPG(Tp1))/Asp
                     "RIp1",         # Reflection Index of p1, Adp/(PPG(Tp1) − PPG(Tpi(0)))
                     "RIp2",         # Reflection Index of p2, Adp/(PPG(p2) − PPG(Tpi(0)))
-                    "SC",           # Spring Constant, PPG"(Tsp)/((Asp-Su)/Asp)
+                    "SC",           # Spring Constant, PPG"(Tsp)/((Asp-Au)/Asp)
                     "IPAD",         # Inflection point area plus normalised d-point amplitude, AUCdia/AUCsys+Ad/Aa
-                    # "Tu/CP",      # Ratio between Tu and CP
-                    # "Tv/CP",      # Ratio between Tv and CP
-                    # "Tw/CP",      # Ratio between Tw and CP
-                    # "Ta/CP",      # Ratio between Ta and CP
-                    # "Tb/CP",      # Ratio between Tb and CP
-                    # "Tc/CP",      # Ratio between Tc and CP
-                    # "Td/CP",      # Ratio between Td and CP
-                    # "Te/CP",      # Ratio between Te and CP
-                    # "Tf/CP",      # Ratio between Te and CP
-                    # "(Tu-Ta)/CP", # The ratio between the interval maximum/minimum peaks of 1st derivative and CP
-                    # "(Tv-Tb)/CP", # The ratio between the interval
-                    # "AGI_bcdef/a",# Aging index of (b-c-d-e-f)/a
-                    # "AGI_bcde/a", # Aging index of (b-c-d-e)/a
-                    # "AGI_bcd/a",  # Aging index of (b-c-d)/a
-                    # "AGI_be/a",   # Aging index of (b-e)/a, instead of (b-c-d-e)/a, when the c and d waves are missing
-                    # "v/u",  # The ratio v and u of the PPG'
-                    # "w/u",  # The ratio w and u of the PPG'
-                    # "b/a",  # The ratio between b and a of the PPG"
-                    # "c/a",  # The ratio between c and a of the PPG"
-                    # "d/a",  # The ratio between d and a of the PPG"
-                    # "e/a",  # The ratio between e and a of the PPG"
-                    # "f/a",  # The ratio between f and a of the PPG"
-                    # "MS",   # The PPG'(u)/PPG(peak)
-                    # "p2/p1",  # The PPG(p2)/PPG(p1)
-                    # "IPAD", # Inflection point area plus d-peak, (A2/A1) + d/a
-                    # "AI",   # Augmentation index is (PPG(p2) − PPG(p1))/(PPG(systolic peak) − PPG(systolic onset))
-                    # "SC",   # Spring constant defined as PPG"(sys) / ((SPA - MS) / SPA), derived from a physical model of the elasticity of peripheral arteries
-                    # "RIp1", # Reflection index using p1,(PPG(diastolic peak) − PPG(systolic onset))/(PPG(p1) − PPG(systolic onset))
-                    # "RIp2", # Reflection index using p2,(PPG(diastolic peak) − PPG(systolic onset))/(PPG(p2) − PPG(systolic onset))
-                    ]
+                     ]
 
     df, df_features = get_features(s, fiducials, features_lst)
 
@@ -372,35 +343,6 @@ class features_extract_PPG:
                     "RIp2": self.getRIp2(),
                     "SC": self.getSC(),
                     "IPAD": self.getIPAD(),
-                    # "Tu/CP": self.get_ratio_Tu_Tpi(),
-                    # "Tv/CP": self.get_ratio_Tv_Tpi(),
-                    # "Tw/CP": self.get_ratio_Tw_Tpi(),
-                    # "Ta/CP": self.get_ratio_Ta_Tpi(),
-                    # "Tb/CP": self.get_ratio_Tb_Tpi(),
-                    # "Tc/CP": self.get_ratio_Tc_Tpi(),
-                    # "Td/CP": self.get_ratio_Td_Tpi(),
-                    # "Te/CP": self.get_ratio_Te_Tpi(),
-                    # "Tf/CP": self.get_ratio_Tf_Tpi(),
-                    # "(Tu-Ta)/CP": self.get_ratio_TuTa_Tpi(),
-                    # "(Tv-Tb)/CP": self.get_ratio_TvTb_Tpi(),
-                    # "AGI_bcdef/a": self.get_aging_index0(),
-                    # "AGI_bcde/a": self.getAGI(),
-                    # "AGI_bcd/a": self.getAGImod(),
-                    # "AGI_be/a": self.getAGIinf(),
-                    # "v/u": self.get_ratio_Av_Au(),
-                    # "w/u": self.get_ratio_Aw_Au(),
-                    # "b/a": self.get_ratio_Ab_Aa(),
-                    # "c/a": self.get_ratio_Ac_Aa(),
-                    # "d/a": self.get_ratio_Ad_Aa(),
-                    # "e/a": self.get_ratio_Ae_Aa(),
-                    # "f/a": self.get_ratio_Af_Aa(),
-                    # "IPAD": self.getIPAD(),
-                    # "MS": self.getMS(),
-                    # "AI": self.getAI(),
-                    # "SC": self.getSC(),
-                    # "p2/p1": self.get_ratio_Ap2_Ap1(),
-                    # "RIp1": self.getRIp1(),
-                    # "RIp2": self.getRIp2(),
         }
         return my_funcs
 
@@ -1248,7 +1190,7 @@ class features_extract_PPG:
 
     def getSC(self):
         """ The function calculates the Spring Constant,
-            PPG"(Tsp)/((Asp-Su)/Asp).
+            PPG"(Tsp)/((Asp-Au)/Asp).
             :return SC feature:
         """
         ddxSPA=self.segment_d2[(self.getTsp()*self.sample_rate).astype(int)]
