@@ -25,7 +25,8 @@ if __name__ == '__main__':
     # ppg_sig_dir='D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/PETE_Matlab'
     ppg_sig_dir = 'D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/GIT_PPG_annot'
     ppg_file = '/PPG-BP1.mat'
-    annot_path = ppg_sig_dir+'/temp_dir/MG00_PPG-BP_annot/merged' #'/ANNOTS/MG_PPG-BP_annot/merged'
+    annot_path = ppg_sig_dir + '/temp_dir/MG01_PPG-BP_annot/merged' #'/ANNOTS/MG_PPG-BP_annot/merged'
+    annot_path2 = ppg_sig_dir + '/temp_dir/PC01_PPG-BP_annot/merged'
     sig_path=(ppg_sig_dir + ppg_file)
     input_sig = scipy.io.loadmat(sig_path)
 
@@ -33,18 +34,29 @@ if __name__ == '__main__':
     OutData = {}
     set_len=input_sig['ppg_data'].size
 
-    fid_names = ('pk','os','dn', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e', 'f','p1','p2')
+    # Flag for plotting: 0 is off, 1 is on
+    plt_sig = 1
+
+    # Flag for comparison with PC: 0 is off, 1 is on
+    cmp_pc = 0
+
+    fid_names = ('pk', 'os', 'dn', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e')#, 'f','p1','p2')
+    if cmp_pc!=1:
+        f_names=fid_names [2:]
+    else:
+        f_names = fid_names[:]
+
     dist_error= pd.DataFrame()
-    for n in fid_names[2:]:
+    annot_error = pd.DataFrame()
+    for n in f_names:
         exec(n+"=[]")
         exec(n + "r=[]")
         exec("dist_"+ n +"=[]")
         temp_v=np.empty(set_len)
         temp_v[:] = np.NaN
         dist_error[n]=temp_v
+        annot_error[n] = temp_v
 
-    # Flag for plotting: 0 is off, 1 is on
-    plt_sig=1
 
     for i in range(0,set_len):
 
@@ -83,13 +95,34 @@ if __name__ == '__main__':
         for n in fid_names:
             exec("ref_" + n +" = np.squeeze(np.round(annot['annot']['"+n+"'][0, 0][0][0]['t'] * fs).astype(int))")
 
+        if cmp_pc==1:
+            annot_file2=annot_path2+'/'+name+'.mat'
+            annot2=scipy.io.loadmat(annot_file2)
+
+            for n in fid_names:
+                exec("det_" + n +" = np.squeeze(np.round(annot2['annot']['"+n+"'][0, 0][0][0]['t'] * fs).astype(int))")
+                if eval("det_" + n +".size")>1 and n!='os':
+                    exec("det_"+n+"= [det_"+n+"[0]]")
+                    exec ("annot_error['"+n+"'][i] =1")
+                    print(n+' error: ', name)
+
+            if det_os.size > 2:
+                exec("annot_error['os'][i] =1")
+                print('os error: ', name)
+                exec("det_os = det_os[0:2]")
+
+            if det_os.size < 2:
+                exec("annot_error['os'][i] =1")
+                print('os error: ', name)
+                exec("det_os = np.squeeze([det_os,det_os])")
+
         # Plot onset and peak
         pks,ons=[],[]
         exec("pks = [ref_pk]")
         exec("ons = ref_os")
-        if plt_sig==1:
-            plt.scatter(pks, ppg_v[pks], s=150, linewidth=2, marker='o',  facecolors='c', edgecolors='r', label='pk')
-            plt.scatter(ons, ppg_v[ons], s=150, linewidth=2, marker='s',  facecolors='c', edgecolors='b', label='os')
+        # if plt_sig==1:
+        #     plt.scatter(pks, ppg_v[pks], s=150, linewidth=2, marker='o',  facecolors='c', edgecolors='r', label='pk')
+        #     plt.scatter(ons, ppg_v[ons], s=150, linewidth=2, marker='s',  facecolors='m', edgecolors='b', label='os')
 
         # Detect fiducial points
         s = DotMap()
@@ -99,37 +132,52 @@ if __name__ == '__main__':
         s.filt_d2 = drt2
         s.filt_d3 = drt3
 
-        det_dn = getDicroticNotch(s, pks, ons)
-        drt1_fp = getFirstDerivitivePoints(s, ons)
-        drt2_fp = getSecondDerivitivePoints(s, ons)
-        drt3_fp = getThirdDerivitivePoints(s, ons,drt2_fp)
+        if cmp_pc !=1:
+            det_dn = getDicroticNotch(s, pks, ons)
+            drt1_fp = getFirstDerivitivePoints(s, ons)
+            drt2_fp = getSecondDerivitivePoints(s, ons)
+            drt3_fp = getThirdDerivitivePoints(s, ons,drt2_fp)
 
-        det_u, det_v, det_w = drt1_fp.u, drt1_fp.v, drt1_fp.w
-        det_a, det_b, det_c, det_d, det_e, det_f = drt2_fp.a, drt2_fp.b, drt2_fp.c, drt2_fp.d, drt2_fp.e, drt2_fp.f
-        det_p1, det_p2 = drt3_fp.p1, drt3_fp.p2
+            det_u, det_v, det_w = drt1_fp.u, drt1_fp.v, drt1_fp.w
+            det_a, det_b, det_c, det_d, det_e, det_f = drt2_fp.a, drt2_fp.b, drt2_fp.c, drt2_fp.d, drt2_fp.e, drt2_fp.f
+            det_p1, det_p2 = drt3_fp.p1, drt3_fp.p2
 
-        for n in fid_names[2:]:
+        for n in f_names:
             # Calculate distance error
             exec (n+".append(np.squeeze(det_"+n+"))")
             if eval("ref_"+n+".size") > 0:
-                exec("temp_dist=np.squeeze(ref_"+n+" - det_"+n+")")
+                if n == 'os':
+                    exec("temp_dist=np.array(np.mean(np.squeeze(ref_"+n+" - det_"+n+")))")
+                else:
+                    exec("temp_dist=np.squeeze(ref_"+n+" - det_"+n+")")
                 if eval("temp_dist.size") > 0:
                     exec("dist_"+ n + ".append(temp_dist)")
                     exec ("dist_error['"+n+"'][i] = temp_dist")
 
             # Plot fiducial points
-            ind = fid_names.index(n)-2
-            s_type = ['ppg_v', 'drt1', 'drt1', 'drt1', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt3', 'drt3']
+            ind=f_names.index(n)
+            if cmp_pc != 1:
+                s_type = ['ppg_v', 'drt1', 'drt1', 'drt1', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt3', 'drt3']
+                label1 = 'ref'
+                label2 = 'det'
+            else:
+                s_type = ['ppg_v', 'ppg_v', 'ppg_v', 'drt1', 'drt1', 'drt1', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2','drt3', 'drt3']
+                label1 = 'MG'
+                label2 = 'PC'
+
             marker = ['s', 'x', 'o', '+']*7
             color = ['b', 'r', 'c', 'm', 'k', 'g', 'm', 'b', 'r', 'c', 'g', 'k', 'b']
 
 
             is_fidu=0
-            exec("is_fidu=~np.isnan(np.squeeze(det_" + n + "))")
+            if n == 'os':
+                exec("is_fidu=~min(np.isnan(np.squeeze(det_" + n + ")))")
+            else:
+                exec("is_fidu=~np.isnan(np.squeeze(det_" + n + "))")
 
             if  plt_sig==1 and is_fidu:
-                exec("plt.scatter(ref_" + n + "," + s_type[ind] + "[ref_" + n + "], s=150,linewidth=2, marker = marker[ind*2], facecolors='none', edgecolors=color[ind], label='ref " + n + "')")
-                exec("plt.scatter(det_" + n + "," + s_type[ind] + "[det_" + n + "], s=150,linewidth=2, marker = marker[ind*2+1], color=color[ind+1], label='det " + n + "')")
+                exec("plt.scatter(ref_" + n + "," + s_type[ind] + "[ref_" + n + "], s=150,linewidth=2, marker = marker[ind*2], facecolors='none', edgecolors=color[ind], label= label1+' " + n + "')")
+                exec("plt.scatter(det_" + n + "," + s_type[ind] + "[det_" + n + "], s=150,linewidth=2, marker = marker[ind*2+1], color=color[ind+1], label=label2+' " + n + "')")
 
 
         # plt.scatter(det_p1,drt3[det_p1], s=60,linewidth=2, marker = 'o', facecolors='none', edgecolors='r', label='det_p1')
@@ -139,13 +187,14 @@ if __name__ == '__main__':
         if plt_sig == 1:
             plt.legend(loc=4, prop={'size': 11.8})
             plt.title(name, fontsize=20)
-            plt.xlabel('Time [ms]', fontsize=35)
-            plt.ylabel('Amplitude [nu]', fontsize=35)
+            plt.xlabel('Time [ms]', fontsize=20)
+            plt.ylabel('Amplitude [nu]', fontsize=20)
             plt.yticks([])
-            plt.xticks(fontsize=30)
+            plt.xticks(fontsize=20)
             # plt.grid(color='g', linestyle='--', linewidth=0.5)
-            # plt.savefig(('temp_dir/figs/py_%s.png')%(name))
-            plt.show()
+            # plt.savefig(('temp_dir/MG_PC_annot2/py_%s.png')%(name))
+            # plt.savefig(('temp_dir/figs/py_%s.png') % (name))
+            # plt.show()
             plt.close('all')
 
         # Print distance error
@@ -156,17 +205,17 @@ if __name__ == '__main__':
             df = pd.DataFrame(temp_error).transpose()
             print(df)
 
-        # Save distance error in .mat file
-        file_name = 'temp_dir/PPG-BP1_eval02.mat'
+        # Save distance error and annotation error in .mat file
+        file_name = 'temp_dir/PPG-BP1_errors.mat'
         OutData['dist_error'] = dist_error.to_numpy()
+        OutData['annot_error'] = annot_error.to_numpy()
         scipy.io.savemat(file_name, OutData)
-
 
     # Calculate Mean Absolute Error (MAE), Standard Deviation (STD), and Mean Error (BIAS)
     MAE={}
     STD={}
     BIAS={}
-    for n in fid_names[2:]:
+    for n in f_names:
         exec("MAE['" + n + "'] = np.round(np.nanmean(np.absolute(dist_"+ n + ")),2)")
         exec("STD['" + n + "'] = np.round(np.nanstd(dist_"+ n + "), 2)")
         exec("BIAS['" + n + "'] = np.round(np.nanmean(dist_"+ n + "),2)")
@@ -176,5 +225,6 @@ if __name__ == '__main__':
     print('MAE',': ', MAE)
     print('STD',': ', STD)
     print('BIAS', ': ', BIAS)
+    print('Program finished!')
 
 
