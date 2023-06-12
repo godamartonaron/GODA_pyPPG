@@ -29,7 +29,6 @@ The following steps are implemented in the ***pyPPG*** toolbox:
    
 ![alt text](figs/PPG_sample.svg)
 ![img.png](figs/fiducial_points_def.png)
-
 4. **Engineering of Biomarkers** 
    - Using the fiducial points PPG biomarkers are engineered for individual PPG cycles. When a biomarker cannot be engineered because some fiducial points could not be detected by wavedet then the feature was marked as a NaN. For an PPG channel a total of 74 features are extracted from intervals duration and 9 from waves characteristics to describe the ECG morphology.
 

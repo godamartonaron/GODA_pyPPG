@@ -898,26 +898,33 @@ def getFirstDerivitivePoints(s, onsets):
     """
 
     dx = s.filt_d1
-    u, v, w = [], [], []
+
+    nan_v = np.empty(len(onsets)-1)
+    nan_v[:] = np.NaN
+    u, v, w = copy.deepcopy(nan_v),copy.deepcopy(nan_v),copy.deepcopy(nan_v),
+
     for i in range(0,len(onsets)-1):
-        segment = dx[onsets[i]:onsets[i + 1]]
+        try:
+            segment = dx[onsets[i]:onsets[i + 1]]
 
-        # u fiducial point
-        max_loc = np.argmax(dx[onsets[i]:onsets[i + 1]])+onsets[i]
-        u.append(max_loc)
+            # u fiducial point
+            max_loc = np.argmax(segment)+onsets[i]
+            u[i]=max_loc
 
-        # v fiducial point
-        min_loc = np.argmin(dx[u[-1]:onsets[i+1]])+u[-1]-1
-        v.append(min_loc)
+            # v fiducial point
+            upper_bound_coeff = 0.66
+            v_upper_bound = ((onsets[i + 1] - onsets[i]) * upper_bound_coeff + onsets[i]).astype(int)
+            min_loc = np.argmin(dx[int(u[i]):v_upper_bound])+u[i]-1
+            v[i] = min_loc
 
-        # w fiducial point
-        temp_segment=dx[v[-1]:onsets[i+1]]
-        max_locs, _ = find_peaks(temp_segment)
-        if max_locs.size>0:
-            max_w = max_locs[0]+v[-1]-1
-        else:
-            max_w = np.NaN
-        w.append(max_w)
+            # w fiducial point
+            temp_segment=dx[int(v[i]):onsets[i+1]]
+            max_locs, _ = find_peaks(temp_segment)
+            max_w = max_locs[0] + v[i] - 1
+            w[i] = max_w
+
+        except:
+            u[i], v[i], w[i]#=np.NaN
 
     drt1_fp = pd.DataFrame({"u":[], "v":[], "w":[]})
     drt1_fp.u, drt1_fp.v, drt1_fp.w = u, v, w
@@ -952,91 +959,93 @@ def getSecondDerivitivePoints(s, onsets):
     ddx = s.filt_d2
     dddx = s.filt_d3
 
-    a, b, c, d, e, f = [], [], [], [], [], []
+    nan_v = np.empty(len(onsets)-1)
+    nan_v[:] = np.NaN
+    a, b, c, d, e, f = copy.deepcopy(nan_v),copy.deepcopy(nan_v),copy.deepcopy(nan_v),copy.deepcopy(nan_v),copy.deepcopy(nan_v),copy.deepcopy(nan_v)
     for i in range(0,len(onsets)-1):
 
-        # a fiducial point
-        temp_pk=np.argmax(sig[onsets[i]:onsets[i + 1]])+onsets[i]-1
-        temp_segment=ddx[onsets[i]:temp_pk]
-        max_locs, _ = find_peaks(temp_segment)
         try:
-            max_loc = max_locs[np.argmax(temp_segment[max_locs])]
-        except:
-            try:
-                max_loc = temp_segment.argmax()
-            except:
-                max_loc = 0
-
-        max_a = max_loc + onsets[i] - 1
-        a.append(max_a)
-
-        # b fiducial point
-        temp_segment=ddx[a[-1]:onsets[i+1]]
-        min_locs, _ = find_peaks(-temp_segment)
-        min_b = min_locs[0]+a[-1]-1
-        b.append(min_b)
-
-        # e fiducial point
-        e_lower_bound = b[-1]
-        upper_bound_coeff = 0.6
-        e_upper_bound = ((onsets[i + 1] - onsets[i]) * upper_bound_coeff + onsets[i]).astype(int)
-        temp_segment=ddx[e_lower_bound:e_upper_bound]
-        max_locs, _ = find_peaks(temp_segment)
-        if max_locs.size==0:
-            temp_segment=ddx[b[-1]:onsets[i + 1]]
+            # a fiducial point
+            temp_pk=np.argmax(sig[onsets[i]:onsets[i + 1]])+onsets[i]-1
+            temp_segment=ddx[onsets[i]:temp_pk]
             max_locs, _ = find_peaks(temp_segment)
+            try:
+                max_loc = max_locs[np.argmax(temp_segment[max_locs])]
+            except:
+                max_loc = temp_segment.argmax()
 
-        try:
-            max_loc = max_locs[np.argmax(temp_segment[max_locs])]
-        except:
-            max_loc = temp_segment.argmax()
+            max_a = max_loc + onsets[i] - 1
+            a[i] = max_a
 
-        max_e = max_loc + e_lower_bound - 1
-
-        e.append(max_e)
-
-        # c fiducial point
-        temp_segment=ddx[b[-1]:e[-1]]
-        max_locs, _ = find_peaks(temp_segment)
-        if max_locs.size>0:
-            max_loc = max_locs[0]
-        else:
-            temp_segment=dddx[b[-1]:e[-1]]
+            temp_segment=ddx[int(a[i]):onsets[i+1]]
             min_locs, _ = find_peaks(-temp_segment)
+            min_b = min_locs[0] + a[i] - 1
+            b[i] = min_b
 
-            if min_locs.size > 0:
-                max_loc = min_locs[np.argmin(temp_segment[min_locs])]
-            else:
+            # e fiducial point
+
+            e_lower_bound = b[i]
+            upper_bound_coeff = 0.6
+            e_upper_bound = ((onsets[i + 1] - onsets[i]) * upper_bound_coeff + onsets[i]).astype(int)
+            temp_segment=ddx[int(e_lower_bound):int(e_upper_bound)]
+            max_locs, _ = find_peaks(temp_segment)
+            if max_locs.size==0:
+                temp_segment=ddx[int(b[i]):onsets[i + 1]]
                 max_locs, _ = find_peaks(temp_segment)
-                try:
-                    max_loc = max_locs[0]
-                except:
-                    max_loc = temp_segment.argmax()
 
-        max_c = max_loc + b[-1] - 1
-        c.append(max_c)
+            try:
+                max_loc = max_locs[np.argmax(temp_segment[max_locs])]
+            except:
+                max_loc = temp_segment.argmax()
 
-        # d fiducial point
-        temp_segment = ddx[c[-1]:e[-1]]
-        min_locs, _ = find_peaks(-temp_segment)
-        if min_locs.size > 0:
-            min_loc = min_locs[np.argmin(temp_segment[min_locs])]
-            min_d = min_loc + c[-1] - 1
-        else:
-            min_d = max_c
+            max_e = max_loc + e_lower_bound - 1
+            e[i] = max_e
 
-        d.append(min_d)
+            # c fiducial point
+            temp_segment = ddx[int(b[i]):int(e[i])]
+            max_locs, _ = find_peaks(temp_segment)
+            if max_locs.size>0:
+                max_loc = max_locs[0]
+            else:
+                temp_segment = dddx[int(b[i]):int(e[i])]
+                min_locs, _ = find_peaks(-temp_segment)
 
-        # f fiducial point
-        temp_segment = ddx[e[-1]:onsets[i + 1]]
-        min_locs, _ = find_peaks(-temp_segment)
-        if (min_locs.size > 0) and (min_locs[0]<len(sig)*0.8):
-            min_loc = min_locs[0]
-        else:
-            min_loc = 0
+                if min_locs.size > 0:
+                    max_loc = min_locs[np.argmin(temp_segment[min_locs])]
+                else:
+                    max_locs, _ = find_peaks(temp_segment)
+                    try:
+                        max_loc = max_locs[0]
+                    except:
+                        max_loc = temp_segment.argmax()
 
-        min_f = min_loc + e[-1] - 1
-        f.append(min_f)
+            max_c = max_loc + b[i] - 1
+            c[i] = max_c
+
+            # d fiducial point
+            temp_segment = ddx[int(c[i]):int(e[i])]
+            min_locs, _ = find_peaks(-temp_segment)
+            if min_locs.size > 0:
+                min_loc = min_locs[np.argmin(temp_segment[min_locs])]
+                # min_d = min_loc + c[-1] - 1
+                min_d = min_loc + c[i] - 1
+            else:
+                min_d = max_c
+
+            d[i] = min_d
+
+            # f fiducial point
+            temp_segment = ddx[int(e[i]):onsets[i + 1]]
+            min_locs, _ = find_peaks(-temp_segment)
+            if (min_locs.size > 0) and (min_locs[0]<len(sig)*0.8):
+                min_loc = min_locs[0]
+            else:
+                min_loc = 0
+
+            min_f = min_loc + e[i] - 1
+            f[i] = min_f
+        except:
+            a[i], b[i], c[i], d[i], e[i], f[i]# = np.NaN, np.NaN, np.NaN, np.NaN, np.NaN, np.NaN
 
     drt2_fp = pd.DataFrame({"a":[], "b":[], "c":[],"d":[], "e":[], "f":[]})
     drt2_fp.a, drt2_fp.b, drt2_fp.c, drt2_fp.d, drt2_fp.e, drt2_fp.f = a, b, c, d, e, f
@@ -1060,51 +1069,54 @@ def getThirdDerivitivePoints(s, onsets,drt2_fp):
     """
     dddx = s.filt_d3
 
-    p1, p2 = [], []
-    for i in range(0,len(onsets)-1):
-        # p1 fiducial point
-        ref_b=drt2_fp.b[np.squeeze(np.where(np.logical_and(drt2_fp.b>onsets[i],drt2_fp.b<onsets[i+1])))]
-        if ref_b.size==0:
-            ref_b=onsets[i]
+    nan_v = np.empty(len(onsets)-1)
+    nan_v[:] = np.NaN
+    p1, p2 = copy.deepcopy(nan_v), copy.deepcopy(nan_v)
 
-        temp_segment=dddx[ref_b:onsets[i+1]]
-        max_locs, _ = find_peaks(temp_segment)
+    for i in range(0, len(onsets) - 1):
         try:
-            max_loc = max_locs[0]
-        except:
-            max_loc = temp_segment.argmax()
+            # p1 fiducial point
+            ref_b = drt2_fp.b[np.squeeze(np.where(np.logical_and(drt2_fp.b > onsets[i], drt2_fp.b < onsets[i + 1])))]
+            if ref_b.size == 0:
+                ref_b = onsets[i]
 
-        max_p1 = max_loc + ref_b - 1
-        p1.append(max_p1)
+            temp_segment = dddx[int(ref_b):onsets[i + 1]]
+            max_locs, _ = find_peaks(temp_segment)
+            try:
+                max_loc = max_locs[0]
+            except:
+                max_loc = temp_segment.argmax()
 
-        # p2 fiducial point
-        ref_start = p1[-1]
-        if ref_start.size>0:
-            ref_c = drt2_fp.c[np.squeeze(np.where(np.logical_and(drt2_fp.c>onsets[i],drt2_fp.c<onsets[i+1])))]
-            ref_d = drt2_fp.d[np.squeeze(np.where(np.logical_and(drt2_fp.d>onsets[i],drt2_fp.d<onsets[i+1])))]
+            max_p1 = max_loc + ref_b - 1
+            p1[i] = max_p1
 
-            if ref_d>ref_c:
-                ref_end=ref_d
-                min_ind=-1
-            elif ref_c.size>0:
-                ref_start=ref_c
-                ref_end = onsets[i+1]
+            # p2 fiducial point
+            ref_start = p1[i]
+            ref_c = drt2_fp.c[np.squeeze(np.where(np.logical_and(drt2_fp.c > onsets[i], drt2_fp.c < onsets[i + 1])))]
+            ref_d = drt2_fp.d[np.squeeze(np.where(np.logical_and(drt2_fp.d > onsets[i], drt2_fp.d < onsets[i + 1])))]
+
+            if ref_d > ref_c:
+                ref_end = ref_d
+                min_ind = -1
+            elif ref_c.size > 0:
+                ref_start = ref_c
+                ref_end = onsets[i + 1]
                 min_ind = 0
-            elif drt2_fp.e.size>0:
-                ref_end = onsets[i+1]
+            elif drt2_fp.e.size > 0:
+                ref_end = onsets[i + 1]
                 min_ind = 0
 
-            temp_segment=dddx[ref_start:ref_end]
+            temp_segment = dddx[int(ref_start):int(ref_end)]
             min_locs, _ = find_peaks(-temp_segment)
-            # min_p2 = min_locs[min_ind] + ref_start - 1
-            if min_locs.size>0:
-                min_p2 = min_locs[min_ind]+ref_start-1
+            if min_locs.size > 0:
+                min_p2 = min_locs[min_ind] + ref_start - 1
             else:
                 min_p2 = ref_end
 
-            p2.append(min_p2)
-        else:
-            p2.append(ref_start)
+            p2[i] = min_p2
+
+        except:
+            p1[i], p2[i]  # = np.NaN, np.NaN
 
     drt3_fp = pd.DataFrame({"p1": [], "p2": []})
     drt3_fp.p1, drt3_fp.p2 = p1, p2
