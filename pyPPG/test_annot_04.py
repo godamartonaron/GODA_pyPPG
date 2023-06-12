@@ -26,7 +26,7 @@ if __name__ == '__main__':
     ppg_sig_dir = 'D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/GIT_PPG_annot'
     ppg_file = '/PPG-BP1.mat'
     annot_path = ppg_sig_dir + '/temp_dir/MG01_PPG-BP_annot/merged' #'/ANNOTS/MG_PPG-BP_annot/merged'
-    annot_path2 = ppg_sig_dir + '/temp_dir/PC01_PPG-BP_annot/merged'
+    annot_path2 = ppg_sig_dir + '/temp_dir/PC02_PPG-BP_annot/merged'
     sig_path=(ppg_sig_dir + ppg_file)
     input_sig = scipy.io.loadmat(sig_path)
 
@@ -35,12 +35,12 @@ if __name__ == '__main__':
     set_len=input_sig['ppg_data'].size
 
     # Flag for plotting: 0 is off, 1 is on
-    plt_sig = 1
+    plt_sig = 0
 
     # Flag for comparison with PC: 0 is off, 1 is on
     cmp_pc = 0
 
-    fid_names = ('pk', 'os', 'dn', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e')#, 'f','p1','p2')
+    fid_names = ('pk', 'os', 'dn', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e', 'f','p1','p2')
     if cmp_pc!=1:
         f_names=fid_names [2:]
     else:
@@ -93,7 +93,25 @@ if __name__ == '__main__':
         annot=scipy.io.loadmat(annot_file)
 
         for n in fid_names:
-            exec("ref_" + n +" = np.squeeze(np.round(annot['annot']['"+n+"'][0, 0][0][0]['t'] * fs).astype(int))")
+            exec("ref_" + n +" = np.array(np.squeeze(np.round(annot['annot']['"+n+"'][0, 0][0][0]['t'] * fs).astype(int)))")
+            if eval("ref_" + n + ".size") > 1 and n != 'os':
+                exec("ref_" + n + "=  np.array([ref_" + n + "[0]])")
+                exec("annot_error['" + n + "'][i] =1")
+                print(n + ' error: ', name)
+            elif eval("ref_" + n + ".size") < 1 and n != 'os':
+                exec("ref_" + n + "= np.array(np.NaN)")
+                exec("annot_error['" + n + "'][i] =1")
+                print(n + ' error: ', name)
+
+        if ref_os.size > 2:
+            exec("annot_error['os'][i] =1")
+            print('os error: ', name)
+            exec("ref_os = ref_os[0:2]")
+
+        if ref_os.size < 2:
+            exec("annot_error['os'][i] =1")
+            print('os error: ', name)
+            exec("ref_os = np.squeeze([ref_os,ref_os])")
 
         if cmp_pc==1:
             annot_file2=annot_path2+'/'+name+'.mat'
@@ -103,6 +121,10 @@ if __name__ == '__main__':
                 exec("det_" + n +" = np.squeeze(np.round(annot2['annot']['"+n+"'][0, 0][0][0]['t'] * fs).astype(int))")
                 if eval("det_" + n +".size")>1 and n!='os':
                     exec("det_"+n+"= [det_"+n+"[0]]")
+                    exec ("annot_error['"+n+"'][i] =1")
+                    print(n+' error: ', name)
+                elif eval("det_" + n +".size")<1 and n!='os':
+                    exec("det_"+n+"= np.NaN")
                     exec ("annot_error['"+n+"'][i] =1")
                     print(n+' error: ', name)
 
@@ -166,14 +188,14 @@ if __name__ == '__main__':
                 label2 = 'PC'
 
             marker = ['s', 'x', 'o', '+']*7
-            color = ['b', 'r', 'c', 'm', 'k', 'g', 'm', 'b', 'r', 'c', 'g', 'k', 'b']
+            color = ['b', 'r', 'c', 'm', 'k', 'g', 'm', 'b', 'r', 'c', 'g', 'k', 'b','c','r']
 
 
             is_fidu=0
             if n == 'os':
-                exec("is_fidu=~min(np.isnan(np.squeeze(det_" + n + ")))")
+                exec("is_fidu=~min(np.isnan(np.squeeze(det_" + n + "))) and ~min(np.isnan(np.squeeze(ref_" + n + ")))")
             else:
-                exec("is_fidu=~np.isnan(np.squeeze(det_" + n + "))")
+                exec("is_fidu=~np.isnan(np.squeeze(det_" + n + ")) and ~np.isnan(np.squeeze(ref_" + n + "))")
 
             if  plt_sig==1 and is_fidu:
                 exec("plt.scatter(ref_" + n + "," + s_type[ind] + "[ref_" + n + "], s=150,linewidth=2, marker = marker[ind*2], facecolors='none', edgecolors=color[ind], label= label1+' " + n + "')")
@@ -192,7 +214,7 @@ if __name__ == '__main__':
             plt.yticks([])
             plt.xticks(fontsize=20)
             # plt.grid(color='g', linestyle='--', linewidth=0.5)
-            # plt.savefig(('temp_dir/MG_PC_annot2/py_%s.png')%(name))
+            plt.savefig(('temp_dir/MG_PC_annot4/py_%s.png')%(name))
             # plt.savefig(('temp_dir/figs/py_%s.png') % (name))
             # plt.show()
             plt.close('all')

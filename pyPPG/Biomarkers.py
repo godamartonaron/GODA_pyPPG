@@ -2,23 +2,29 @@ import pandas as pd
 from scipy.signal import find_peaks
 import scipy
 import numpy as np
+from dotmap import DotMap
 
 ###########################################################################
 ############################ Get PPG Biomarkers ###########################
 ###########################################################################
-def Biomarkers (sig, fs, fiducials):
+def Biomarkers (s, fiducials):
     """
     This calc returns the main PPG biomarkers:
-    CP, SUT, DT, SW50, DW50, DW50/SW50, Tpi, SA, SUT/CP, SOC, W50/Tpi, W50/SUT, SA/(Tpi-SUT), AUCPPG
+    CP, SUT, DT, SW50, DW50, DW50/SW50, Tpi, SPA, SUT/CP, SOC, W50/Tpi, W50/SUT, SPA/(Tpi-SUT), AUCPPG
 
-    :param sig: 1-d array, of shape (N,) where N is the length of the signal
-    :param fs: sampling frequency
-    :type fs: int
+    :param s: a struct of PPG signal:
+        - s.v: a vector of PPG values
+        - s.fs: the sampling frequency of the PPG in Hz
+        - s.filt_sig: a vector of PPG values
+        - s.filt_d1: a vector of PPG values
+        - s.filt_d2: a vector of PPG values
+        - s.filt_d3: a vector of PPG values
     :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
         PPG Fiducials Points.
         - Original signal: List of pulse onset, peak and dicrotic notch
-        - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (a1,b1)
-        - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a2, b2, c2, d2, e2)
+        - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
+        - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
+        - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)
 
     :return biomarkers: dictionary of biomarkers in different categories:
         - Original signal (Pulse onset, Pulse peak, Dicrotic notch)
@@ -27,10 +33,10 @@ def Biomarkers (sig, fs, fiducials):
         - Ratios of 1st and 2nd derivative’s points
     """
 
-    BM_OSignal = get_BM_OSignal(sig, fs, fiducials)
-    BM_ROSignal = get_BM_ROSignal(sig, fs, fiducials)
-    BM_Derivatives = get_BM_Derivatives(sig, fs, fiducials)
-    BM_RDerivatives = get_BM_RDerivatives(sig, fs, fiducials)
+    BM_OSignal = get_BM_OSignal(s, fiducials)
+    BM_ROSignal = get_BM_ROSignal(s, fiducials)
+    BM_Derivatives = get_BM_Derivatives(s, fiducials)
+    BM_RDerivatives = get_BM_RDerivatives(s, fiducials)
 
     biomarkers={'BM_OSignal': BM_OSignal , 'BM_ROSignal': BM_ROSignal, 'BM_Derivatives': BM_Derivatives, 'BM_RDerivatives': BM_RDerivatives}
 
@@ -39,95 +45,101 @@ def Biomarkers (sig, fs, fiducials):
 ###########################################################################
 #################### Get Biomarkers of Original Signal ####################
 ###########################################################################
-def get_BM_OSignal(sig, fs, fiducials):
-    features_lst = ["CP",   # Cardiac Period, the time between two consecutive systolic peaks
-                    "SUT",  # Systolic Upslope Time, the time between left onset and the systolic
-                    "DT",   # Diastolic Time, the time between the systolic peak and right onset
-                    "SW10", # Systolic Width, width at 10% of the pulse height from systolic part
-                    "SW25", # Systolic Width, width at 25% of the pulse height from systolic part
-                    "SW33", # Systolic Width, width at 33% of the pulse height from systolic part
-                    "SW50", # Systolic Width, width at 50% of the pulse height from systolic part
-                    "SW66", # Systolic Width, width at 66% of the pulse height from systolic part
-                    "SW75", # Systolic Width, width at 75% of the pulse height from systolic part
-                    "SW90", # Systolic Width, width at 90% of the pulse height from systolic part
-                    "DW10", # Diastolic Width, width at 10% of the pulse height from diastolic part
-                    "DW25", # Diastolic Width, width at 25% of the pulse height from diastolic part
-                    "DW33", # Diastolic Width, width at 33% of the pulse height from diastolic part
-                    "DW50", # Diastolic Width, width at 50% of the pulse height from diastolic part
-                    "DW66", # Diastolic Width, width at 66% of the pulse height from diastolic part
-                    "DW75", # Diastolic Width, width at 75% of the pulse height from diastolic part
-                    "DW90", # Diastolic Width, width at 90% of the pulse height from diastolic part
-                    "SW10+DW10", # Sum of Systolic and Diastolic Width at 10% width
-                    "SW25+DW25", # Sum of Systolic and Diastolic Width at 25% width
-                    "SW33+DW33", # Sum of Systolic and Diastolic Width at 33% width
-                    "SW50+DW50", # Sum of Systolic and Diastolic Width at 50% width
-                    "SW66+DW66", # Sum of Systolic and Diastolic Width at 66% width
-                    "SW75+DW75", # Sum of Systolic and Diastolic Width at 75% width
-                    "SW90+DW90", # Sum of Systolic and Diastolic Width at 90% width
-                    "STT",       # Slope Transit Time, which based on geometrical considerations of  the PPG pulse wave to account for simultaneous
-                    "AUCPPG",    # The area under the curve, a good indicator of change in vascular
-                    "PIR",       # PPG Intensity Ratio, the ratio of Systolic Peak intensity and PPG valley intensity, reflects on the arterial diameter changes during one cardiac cycle from systole to diastole
-                    "SA",        # Systolic Peak Amplitude
-                    "SPT",       # Systolic Peak Time
-                    "tpi",       # The time between the two onsets of the PPG systolic peak
-                    "SOC"        # Systolic Peak Output Curve, Ratio between SUT and SA
-                    #"DPT"       # Diastolic Peak Time
-                    #"DNT"       # Dicrotic Notch Time
-                    #"MS"        # Slope of the rising front is the amplitude of maximum upslope, normalized by the pulse amplitude
+def get_BM_OSignal(s, fiducials):
+    features_lst = ["Tpi",   # Pulse Interval, the time between the pulse onset and pulse offset
+                    "Tpp",   # Peak-to-Peak Interval, the time between two consecutive systolic peaks
+                    "Tsys",	 # Systolic Time, the time between the pulse onset and dicrotic notch
+                    "Tdia",  # Diastolic Time, the time is between the dicrotic notch and pulse offset
+                    "Tsp",   # Systolic Peak Time, the time between the pulse onset and systolic peak
+                    "Tdp",	 # Diastolic Peak Time, the time between the pulse onset and diastolic peak
+                    "deltaT",# Time Delay, the time between the systolic peak and diastolic peak
+                    "Tsw10", # Systolic Width, the width at 10% of the Systolic Peak Amplitude between the pulse onset and systolic peak
+                    "Tsw25", # Systolic Width, the width at 25% of the Systolic Peak Amplitude between the pulse onset and systolic peak
+                    "Tsw33", # Systolic Width, the width at 33% of the Systolic Peak Amplitude between the pulse onset and systolic peak
+                    "Tsw50", # Systolic Width, the width at 50% of the Systolic Peak Amplitude between the pulse onset and systolic peak
+                    "Tsw66", # Systolic Width, the width at 66% of the Systolic Peak Amplitude between the pulse onset and systolic peak
+                    "Tsw75", # Systolic Width, the width at 75% of the Systolic Peak Amplitude between the pulse onset and systolic peak
+                    "Tsw90", # Systolic Width, the width at 90% of the Systolic Peak Amplitude between the pulse onset and systolic peak
+                    "Tdw10", # Diastolic Width, the width at 10% of the Systolic Peak Amplitude between the systolic peak and pulse offset
+                    "Tdw25", # Diastolic Width, the width at 25% of the Systolic Peak Amplitude between the systolic peak and pulse offset
+                    "Tdw33", # Diastolic Width, the width at 33% of the Systolic Peak Amplitude between the systolic peak and pulse offset
+                    "Tdw50", # Diastolic Width, the width at 50% of the Systolic Peak Amplitude between the systolic peak and pulse offset
+                    "Tdw66", # Diastolic Width, the width at 66% of the Systolic Peak Amplitude between the systolic peak and pulse offset
+                    "Tdw75", # Diastolic Width, the width at 75% of the Systolic Peak Amplitude between the systolic peak and pulse offset
+                    "Tdw90", # Diastolic Width, the width at 90% of the Systolic Peak Amplitude between the systolic peak and pulse offset
+                    "Tpw10", # Pulse Width, the sum of the Systolic Width and the Diastolic Width at 10%
+                    "Tpw25", # Pulse Width, the sum of the Systolic Width and the Diastolic Width at 25%
+                    "Tpw33", # Pulse Width, the sum of the Systolic Width and the Diastolic Width at 33%
+                    "Tpw50", # Pulse Width, the sum of the Systolic Width and the Diastolic Width at 50%
+                    "Tpw66", # Pulse Width, the sum of the Systolic Width and the Diastolic Width at 66%
+                    "Tpw75", # Pulse Width, the sum of the Systolic Width and the Diastolic Width at 75%
+                    "Tpw90", # Pulse Width, the sum of the Systolic Width and the Diastolic Width at 90%
+                    "Asp",   # Systolic Peak Amplitude, the difference in amplitude between the pulse onset and systolic peak
+                    "Adn",   # Dicrotic Notch Amplitude, the difference in amplitude between the pulse onset and dicrotic notch
+                    "Adp",   # Diastolic Peak Amplitude, the difference in amplitude between the pulse onset and diastolic peak
+                    "Aoff",  # Pulse Onset Amplitude, the difference in amplitude between the pulse onset and pulse offset
+                    "AUCpi", # Area Under Pulse Interval Curve, the area under the pulse wave between pulse onset and pulse offset
+                    "AUCsys",# Area Under Systolic Curve, the area under the pulse wave between the pulse onset and the dicrotic notch
+                    "AUCdia",# Area Under Diastolic Curve, the area under the pulse wave between the dicrotic notch and pulse offset
                     ]
-    df, df_features = get_features(sig, fiducials['peaks'], fiducials['onsets'], fs, features_lst)
+    df, df_features = get_features(s, fiducials, features_lst)
 
     return df_features
 
 ###########################################################################
 ################ Get Ratios of Systolic and Diastolic parts ###############
 ###########################################################################
-def get_BM_ROSignal(sig, fs, fiducials):
-    features_lst = ["DW10/SW10",    # Ratio of Systolic and Diastolic at 10% width
-                    "DW25/SW25",    # Ratio of Systolic and Diastolic at 25% width
-                    "DW33/SW33",    # Ratio of Systolic and Diastolic at 33% width
-                    "DW50/SW50",    # Ratio of Systolic and Diastolic at 50% width
-                    "DW66/SW66",    # Ratio of Systolic and Diastolic at 66% width
-                    "DW75/SW75",    # Ratio of Systolic and Diastolic at 75% width
-                    "DW90/SW90",    # Ratio of Systolic and Diastolic at 90% width
-                    "SUT/CP",       # Ratio between SUT and CP
-                    "SA/tpi-SUT",   # The ratio of SA and the difference between Tpi and SUT
-                    "width_25_SUT", # The ratio of Width 25% and SUT
-                    "width_25_tpi", # The ratio of Width 25% and Tpi
-                    "width_50_SUT", # The ratio of Width 50% and SUT
-                    "width_50_tpi", # The ratio of Width 50% and Tpi
-                    "width_75_SUT", # The ratio of Width 75% and SUT
-                    "width_75_tpi", # The ratio of Width 75% and Tpi
-                    # "RI",           # Reflection Index is the ratio of DA and SA
-                    # "SI",           # Stiffness Index is the ratio of SA and the difference between DPT and SUT
-                    # "SC"            # Spring constant defined as x’’(sys) / (SA - MS) / SA, derived from a physical model of the elasticity of peripheral arteries
+def get_BM_ROSignal(s, fiducials):
+    features_lst = ["IPR",          # Instantaneous Pulse Rate, 60 / Tpi
+                    "Tsys/Tdia",    # The ratio of the Systolic Time to the Diastolic Time
+                    "Tpw25/Tpi",    # The ratio of the Pulse Width at 25% of the Systolic Peak Amplitude to the Pulse Interval
+                    "Tpw50/Tpi",    # The ratio of the Pulse Width at 50% of the Systolic Peak Amplitude to the Pulse Interval
+                    "Tpw75/Tpi",    # The ratio of the Pulse Width at 75% of the Systolic Peak Amplitude to the Pulse Interval
+                    "Tpw25/Tsp",    # The ratio of the Pulse Width at 25% of the Systolic Peak Amplitude to the Systolic Peak Time
+                    "Tpw50/Tsp",    # The ratio of the Pulse Width at 50% of the Systolic Peak Amplitude to the Systolic Peak Time
+                    "Tpw75/Tsp",    # The ratio of the Pulse Width at 75% of the Systolic Peak Amplitude to the Systolic Peak Time
+                    "Tdw10/Tsw10",  # The ratio of the Diastolic Width to the Systolic Width at 10% width
+                    "Tdw25/Tsw25",  # The ratio of the Diastolic Width to the Systolic Width at 25% width
+                    "Tdw33/Tsw33",  # The ratio of the Diastolic Width to the Systolic Width at 33% width
+                    "Tdw50/Tsw50",  # The ratio of the Diastolic Width to the Systolic Width at 50% width
+                    "Tdw66/Tsw66",  # The ratio of the Diastolic Width to the Systolic Width at 66% width
+                    "Tdw75/Tsw75",  # The ratio of the Diastolic Width to the Systolic Width at 75% width
+                    "Tdw90/Tsw90",  # The ratio of the Diastolic Width to the Systolic Width at 90% width
+                    "Tsp/Tpi",      # The ratio of the Systolic Peak Time to the Pulse Interval
+                    "Asp/Aoff",     # The ratio of the Systolic Peak Amplitude to the Pulse Offset Amplitude
+                    "Adp/Asp",      # Reflection Index, the ratio of the Diastolic Peak Amplitude to the Systolic Peak Amplitude
+                    "IPA",          # Inflection Point Area, the ratio of the Area Under Diastolic Curve to the Area Under Systolic Curve
+                    "Tsp/Asp",      # The ratio of the Systolic Peak Time to the Systolic Peak Amplitude
+                    "Asp/deltaT",   # Stiffness Index, the ratio of the Systolic Peak Amplitude to the Time Delay
+                    "Asp/(Tpi-Tsp)",# The ratio of the Systolic Peak Amplitude to the difference between the Pulse Interval and Systolic Peak Time
     ]
 
-    df, df_features = get_features(sig, fiducials['peaks'], fiducials['onsets'], fs, features_lst)
+    df, df_features = get_features(s, fiducials, features_lst)
 
     return df_features
 
 ###########################################################################
 ################# Get Biomarkers of 1st and 2nd Derivatives ###############
 ###########################################################################
-def get_BM_Derivatives(sig, fs, fiducials):
-    features_lst = ["a1",   # First maximum peak from 1st derivative of PPG waveform
-                    "ta1",  # Time interval from the foot of PPG waveform to the time of with a1 occurs
-                    "b1",   # First minimum peak from 1st derivative of PPG waveform
-                    "tb1",  # Time interval from the foot of PPG waveform to the time of with b1 occurs
-                    "a2",   # First maximum peak from 2nd derivative of PPG waveform
-                    "ta2",  # Time interval from the foot of PPG waveform to the time of with a2 occurs
-                    "b2",   # First minimum peak from 2nd derivative of PPG waveform
-                    "tb2",  # Time interval from the foot of PPG waveform to the time of with b2 occurs
-                    "c2",   # Second maximum peak from 2nd derivative of PPG waveform
-                    "tc2",  # Time interval from the foot of PPG waveform to the time of with b2 occurs
-                    "d2",   # Second minimum peak from 2nd derivative of PPG waveform
-                    "td2",  # Time interval from the foot of PPG waveform to the time of with d1 occurs
-                    "e2",   # Third maximum peak from 2nd derivative of PPG waveform
-                    "te2",  # Time interval from the foot of PPG waveform to the time of with b1 occurs
+def get_BM_Derivatives(s, fiducials):
+    features_lst = ["Tu",       # u-point time, the time between the pulse onset and u-point
+                    "Tv",       # v-point time, the time between the pulse onset and v-point
+                    "Tw",       # w-point time, the time between the pulse onset and w-point
+                    "Ta",       # a-point time, the time between the pulse onset and a-point
+                    "Tb",       # b-point time, the time between the pulse onset and b-point
+                    "Tc",       # c-point time, the time between the pulse onset and c-point
+                    "Td",       # d-point time, the time between the pulse onset and d-point
+                    "Te",       # e-point time, the time between the pulse onset and e-point
+                    "Tf",       # f-point time, the time between the pulse onset and f-point
+                    "Tb–c",	    # b–c interval time, the time between the b-point and c-point
+                    "Tb–d",	    # b–d interval time, the time between the b-point and d-point
+                    "Tp1",	    # p1-point time, the time between the pulse onset and p1-point
+                    "Tp2",      # p2-point time, the time between the pulse onset and p2-point
+                    "Tp1–dp",   # p1–dia interval time, the time between the p1-point and diastolic peak
+                    "Tp2–dp",   # p2–dia interval time, the time between the p2-point and diastolic peak
     ]
 
-    df, df_features = get_features(sig, fiducials['peaks'], fiducials['onsets'], fs, features_lst)
+    df, df_features = get_features(s, fiducials, features_lst)
 
     return df_features
 
@@ -135,26 +147,40 @@ def get_BM_Derivatives(sig, fs, fiducials):
 ###########################################################################
 ############### Get Ratios of 1st and 2nd derivative’s points #############
 ###########################################################################
-def get_BM_RDerivatives(sig, fs, fiducials):
-    features_lst = ["b1/a1",        # The ratio between minimum and maximum peaks of 1st PPG derivative
-                    "ta1/cp",       # Ratio between ta1 and CP
-                    "tb1/cp",       # Ratio between tb1 and CP
-                    "ta2/cp",       # Ratio between ta2 and CP
-                    "b2/a2",        # The ratio between minimum and maximum peaks of the second PPG derivative
-                    "tb2/cp",       # Ratio between tb2 and CP
-                    "c2/a2",        # The ratio between second maximum and maximum peaks of the second PPG derivative
-                    "tc2/cp",       # Ratio between tc2 and CP
-                    "d2/a2",        # The ratio between second minimum and maximum peaks of the second PPG derivative
-                    "td2/cp",       # Ratio between td2 and CP
-                    "e2/a2",        # The ratio between third maximum and maximum peaks of the second PPG derivative
-                    "te2/cp",       # Ratio between te2 and CP
-                    "(ta1-ta2)/cp", # The ratio between the interval maximum/minimum peaks of 1st derivative and CP
-                    "(tb1-tb2)/cp", # The ratio between the interval
-                    "(b2-c2-d2-e2)/a2", # Aging index of (b2-c2-d2-e2)/a2
-                    "(b2-e2)=a2"        # Aging index of (b2-e2)/a2, instead of (b2-c2-d2-e2)/a2, when the c and d waves are missing
-    ]
+def get_BM_RDerivatives(s, fiducials):
+    features_lst = ["Tu/Tpi",       # The ratio of the u-point time to the Pulse Interval
+                    "Tv/Tpi",       # The ratio of the v-point time to the Pulse Interval
+                    "Tw/Tpi",       # The ratio of the w-point time to the Pulse Interval
+                    "Ta/Tpi",       # The ratio of the a-point time to the Pulse Interval
+                    "Tb/Tpi",       # The ratio of the b-point time to the Pulse Interval
+                    "Tc/Tpi",       # The ratio of the c-point time to the Pulse Interval
+                    "Td/Tpi",       # The ratio of the d-point time to the Pulse Interval
+                    "Te/Tpi",       # The ratio of the e-point time to the Pulse Interval
+                    "Tf/Tpi",       # The ratio of the f-point time to the Pulse Interval
+                    "(Tu-Ta)/Tpi",  # The ratio of the difference between the u-point time and a-point time to the Pulse Interval
+                    "(Tv-Tb)/Tpi",  # The ratio of the difference between the v-point time and b-point time to the Pulse Interval
+                    "Au/Asp",       # The ratio of the u-point amplitude to the Systolic Peak Amplitude
+                    "Av/Au",        # The ratio of the v-point amplitude to the u-point amplitude
+                    "Aw/Au",        # The ratio of the w-point amplitude to the u-point amplitude
+                    "Ab/Aa",        # The ratio of the b-point amplitude to the a-point amplitude
+                    "Ac/Aa",        # The ratio of the c-point amplitude to the a-point amplitude
+                    "Ad/Aa",        # The ratio of the d-point amplitude to the a-point amplitude
+                    "Ae/Aa",        # The ratio of the e-point amplitude to the a-point amplitude
+                    "Af/Aa",        # The ratio of the f-point amplitude to the a-point amplitude
+                    "Ap2/Ap1",      # The ratio of the p2-point amplitude to the p1-point amplitude
+                    "(Ac-Ab)/Aa",   # The ratio of the difference between the b-point amplitude and c-point amplitude to the a-point amplitude
+                    "(Ad-Ab)/Aa",   # The ratio of the difference between the b-point amplitude and d-point amplitude to the a-point amplitude
+                    "AGI",          # Aging Index, (Ab-Ac-Ad-Ae)/Aa
+                    "AGImod",       # Modified Aging Index, (Ab-Ac-Ad)/Aa
+                    "AGIinf",       # Informal Aging Index, (Ab-Ae)/Aa
+                    "AI",           # Augmentation Index, (PPG(Tp2) − PPG(Tp1))/Asp
+                    "RIp1",         # Reflection Index of p1, Adp/(PPG(Tp1) − PPG(Tpi(0)))
+                    "RIp2",         # Reflection Index of p2, Adp/(PPG(p2) − PPG(Tpi(0)))
+                    "SC",           # Spring Constant, PPG"(Tsp)/((Asp-Au)/Asp)
+                    "IPAD",         # Inflection point area plus normalised d-point amplitude, AUCdia/AUCsys+Ad/Aa
+                     ]
 
-    df, df_features = get_features(sig, fiducials['peaks'], fiducials['onsets'], fs, features_lst)
+    df, df_features = get_features(s, fiducials, features_lst)
 
     return df_features
 
@@ -164,10 +190,14 @@ def get_BM_RDerivatives(sig, fs, fiducials):
 
 class features_extract_PPG:
 
-    def __init__(self, segment, peak_value, peak_time, next_peak_value, next_peak_time, onsets_values, onsets_times,
-                 sample_rate,list_features):
+    def __init__(self, data, peak_value, peak_time, next_peak_value, next_peak_time, onsets_values, onsets_times,
+                 sample_rate,list_features, fiducials):
         """
-        :param segment: segment of PPG timeseries to analyse and extract features as a np array
+        :param data: struct of PPG,PPG',PPG",PPG'"
+            - data.sig: segment of PPG timeseries to analyse and extract features as a np array
+            - data.d1: segment of PPG'
+            - data.d2: segment of PPG"
+            - data.d3: segment of PPG'"
         :param peak_value: PPG peak value
         :param peak_time: the time corresponding to the peak detected
         :param next_peak_value: PPG next peak value
@@ -175,10 +205,16 @@ class features_extract_PPG:
         :param onsets_values: array of PPG two onsets values surrounding the peak
         :param onsets_times: array of the two times corresponding to each onset detected
         :param sample_rate: segment data sample rate
+        :param list_features: list of features
+        :param fiducials: location of fiducial points of the given pulse wave
         """
 
+        self.fiducials=fiducials
         self.list_features=list_features
-        self.segment = segment
+        self.segment = data.sig
+        self.segment_d1 = data.d1
+        self.segment_d2 = data.d2
+        self.segment_d3 = data.d3
         self.peak_value = peak_value
         self.peak_time = peak_time
         self.next_peak_value = next_peak_value
@@ -186,93 +222,127 @@ class features_extract_PPG:
         self.onsets_values = onsets_values
         self.onsets_times = onsets_times
         self.sample_rate = sample_rate
-        self.a1, self.b1, self.Ta1, self.Tb1 = self._getFirstDerivitivePoints()
-
-        ## modified 11th of Nov. 2022
-        self.a2, self.b2, self.c2, self.d2, self.e2, self.Ta2, self.Tb2, self.Tc2, self.Td2, self.Te2 = self._getSecondDerivitivePoints()
- #       self.a2, self.b2, self.Ta2, self.Tb2 = self._getSecondDerivitivePoints()
+        self.dn, self.dp, self.Tdn, self.Tdp = self._getDicroticNotchDiastolicPeak()
+        self.u, self.v, self.w, self.Tu, self.Tv, self.Tw = self._getFirstDerivitivePoints()
+        self.a, self.b, self.c, self.d, self.e, self.f, self.Ta, self.Tb, self.Tc, self.Td, self.Te, self.Tf = self._getSecondDerivitivePoints()
+        self.p1, self.p2, self.Tp1, self.Tp2 = self._getThirdDerivitivePoints()
 
     def map_func(self):
         """ This function assign for each name of features a function that calculates it
             :returns my_funcs: a dictionary where the key is the name of the feature and
                                the value is the function to call"""
-        my_funcs = {
-                    "CP": self.getCP(),
-                   "SUT": self.getSUT(),
-                   "DT": self.getDT(),
-                   "SW10": self.getSystolicWidth_d_percent(10),
-                   "SW25": self.getSystolicWidth_d_percent(25),
-                   "SW33": self.getSystolicWidth_d_percent(33),
-                   "SW50": self.getSystolicWidth_d_percent(50),
-                   "SW66": self.getSystolicWidth_d_percent(66),
-                   "SW75": self.getSystolicWidth_d_percent(75),
-                   "SW90": self.getSystolicWidth_d_percent(90),
-                   "DW10": self.getDiastolicWidth_d_percent(10),
-                   "DW25": self.getDiastolicWidth_d_percent(25),
-                   "DW33": self.getDiastolicWidth_d_percent(33),
-                   "DW50": self.getDiastolicWidth_d_percent(50),
-                   "DW66": self.getDiastolicWidth_d_percent(66),
-                   "DW75": self.getDiastolicWidth_d_percent(75),
-                   "DW90": self.getDiastolicWidth_d_percent(90),
-                    "DW10/SW10": self.getRatioSW_DW(10),
-                    "DW25/SW25": self.getRatioSW_DW(25),
-                    "DW33/SW33": self.getRatioSW_DW(33),
-                    "DW50/SW50": self.getRatioSW_DW(50),
-                    "DW66/SW66": self.getRatioSW_DW(66),
-                    "DW75/SW75": self.getRatioSW_DW(75),
-                    "DW90/SW90": self.getRatioSW_DW(90),
-                    "SW10+DW10": self.getSumSW_DW(10),
-                    "SW25+DW25": self.getSumSW_DW(25),
-                    "SW33+DW33": self.getSumSW_DW(33),
-                    "SW50+DW50": self.getSumSW_DW(50),
-                    "SW66+DW66": self.getSumSW_DW(66),
-                    "SW75+DW75": self.getSumSW_DW(75),
-                    "SW90+DW90": self.getSumSW_DW(90),
-                    "STT": self.getSTT(),
-                    "AUCPPG": self.getAUCPPG(),
-                    "PIR": self.getPIR(),
-                    "SA": self.getSystolicPeak(),
-                    "SPT": self.getSystolicPeakTime(),
-                    "tpi": self.getTpi(),
-                    "SOC": self.getSystolicPeakOutputCurve(),
-                    "SUT/CP": self.getRatioSUTCP(),
-                    "SA/tpi-SUT": self.getRatioSysPeakTpiSysTime(),
-                    "width_25_SUT": self.getRatioWidth_SUT(25),
-                    "width_25_tpi": self.getRatioWidth_tpi(25),
-                    "width_50_SUT": self.getRatioWidth_SUT(50),
-                    "width_50_tpi": self.getRatioWidth_tpi(50),
-                    "width_75_SUT": self.getRatioWidth_SUT(75),
-                    "width_75_tpi": self.getRatioWidth_tpi(75),
-                    "a1": self.get_a1(),
-                    "ta1": self.get_ta1(),
-                    "b1": self.get_b1(),
-                    "tb1": self.get_tb1(),
-                    "a2": self.get_a2(),
-                    "ta2": self.get_ta2(),
-                    "b2": self.get_b2(),
-                    "tb2": self.get_tb2(),
-                    "c2": self.get_c2(),
-                    "tc2": self.get_tc2(),
-                    "d2": self.get_d2(),
-                    "td2": self.get_td2(),
-                    "e2": self.get_e2(),
-                    "te2": self.get_te2(),
-                    "ta1/cp": self.get_ratio_ta1_CP(),
-                    "b1/a1": self.get_ratio_a1_b1(),
-                    "tb1/cp": self.get_ratio_tb1_CP(),
-                    "ta2/cp": self.get_ratio_ta2_CP(),
-                    "b2/a2": self.get_ratio_a2_b2(),
-                    "tb2/cp": self.get_ratio_tb2_CP(),
-                    "c2/a2": self.get_ratio_a2_c2(),
-                    "tc2/cp": self.get_ratio_tc2_CP(),
-                    "d2/a2": self.get_ratio_a2_d2(),
-                    "td2/cp": self.get_ratio_td2_CP(),
-                    "e2/a2": self.get_ratio_a2_e2(),
-                    "te2/cp": self.get_ratio_te2_CP(),
-                    "(ta1-ta2)/cp": self.get_ratio_ta1_ta2_cp(),
-                    "(tb1-tb2)/cp": self.get_ratio_tb1_tb2_cp(),
-                    "(b2-c2-d2-e2)/a2": self.get_aging_index1(),
-                    "(b2-e2)=a2": self.get_aging_index1()
+        my_funcs = {"Tpi": self.getTpi(),
+                    "Tpp": self.getTpp(),
+                    "Tsys": self.getTsys(),
+                    "Tdia": self.getTdia(),
+                    "Tsp": self.getTsp(),
+                    "Tdp": self.getTdp(),
+                    "deltaT": self.get_deltaT(),
+                    "Tsw10": self.getSystolicWidth_d_percent(10),
+                    "Tsw25": self.getSystolicWidth_d_percent(25),
+                    "Tsw33": self.getSystolicWidth_d_percent(33),
+                    "Tsw50": self.getSystolicWidth_d_percent(50),
+                    "Tsw66": self.getSystolicWidth_d_percent(66),
+                    "Tsw75": self.getSystolicWidth_d_percent(75),
+                    "Tsw90": self.getSystolicWidth_d_percent(90),
+                    "Tdw10": self.getDiastolicWidth_d_percent(10),
+                    "Tdw25": self.getDiastolicWidth_d_percent(25),
+                    "Tdw33": self.getDiastolicWidth_d_percent(33),
+                    "Tdw50": self.getDiastolicWidth_d_percent(50),
+                    "Tdw66": self.getDiastolicWidth_d_percent(66),
+                    "Tdw75": self.getDiastolicWidth_d_percent(75),
+                    "Tdw90": self.getDiastolicWidth_d_percent(90),
+                    "Tpw10": self.getSumSW_DW(10),
+                    "Tpw25": self.getSumSW_DW(25),
+                    "Tpw33": self.getSumSW_DW(33),
+                    "Tpw50": self.getSumSW_DW(50),
+                    "Tpw66": self.getSumSW_DW(66),
+                    "Tpw75": self.getSumSW_DW(75),
+                    "Tpw90": self.getSumSW_DW(90),
+                    "Asp": self.getSystolicPeak(),
+                    "Adn": self.getDicroticNotchAmplitude(),
+                    "Adp": self.getDiastolicPeak(),
+                    "Aoff": self.getPulseOffsetAmplitude(),
+                    "AUCpi": self.getAUCpi(),
+                    "AUCsys": self.getAUCsys(),
+                    "AUCdia": self.getAUCdia(),
+                    "IPR": self.getIPR(),
+                    "Tsys/Tdia": self.get_ratio_Tsys_Tdia(),
+                    "Tpw25/Tpi": self.get_ratio_Tpwx_Tpi(25),
+                    "Tpw50/Tpi": self.get_ratio_Tpwx_Tpi(50),
+                    "Tpw75/Tpi": self.get_ratio_Tpwx_Tpi(75),
+                    "Tpw25/Tsp": self.get_ratio_Tpwx_Tsp(25),
+                    "Tpw50/Tsp": self.get_ratio_Tpwx_Tsp(50),
+                    "Tpw75/Tsp": self.get_ratio_Tpwx_Tsp(75),
+                    "Tdw10/Tsw10": self.get_ratio_Tdwx_Tswx(10),
+                    "Tdw25/Tsw25": self.get_ratio_Tdwx_Tswx(25),
+                    "Tdw33/Tsw33": self.get_ratio_Tdwx_Tswx(33),
+                    "Tdw50/Tsw50": self.get_ratio_Tdwx_Tswx(50),
+                    "Tdw66/Tsw66": self.get_ratio_Tdwx_Tswx(66),
+                    "Tdw75/Tsw75": self.get_ratio_Tdwx_Tswx(75),
+                    "Tdw90/Tsw90": self.get_ratio_Tdwx_Tswx(90),
+                    "Tsp/Tpi": self.get_ratio_Tsp_Tpi(),
+                    "Asp/Aoff": self.get_ratio_Asp_Aoff(),
+                    "Adp/Asp": self.get_ratio_Adp_Asp(),
+                    "IPA": self.getIPA(),
+                    "Tsp/Asp": self.get_ratio_Tsp_Asp(),
+                    "Asp/deltaT": self.get_ratio_Asp_deltaT(),
+                    "Asp/(Tpi-Tsp)": self.get_ratio_Asp_TpiTsp(),
+                    "u": self.get_u(),
+                    "v": self.get_v(),
+                    "w": self.get_v(),
+                    "a": self.get_a(),
+                    "b": self.get_b(),
+                    "c": self.get_c(),
+                    "d": self.get_d(),
+                    "e": self.get_e(),
+                    "f": self.get_f(),
+                    "Tu": self.get_Tu(),
+                    "Tv": self.get_Tv(),
+                    "Tw": self.get_Tw(),
+                    "Ta": self.get_Ta(),
+                    "Tb": self.get_Tb(),
+                    "Tc": self.get_Tc(),
+                    "Td": self.get_Td(),
+                    "Te": self.get_Te(),
+                    "Tf": self.get_Tf(),
+                    "Tb–c": self.get_Tbc(),
+                    "Tb–d": self.get_Tbd(),
+                    "Tp1": self.get_Tp1(),
+                    "Tp2": self.get_Tp2(),
+                    "Tp1–dp": self.get_Tp1_dp(),
+                    "Tp2–dp": self.get_Tp2_dp(),
+
+                    "Tu/Tpi": self.get_ratio_Tu_Tpi(),
+                    "Tv/Tpi": self.get_ratio_Tv_Tpi(),
+                    "Tw/Tpi": self.get_ratio_Tw_Tpi(),
+                    "Ta/Tpi": self.get_ratio_Ta_Tpi(),
+                    "Tb/Tpi": self.get_ratio_Tb_Tpi(),
+                    "Tc/Tpi": self.get_ratio_Tc_Tpi(),
+                    "Td/Tpi": self.get_ratio_Td_Tpi(),
+                    "Te/Tpi": self.get_ratio_Te_Tpi(),
+                    "Tf/Tpi": self.get_ratio_Tf_Tpi(),
+                    "(Tu-Ta)/Tpi": self.get_ratio_TuTa_Tpi(),
+                    "(Tv-Tb)/Tpi": self.get_ratio_TvTb_Tpi(),
+                    "Au/Asp":self.get_ratio_Au_Asp(),
+                    "Av/Au":self.get_ratio_Av_Au(),
+                    "Aw/Au":self.get_ratio_Aw_Au(),
+                    "Ab/Aa":self.get_ratio_Ab_Aa(),
+                    "Ac/Aa":self.get_ratio_Ac_Aa(),
+                    "Ad/Aa":self.get_ratio_Ad_Aa(),
+                    "Ae/Aa":self.get_ratio_Ae_Aa(),
+                    "Af/Aa":self.get_ratio_Af_Aa(),
+                    "Ap2/Ap1": self.get_ratio_Ap2_Ap1(),
+                    "(Ac-Ab)/Aa":self.get_ratio_AcAb_Aa(),
+                    "(Ad-Ab)/Aa":self.get_ratio_AdAb_Aa(),
+                    "AGI":self.getAGI(),
+                    "AGImod":self.getAGImod(),
+                    "AGIinf":self.getAGIinf(),
+                    "AI": self.getAI(),
+                    "RIp1": self.getRIp2(),
+                    "RIp2": self.getRIp2(),
+                    "SC": self.getSC(),
+                    "IPAD": self.getIPAD(),
         }
         return my_funcs
 
@@ -298,76 +368,84 @@ class features_extract_PPG:
         onsets, _ = find_peaks(-x)
         return peaks, onsets
 
-    def _getFirstDerivitivePoints(self):
-        """Calculate first derivitive points Ta1 and Tb1 from a SINGLE Onset-Onset segment of PPG
-        :return Ta1: Time from PPG onset to peak of 1st derivitive
-        :return Tb1: Time from PPG onset to onset of 1st derivitive
+    def _getDicroticNotchDiastolicPeak(self):
+        """Calculate Dicrotic Notch and Diastolic Peak of PPG
+        :return dn: Sample distance from PPG onset to the Dicrotic Notch on PPG
+        :return dp: Sample distance from PPG onset to the Diastolic Peak on PPG
+        :return Tdn: Time from PPG onset to the Dicrotic Notch on PPG
+        :return Tdp: Time from PPG onset to the Diastolic Peak on PPG
         """
 
-        ## modified 11th of Nov. 2022
-        sig = self.segment
-        kernel_size = round(self.sample_rate / 20)
-        kernel = np.ones(kernel_size) / kernel_size
-        ma_sig = np.convolve(sig, kernel, mode='same')
-        dx = np.gradient(ma_sig)
+        dn = (self.fiducials.dn-self.fiducials.os).values[0]
+        dp = (self.fiducials.dp-self.fiducials.os).values[0]
+        Tdn = dn / self.sample_rate
+        Tdp = dp / self.sample_rate
 
-        #dx = np.gradient(self.segment)
-        peaks, onsets = self._getPeaksOnsets(dx)
-        a1 = peaks[0]
-        b1 = onsets[0]
-        pa1 = dx[a1]
-        pb1 = dx[b1]
-        Ta1 = peaks[0] / self.sample_rate
-        Tb1 = onsets[0] / self.sample_rate
+        return dn, dp, Tdn, Tdp
+    def _getFirstDerivitivePoints(self):
+        """Calculate first derivitive points from a SINGLE Onset-Onset segment of PPG'
+        :return u: Sample distance from PPG onset to the greatest maximum peak between the left systolic onset and the systolic peak on PPG'
+        :return v: Sample distance from PPG onset to the lowest minimum pits between the systolic peak and the right systolic onset on PPG'
+        :return w: Sample distance from PPG onset to the first maximum peak after v on PPG'
+        :return Tu: Time from PPG onset to the greatest maximum peak between the left systolic onset and the systolic peak on PPG'
+        :return Tv: Time from PPG onset to the lowest minimum pits between the systolic peak and the right systolic onset on PPG'
+        :return Tw: Time from PPG onset to the first maximum peak after v on PPG'
+        """
 
-        return pa1, pb1, Ta1, Tb1
+        u = (self.fiducials.u-self.fiducials.os).values[0]
+        v = (self.fiducials.v-self.fiducials.os).values[0]
+        w = (self.fiducials.w - self.fiducials.os).values[0]
+        Tu = u / self.sample_rate
+        Tv = v / self.sample_rate
+        Tw = w / self.sample_rate
+
+        return u, v, w, Tu, Tv, Tw
 
     def _getSecondDerivitivePoints(self):
-        """Calculate second derivitive points Ta2 and Tb2 from a SINGLE Onset-Onset segment of PPG
-        :return Ta1: Time from PPG onset to peak of 2st derivitive
-        :return Tb1: Time from PPG onset to onset of 2st derivitive
+        """Calculate second derivitive points from a SINGLE Onset-Onset segment of PPG"
+        :return a: Sample distance from PPG onset to the first maximum peak between left systolic onset and systolic peak on PPG"
+        :return b: Sample distance from PPG onset to the first minimum pits after a on PPG"
+        :return c: Sample distance from PPG onset to the greatest maximum peak between b and e, or if no maximum peak is present then the inflection point on PPG"
+        :return d: Sample distance from PPG onset to the lowest minimum pits between c and e, or if no minimum pits is present then the inflection point on PPG"
+        :return e: Sample distance from PPG onset to the greatest maximum peak between the systolic peak and  the right systolic onset on PPG"
+        :return f: Sample distance from PPG onset to the first minimum pits after e on PPG"
+        :return Ta: Time from PPG onset to the first maximum peak between left systolic onset and systolic peak on PPG"
+        :return Tb: Time from PPG onset to the first minimum pits after a on PPG"
+        :return Tc: Time from PPG onset to the greatest maximum peak between b and e, or if no maximum peak is present then the inflection point on PPG"
+        :return Td: Time from PPG onset to the lowest minimum pits between c and e, or if no minimum pits is present then the inflection point on PPG"
+        :return Te: Time from PPG onset to the greatest maximum peak between the systolic peak and  the right systolic onset on PPG"
+        :return Tf: Time from PPG onset to the first minimum pits after e on PPG"
         """
 
-        ## modified 11th of Nov. 2022
-        sig=self.segment
-        kernel_size = round(self.sample_rate / 20)
-        kernel = np.ones(kernel_size) / kernel_size
-        ma_sig = np.convolve(sig, kernel, mode='same')
-        dx = np.gradient(ma_sig)
-        ma_dx = np.convolve(dx, kernel, mode='same')
-        ddx = np.gradient(ma_dx)
+        a = (self.fiducials.a-self.fiducials.os).values[0]
+        b = (self.fiducials.b-self.fiducials.os).values[0]
+        c = (self.fiducials.c-self.fiducials.os).values[0]
+        d = (self.fiducials.d-self.fiducials.os).values[0]
+        e = (self.fiducials.e-self.fiducials.os).values[0]
+        f = (self.fiducials.f-self.fiducials.os).values[0]
+        Ta = a / self.sample_rate
+        Tb = b / self.sample_rate
+        Tc = c / self.sample_rate
+        Td = d / self.sample_rate
+        Te = e / self.sample_rate
+        Tf = f / self.sample_rate
 
-        #dx = np.gradient(self.segment)
-        #ddx = np.gradient(dx)
-        peaks, onsets = self._getPeaksOnsets(ddx)
-        a2 = peaks[0]
-        b2 = onsets[0]
-        pa2 = ddx[a2]
-        pb2 = ddx[b2]
-        Ta2 = peaks[0] / self.sample_rate
-        Tb2 = onsets[0] / self.sample_rate
+        return a, b, c, d, e, f, Ta, Tb, Tc, Td, Te, Tf
 
-        ## modified 11th of Nov. 2022
-        c2 = peaks[1]
-        d2 = onsets[1]
-        pc2 = ddx[c2]
-        pd2 = ddx[d2]
-        Tc2 = peaks[1] / self.sample_rate
-        Td2 = onsets[1] / self.sample_rate
+    def _getThirdDerivitivePoints(self):
+        """Calculate third derivitive points from a SINGLE Onset-Onset segment of PPG'"
+        :return p1: Sample distance from PPG onset to the first local maximum after b on PPG'"
+        :return p2: Sample distance from PPG onset to the last local minimum before d, if c = d, then the first local minimum after d on PPG'"
+        :return Tp1: Time from PPG onset to the first local maximum after b on PPG'"
+        :return Tp2: Time from PPG onset to last local minimum before d, if c = d, then the first local minimum after d on PPG'"
+        """
 
-        if len(peaks)>2:
-            e2 = peaks[2]
-            pe2 = ddx[e2]
-            Te2 = peaks[2] / self.sample_rate
-        else:
-            e2 = peaks[1]
-            pe2 = ddx[e2]
-            Te2 = peaks[1] / self.sample_rate
+        p1 = (self.fiducials.p1-self.fiducials.os).values[0]
+        p2 = (self.fiducials.p2-self.fiducials.os).values[0]
+        Tp1 = p1 / self.sample_rate
+        Tp2 = p2 / self.sample_rate
 
-        return pa2, pb2, pc2, pd2, pe2,Ta2, Tb2, Tc2, Td2, Te2
-        #return pa2, pb2, Ta2, Tb2
-        ##
-
+        return p1, p2, Tp1, Tp2
     def _find_nearest(self, arr, value):
         """ This function calculates the index in an array of the closest value to the arg value
             :param arr: the array where to find the index
@@ -436,63 +514,698 @@ class features_extract_PPG:
         cst = right_onset_value - left_onset_value
         return cst
 
-    def getCP(self):
-        """ CP means cardiac period and is the time difference between two peaks in a PPG waveform
-            :return  CP feature:
+    def getTpi(self):
+        """ Tpi which means the Pulse Interval,
+            the time between the pulse onset and pulse offset.
+            :return Tpi feature:
+        """
+        return self.onsets_times[1] - self.onsets_times[0]
+    def getTpp(self):
+        """ Tpp means the Peak-to-Peak Interval,
+            the time between two consecutive systolic peaks.
+            :return  Tpp feature:
         """
         cardiac_period = self.next_peak_time - self.peak_time
         return cardiac_period
 
+    def getTsys(self):
+        """ Tsys means the Systolic Time,
+            the time between the pulse onset and dicrotic notch.
+        :return Tsys feature:
+        """
 
-    def getSUT(self):
-        """ SUT means systolic upslope time and is the time difference between a peak and its left onset in a PPG waveform
-        :return SUT feature:
+        Tsys = self.Tdn
+        return Tsys
+
+    def getTdia(self):
+        """ Tdia means the Diastolic Time,
+            the time between the dicrotic notch and pulse offset.
+        :return Tdia feature:
+        """
+
+        Tdia = self.getTpi()-self.Tdp
+        return Tdia
+
+    def getTsp(self):
+        """ Tsp means the Systolic Peak Time,
+            the time between the pulse onset and systolic peak.
+        :return Tsp feature:
         """
         left_onset = self.onsets_times[0]
-        sut = self.peak_time - left_onset
-        return sut
+        Tsp = self.peak_time - left_onset
+        return Tsp
 
-    def getDT(self):
-        """ DT which means diastolic time is the time difference between a peak and its right onset in a PPG waveform
-            :return DT feature:
+    def getTdp(self):
+        """ Tdp means the Diastolic Peak Time,
+            the time between the pulse onset and diastolic peak.
+        :return Tdp feature:
         """
-        right_onset = self.onsets_times[1]
-        dt = right_onset - self.peak_time
-        return dt
 
+        Tdp = self.Tdp
+        return Tdp
+
+    def get_deltaT(self):
+        """ deltaT means the Time Delay,
+            the time between the systolic peak and diastolic peak.
+        :return deltaT feature:
+        """
+
+        deltaT = self.Tdp-self.getTsp()
+        return deltaT
 
     def getSystolicWidth_d_percent(self, d):
-        """ SW which means systolic width calculates the width of PPG waveform at d percent of the oulse height
-            :return SW_d feature:
+        """ The function calculates the Systolic Width,
+            the width at x% of the Systolic Peak Amplitude between the pulse onset and systolic peak.
+            :param d: the percentage chosen to calculate the width
+            :return Tswx feature:
         """
         # value in segment corresponding to d percent of pulse height
         d_percent_val = (d/100)*(self.peak_value - self.onsets_values[0]) + self.onsets_values[0]
         time_of_d = self._getSysTime_from_val(d_percent_val)
-        sw_d = self.peak_time - (time_of_d/self.sample_rate)
-        return sw_d
+        Tswx = self.peak_time - (time_of_d/self.sample_rate)
+        return Tswx
 
 
     def getDiastolicWidth_d_percent(self, d):
-        """ DW which means diastolic width calculates the width of PPG waveform at d percent of the pulse height
+        """ The function calculates the Diastolic Width,
+            the width at x% of the Systolic Peak Amplitude between the systolic peak and pulse offset.
             :param d: the percentage chosen to calculate the width
-            :return DW_d feature:
+            :return Tdwx feature:
         """
         # value in segment corresponding to d percent of pulse height
         d_percent_val = (d/100)*(self.peak_value - self.onsets_values[1]) + self.onsets_values[1]
         time_of_d = self._getDiaTime_from_val(d_percent_val)
-        dw_d = (time_of_d/self.sample_rate) - self.peak_time
-        return dw_d
+        Tdwx = (time_of_d/self.sample_rate) - self.peak_time
+        return Tdwx
 
     def getSumSW_DW(self, d):
-        """ The function calculates the sum of systolic and diastolic width at d percent of the pulse height
+        """ The function calculates Pulse Width,
+            the sum of the Systolic Width and Diastolic Width at x%.
             :param d: the percentage chosen to calculate the width
-            :return sum feature:
+            :return Tpwx feature:
         """
-        sw_d = self.getSystolicWidth_d_percent(d)
-        dw_d = self.getDiastolicWidth_d_percent(d)
-        return sw_d + dw_d
+        Tswx = self.getSystolicWidth_d_percent(d)
+        Tdwx = self.getDiastolicWidth_d_percent(d)
+        return Tswx + Tdwx
+
+    def getSystolicPeak(self):
+        """ The function calculates the Systolic Peak Amplitude,
+            the difference in amplitude between the pulse onset and systolic peak.
+            :return Systolic Peak Amplitude feature:
+        """
+        sys_peak = self.peak_value - self.onsets_values[0]
+        return sys_peak
+    def getDicroticNotchAmplitude(self):
+        """ The function calculates the Dicrotic Notch Amplitude,
+            the difference in amplitude between the pulse onset and the dicrotic notch.
+            :return Dicrotic Notch Amplitude feature:
+        """
+        dn_value = self.segment[self.dn]
+        dn_amp = dn_value - self.onsets_values[0]
+        return dn_amp
+
+    def getDiastolicPeak(self):
+        """ The function calculates the Diastolic Peak Amplitude,
+            the difference in amplitude between the pulse onset and the diastolic peak.
+            :return Diastolic Peak Amplitude feature:
+        """
+        ## temp solution 04/04/2023 --> if DN==DP
+        dp_value = self.segment[self.dp+20]
+        dia_peak = dp_value - self.onsets_values[0]
+        return dia_peak
+
+    def getPulseOffsetAmplitude(self):
+        """ The function calculates the Pulse Offset Amplitude,
+            the difference in amplitude between the pulse onset and pulse offset.
+            :return Pulse Offset Amplitude feature:
+        """
+
+        offset_value = self.onsets_values[1]
+        Aoff = offset_value - self.onsets_values[0]
+        return Aoff
+
+    def getAUCpi(self):
+        """ The function the Area Under Pulse Interval Curve,
+            the area under the pulse wave between pulse onset and pulse offset.
+            :return AUCpi feature:
+        """
+        left_onset_time = self.onsets_times[0]*self.sample_rate
+        right_onset_time = self.onsets_times[1]*self.sample_rate
+        baseline_shift_slope = self._getBaselineSlope()
+        baseline_cst = self._getBaselineCst()
+        vec_value_between_ons = self.segment
+        num_t = len(vec_value_between_ons)
+        baseline = baseline_shift_slope*self.peak_time*self.sample_rate + baseline_cst
+        sum = 0
+        for t in range(0, num_t):
+            sum += vec_value_between_ons[t] - baseline_shift_slope*((t+left_onset_time)) + baseline_cst
+        AUCpi = 10*sum/((self.peak_value - baseline) * (right_onset_time - left_onset_time))
+
+        return AUCpi
+
+    def getAUCsys(self):
+        """ The function calculates the Area Under Systolic Curve,
+            the area under the pulse wave between the pulse onset and dicrotic notch.
+            :return AUCsys feature:
+        """
+        left_onset_time = self.onsets_times[0]*self.sample_rate
+        right_onset_time = self.onsets_times[1]*self.sample_rate
+        baseline_shift_slope = self._getBaselineSlope()
+        baseline_cst = self._getBaselineCst()
+        vec_value_between_ons = self.segment
+        num_t = self.dn
+        baseline = baseline_shift_slope*self.peak_time*self.sample_rate + baseline_cst
+        sum = 0
+        for t in range(0, num_t):
+            sum += vec_value_between_ons[t] - baseline_shift_slope*((t+left_onset_time)) + baseline_cst
+        AUCsys = 10*sum/((self.peak_value - baseline) * (right_onset_time - left_onset_time))
+
+        return AUCsys
+
+    def getAUCdia(self):
+        """ The function calculates Area Under Diastolic Curve,
+            the area under the pulse wave between the dicrotic notch and pulse offset.
+            :return AUCdia feature:
+        """
+        AUCdia = self.getAUCpi()-self.getAUCsys()
+        return AUCdia
+
+    def getIPR(self):
+        """ The function calculates the Instantaneous Pulse Rate, 60/CP.
+            :return IPR feature:
+        """
+        IPR = 60/self.getTpp()
+        return IPR
+
+    def get_ratio_Tsys_Tdia(self):
+        """ The function calculates the ratio of the Systolic Time to the Diastolic Time.
+            :return Tsys/Tdia feature:
+        """
+        Tsys_Tdia = self.getTsys()/self.getTdia()
+        return Tsys_Tdia
+
+    def get_ratio_Tpwx_Tpi(self, d):
+        """ The function calculates the ratio of the Pulse Width at x% of the Systolic Peak Amplitude to the Systolic Peak Time.
+            :param d: the percentage chosen to calculate the width
+            :return The ratio of the Tpi to the Pulse Width feature:
+        """
+        sys_width = self.getSystolicWidth_d_percent(d)
+        dia_width = self.getDiastolicWidth_d_percent(d)
+        width = sys_width + dia_width
+        Tpi = self.getTpi()
+        return width/Tpi
+
+    def get_ratio_Tpwx_Tsp(self, d):
+        """ The function calculates the ratio of the Pulse Width at x% of the Systolic Peak Amplitude to the Systolic Peak Time.
+            :param d: the percentage chosen to calculate the width
+            :return Tpwx/Tsp feature:
+        """
+        Tswx = self.getSystolicWidth_d_percent(d)
+        Tdwx = self.getDiastolicWidth_d_percent(d)
+        Tpwx = Tswx + Tdwx
+        Tsp = self.getSystolicPeakTime()
+        return Tpwx/Tsp
+
+    def get_ratio_Tdwx_Tswx(self, d):
+        """ The function calculates the ratio of the Diastolic Width to the Systolic Width at x% width.
+            :param d: the percentage chosen to calculate the width
+            :return Tdwx/Tswx feature:
+        """
+        Tswx = self.getSystolicWidth_d_percent(d)
+        Tdwx = self.getDiastolicWidth_d_percent(d)
+        return Tdwx/Tswx
+
+    def get_ratio_Tsp_Tpi(self):
+        """ The function calculates the ratio of the Systolic Peak Time to the Pulse Interval
+            :return Tsp/Tpi feature:
+        """
+        Tsp = self.getSystolicPeakTime()
+        Tpi = self.getTpi()
+        return Tsp/Tpi
+
+    def get_ratio_Asp_Aoff(self):
+        """ The function calculates the ratio of the Systolic Peak Time to the Pulse Interval
+            :return Asp/Aoff feature:
+        """
+        Asp = self.getSystolicPeak()
+        Aoff = self.onsets_values[1]
+        return Asp/Aoff
+
+    def get_ratio_Adp_Asp(self):
+        """ The function calculates Reflection Index,
+            the ratio of the Diastolic Peak Amplitude to the Systolic Peak Amplitude.
+            :return Reflection Index feature:
+        """
+        RI = self.getDiastolicPeak()/self.getSystolicPeak()
+        return RI
+    def getIPA(self):
+        """ The function calculates the Inflection Point Area,
+            the ratio of the Area Under Diastolic Curve to the Area Under Systolic Curve.
+            :return IPA feature:
+        """
+        IPA = self.getAUCdia()/self.getAUCsys()
+        return IPA
+
+    def get_ratio_Tsp_Asp(self):
+        """ The function calculates the ratio of the Systolic Peak Time to the Systolic Peak Amplitude.
+            :return Tsp/Asp feature:
+        """
+
+        return self.getTsp()/self.getSystolicPeak()
+    def get_ratio_Asp_deltaT(self):
+        """ The function calculates the Stiffness Index,
+            the ratio of the Systolic Peak Amplitude to the Time Delay.
+            :return Stiffness Index feature:
+        """
+        SI = self.getSystolicPeak()/(self.getTdp()-self.getTsp())
+        return SI
+
+    def get_ratio_Asp_TpiTsp(self):
+        """ The function calculates the ratio of the Systolic Peak Amplitude to the difference between the Pulse Interval and Systolic Peak Time.
+            :return Asp/(Tpi-Tsp):
+        """
+        Tpi = self.getTpi()
+        Tsp = self.getSystolicPeakTime()
+        Asp = self.getSystolicPeak()
+        return Asp/(Tpi-Tsp)
 
 
+    def get_u(self):
+        """ u means the u-point sample,
+            the sample between the pulse onset and u-point.
+            :return u feature:
+        """
+        return self.u
+
+
+    def get_v(self):
+        """ v means the v-point sample,
+            the sample between the pulse onset and v-point.
+            :return v feature:
+        """
+        return self.v
+
+    def get_w(self):
+        """ w means the w-point sample,
+            the sample between the pulse onset and w-point.
+            :return w feature:
+        """
+        return self.w
+
+    def get_a(self):
+        """ a means the a-point sample,
+            the sample between the pulse onset and a-point.
+            :return a feature:
+        """
+        return self.a
+
+    def get_b(self):
+        """ b means the b-point sample,
+            the sample between the pulse onset and b-point.
+            :return b feature:
+        """
+        return self.b
+
+    def get_c(self):
+        """ c means the c-point sample,
+            the sample between the pulse onset and c-point.
+            :return c feature:
+        """
+        return self.c
+
+    def get_d(self):
+        """ d means the d-point sample,
+            the sample between the pulse onset and d-point.
+            :return d feature:
+        """
+        return self.d
+
+    def get_e(self):
+        """ e means the e-point sample,
+            the sample between the pulse onset and e-point.
+            :return e feature:
+        """
+        return self.e
+
+    def get_f(self):
+        """ f means the f-point sample,
+            the sample between the pulse onset and f-point.
+            :return f feature:
+        """
+        return self.f
+
+    def get_Tu(self):
+        """ Tu means the u-point time,
+            the time between the pulse onset and u-point.
+            :return Tu feature
+        """
+        return self.Tu
+
+    def get_Tv(self):
+        """ Tv means the v-point time,
+            the time between the pulse onset and v-point.
+            :return Tv feature:
+        """
+        return self.Tv
+
+    def get_Tw(self):
+        """ Tw means the v-point time,
+            the time between the pulse onset and w-point.
+            :return Tw feature:
+        """
+        return self.Tw
+
+    def get_Ta(self):
+        """ Ta means the a-point time,
+            the time between the pulse onset and a-point.
+            :return Ta feature:
+        """
+        return self.Ta
+
+    def get_Tb(self):
+        """ Tb means the b-point time,
+            the time between the pulse onset and b-point.
+            :return Tb feature:
+        """
+        return self.Tb
+
+    def get_Tc(self):
+        """ Tc means the c-point time,
+            the time between the pulse onset and c-point.
+            :return Tb feature:
+        """
+        return self.Tc
+
+    def get_Td(self):
+        """ Td means the d-point time,
+            the time between the pulse onset and d-point.
+            :return Td feature:
+        """
+        return self.Td
+
+
+    def get_Te(self):
+        """ Te means the e-point time,
+            the time between the pulse onset and e-point.
+            :return Te feature:
+        """
+        return self.Te
+
+    def get_Tf(self):
+        """ Tf means the f-point time,
+            the time between the pulse onset and f-point.
+            :return Tf feature:
+        """
+        return self.Tf
+
+    def get_Tbc(self):
+        """ Tbc means the b–c time,
+            the time between the b-point and c-point.
+            :return Tbc feature:
+        """
+        return self.Tc-self.Tb
+
+    def get_Tbd(self):
+        """ Tbd means the b–d time,
+            the time between the b-point and d-point.
+            :return Tbd feature:
+        """
+        return self.Td - self.Tb
+
+    def get_Tp1(self):
+        """ Tp1 means the p1-point time,
+            the time between the pulse onset and p1-point.
+            :return Tp1 feature:
+        """
+        return self.Tp1
+
+    def get_Tp2(self):
+        """ Tp2 means the p1-point time,
+            the time between the pulse onset and p2-point.
+            :return Tp2 feature:
+        """
+        return self.Tp2
+
+    def get_Tp1_dp(self):
+        """ The function calculatesthe p1–dia time,
+            the time between the p1-point and diastolic peak.
+            :return Tdia-Tp1 feature:
+        """
+        Tp1_dia=(self.dp-self.p1)/self.sample_rate
+        return Tp1_dia
+
+    def get_Tp2_dp(self):
+        """ The function calculatesthe p2–dia time,
+            the time between the p2-point and diastolic peak.
+            :return Tdia-Tp2 feature:
+        """
+        Tp2_dia=(self.dp-self.p2)/self.sample_rate
+        return Tp2_dia
+
+
+    def get_ratio_Tu_Tpi(self):
+        """ The function calculates the ratio of the u-point time to the Pulse Interval.
+            :return Tu/Tpi feature:
+        """
+        T1 = self.get_Tu()
+        return T1 / self.getTpp()
+
+
+    def get_ratio_Tv_Tpi(self):
+        """ The function calculates the ratio of the v-point time to the Pulse Interval.
+            :return Tv/Tpi feature:
+        """
+        Tv = self.get_Tv()
+        return Tv / self.getTpp()
+
+    def get_ratio_Tw_Tpi(self):
+        """ The function calculates the ratio of the w-point time to the Pulse Interval.
+            :return Tw/Tpi feature:
+        """
+        Tw = self.get_Tw()
+        return Tw / self.getTpp()
+
+    def get_ratio_Ta_Tpi(self):
+        """ The function calculates the ratio of the a-point time to the Pulse Interval.
+            :return Ta/Tpi feature:
+        """
+        Ta = self.get_Ta()
+        return Ta / self.getTpp()
+
+    def get_ratio_Tb_Tpi(self):
+        """ The function calculates the ratio of the b-point time to the Pulse Interval.
+            :return Tb/Tpi feature:
+        """
+        Tb = self.get_Tb()
+        return Tb / self.getTpp()
+
+    def get_ratio_Tc_Tpi(self):
+        """ The function calculates the ratio of the c-point time to the Pulse Interval.
+            :return Tc/Tpi feature:
+        """
+        Tc = self.get_Tc()
+        return Tc / self.getTpp()
+
+    def get_ratio_Td_Tpi(self):
+        """ The function calculates the ratio of the d-point time to the Pulse Interval.
+            :return Td/Tpi feature:
+        """
+        Td = self.get_Td()
+        return Td / self.getTpp()
+
+    def get_ratio_Te_Tpi(self):
+        """ The function calculates the ratio of the e-point time to the Pulse Interval.
+            :return Te/Tpi feature:
+        """
+        Te = self.get_Te()
+        return Te / self.getTpp()
+
+    def get_ratio_Tf_Tpi(self):
+        """ The function calculates the ratio of the f-point time to the Pulse Interval.
+            :return Tf/Tpi feature:
+        """
+        Tf = self.get_Tf()
+        return Tf / self.getTpp()
+
+    def get_ratio_TuTa_Tpi(self):
+        """ The function calculates the ratio of the difference between the u-point time and a-point time to the Pulse Interval.
+            :return (Tu-Ta)/Tpi feature:
+        """
+        Ta = self.get_Ta()
+        Tu = self.get_Tu()
+        Tpi = self.getTpi()
+        return (Tu - Ta) / Tpi
+
+    def get_ratio_TvTb_Tpi(self):
+        """ The function calculates the ratio of the difference between the v-point time and b-point time to the Pulse Interval.
+            :return (Tv-Tb)/Tpi:
+        """
+        Tb = self.get_Tb()
+        Tv = self.get_Tv()
+        Tpi = self.getTpi()
+        return (Tv-Tb)/Tpi
+
+    def get_ratio_Au_Asp(self):
+        """ This function calculates the ratio of the u-point amplitude to the Systolic Peak Amplitude.
+            :return Au/Asp feature:
+        """
+        u_max = self.segment_d1[self.get_u()]
+        sp_amp = self.peak_value
+        return u_max / sp_amp
+
+    def get_ratio_Av_Au(self):
+        """ This function calculates the ratio of the v-point amplitude to the u-point amplitude.
+            :return Av/Au feature:
+        """
+        u_max = self.segment_d1[self.get_u()]
+        v_min = self.segment_d1[self.get_v()]
+        return v_min / u_max
+
+    def get_ratio_Aw_Au(self):
+        """ This function calculates the ratio of the w-point amplitude to the u-point amplitude.
+            :return Aw/Au feature:
+        """
+        u_max = self.segment_d1[self.get_u()]
+        w_max = self.segment_d1[self.get_w()]
+        return w_max / u_max
+
+    def get_ratio_Ab_Aa(self):
+        """ This function calculates the ratio of the b-point amplitude to the a-point amplitude.
+            :return Ab/Aa feature:
+        """
+        a_max = self.segment_d2[self.get_a()]
+        b_min = self.segment_d2[self.get_b()]
+        return b_min / a_max
+
+    def get_ratio_Ac_Aa(self):
+        """ This function calculates the ratio of the c-point amplitude to the a-point amplitude.
+            :return Ac/Aa feature:
+        """
+        a_max = self.segment_d2[self.get_a()]
+        c_max = self.segment_d2[self.get_c()]
+        return c_max / a_max
+
+    def get_ratio_Ad_Aa(self):
+        """ This function calculates the ratio of the d-point amplitude to the a-point amplitude.
+            :return Ad/Aa feature:
+        """
+        a_max = self.segment_d2[self.get_a()]
+        d_min = self.segment_d2[self.get_d()]
+        return d_min / a_max
+
+    def get_ratio_Ae_Aa(self):
+        """ This function calculates the ratio of the e-point amplitude to the a-point amplitude.
+            :return Ae/Aa feature:
+        """
+        a_max = self.segment_d2[self.get_a()]
+        e_max = self.segment_d2[self.get_e()]
+        return e_max / a_max
+
+    def get_ratio_Af_Aa(self):
+        """ This function calculates the ratio of the f-point amplitude to the a-point amplitude.
+            :return Af/Aa feature:
+        """
+        a_max = self.segment_d2[self.get_a()]
+        f_min = self.segment_d2[self.get_f()]
+        return f_min / a_max
+
+    def get_ratio_Ap2_Ap1(self):
+        """ The function calculates the ratio of the p2-point amplitude to the p1-point amplitude.
+            :return Ap2/Ap1 feature:
+        """
+        Rp2p1 = self.segment[self.p2]/self.segment[self.p1]
+        return Rp2p1
+
+    def get_ratio_AcAb_Aa(self):
+        """ The function calculates the ratio of the difference between the b-point amplitude and c-point amplitude to the a-point amplitude.
+            :return (Ac-Ab)/Aa feature:
+        """
+        Aa = self.segment_d2[self.get_a()]
+        Ab = self.segment_d2[self.get_b()]
+        Ac = self.segment_d2[self.get_c()]
+        return (Ac-Ab)/Aa
+
+    def get_ratio_AdAb_Aa(self):
+        """ The function calculates the ratio of the difference between the b-point amplitude and d-point amplitude to the a-point amplitude.
+            :return (Ad-Ab)/Aa feature:
+        """
+        Aa = self.segment_d2[self.get_a()]
+        Ab = self.segment_d2[self.get_b()]
+        Ad = self.segment_d2[self.get_d()]
+        return (Ad-Ab)/Aa
+
+    def getAGI(self):
+        """ The function calculates the Aging Index.
+            :return (Ab-Ac-Ad-Ae)/Aa feature:
+        """
+        Aa = self.segment_d2[self.get_a()]
+        Ab = self.segment_d2[self.get_b()]
+        Ac = self.segment_d2[self.get_c()]
+        Ad = self.segment_d2[self.get_d()]
+        Ae = self.segment_d2[self.get_e()]
+        return (Ab-Ac-Ad-Ae)/Aa
+
+    def getAGImod(self):
+        """ The function calculates the Modified Aging Index.
+            :return (Ab-Ac-Ad)/Aa feature:
+        """
+        Aa = self.segment_d2[self.get_a()]
+        Ab = self.segment_d2[self.get_b()]
+        Ac = self.segment_d2[self.get_c()]
+        Ad = self.segment_d2[self.get_d()]
+        return (Ab-Ac-Ad)/Aa
+
+    def getAGIinf(self):
+        """ The function calculates the Informal Aging Index.
+            :return (Ab-Ae)/Aa feature:
+        """
+        Aa = self.segment_d2[self.get_a()]
+        Ab = self.segment_d2[self.get_b()]
+        Ae = self.segment_d2[self.get_e()]
+        return (Ab-Ae)/Aa
+
+    def getAI(self):
+        """ The function calculates the Augmentation Index,
+            (PPG(Tp2) − PPG(Tp1))/Asp.
+            :return AI feature:
+        """
+        AI = (self.segment[self.p2]-self.segment[self.p1])/self.peak_value
+        return AI
+
+    def getRIp1(self):
+        """ The function calculates the Reflection Index of p1,
+            Adp/(PPG(Tp1) − PPG(Tpi(0))).
+            :return RIp1 feature:
+        """
+        RIp1 = self.getDiastolicPeak()/self.segment[self.p1]
+        return RIp1
+
+    def getRIp2(self):
+        """ The function calculates the Reflection Index of p2,
+            Adp/(PPG(Tp2) − PPG(Tpi(0))).
+            :return RIp2 feature:
+        """
+        RIp2 = self.getDiastolicPeak()/self.segment[self.p2]
+        return RIp2
+
+    def getSC(self):
+        """ The function calculates the Spring Constant,
+            PPG"(Tsp)/((Asp-Au)/Asp).
+            :return SC feature:
+        """
+        ddxSPA=self.segment_d2[(self.getTsp()*self.sample_rate).astype(int)]
+        SPA=self.getSystolicPeak()
+        MS=self.segment[self.u]
+        SC = ddxSPA/((SPA-MS)/SPA)
+        return SC
+
+    def getIPAD(self):
+        """ The function calculates the Inflection point area plus normalised d-point amplitude,
+            AUCdia/AUCsys+Ad/Aa.
+            :return IPAD feature:
+        """
+        IPAD = self.getAUCdia()/self.getAUCsys()+self.get_ratio_Ad_Aa()
+        return IPAD
     def getRatioSW_DW(self, d):
         """ The function calculates the ratio of systolic and diastolic width at d percent of the pulse height
             :param d: the percentage chosen to calculate the width
@@ -510,24 +1223,12 @@ class features_extract_PPG:
         pir = self.peak_value/self.onsets_values[1]
         return pir
 
-
-    def getAUCPPG(self):
-        """ The function calculates the area under the curve of a PPG waveform
-            :return aucppg feature:
+    def getMS(self):
+        """ The function calculates Maximum slope, PPG'(u)/(PPG(systolic peak) − PPG(systolic onset))
+            :return MS feature:
         """
-        left_onset_time = self.onsets_times[0]*self.sample_rate
-        right_onset_time = self.onsets_times[1]*self.sample_rate
-        baseline_shift_slope = self._getBaselineSlope()
-        baseline_cst = self._getBaselineCst()
-        vec_value_between_ons = self.segment
-        num_t = len(vec_value_between_ons)
-        baseline = baseline_shift_slope*self.peak_time*self.sample_rate + baseline_cst
-        sum = 0
-        for t in range(0, num_t):
-            sum += vec_value_between_ons[t] - baseline_shift_slope*((t+left_onset_time)) + baseline_cst
-        AUCPPG_peak_sum_mod = 10*sum/((self.peak_value - baseline) * (right_onset_time - left_onset_time))
-        # AUCPPG_peak_sum = sum
-        return AUCPPG_peak_sum_mod
+        MS = self.segment_d1[self.u]
+        return MS
 
     def getUpslope(self):
         """ The function calculates Systolic Upslope between the left onset and the systolic peak.
@@ -556,13 +1257,6 @@ class features_extract_PPG:
         A = self.getdiffVal()
         return A/upslope
 
-    def getSystolicPeak(self):
-        """ The function calculates the Systolic Peak Amplitude.
-            :return Systolic Peak Amplitude feature:
-        """
-        sys_peak = self.peak_value - self.onsets_values[0]
-        return sys_peak
-
     def getSystolicPeakTime(self):
         """ Systolic Peak Time means the distance between the consecutive Systolic Peaks
              :return Systolic Peak Times:
@@ -575,279 +1269,33 @@ class features_extract_PPG:
         sys_amplitude = self.getSystolicPeak()
         return sys_peak_time/sys_amplitude
 
-    def getTpi(self):
-        """ Tpi which means the time between the two onsets of the PPG systolic peak.
-            :return Tpi feature:
+    def getAGIext(self):
+        """ The function calculates the Extended Aging Index.
+            :return (Ab-Ac-Ad-Ae-Af)/Aa feature:
         """
-        return self.onsets_times[1] - self.onsets_times[0]
-
-
-    def getRatioSUTCP(self):
-        """ t1/cp is ratio between SUT and CP.
-            :return t1/cp feature:
-        """
-        t1 = self.getSystolicPeakTime()
-        cp = self.getCP()
-        # print(cp)
-        return t1/cp
-
-
-    def getRatioSysPeakTpiSysTime(self):
-        """ The function calculates the ratio of Systolic Peak Amplitude and the difference between Tpi and SUT.
-            :return SA/(Tpi-SUT):
-        """
-        tpi = self.getTpi()
-        t1 = self.getSystolicPeakTime()
-        sys_peak = self.getSystolicPeak()
-        return sys_peak/(tpi-t1)
-
-    def getRatioWidth_tpi(self, d):
-        """ The function calculates the ratio of Systolic+Diastolic width at d percent of the pulse height and Tpi.
-            :param d: the percentage chosen to calculate the width
-            :return Systolic+Diastolic width and Tpi ratio:
-        """
-        sys_width = self.getSystolicWidth_d_percent(d)
-        dia_width = self.getDiastolicWidth_d_percent(d)
-        width = sys_width + dia_width
-        tpi = self.getTpi()
-        return width/tpi
-
-    def getRatioWidth_SUT(self, d):
-        """ The function calculates the ratio of Systolic+Diastolic width at d percent of the pulse height and Systolic Peak Time.
-            :param d: the percentage chosen to calculate the width
-            :return Systolic+Diastolic width and Systolic Peak Time ratio:
-        """
-        sys_width = self.getSystolicWidth_d_percent(d)
-        dia_width = self.getDiastolicWidth_d_percent(d)
-        width = sys_width + dia_width
-        t1 = self.getSystolicPeakTime()
-        return width/t1
-
-    def get_a1(self):
-        """ The a1 means the first maximum peak from 1st derivative of PPG waveform.
-            :return a1 feature:
-        """
-        return self.a1
-
-    def get_ta1(self):
-        """ The Ta1 means the time interval from the foot of PPG waveform to the time of with a1 occurs.
-            :return Ta1 feature:
-        """
-        return self.Ta1
-
-    def get_b1(self):
-        """ The b1 means the first minimum peak from 1st derivative of PPG waveform.
-            :return b1 feature:
-        """
-        return self.b1
-
-    def get_tb1(self):
-        """ The Tb1 means the time interval  from the foot of PPG waveform to the time of with b1 occurs.
-            :return Tb1 feature:
-        """
-        return self.Tb1
-
-    def get_a2(self):
-        """ The a2 means the first maximum peak from 2nd derivative of PPG waveform.
-            :return a2 feature:
-        """
-        return self.a2
-
-    def get_ta2(self):
-        """ Ta2 means the time interval from the foot of PPG waveform to the time of with a1 occurs.
-            :return Ta2 feature:
-        """
-        return self.Ta2
-
-    def get_b2(self):
-        """ The b2 means the first minimum peak from 2nd derivative of PPG waveform.
-            :return b2 feature:
-        """
-        return self.b2
-
-    def get_tb2(self):
-        """ Tb2 means the time interval from the foot of PPG waveform to the time of with b1 occurs.
-            :return Tb2 feature:
-        """
-        return self.Tb2
-
-    def get_c2(self):
-        """ The c2 means the first minimum peak from 2nd derivative of PPG waveform.
-            :return c2 feature:
-        """
-        return self.c2
-
-    def get_tc2(self):
-        """ Tc2 means the time interval from the foot of PPG waveform to the time of with b1 occurs.
-            :return Tb2 feature:
-        """
-        return self.Tc2
-
-    def get_d2(self):
-        """ The d2 means the first minimum peak from 2nd derivative of PPG waveform.
-            :return b2 feature:
-        """
-        return self.d2
-
-    def get_td2(self):
-        """ Td2 means the time interval from the foot of PPG waveform to the time of with b1 occurs.
-            :return Td2 feature:
-        """
-        return self.Td2
-
-    def get_e2(self):
-        """ The e2 means the first minimum peak from 2nd derivative of PPG waveform.
-            :return e2 feature:
-        """
-        return self.e2
-
-    def get_te2(self):
-        """ Te2 means the time interval from the foot of PPG waveform to the time of with b1 occurs.
-            :return Te2 feature:
-        """
-        return self.Te2
-
-    def get_ratio_ta1_CP(self):
-        """ The function calculates the ratio of Ta1 and CP.
-            :return Ta1 and CP ratio:
-        """
-        t1 = self.get_ta1()
-        return t1 / self.getCP()
-
-    def get_ratio_a1_b1(self):
-        """ The a1 and b1 ratio is between minimum and maximum peaks of 1st PPG derivative.
-            :return a1 and b1 ratio:
-        """
-        max_val = self.get_a1()
-        min_val = self.get_b1()
-        return min_val / max_val
-
-    def get_ratio_tb1_CP(self):
-        """ The function calculates the ratio of Tb1 and CP.
-            :return Tb1 and CP ratio:
-        """
-        tb1 = self.get_tb1()
-        return tb1 / self.getCP()
-
-    def get_ratio_ta2_CP(self):
-        """ The function calculates the ratio of ta2 and CP.
-            :return ta2 and CP ratio feature:
-        """
-        ta2 = self.get_ta2()
-        return ta2 / self.getCP()
-
-    def get_ratio_a2_b2(self):
-        """ The a2 and b2 ratio means ratio between minimum and maximum peaks of second PPG derivative.
-            An important feature that reflects increased arterial stiffness. Related to distensibility of
-            the peripheral artery and suggested that it is a useful index of atherosclerosis and altered
-            arterial distensibility.
-            :return a2 b2 ratio feature:
-        """
-        max_val = self.get_a2()
-        min_val = self.get_b2()
-        return min_val / max_val
-
-    def get_ratio_tb2_CP(self):
-        """ The function calculates the ratio of tb2 and CP.
-            :return tb2 and CP ratio feature:
-        """
-        tb2 = self.get_tb2()
-        return tb2 / self.getCP()
-
-    def get_ratio_a2_c2(self):
-        """ The ratio between second maximum and maximum peaks of the second PPG derivative.
-            :return a2 c2 ratio feature:
-        """
-        max_val1 = self.get_a2()
-        max_val2 = self.get_c2()
-        return max_val1 / max_val2
-
-    def get_ratio_tc2_CP(self):
-        """ The function calculates the ratio of tc2 and CP.
-            :return tc2 and CP ratio feature:
-        """
-        tc2 = self.get_tc2()
-        return tc2 / self.getCP()
-
-    def get_ratio_a2_d2(self):
-        """ The ratio between second minimum and maximum peaks of the second PPG derivative.
-            :return a2 d2 ratio feature:
-        """
-        max_val = self.get_a2()
-        min_val = self.get_d2()
-        return max_val / min_val
-
-    def get_ratio_td2_CP(self):
-        """ The function calculates the ratio of td2 and CP.
-            :return td2 and CP ratio feature:
-        """
-        td2 = self.get_td2()
-        return td2 / self.getCP()
-
-    def get_ratio_a2_e2(self):
-        """ The ratio between third maximum and maximum peaks of the second PPG derivative.
-            :return a2 e2 ratio feature:
-        """
-        max_val1 = self.get_a2()
-        max_val2 = self.get_e2()
-        return max_val1 / max_val2
-
-    def get_ratio_te2_CP(self):
-        """ The function calculates the ratio of te2 and CP.
-            :return te2 and CP ratio feature:
-        """
-        te2 = self.get_te2()
-        return te2 / self.getCP()
-
-    def get_ratio_ta1_ta2_cp(self):
-        """ The function calculates the ratio between the interval maximum/minimum peaks of 1st derivative and CP
-            :return (ta1 - ta2) / cp:
-        """
-        ta2 = self.get_ta2()
-        ta1 = self.get_ta1()
-        cp = self.getCP()
-        return (ta1 - ta2) / cp
-
-    def get_ratio_tb1_tb2_cp(self):
-        """ The function calculates the ratio between the interval
-            :return (tb1 - tb2) / cp:
-        """
-        tb2 = self.get_tb2()
-        return (self.get_tb1() - tb2) / self.getCP()
-
-    def get_aging_index1(self):
-        """ The function calculates the Aging index of (b2-c2-d2-e2)/a2
-            :return (b2-c2-d2-e2)/a2:
-        """
-        a2 = self.get_a2()
-        b2 = self.get_b2()
-        c2 = self.get_c2()
-        d2 = self.get_d2()
-        e2 = self.get_e2()
-        return (b2-c2-d2-e2)/a2
-
-    def get_aging_index2(self):
-        """ The function calculates the Aging index of (b2-e2)/a2, instead of (b2-c2-d2-e2)/a2, when the c and d waves are missing
-            :return (b2-e2)/a2:
-        """
-        a2 = self.get_a2()
-        b2 = self.get_b2()
-        e2 = self.get_e2()
-        return (b2-e2)/a2
-
+        Aa = self.segment_d2[self.get_a()]
+        Ab = self.segment_d2[self.get_b()]
+        Ac = self.segment_d2[self.get_c()]
+        Ad = self.segment_d2[self.get_d()]
+        Ae = self.segment_d2[self.get_e()]
+        Af = self.segment_d2[self.get_e()]
+        return (Ab-Ac-Ad-Ae-Af)/Aa
 ###########################################################################
 ############################# Get PPG features ############################
 ###########################################################################
 
-def get_features(ppg, peaks, onsets, fs, features_lst):
+def get_features(s, fiducials, features_lst):
     """
     The function calculates the biomedical features of PPG signal.
 
-    :param ppg: 1-d array, of shape (N,) where N is the length of the signal
-    :param peaks: 1-d array, peaks of the signal
-    :param onsets: 1-d array, onsets of the signal
-    :param fs: sampling frequency
-    :type fs: int
+    :param s: a struct of PPG signal:
+        - s.v: a vector of PPG values
+        - s.fs: the sampling frequency of the PPG in Hz
+        - s.filt_sig: a vector of PPG values
+        - s.filt_d1: a vector of PPG values
+        - s.filt_d2: a vector of PPG values
+        - s.filt_d3: a vector of PPG values
+    :param fiducials: M-d Dateframe, where M is the number of fiducial points
     :param features_lst: list of features
 
     :return
@@ -855,18 +1303,31 @@ def get_features(ppg, peaks, onsets, fs, features_lst):
         - df_features: data frame with PPG signal features
     """
 
+    fs=s.fs
+    ppg=s.filt_sig
+    data = DotMap()
+
     df = pd.DataFrame()
     df_features = pd.DataFrame(columns=features_lst)
+    peaks = fiducials.pk.values
+    onsets = fiducials.os.values
+
     # display(df_features)
     for i in range(len(onsets) - 1):
         #         #     print(f'i is {i}')
         onset = onsets[i]
         offset = onsets[i + 1]
-        data = ppg[int(onset):int(offset)]
+        data.sig = ppg[int(onset):int(offset)]
+        data.d1 = s.filt_d1[int(onset):int(offset)]
+        data.d2 = s.filt_d2[int(onset):int(offset)]
+        data.d3 = s.filt_d3[int(onset):int(offset)]
         peak = peaks[(peaks > onset) * (peaks < offset)]
         if len(peak) != 1:
             continue
         peak = peak[0]
+
+        temp_fiducials = fiducials.iloc[[i]]
+
         peak_value = ppg[peak]
         peak_time = peak / fs
         onset_value = ppg[onset]
@@ -884,15 +1345,15 @@ def get_features(ppg, peaks, onsets, fs, features_lst):
         onsets_times = np.array([onset_time, offset_time])
         #     print(onset,peak, offset)
         if (idx + 1) < len(peaks):
-            next_peak_value = ppg[peaks[idx + 1]][0]
+            next_peak_value = ppg[peaks[idx + 1].astype('int64')][0]
             next_peak_time = peaks[idx + 1] / fs
             next_peak_time = next_peak_time[0]
-            #         plt.plot(data)
+            #         plt.plot(data.sig)
             #         plt.show()
             #         print(peak_value,peak_time,next_peak_value,next_peak_time,onsets_values,onsets_times)
             try:
                 features_extractor = features_extract_PPG(data, peak_value, peak_time, next_peak_value, next_peak_time,
-                                                          onsets_values, onsets_times, fs, features_lst)
+                                                          onsets_values, onsets_times, fs, features_lst,temp_fiducials)
                 features_vec = features_extractor.get_feature_extract_func()
                 lst = list(features_vec)
                 df_features.loc[len(df_features.index)] = lst

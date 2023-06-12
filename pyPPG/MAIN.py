@@ -1,6 +1,6 @@
 from Prefiltering import*
 from FiducialPoints import*
-from Biomarkers2 import*
+from Biomarkers import*
 from Summary import*
 from Statistics import*
 
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     fiducials = getFiducialsPoints(s)
 
     #######
-    ppg_biomarkers = Biomarkers2(s, fiducials)
+    ppg_biomarkers = Biomarkers(s, fiducials)
     ppg_summary = Summary(s.v, fiducials['pk'], fiducials['os'], s.fs)
     ppg_statistics = Statistics(fiducials['pk'], fiducials['os'], ppg_biomarkers)
 
