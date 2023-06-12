@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     fid_names = ('pk', 'os', 'dn', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e', 'f','p1','p2')
     if cmp_pc!=1:
-        f_names=fid_names [2:]
+        f_names=fid_names [1:]
     else:
         f_names = fid_names[:]
 
@@ -155,21 +155,32 @@ if __name__ == '__main__':
         s.filt_d3 = drt3
 
         if cmp_pc !=1:
+
+            med_hr=np.diff(ons)
+            up = setup_up_abdp_algorithm()
+            Y1 = Bandpass(s.filt_sig, fs, 0.9 * up.fl_hz, 3 * up.fh_hz)
+            temp_oi0 = find_peaks(-Y1, distance=med_hr * 0.3)[0]
+            # det_os = temp_oi0[np.where(temp_oi0 < pks[0])]
+            det_os = temp_oi0[np.argmin(abs(temp_oi0 - pks[0]))]
+
             det_dn = getDicroticNotch(s, pks, ons)
             drt1_fp = getFirstDerivitivePoints(s, ons)
             drt2_fp = getSecondDerivitivePoints(s, ons)
             drt3_fp = getThirdDerivitivePoints(s, ons,drt2_fp)
 
-            det_u, det_v, det_w = drt1_fp.u, drt1_fp.v, drt1_fp.w
-            det_a, det_b, det_c, det_d, det_e, det_f = drt2_fp.a, drt2_fp.b, drt2_fp.c, drt2_fp.d, drt2_fp.e, drt2_fp.f
-            det_p1, det_p2 = drt3_fp.p1, drt3_fp.p2
+            det_u, det_v, det_w = int(drt1_fp.u), int(drt1_fp.v), int(drt1_fp.w)
+            det_a, det_b, det_c, det_d, det_e, det_f = int(drt2_fp.a), int(drt2_fp.b), int(drt2_fp.c), int(drt2_fp.d), int(drt2_fp.e), int(drt2_fp.f)
+            det_p1, det_p2 = int(drt3_fp.p1), int(drt3_fp.p2)
 
         for n in f_names:
             # Calculate distance error
             exec (n+".append(np.squeeze(det_"+n+"))")
             if eval("ref_"+n+".size") > 0:
                 if n == 'os':
-                    exec("temp_dist=np.array(np.mean(np.squeeze(ref_"+n+" - det_"+n+")))")
+                    if  cmp_pc:
+                        exec("temp_dist=np.array(np.mean(np.squeeze(ref_"+n+" - det_"+n+")))")
+                    else:
+                        exec("temp_dist=np.array(np.mean(np.squeeze(ref_" + n + "[0] - det_" + n + ")))")
                 else:
                     exec("temp_dist=np.squeeze(ref_"+n+" - det_"+n+")")
                 if eval("temp_dist.size") > 0:
@@ -179,7 +190,7 @@ if __name__ == '__main__':
             # Plot fiducial points
             ind=f_names.index(n)
             if cmp_pc != 1:
-                s_type = ['ppg_v', 'drt1', 'drt1', 'drt1', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt3', 'drt3']
+                s_type = ['ppg_v', 'ppg_v', 'drt1', 'drt1', 'drt1', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt3', 'drt3']
                 label1 = 'ref'
                 label2 = 'det'
             else:
@@ -193,7 +204,8 @@ if __name__ == '__main__':
 
             is_fidu=0
             if n == 'os':
-                exec("is_fidu=~min(np.isnan(np.squeeze(det_" + n + "))) and ~min(np.isnan(np.squeeze(ref_" + n + ")))")
+                # exec("is_fidu=~min(np.isnan(np.squeeze(det_" + n + "))) and ~min(np.isnan(np.squeeze(ref_" + n + ")))")
+                exec("is_fidu=~np.isnan(np.squeeze(det_" + n + ")) and ~np.isnan(np.squeeze(ref_" + n + "[0]))")
             else:
                 exec("is_fidu=~np.isnan(np.squeeze(det_" + n + ")) and ~np.isnan(np.squeeze(ref_" + n + "))")
 
@@ -214,7 +226,7 @@ if __name__ == '__main__':
             plt.yticks([])
             plt.xticks(fontsize=20)
             # plt.grid(color='g', linestyle='--', linewidth=0.5)
-            plt.savefig(('temp_dir/MG_PC_annot4/py_%s.png')%(name))
+            # plt.savefig(('temp_dir/MG_PC_annot4/py_%s.png')%(name))
             # plt.savefig(('temp_dir/figs/py_%s.png') % (name))
             # plt.show()
             plt.close('all')
@@ -248,5 +260,30 @@ if __name__ == '__main__':
     print('STD',': ', STD)
     print('BIAS', ': ', BIAS)
     print('Program finished!')
+
+
+def setup_up_abdp_algorithm():
+    """
+    This function setups the filter parameters of the algorithm
+
+    :return: filter parameters of the algorithm, DotMap.
+
+    """
+    # plausible HR limits
+    up=DotMap()
+    up.fl = 30               #lower bound for HR
+    up.fh = 200              #upper bound for HR
+    up.fl_hz = up.fl/60
+    up.fh_hz = up.fh/60
+
+    # Thresholds
+    up.deriv_threshold = 75          #originally 90
+    up.upper_hr_thresh_prop = 2.25   #originally 1.75
+    up.lower_hr_thresh_prop = 0.5    #originally 0.75
+
+    # Other parameters
+    up.win_size = 10    #in secs
+
+    return up
 
 
