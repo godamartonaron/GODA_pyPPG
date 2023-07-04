@@ -1,3 +1,4 @@
+from DataHandling import*
 from Prefiltering import*
 from FiducialPoints import*
 from Biomarkers import*
@@ -13,52 +14,29 @@ import mne
 import time
 
 from six.moves import cPickle as pickle
-
 import matplotlib.mlab
+
 
 ###########################################################################
 ####################### Data Acquisition from Files #######################
 ###########################################################################
 if __name__ == '__main__':
-    # sig_path = 'D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/GODA_pyPPG/sample_data/PPG_sample_00.mat'
-    sig_path = filedialog.askopenfilename(title='Select SIGNAL file', filetypes=[("Input Files", ".mat .csv .edf .pkl")])
 
-    sig_format=sig_path[len(sig_path)-sig_path[::-1].index('.'):]
-    if sig_format=='mat':
-        input_sig = scipy.io.loadmat(sig_path)
-        hr = np.float64(np.squeeze(input_sig.get("Data")))[0:]
-        fs = np.squeeze(input_sig.get("Fs"))
-    elif sig_format=='csv':
-        input_sig = np.loadtxt(sig_path, delimiter=',').astype(int)
-        hr = input_sig
-        fs = 75
-    elif sig_format == 'edf':
-        input_sig = mne.io.read_raw_edf(sig_path)
-        hr=-input_sig[22][0][0]
-        fs = 256
+    ## Load data
+    s=load_data(filtering=1)
 
-    s = DotMap()
-    s.v=hr
-    s.fs=fs
+    ## Get Fiducials Points
+    fiducials = getFiducialsPoints(s,correct=1)
 
-    s.filt_sig, s.filt_d1, s.filt_d2, s.filt_d3 = Prefiltering(s)
-    fiducials = getFiducialsPoints(s)
+    ## Plot Fiducials Points
+    plot_fiducials(s, fiducials)
 
-    #######
+    ## Get Fiducials Biomarkers, Summary and Statistics
     ppg_biomarkers = Biomarkers(s, fiducials)
-    ppg_summary = Summary(s.v, fiducials['pk'], fiducials['os'], s.fs)
-    ppg_statistics = Statistics(fiducials['pk'], fiducials['os'], ppg_biomarkers)
+    ppg_summary = Summary(s.v, fiducials['sp'], fiducials['on'], s.fs)
+    ppg_statistics = Statistics(fiducials['sp'], fiducials['on'], ppg_biomarkers)
 
-    ##
-
-    plt.plot(hr,'k',linewidth=0.7)
-    plt.plot(fiducials['pk'].dropna().values, hr[fiducials['pk'].dropna().values.astype(int)], 'ro')
-    plt.plot(fiducials['os'].dropna().values, hr[fiducials['os'].dropna().values.astype(int)], 'bs')
-    plt.plot(fiducials['dn'].dropna().values, hr[fiducials['dn'].dropna().values.astype(int)], 'm*')
-
-    plt.legend(['sigal', 'peak','onset','dic.notch'])
-    plt.xlabel('Sample (Fs='+str(s.fs)+' Hz)')
-    plt.ylabel('Amplitude')
-    plt.show()
+    ## Save data
+    save_data(fiducials,ppg_biomarkers,ppg_summary,ppg_statistics)
 
     print('Program finished')

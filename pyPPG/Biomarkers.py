@@ -376,8 +376,8 @@ class features_extract_PPG:
         :return Tdp: Time from PPG onset to the Diastolic Peak on PPG
         """
 
-        dn = (self.fiducials.dn-self.fiducials.os).values[0]
-        dp = (self.fiducials.dp-self.fiducials.os).values[0]
+        dn = (self.fiducials.dn-self.fiducials.on).values[0]
+        dp = (self.fiducials.dp-self.fiducials.on).values[0]
         Tdn = dn / self.sample_rate
         Tdp = dp / self.sample_rate
 
@@ -392,9 +392,9 @@ class features_extract_PPG:
         :return Tw: Time from PPG onset to the first maximum peak after v on PPG'
         """
 
-        u = (self.fiducials.u-self.fiducials.os).values[0]
-        v = (self.fiducials.v-self.fiducials.os).values[0]
-        w = (self.fiducials.w - self.fiducials.os).values[0]
+        u = (self.fiducials.u-self.fiducials.on).values[0]
+        v = (self.fiducials.v-self.fiducials.on).values[0]
+        w = (self.fiducials.w - self.fiducials.on).values[0]
         Tu = u / self.sample_rate
         Tv = v / self.sample_rate
         Tw = w / self.sample_rate
@@ -417,12 +417,12 @@ class features_extract_PPG:
         :return Tf: Time from PPG onset to the first minimum pits after e on PPG"
         """
 
-        a = (self.fiducials.a-self.fiducials.os).values[0]
-        b = (self.fiducials.b-self.fiducials.os).values[0]
-        c = (self.fiducials.c-self.fiducials.os).values[0]
-        d = (self.fiducials.d-self.fiducials.os).values[0]
-        e = (self.fiducials.e-self.fiducials.os).values[0]
-        f = (self.fiducials.f-self.fiducials.os).values[0]
+        a = (self.fiducials.a-self.fiducials.on).values[0]
+        b = (self.fiducials.b-self.fiducials.on).values[0]
+        c = (self.fiducials.c-self.fiducials.on).values[0]
+        d = (self.fiducials.d-self.fiducials.on).values[0]
+        e = (self.fiducials.e-self.fiducials.on).values[0]
+        f = (self.fiducials.f-self.fiducials.on).values[0]
         Ta = a / self.sample_rate
         Tb = b / self.sample_rate
         Tc = c / self.sample_rate
@@ -440,8 +440,8 @@ class features_extract_PPG:
         :return Tp2: Time from PPG onset to last local minimum before d, if c = d, then the first local minimum after d on PPG'"
         """
 
-        p1 = (self.fiducials.p1-self.fiducials.os).values[0]
-        p2 = (self.fiducials.p2-self.fiducials.os).values[0]
+        p1 = (self.fiducials.p1-self.fiducials.on).values[0]
+        p2 = (self.fiducials.p2-self.fiducials.on).values[0]
         Tp1 = p1 / self.sample_rate
         Tp2 = p2 / self.sample_rate
 
@@ -1309,8 +1309,8 @@ def get_features(s, fiducials, features_lst):
 
     df = pd.DataFrame()
     df_features = pd.DataFrame(columns=features_lst)
-    peaks = fiducials.pk.values
-    onsets = fiducials.os.values
+    peaks = fiducials.sp.values
+    onsets = fiducials.on.values
 
     # display(df_features)
     for i in range(len(onsets) - 1):

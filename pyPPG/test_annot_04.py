@@ -25,8 +25,8 @@ if __name__ == '__main__':
     # ppg_sig_dir='D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/PETE_Matlab'
     ppg_sig_dir = 'D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/GIT_PPG_annot'
     ppg_file = '/PPG-BP1.mat'
-    annot_path = ppg_sig_dir + '/temp_dir/MG01_PPG-BP_annot/merged' #'/ANNOTS/MG_PPG-BP_annot/merged'
-    annot_path2 = ppg_sig_dir + '/temp_dir/PC02_PPG-BP_annot/merged'
+    annot_path = ppg_sig_dir + '/temp_dir/MG05_PPG-BP_annot/merged' #'/ANNOTS/MG_PPG-BP_annot/merged'
+    annot_path2 = ppg_sig_dir + '/temp_dir/PC05_PPG-BP_annot/merged'
     sig_path=(ppg_sig_dir + ppg_file)
     input_sig = scipy.io.loadmat(sig_path)
 
@@ -40,14 +40,18 @@ if __name__ == '__main__':
     # Flag for comparison with PC: 0 is off, 1 is on
     cmp_pc = 0
 
-    fid_names = ('pk', 'os', 'dn', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e', 'f','p1','p2')
-    if cmp_pc!=1:
-        f_names=fid_names [1:]
+    # Flag for saving: 0 is no, 1 is yes
+    save = 0
+
+    fid_names = ('sp', 'on', 'dn', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e', 'f','p1','p2')
+    if cmp_pc:
+        f_names=fid_names [:]
     else:
-        f_names = fid_names[:]
+        f_names = fid_names[1:]
 
     dist_error= pd.DataFrame()
-    annot_error = pd.DataFrame()
+    M_FID_1 = pd.DataFrame()
+    M_FID_2 = pd.DataFrame()
     for n in f_names:
         exec(n+"=[]")
         exec(n + "r=[]")
@@ -55,8 +59,12 @@ if __name__ == '__main__':
         temp_v=np.empty(set_len)
         temp_v[:] = np.NaN
         dist_error[n]=temp_v
-        annot_error[n] = temp_v
+        M_FID_1[n] = temp_v
+        M_FID_2[n] = temp_v
 
+    annot_error = pd.DataFrame()
+    for n in fid_names:
+        annot_error[n] = temp_v
 
     for i in range(0,set_len):
 
@@ -80,12 +88,17 @@ if __name__ == '__main__':
         drt3 = drt3 / max(drt3) * max(ppg_v)
 
         # Plot filtered signal, 1st and 2nd derivative
-        if plt_sig==1:
-            fig = plt.figure(figsize=(15, 7))
-            plt.plot(ppg_v,'k',label='PPG')
-            plt.plot(drt1,'k--',label='PPG''')
-            plt.plot(drt2,'k:',label='PPG"')
-            plt.plot(drt3, 'k-.', label='PPG''"')
+        if plt_sig:
+            fig = plt.figure(figsize=(8, 9))
+            ax1 = plt.subplot(411)
+            plt.plot(ppg_v,'k',label=None)
+            ax2 = plt.subplot(412,sharex=ax1)
+            plt.plot(drt1,'k--',label=None)
+            ax3 = plt.subplot(413,sharex=ax2)
+            plt.plot(drt2,'k:',label=None)
+            ax4 = plt.subplot(414,sharex=ax3)
+            plt.plot(drt3, 'k-.', label=None)
+            fig.subplots_adjust(hspace=0, wspace=0)
 
         # Load annotated fiducial points
         name=input_sig['ppg_data']['name'][0, i][0]
@@ -93,58 +106,83 @@ if __name__ == '__main__':
         annot=scipy.io.loadmat(annot_file)
 
         for n in fid_names:
-            exec("ref_" + n +" = np.array(np.squeeze(np.round(annot['annot']['"+n+"'][0, 0][0][0]['t'] * fs).astype(int)))")
-            if eval("ref_" + n + ".size") > 1 and n != 'os':
-                exec("ref_" + n + "=  np.array([ref_" + n + "[0]])")
+            if n=='sp':
+                exec("ref_" + n + " = np.array(np.squeeze(np.round(annot['annot']['pk'][0, 0][0][0]['t'] * fs).astype(int)))")
+            elif n=='on':
+                exec("ref_" + n + " = np.array(np.squeeze(np.round(annot['annot']['os'][0, 0][0][0]['t'] * fs).astype(int)))")
+            else:
+                exec("ref_" + n +" = np.array(np.squeeze(np.round(annot['annot']['"+n+"'][0, 0][0][0]['t'] * fs).astype(int)))")
+
+            if eval("ref_" + n + ".size") > 1 and n != 'on':
+                exec("ref_" + n + "=  np.array(ref_" + n + "[0])")
+                # exec("ref_" + n + "=  np.array([ref_" + n + "[0]])")
                 exec("annot_error['" + n + "'][i] =1")
                 print(n + ' error: ', name)
-            elif eval("ref_" + n + ".size") < 1 and n != 'os':
+            elif eval("ref_" + n + ".size") < 1 and n != 'on':
                 exec("ref_" + n + "= np.array(np.NaN)")
                 exec("annot_error['" + n + "'][i] =1")
                 print(n + ' error: ', name)
 
-        if ref_os.size > 2:
-            exec("annot_error['os'][i] =1")
-            print('os error: ', name)
-            exec("ref_os = ref_os[0:2]")
+        if ref_on.size > 2:
+            exec("annot_error['on'][i] =1")
+            print('on error: ', name)
+            exec("ref_on = ref_on[0:2]")
 
-        if ref_os.size < 2:
-            exec("annot_error['os'][i] =1")
-            print('os error: ', name)
-            exec("ref_os = np.squeeze([ref_os,ref_os])")
+        if ref_on.size < 2:
+            exec("annot_error['on'][i] =1")
+            print('on error: ', name)
+            exec("ref_on = np.squeeze([ref_on,ref_on])")
 
-        if cmp_pc==1:
+        for n in f_names:
+            if n=="on":
+                exec("M_FID_1['" + n + "'][i] =ref_" + n+"[0]")
+            else:
+                exec("M_FID_1['" + n + "'][i] =ref_" + n)
+
+        if cmp_pc:
             annot_file2=annot_path2+'/'+name+'.mat'
             annot2=scipy.io.loadmat(annot_file2)
 
             for n in fid_names:
-                exec("det_" + n +" = np.squeeze(np.round(annot2['annot']['"+n+"'][0, 0][0][0]['t'] * fs).astype(int))")
-                if eval("det_" + n +".size")>1 and n!='os':
-                    exec("det_"+n+"= [det_"+n+"[0]]")
+                if n == 'sp':
+                    exec("det_" + n + " = np.array(np.squeeze(np.round(annot['annot']['pk'][0, 0][0][0]['t'] * fs).astype(int)))")
+                elif n == 'on':
+                    exec("det_" + n + " = np.array(np.squeeze(np.round(annot['annot']['os'][0, 0][0][0]['t'] * fs).astype(int)))")
+                else:
+                    exec("det_" + n +" = np.squeeze(np.round(annot2['annot']['"+n+"'][0, 0][0][0]['t'] * fs).astype(int))")
+
+                if eval("det_" + n +".size")>1 and n!='on':
+                    exec("det_"+n+"= np.array(det_"+n+"[0])")
                     exec ("annot_error['"+n+"'][i] =1")
                     print(n+' error: ', name)
-                elif eval("det_" + n +".size")<1 and n!='os':
+                elif eval("det_" + n +".size")<1 and n!='on':
                     exec("det_"+n+"= np.NaN")
                     exec ("annot_error['"+n+"'][i] =1")
                     print(n+' error: ', name)
 
-            if det_os.size > 2:
-                exec("annot_error['os'][i] =1")
-                print('os error: ', name)
-                exec("det_os = det_os[0:2]")
+            if det_on.size > 2:
+                exec("annot_error['on'][i] =1")
+                print('on error: ', name)
+                exec("det_on = det_on[0:2]")
 
-            if det_os.size < 2:
-                exec("annot_error['os'][i] =1")
-                print('os error: ', name)
-                exec("det_os = np.squeeze([det_os,det_os])")
+            if det_on.size < 2:
+                exec("annot_error['on'][i] =1")
+                print('on error: ', name)
+                exec("det_on = np.squeeze([det_on,det_on])")
+
+            for n in f_names:
+                if n == "on":
+                    exec("M_FID_2['" + n + "'][i] =det_" + n + "[0]")
+                else:
+                    exec("M_FID_2['" + n + "'][i] =det_" + n)
 
         # Plot onset and peak
         pks,ons=[],[]
-        exec("pks = [ref_pk]")
-        exec("ons = ref_os")
+        exec("pks = [ref_sp]")
+        exec("ons = ref_on")
         # if plt_sig==1:
         #     plt.scatter(pks, ppg_v[pks], s=150, linewidth=2, marker='o',  facecolors='c', edgecolors='r', label='pk')
-        #     plt.scatter(ons, ppg_v[ons], s=150, linewidth=2, marker='s',  facecolors='m', edgecolors='b', label='os')
+        #     plt.scatter(ons, ppg_v[ons], s=150, linewidth=2, marker='s',  facecolors='m', edgecolors='b', label='on')
 
         # Detect fiducial points
         s = DotMap()
@@ -156,79 +194,151 @@ if __name__ == '__main__':
 
         if cmp_pc !=1:
 
-            med_hr=np.diff(ons)
-            up = setup_up_abdp_algorithm()
-            Y1 = Bandpass(s.filt_sig, fs, 0.9 * up.fl_hz, 3 * up.fh_hz)
-            temp_oi0 = find_peaks(-Y1, distance=med_hr * 0.3)[0]
-            # det_os = temp_oi0[np.where(temp_oi0 < pks[0])]
-            det_os = temp_oi0[np.argmin(abs(temp_oi0 - pks[0]))]
-
-            det_dn = getDicroticNotch(s, pks, ons)
+            det_dn = np.array(getDicroticNotch(s, pks, ons))
             drt1_fp = getFirstDerivitivePoints(s, ons)
-            drt2_fp = getSecondDerivitivePoints(s, ons)
+            drt2_fp = getSecondDerivitivePoints(s, ons, pks)
             drt3_fp = getThirdDerivitivePoints(s, ons,drt2_fp)
 
-            det_u, det_v, det_w = int(drt1_fp.u), int(drt1_fp.v), int(drt1_fp.w)
-            det_a, det_b, det_c, det_d, det_e, det_f = int(drt2_fp.a), int(drt2_fp.b), int(drt2_fp.c), int(drt2_fp.d), int(drt2_fp.e), int(drt2_fp.f)
-            det_p1, det_p2 = int(drt3_fp.p1), int(drt3_fp.p2)
+            det_u, det_v, det_w = np.array(int(drt1_fp.u)), np.array(int(drt1_fp.v)), np.array(int(drt1_fp.w))
+            det_a, det_b, det_c, det_d, det_e, det_f = np.array(int(drt2_fp.a)), np.array(int(drt2_fp.b)), np.array(int(drt2_fp.c)), np.array(int(drt2_fp.d)), np.array(int(drt2_fp.e)), np.array(int(drt2_fp.f))
+            det_p1, det_p2 = np.array(int(drt3_fp.p1)), np.array(int(drt3_fp.p2))
 
-        for n in f_names:
+            ### Check fidu
+            if det_a>75:
+                win_on=75
+            else:
+                win_on = det_a
+
+            det_on = np.argmax(drt3[det_a-win_on:det_a])+det_a-win_on
+
+            # strt_dn=det_e
+            # stp_dn=det_f
+            # det_dn = np.argmin(drt3[strt_dn:stp_dn])+strt_dn
+
+            if det_v>det_e:
+                det_v = np.argmin(drt1[det_u:det_e])+ det_u
+                det_w = find_peaks(drt1[det_v:det_f])[0][0] + det_v
+
+            if det_w>det_f:
+                det_w = det_f
+
+            if det_w<det_e:
+                det_w = np.argmax(drt1[det_e:det_f])+det_e
+
+            for n in f_names:
+                exec("M_FID_2['" + n + "'][i] =det_" + n)
+
             # Calculate distance error
-            exec (n+".append(np.squeeze(det_"+n+"))")
-            if eval("ref_"+n+".size") > 0:
-                if n == 'os':
-                    if  cmp_pc:
-                        exec("temp_dist=np.array(np.mean(np.squeeze(ref_"+n+" - det_"+n+")))")
+            for n in f_names:
+                exec (n+".append(np.squeeze(det_"+n+"))")
+                if eval("ref_"+n+".size") > 0:
+                    if n == 'on':
+                        if  cmp_pc:
+                            exec("temp_dist=np.array(np.mean(np.squeeze(ref_"+n+" - det_"+n+")))")
+                        else:
+                            exec("temp_dist=np.array(np.mean(np.squeeze(ref_" + n + "[0] - det_" + n + ")))")
                     else:
-                        exec("temp_dist=np.array(np.mean(np.squeeze(ref_" + n + "[0] - det_" + n + ")))")
+                        exec("temp_dist=np.squeeze(ref_"+n+" - det_"+n+")")
+                    if eval("temp_dist.size") > 0:
+                        exec("dist_"+ n + ".append(temp_dist)")
+                        exec ("dist_error['"+n+"'][i] = temp_dist")
+
+        # Plot fiducial points
+        if cmp_pc:
+            str_i = 0
+        else:
+            str_i = 1
+
+        plt_typ = ["ref", "det"]
+
+        zero_sig=fs/10
+        if eval("zero_sig<ref_on[0]"):
+            str_sig=eval("int(ref_on[0]-zero_sig)")
+        else:
+            str_sig = eval("int(ref_on[0])")
+
+        end_sig=eval("int(ref_on[0] + 1.5 * np.diff(ref_on))")
+
+        str_sig=0
+        end_sig=len(ppg_v)
+        len_sig=end_sig-str_sig
+
+        # ref_on = ref_on[0]
+
+        for m in plt_typ:
+            for n in f_names:
+                ind=f_names.index(n)
+                if cmp_pc != 1:
+                    s_type = ['ppg_v', 'ppg_v', 'drt1', 'drt1', 'drt1', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt3', 'drt3']
                 else:
-                    exec("temp_dist=np.squeeze(ref_"+n+" - det_"+n+")")
-                if eval("temp_dist.size") > 0:
-                    exec("dist_"+ n + ".append(temp_dist)")
-                    exec ("dist_error['"+n+"'][i] = temp_dist")
+                    s_type = ['ppg_v', 'ppg_v', 'ppg_v', 'drt1', 'drt1', 'drt1', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2','drt3', 'drt3']
 
-            # Plot fiducial points
-            ind=f_names.index(n)
-            if cmp_pc != 1:
-                s_type = ['ppg_v', 'ppg_v', 'drt1', 'drt1', 'drt1', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt3', 'drt3']
-                label1 = 'ref'
-                label2 = 'det'
-            else:
-                s_type = ['ppg_v', 'ppg_v', 'ppg_v', 'drt1', 'drt1', 'drt1', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2', 'drt2','drt3', 'drt3']
-                label1 = 'MG'
-                label2 = 'PC'
+                label = m
 
-            marker = ['s', 'x', 'o', '+']*7
-            color = ['b', 'r', 'c', 'm', 'k', 'g', 'm', 'b', 'r', 'c', 'g', 'k', 'b','c','r']
+                # if m=='det':
+                #     label='ref2'
+                # else:
+                #     label = 'ref1'
 
+                # marker = ['s', 'x', 'o', '+']*7
+                # color = ['b', 'r', 'c', 'm', 'k', 'g', 'm', 'b', 'r', 'c', 'g', 'k', 'b','c','r']
 
-            is_fidu=0
-            if n == 'os':
-                # exec("is_fidu=~min(np.isnan(np.squeeze(det_" + n + "))) and ~min(np.isnan(np.squeeze(ref_" + n + ")))")
-                exec("is_fidu=~np.isnan(np.squeeze(det_" + n + ")) and ~np.isnan(np.squeeze(ref_" + n + "[0]))")
-            else:
-                exec("is_fidu=~np.isnan(np.squeeze(det_" + n + ")) and ~np.isnan(np.squeeze(ref_" + n + "))")
+                marker1 = ['o', 's', 's', 'o', 's', 'o', 'o', 's', 'o', 's', 'o', 's', 'o', 's']
+                marker2 = ['*', 'x', 'x', '*', 'x', '*', '*', 'x', '*', 'x', '*', 'x', '*', 'x']
+                color = ['r', 'b', 'g', 'r', 'b', 'g', 'r', 'b', 'g', 'm', 'c', 'k', 'r','b']
 
-            if  plt_sig==1 and is_fidu:
-                exec("plt.scatter(ref_" + n + "," + s_type[ind] + "[ref_" + n + "], s=150,linewidth=2, marker = marker[ind*2], facecolors='none', edgecolors=color[ind], label= label1+' " + n + "')")
-                exec("plt.scatter(det_" + n + "," + s_type[ind] + "[det_" + n + "], s=150,linewidth=2, marker = marker[ind*2+1], color=color[ind+1], label=label2+' " + n + "')")
+                if m==plt_typ[0]:
+                    marker = marker1[str_i:]
+                    color = color[str_i:]
+                    facecolors='none'
+                    sm = 120
+                elif m==plt_typ[1]:
+                    marker = marker2[str_i:]
+                    color = color[str_i:]
+                    facecolors = color[ind]
+                    sm = 50
 
+                ylabe_names=['PPG','PPG''','PPG\'\'','PPG\'\'\'']
 
-        # plt.scatter(det_p1,drt3[det_p1], s=60,linewidth=2, marker = 'o', facecolors='none', edgecolors='r', label='det_p1')
-        # plt.scatter(det_p2, drt3[det_p2], s=60, linewidth=2, marker='o', facecolors='none', edgecolors='b', label='det_p2')
+                is_fidu=0
+                if n == 'on':
+                    if cmp_pc:
+                        exec("is_fidu=~min(np.isnan(np.squeeze(det_" + n + "))) and ~min(np.isnan(np.squeeze(ref_" + n + ")))")
+                    else:
+                        exec("is_fidu=~np.isnan(np.squeeze(det_" + n + ")) and ~np.isnan(np.squeeze(ref_" + n + "[0]))")
+                else:
+                    exec("is_fidu=~np.isnan(np.squeeze(det_" + n + ")) and ~np.isnan(np.squeeze(ref_" + n + "))")
+
+                # exec("is_fidu=~np.isnan(np.squeeze(det_" + n + ")) and ~np.isnan(np.squeeze(ref_" + n + "))")
+
+                if  plt_sig==1 and is_fidu:
+                    if s_type[ind][-1]=='v':
+                        plt_num=1
+                        plt.subplot(411)
+                        plt.title(name, fontsize=20)
+                    else:
+                        plt_num=int(s_type[ind][-1])+1
+
+                    plt.subplot(4,1,plt_num)
+
+                    exec("plt.scatter("+m+"_" + n + "," + s_type[ind] + "["+m+"_" + n + "], s=sm,linewidth=2, marker = marker[ind],facecolors=facecolors, color=color[ind], label= label+' " + n + "')")
+                    #exec("plt.scatter("+m+"_" + n + "," + s_type[ind] + "["+m+"_" + n + "], s=sm,linewidth=2, marker = marker[ind],facecolors=facecolors, color=color[ind], label=None)")
+                    plt.ylabel(ylabe_names[plt_num-1], fontsize=20)
+                    plt.yticks([])
+                    exec("plt.ylim([min("+s_type[ind]+")-200,max("+s_type[ind]+")+200])")
+                    exec("plt.xlim([str_sig,end_sig])")
+
+                    plt.legend(loc='upper right', fontsize=12, ncol=2)
 
         # Plot show
         if plt_sig == 1:
-            plt.legend(loc=4, prop={'size': 11.8})
-            plt.title(name, fontsize=20)
             plt.xlabel('Time [ms]', fontsize=20)
-            plt.ylabel('Amplitude [nu]', fontsize=20)
-            plt.yticks([])
             plt.xticks(fontsize=20)
+            plt.xticks(range(str_sig, end_sig, 500),range(0, len_sig, 500))
+            plt.xticks(range(str_sig, end_sig, 100))
             # plt.grid(color='g', linestyle='--', linewidth=0.5)
-            # plt.savefig(('temp_dir/MG_PC_annot4/py_%s.png')%(name))
-            # plt.savefig(('temp_dir/figs/py_%s.png') % (name))
-            # plt.show()
+            # plt.savefig(('temp_dir/MG_PC_annot5/py_%s.png')%(name))
+            plt.show()
             plt.close('all')
 
         # Print distance error
@@ -240,10 +350,21 @@ if __name__ == '__main__':
             print(df)
 
         # Save distance error and annotation error in .mat file
-        file_name = 'temp_dir/PPG-BP1_errors.mat'
         OutData['dist_error'] = dist_error.to_numpy()
         OutData['annot_error'] = annot_error.to_numpy()
-        scipy.io.savemat(file_name, OutData)
+        OutData['MG_FID'] = M_FID_1.to_numpy()
+        if save:
+            if cmp_pc:
+                OutData['PC_FID'] = M_FID_2.to_numpy()
+                file_name = 'temp_dir/MG-PC_errors.mat'
+            else:
+                OutData['pyPPG_FID'] = M_FID_2.to_numpy()
+                try:
+                    if len(annot_path2)>0:
+                        file_name = 'temp_dir/MG-pyPPG_errors.mat'
+                except:
+                    file_name = 'temp_dir/PC-pyPPG_errors.mat'
+            scipy.io.savemat(file_name, OutData)
 
     # Calculate Mean Absolute Error (MAE), Standard Deviation (STD), and Mean Error (BIAS)
     MAE={}
