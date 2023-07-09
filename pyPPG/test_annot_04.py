@@ -22,7 +22,6 @@ from scipy.io import savemat
 if __name__ == '__main__':
 
     # Define input directories and files
-    # ppg_sig_dir='D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/PETE_Matlab'
     ppg_sig_dir = 'D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/GIT_PPG_annot'
     ppg_file = '/PPG-BP1.mat'
     annot_path = ppg_sig_dir + '/temp_dir/MG05_PPG-BP_annot/merged' #'/ANNOTS/MG_PPG-BP_annot/merged'
@@ -199,6 +198,8 @@ if __name__ == '__main__':
             drt2_fp = getSecondDerivitivePoints(s, ons, pks)
             drt3_fp = getThirdDerivitivePoints(s, ons,drt2_fp)
 
+            det_dp = getDiastolicPeak(s, ons, det_dn, drt2_fp.e)
+
             det_u, det_v, det_w = np.array(int(drt1_fp.u)), np.array(int(drt1_fp.v)), np.array(int(drt1_fp.w))
             det_a, det_b, det_c, det_d, det_e, det_f = np.array(int(drt2_fp.a)), np.array(int(drt2_fp.b)), np.array(int(drt2_fp.c)), np.array(int(drt2_fp.d)), np.array(int(drt2_fp.e)), np.array(int(drt2_fp.f))
             det_p1, det_p2 = np.array(int(drt3_fp.p1)), np.array(int(drt3_fp.p2))
@@ -215,15 +216,65 @@ if __name__ == '__main__':
             # stp_dn=det_f
             # det_dn = np.argmin(drt3[strt_dn:stp_dn])+strt_dn
 
+            # if det_w>det_f:
+            #     det_w = det_f
+            #
+            # if det_w<det_e:
+            #     det_w = np.argmax(drt1[det_e:det_f])+det_e
+
+
+            try:
+                temp_segment = s.filt_sig[int(ref_sp):int(det_dp)]
+                min_dn = find_peaks(-temp_segment)[0] + ref_sp
+                diff_dn = abs(min_dn - det_dp)
+                if len(min_dn) > 0 and diff_dn > round(s.fs / 100):
+                    try:
+                        strt_dn = int(ref_sp)
+                        stp_dn = int(det_f)
+                        det_dn = find_peaks(-s.filt_sig[strt_dn:stp_dn])[0][-1] + strt_dn
+                        if det_dn > min_dn:
+                            det_dn = min_dn
+                    except:
+                        strt_dn = det_e
+                        stp_dn = det_f
+                        det_dn = np.argmin(drt3[strt_dn:stp_dn])+strt_dn
+                        if det_dn > min_dn:
+                            det_dn = min_dn
+            except:
+                pass
+
+            # Correct v-point
             if det_v>det_e:
                 det_v = np.argmin(drt1[det_u:det_e])+ det_u
                 det_w = find_peaks(drt1[det_v:det_f])[0][0] + det_v
 
-            if det_w>det_f:
-                det_w = det_f
+            # Correct w-point
+            try:
+                temp_end = int(np.diff(ons) * 0.8)
+                temp_segment = s.filt_d1[int(det_dn):int(ons[0] + temp_end)]
+                min_w = find_peaks(-temp_segment)[0] + det_dn
 
-            if det_w<det_e:
-                det_w = np.argmax(drt1[det_e:det_f])+det_e
+                if det_w<det_e:
+                    det_w = np.argmax(drt1[det_e:det_f])+det_e
+
+                if det_w>det_f:
+                    det_w = det_f
+
+                if det_w > min_w:
+                    det_w = min_w
+            except:
+                pass
+
+            # Correct f-point
+            try:
+                temp_end = int(np.diff(ons) * 0.8)
+                temp_segment = s.filt_d2[int(det_e):int(ons[0] + temp_end)]
+                min_f = np.argmin(temp_segment) + det_e
+
+                if det_w > det_f:
+                    det_f = min_f
+            except:
+                pass
 
             for n in f_names:
                 exec("M_FID_2['" + n + "'][i] =det_" + n)
@@ -298,7 +349,7 @@ if __name__ == '__main__':
                     facecolors = color[ind]
                     sm = 50
 
-                ylabe_names=['PPG','PPG''','PPG\'\'','PPG\'\'\'']
+                ylabe_names=['PPG','PPG\'','PPG\'\'','PPG\'\'\'']
 
                 is_fidu=0
                 if n == 'on':

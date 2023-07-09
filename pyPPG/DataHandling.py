@@ -6,12 +6,19 @@ import numpy as np
 from dotmap import DotMap
 from tkinter import filedialog
 import mne
-import time
-
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 def load_data(filtering):
-    # sig_path = 'D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/GODA_pyPPG/sample_data/PPG_sample_00.mat'
     sig_path = filedialog.askopenfilename(title='Select SIGNAL file', filetypes=[("Input Files", ".mat .csv .edf .pkl")])
+
+    if sig_path.rfind('/')>0:
+        start_c = sig_path.rfind('/')+1
+    else:
+        start_c = sig_path.rfind('\\')
+
+    stop_c=sig_path.rfind('.')
+    rec_name=sig_path[start_c:stop_c]
+
 
     sig_format=sig_path[len(sig_path)-sig_path[::-1].index('.'):]
     if sig_format=='mat':
@@ -30,6 +37,7 @@ def load_data(filtering):
     s = DotMap()
     s.v=hr
     s.fs=fs
+    s.name=rec_name
 
     if filtering:
         s.filt_sig, s.filt_d1, s.filt_d2, s.filt_d3 = Prefiltering(s)
@@ -37,8 +45,8 @@ def load_data(filtering):
     return s
 
 
-def plot_fiducials(s,fiducials):
-    fig = plt.figure(figsize=(8, 9))
+def plot_fiducials(s,fiducials,savefig):
+    fig = plt.figure(figsize=(20, 12))
     ax1 = plt.subplot(411)
     plt.plot(s.filt_sig, 'k', label=None)
     ax2 = plt.subplot(412, sharex=ax1)
@@ -53,7 +61,7 @@ def plot_fiducials(s,fiducials):
     color = ['r', 'b', 'g','m', 'r', 'b', 'g', 'r', 'b', 'g', 'm', 'c', 'k', 'r', 'b']
 
     fid_names = ('sp', 'on', 'dn','dp', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e', 'f', 'p1', 'p2')
-    ylabe_names = ['PPG', 'PPG''', 'PPG\'\'', 'PPG\'\'\'']
+    ylabe_names = ['PPG', 'PPG\'', 'PPG\'\'', 'PPG\'\'\'']
     s_type = ['filt_sig', 'filt_sig', 'filt_sig','filt_sig', 'filt_d1', 'filt_d1', 'filt_d1', 'filt_d2', 'filt_d2', 'filt_d2', 'filt_d2', 'filt_d2', 'filt_d2', 'filt_d3','filt_d3']
 
     str_sig = 0
@@ -69,6 +77,7 @@ def plot_fiducials(s,fiducials):
         if s_type[ind][-1] == 'g':
             plt_num = 1
             plt.subplot(411)
+            plt.title(s.name, fontsize=20)
         else:
             plt_num = int(s_type[ind][-1]) + 1
 
@@ -81,7 +90,7 @@ def plot_fiducials(s,fiducials):
         plt.ylabel(ylabe_names[plt_num - 1], fontsize=20)
 
         exec("plt.xlim([str_sig,end_sig])")
-        leg = plt.legend(loc='upper right', fontsize=20, ncol=2,facecolor="orange")
+        leg = plt.legend(loc='upper right', fontsize=20, ncol=2,facecolor="orange",frameon=True)
         for text in leg.get_texts():
             text.set_weight('bold')
 
@@ -94,12 +103,14 @@ def plot_fiducials(s,fiducials):
 
         plt.yticks([])
 
-
     plt.xlabel('Time [s]', fontsize=20)
     major_ticks_names = range(0, int(len_sig/s.fs),step_big)
-
     plt.xticks(major_ticks,major_ticks_names, fontsize=20)
     plt.show()
 
+    if savefig:
+        canvas = FigureCanvas(fig)
+        canvas.print_png(('temp_dir/figures/%s.png') % (s.name))
+
 def save_data(fiducials,ppg_biomarkers,ppg_summary,ppg_statistics):
-    fiducials.to_csv((r'./temp_dir/fidu/fiducial.csv'))
+    fiducials.to_csv((r'./temp_dir/fiducials/fiducial.csv'))

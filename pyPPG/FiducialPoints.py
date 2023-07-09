@@ -39,10 +39,10 @@ class FiducialPoints:
             self.n_pools = n_pools
 
 ###########################################################################
-############################ Get Fiducials Points #########################
+############################ Get Fiducial Points #########################
 ###########################################################################
-def getFiducialsPoints(s,correct):
-    '''The function calculates the PPG Fiducials Points.
+def getFiducialPoints(s,correct):
+    '''The function calculates the PPG Fiducial Points.
         - Original signal: List of pulse onset, pea and dicrotic notch
         - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
         - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
@@ -61,7 +61,7 @@ def getFiducialsPoints(s,correct):
 
     peak_detector='abp'
 
-    # Extract Fiducials Points
+    # Extract Fiducial Points
     drt0_fp=pd.DataFrame()
     peaks, onsets = abdp_beat_detector(s, peak_detector)
     dicroticnotch = getDicroticNotch(s, peaks, onsets)
@@ -72,7 +72,7 @@ def getFiducialsPoints(s,correct):
 
     diastolicpeak = getDiastolicPeak(s, onsets, dicroticnotch, drt2_fp.e)
 
-    # Merge Fiducials Points
+    # Merge Fiducial Points
     keys=('on', 'sp', 'dn','dp')
     dummy = np.empty(len(peaks))
     dummy.fill(np.NaN)
@@ -89,9 +89,9 @@ def getFiducialsPoints(s,correct):
             temp_val = temp_drt[key].values
             fiducials[key][0:len(temp_val)]=temp_val
 
-    # Correct Fiducials Points
+    # Correct Fiducial Points
     if correct:
-        fiducials=CorrectFiducialsPoints(s,fiducials)
+        fiducials=CorrectFiducialPoints(s,fiducials)
 
     fiducials=fiducials.astype('Int64')
     return fiducials
@@ -226,6 +226,13 @@ def abdp_beat_detector(s, peak_detector):
 
     peaks = (all_p4/fs*fso).astype(int)
     onsets, peaks = find_onsets(s.filt_sig, fso, up, peaks,60/np.median(all_hr)*fs)
+
+    for i in range(0, len(peaks) - 1):
+        max_loc = np.argmax(s.filt_sig[onsets[i]:onsets[i + 1]]) + onsets[i]
+        if peaks[i] != max_loc:
+            peaks[i] = max_loc
+
+    onsets, peaks = find_onsets(s.filt_sig, fso, up, peaks, 60 / np.median(all_hr) * fs)
 
     temp_i = np.where(np.diff(onsets) == 0)[0]
     if len(temp_i) > 0:
@@ -881,7 +888,7 @@ def getDiastolicPeak(s, onsets, dicroticnotch, e_point):
     :return diastolicpeak: location of dicrotic notches, 1-d numpy array.
     """
 
-    nan_v = np.empty(len(dicroticnotch)-1)
+    nan_v = np.empty(len(dicroticnotch))
     nan_v[:] = np.NaN
     diastolicpeak = nan_v
 
@@ -893,10 +900,14 @@ def getDiastolicPeak(s, onsets, dicroticnotch, e_point):
                 start_segment = int(dicroticnotch[i])
                 temp_segment = s.filt_sig[start_segment:end_segment]
                 max_locs, _ = find_peaks(temp_segment)
+
+                if len(max_locs)==0:
+                    start_segment = int(e_point[i])
+                    temp_segment = s.filt_d1[start_segment:end_segment]
+                    max_locs, _ = find_peaks(temp_segment)
+
             except:
-                start_segment = int(e_point[i])
-                temp_segment = s.filt_d1[start_segment:end_segment]
-                max_locs, _ = find_peaks(temp_segment)
+                pass
 
             max_dn = max_locs[0] + start_segment
             diastolicpeak[i] = max_dn
@@ -1152,8 +1163,8 @@ def getThirdDerivitivePoints(s, onsets,drt2_fp):
 
     return drt3_fp
 
-def CorrectFiducialsPoints(s,fiducials):
-    """Correct the Fiducials Points
+def CorrectFiducialPoints(s,fiducials):
+    """Correct the Fiducial Points
         :param s: a struct of PPG signal:
             - s.v: a vector of PPG values
             - s.fs: the sampling frequency of the PPG in Hz
@@ -1171,25 +1182,43 @@ def CorrectFiducialsPoints(s,fiducials):
 
         # Correct onset
         try:
-            if fiducials.a[i] > s.fs*0.075:
-                win_on = int(s.fs*0.075)
+            win_onr = s.fs * 0.005
+            if fiducials.on[i]>win_onr:
+                win_onl = win_onr
             else:
-                win_on = int(fiducials.a[i])
+                win_onl = fiducials.on[i]
 
-            fiducials.on[i] = np.argmax(s.filt_d3[int(fiducials.a[i]) - win_on:int(fiducials.a[i])]) + int(fiducials.a[i]) - win_on
+            min_loc = np.argmax(s.filt_sig[fiducials.on[i]+win_onl:fiducials.on[i]+win_onr]) + fiducials.on[i]
+            if fiducials.on[i] != min_loc:
+
+                if fiducials.a[i] > s.fs*0.075:
+                    win_a = int(s.fs*0.075)
+                else:
+                    win_a = int(fiducials.a[i])
+
+                fiducials.on[i] = np.argmax(s.filt_d3[int(fiducials.a[i]) - win_a:int(fiducials.a[i])]) + int(fiducials.a[i]) - win_a
         except:
             pass
 
-        # Correct and diastolic peak
+        # Correct dicrotic notch
         try:
-            try:
-                strt_dn = int(fiducials.sp[i])
-                stp_dn = int(fiducials.f[i])
-                fiducials.dn[i] = find_peaks(-s.filt_sig[strt_dn:stp_dn])[0][-1] + strt_dn
-            except:
-                strt_dn = fiducials.e[i]
-                stp_dn = int(fiducials.on[i]+np.diff(fiducials.on[i:i+1])*0.8)
-                fiducials.dn[i] = np.argmin(s.filt_d3[strt_dn:stp_dn])+strt_dn
+            temp_segment=s.filt_sig[int(fiducials.sp[i]):int(fiducials.dp[i])]
+            min_dn=find_peaks(-temp_segment)[0]+fiducials.sp[i]
+            diff_dn=abs(min_dn-fiducials.dp[i])
+            if len(min_dn)>0 and diff_dn>round(s.fs/100):
+                fiducials.dn[i]=min_dn
+                try:
+                    strt_dn = int(fiducials.sp[i])
+                    stp_dn = int(fiducials.f[i])
+                    fiducials.dn[i] = find_peaks(-s.filt_sig[strt_dn:stp_dn])[0][-1] + strt_dn
+                    if fiducials.dn[i] > min_dn:
+                        fiducials.dn[i] = min_dn
+                except:
+                    strt_dn = fiducials.e[i]
+                    stp_dn = fiducials.f[i]
+                    fiducials.dn[i] = np.argmin(s.filt_d3[strt_dn:stp_dn])+strt_dn
+                    if fiducials.dn[i] > min_dn:
+                        fiducials.dn[i] = min_dn
 
         except:
             pass
@@ -1204,13 +1233,33 @@ def CorrectFiducialsPoints(s,fiducials):
 
         # Correct w-point
         try:
-            if fiducials.w[i] > fiducials.f[i]:
-                fiducials.w[i] = int(fiducials.f[i])
+            temp_end=int(np.diff(fiducials.on[i:i+2])*0.8)
+            temp_segment=s.filt_d1[int(fiducials.dn[i]):int(fiducials.on[i]+temp_end)]
+            min_w=find_peaks(-temp_segment)[0]+fiducials.dn[i]
 
             if fiducials.w[i] < fiducials.e[i]:
                 fiducials.w[i] = np.argmax(s.filt_d1[int(fiducials.e[i]):int(fiducials.f[i])]) + int(fiducials.e[i])
+
+            # if fiducials.w[i] > fiducials.f[i]:
+            #     fiducials.w[i] = int(fiducials.f[i])
+
+            if fiducials.w[i] > min_w:
+                fiducials.w[i] = min_w
+
         except:
             pass
+
+        # Correct f-point
+        try:
+            temp_end=int(np.diff(fiducials.on[i:i+2])*0.8)
+            temp_segment=s.filt_d2[int(fiducials.e[i]):int(fiducials.on[i]+temp_end)]
+            min_f=np.argmin(temp_segment)+fiducials.e[i]
+
+            if fiducials.w[i] > fiducials.f[i]:
+                fiducials.f[i] = min_f
+        except:
+            pass
+
 
     # Correct diastolic peak
     try:
