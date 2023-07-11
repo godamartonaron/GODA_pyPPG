@@ -9,35 +9,54 @@ The *pyPPG* using the improved *Automatic Beat Detector* [(*Aboy et al. 2005*)](
 
 ## Description
 The following steps are implemented in the ***pyPPG*** toolbox:
+1. **Loading a raw PPG signal**: The toolbox can accept various file formats such as *.mat*, *.csv*, *.txt*, or *.edf*. These files should contain raw PPG data along with the corresponding sampling rate.
+2. **Preprocessing**: The raw signal is filtered to remove unwanted noise and artifacts. Subsequently, the signal is resampled to a uniform rate of 75 Hz.
+3. **Pulse wave segmentation**: The toolbox employs a peak detector to identify the systolic peaks. Based on the peak locations, the toolbox also detects the pulse onsets and offsets, which indicate the start and end of the PPG pulse waves.
+4. **Fiducial points identification**: For each pulse wave, the toolbox detects a set of fiducial points.
+5. **Biomarker engineering**: Based on the fiducial points, a set of 74 PPG digital biomarkers are engineered.
 
-![img.png](figs/pyPPG_pipeline.svg)
+The *pyPPG* toolbox also provides an optional PPG signal quality index based on the Matlab implementation of the work by [(*Li et al. 2015*)](https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m).
 
-1. **Prefiltering** 
-   - Before computing the PPG morphological biomarkers, prefiltering of the raw PPG time series is performed to remove the baseline wander as well as remove high-frequency noise.  The following filters have been implemented as default in the pyPPG toolbox:
-     - ***4th order Chebyshev Type II 0.5-12 Hz band-pass filtering for original signal***: The 12 Hz low-pass filtering has two main reason. The first one was to avoid the time-shifting of a given fiducial point, particularly the systolic onset, and dicrotic notch. The second reason was to eliminate the unwanted frequency contents from the PPG derivatives. The 0.5 Hz high-pass filtering was used to minimize the baseline wondering of the PPG signal.
-     - ***20 ms moving average filtering (MAF) for band-pass filtered signal***: In the case of very noisy signals, some high-frequency content can remain in the band-pass filter signal. For this purpose, a 20 ms MAF with 22.5 Hz cut-off frequency has been applied after the band-pass filtering.
-     - ***10 ms MAF for the PPG derivatives***: To eliminate the high-frequency content in the PPG derivatives, a 10 ms MAF with 45 Hz cut-off frequency has been applied.
+![img.png](figs/pyPPG_pipeline.svg).
 
-2. **Pulse wave segmentation**
-   - ***Systolic peak detection***
-   - ***Pulse onset detection***
-3. **Fiducial Points Detection**
-    - ***PPG***: *on, sp, dn, dp, off*
-    - ***PPG'***: *u, v, w*
-    - ***PPG"***: *a, b, c, d, e, f*
-    - ***PPG'"***: *p<sub>1*, *p<sub>2*
-   
+### Preprocessing
+- **Prefiltering**
+<br> Before computing the PPG morphological biomarkers, prefiltering of the raw PPG time series is performed to remove the baseline wander as well as remove high-frequency noise.  The following filters have been implemented as default in the pyPPG toolbox:
+  - ***Bandpass filtering between 0.5−12 Hz***: A fourth-order Chebyshev Type II filter was used for the original signal. The 12 Hz low-pass cut-off was used to avoid time-shifting of fiducial points (particularly pulse onset, and dicrotic notch) and to eliminate unwanted high-frequency content from the PPG derivatives. The 0.5 Hz high-pass cut-off was used to minimize baseline wandering whilst retaining content at low heart rates.
+  - ***20 ms moving average filtering (MAF)***: In the case of very noisy signals, some high-frequency content can remain in the band-pass filter signal. For this purpose, a 20 ms standard flat (boxcar or top-hat) MAF with a 22.5 Hz cut-off frequency was applied after the band-pass filtering.
+  - ***10 ms MAF for the PPG derivatives***: To eliminate the high-frequency content in the PPG derivatives, a 10 ms standard flat (boxcar or top-hat) MAF with 45 Hz cut-off frequency was applied.
+
+- **Re-sampling**
+<br> The default behavior of the toolbox is to resample PPG signals at 75 Hz using the *Python resample* function using the Fourier method.   
+
+### Pulse wave segmentation
+The toolbox identifies individual pulse waves in a PPG signal by identifying ***systolic peaks (sp)***, and then
+identifying the ***pulse onset (on)*** and ***offset (off)*** on either side of each systolic peak which indicate the
+start and end of the pulse wave, respectively.
+
 ![alt text](figs/PPG_sample.svg)
+
+### Fiducial points identification
 ![img.png](figs/fiducial_points_def.png)
-4. **Engineering of Biomarkers** 
-   - Using the fiducial points PPG biomarkers are engineered for individual PPG cycles. When a biomarker cannot be engineered because some fiducial points could not be detected by wavedet then the feature was marked as a NaN. For an PPG channel a total of 74 features are extracted from intervals duration and 9 from waves characteristics to describe the ECG morphology.
 
-![img.png](figs/biomarkers_def.png)
+### Biomarker engineering
+**Calculate 74 Biomarkers**
+<br>The *pyPPG* toolbox includes a comprehensive collection of 74 standard PPG morphological biomarkers which are calculated from the timings and amplitudes of the fiducial points. The biomarkers were categorized into four groups: 
+- **PPG Signal** - biomarkers that are based on the location of the fiducial points of the PPG signal; 
+- **Signal Ratios** - biomarkers that are based on ratios of the fiducial points of the PPG signal;
+- **PPG Derivatives** - biomarkers that are based on the location of the fiducial points of the PPG derivatives; 
+- **Derivatives Ratios** - biomarkers that are based on ratios of the fiducial points of the PPG derivatives.
 
-5. **General Statistics of biomarkers**
-   - **Duration**: The length of the PPG signal. **Average** (AVG): Sum of all data divided by the number of entries. **Median** (MED): Value in the middle of the ordered set of data. **Standard deviation** (STD): Measure variability and consistency of the sample. **Quartiles** (Q1, Q3): The data value at which percent of the value in the data set is less than or equal to this value, calculated with 25th or 75th. **IQR**: Inter Quartile Range, the measure of the middle 50\% of data. **Skewness** (SKW): The measure of the lack of symmetry from the mean of the database. **Kurtosis** (KUR): The pointedness of a peak in the distribution curve. **MAD**: Average distance between the mean and each data value. 
 
-6. **+PPG Signal quality assessment**
+![PPG_s.png](figs/PPG_s.png)
+![PPG_sr.png](figs/PPG_sr.png)
+![PPG_d.png](figs/PPG_d.png)
+![PPG_dr.png](figs/PPG_dr.png)
+
+
+**General Statistics of biomarkers**
+<br> For a given window consisting of a set of beats, *pyPPG* provides the following nine general statistics for each biomarker: signal duration; average (AVG); median (MED); standard deviation (STD); lower and upper quartiles (Q1, Q3); inter-quartile range (IQR); Skewness (SKW, indicating a lack of symmetry in the distribution; Kurtosis (KUR, indicating the pointedness of a peak in the distribution curve); and the average difference between the mean and each data value (MAD).
+
 ## Installation
 (Available on pip, with the command: 
 ***pip install pyppg***)
