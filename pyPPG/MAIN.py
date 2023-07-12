@@ -27,10 +27,9 @@ if __name__ == '__main__':
 
     ## Get Fiducials Biomarkers, Summary and Statistics
     ppg_biomarkers = Biomarkers(s, fiducials)
-    ppg_summary = Summary(s.v, fiducials['sp'], fiducials['on'], s.fs)
     ppg_statistics = Statistics(fiducials['sp'], fiducials['on'], ppg_biomarkers)
 
     ## Save data
-    save_data(fiducials,ppg_biomarkers,ppg_summary,ppg_statistics)
+    save_data(fiducials,ppg_biomarkers,ppg_statistics)
 
     print('Program finished')

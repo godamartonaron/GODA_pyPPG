@@ -8,7 +8,23 @@ from tkinter import filedialog
 import mne
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
+###########################################################################
+############################### Load PPG data #############################
+###########################################################################
 def load_data(filtering):
+    """
+    Load PPG data function load the raw PPG data.
+    :param filtering: a bool for filtering
+    :return: s: a struct of PPG signal:
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.filt_sig: a vector of PPG values
+            - s.filt_d1: a vector of PPG values
+            - s.filt_d2: a vector of PPG values
+            - s.filt_d3: a vector of PPG values
+    """
+
     sig_path = filedialog.askopenfilename(title='Select SIGNAL file', filetypes=[("Input Files", ".mat .csv .edf .pkl")])
 
     if sig_path.rfind('/')>0:
@@ -44,8 +60,25 @@ def load_data(filtering):
 
     return s
 
+###########################################################################
+########################### Plot Fiducial points ##########################
+###########################################################################
+def plot_fiducials(s, fiducials, savefig):
+    """
+    Plot fiducial points of the filtered PPG signal.
+    :param s: a struct of PPG signal:
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.filt_sig: a vector of PPG values
+            - s.filt_d1: a vector of PPG values
+            - s.filt_d2: a vector of PPG values
+            - s.filt_d3: a vector of PPG values
+    :param fiducials: a dictionary where the key is the name of the fiducial pints
+            and the value is the list of fiducial points.
+    :param savefig: a bool for fiducial points saving
+    """
 
-def plot_fiducials(s,fiducials,savefig):
     fig = plt.figure(figsize=(20, 12))
     ax1 = plt.subplot(411)
     plt.plot(s.filt_sig, 'k', label=None)
@@ -110,7 +143,29 @@ def plot_fiducials(s,fiducials,savefig):
 
     if savefig:
         canvas = FigureCanvas(fig)
-        canvas.print_png(('temp_dir/figures/%s.png') % (s.name))
+        canvas.print_png(('temp_dir/PPG_Figures/%s.png') % (s.name))
 
-def save_data(fiducials,ppg_biomarkers,ppg_summary,ppg_statistics):
-    fiducials.to_csv((r'./temp_dir/fiducials/fiducial.csv'))
+###########################################################################
+################################# Save Data ###############################
+###########################################################################
+
+def save_data(fiducials,ppg_biomarkers,ppg_statistics):
+    """
+    Save the results of the filtered PPG analysis.
+    :param fiducials: a dictionary where the key is the name of the fiducial pints
+            and the value is the list of fiducial points.
+    :param biomarkers: dictionary of biomarkers in different categories:
+        - PPG signal
+        - Signal ratios
+        - PPG derivatives
+        - Derivatives ratios
+    :param Statistics: data frame with summary of PPG features
+    """
+
+    fiducials.to_csv((r'./temp_dir/PPG_Fiducials/Fiducial.csv'))
+    BM_keys=ppg_biomarkers.keys()
+    for key in BM_keys:
+        ppg_biomarkers[key].to_csv((r'./temp_dir/PPG_Biomarkers/%s.csv')% (key),index=True,header=True)
+        ppg_statistics[key].to_csv((r'./temp_dir/PPG_Statistics/%s.csv') % (key), index=True, header=True)
+
+

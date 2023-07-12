@@ -21,16 +21,16 @@ def Biomarkers (s, fiducials):
         - s.filt_d3: a vector of PPG values
     :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
         PPG Fiducials Points.
-        - Original signal: List of pulse onset, peak and dicrotic notch
+        - PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak
         - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
         - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
         - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)
 
     :return biomarkers: dictionary of biomarkers in different categories:
-        - Original signal (Pulse onset, Pulse peak, Dicrotic notch)
-        - Ratios of Systolic and Diastolic parts
-        - 1st and 2nd derivative
-        - Ratios of 1st and 2nd derivative’s points
+        - PPG signal
+        - Signal ratios
+        - PPG derivatives
+        - Derivatives ratios
     """
 
     BM_OSignal = get_BM_OSignal(s, fiducials)
