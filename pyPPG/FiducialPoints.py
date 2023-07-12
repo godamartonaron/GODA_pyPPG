@@ -142,6 +142,9 @@ def abdp_beat_detector(s, peak_detector):
         1)  There is a one-to-one correspondence between onsets and peaks
         2)  There are only onset and peak pairs
         3)  The distance between the onset and peak pairs can't be smaller than 30 ms
+    IV) Correct Peaks and Onsets:
+        1) The Peaks must be the highest amplitude between two consecutive pulse onsets, if not, then these are corrected
+        2) After the correction of Peaks, the Onsets are recalculated
     '''
 
     # inputs
@@ -227,11 +230,13 @@ def abdp_beat_detector(s, peak_detector):
     peaks = (all_p4/fs*fso).astype(int)
     onsets, peaks = find_onsets(s.filt_sig, fso, up, peaks,60/np.median(all_hr)*fs)
 
+    # Correct Peaks
     for i in range(0, len(peaks) - 1):
         max_loc = np.argmax(s.filt_sig[onsets[i]:onsets[i + 1]]) + onsets[i]
         if peaks[i] != max_loc:
             peaks[i] = max_loc
 
+    # Correct onsets
     onsets, peaks = find_onsets(s.filt_sig, fso, up, peaks, 60 / np.median(all_hr) * fs)
 
     temp_i = np.where(np.diff(onsets) == 0)[0]
