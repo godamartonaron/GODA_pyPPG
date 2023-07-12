@@ -37,10 +37,10 @@ if __name__ == '__main__':
     plt_sig = 0
 
     # Flag for comparison with PC: 0 is off, 1 is on
-    cmp_pc = 0
+    cmp_pc = 1
 
     # Flag for saving: 0 is no, 1 is yes
-    save = 0
+    save = 1
 
     fid_names = ('sp', 'on', 'dn', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e', 'f','p1','p2')
     if cmp_pc:
@@ -253,6 +253,8 @@ if __name__ == '__main__':
                 temp_end = int(np.diff(ons) * 0.8)
                 temp_segment = s.filt_d1[int(det_dn):int(ons[0] + temp_end)]
                 min_w = find_peaks(-temp_segment)[0] + det_dn
+                if len(min_w)>1:
+                    min_w=min_w[0]
 
                 if det_w<det_e:
                     det_w = np.argmax(drt1[det_e:det_f])+det_e
@@ -412,9 +414,9 @@ if __name__ == '__main__':
                 OutData['pyPPG_FID'] = M_FID_2.to_numpy()
                 try:
                     if len(annot_path2)>0:
-                        file_name = 'temp_dir/MG-pyPPG_errors.mat'
+                        file_name = 'temp_dir/MG-pyPPG_errors2.mat'
                 except:
-                    file_name = 'temp_dir/PC-pyPPG_errors.mat'
+                    file_name = 'temp_dir/PC-pyPPG_errors2.mat'
             scipy.io.savemat(file_name, OutData)
 
     # Calculate Mean Absolute Error (MAE), Standard Deviation (STD), and Mean Error (BIAS)

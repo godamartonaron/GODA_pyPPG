@@ -80,6 +80,10 @@ All the python requirements are installed when the toolbox is installed, no need
 To run the wavdet fiucial-points detector matlab runtime (MCR) 2021a is requierd.
 https://www.mathworks.com/products/compiler/matlab-runtime.html
 
+## Documentation:
+
+https://pyppg.readthedocs.io/en/latest/
+
 ## The main components:
 1. **Software**
     - An open-source algorithmic ***pyPPG*** toolbox, which implements the PPG peak and onsets detection algorithms and prefiltering routines. This can be used within your own data analysis code using the ***pyPPG*** API.
