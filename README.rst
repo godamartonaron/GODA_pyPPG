@@ -132,13 +132,6 @@ Python >= 3.10 scipy == 1.9.1 numpy == 1.23.2 dotmap == 1.3.30 pandas ==
 All the python requirements are installed when the toolbox is installed,
 no need for additional commands.
 
-System Requirements:
-~~~~~~~~~~~~~~~~~~~~
-
-To run the wavdet fiucial-points detector matlab runtime (MCR) 2021a is
-requierd.
-https://www.mathworks.com/products/compiler/matlab-runtime.html
-
 Documentation
 ------------------------
 

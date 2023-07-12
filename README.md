@@ -75,11 +75,6 @@ mne == 1.2.0
 
 All the python requirements are installed when the toolbox is installed, no need for additional commands.
 
-### System Requirements:
-
-To run the wavdet fiucial-points detector matlab runtime (MCR) 2021a is requierd.
-https://www.mathworks.com/products/compiler/matlab-runtime.html
-
 ## Documentation:
 
 https://pyppg.readthedocs.io/en/latest/
