@@ -9,7 +9,7 @@ import mne
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 ###########################################################################
-############################### Load PPG data #############################
+####################### Data Acquisition from Files #######################
 ###########################################################################
 def load_data(filtering):
     """
