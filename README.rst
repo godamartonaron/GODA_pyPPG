@@ -38,16 +38,12 @@ The *pyPPG* toolbox also provides an optional PPG signal quality index
 based on the Matlab implementation of the work by `(Li et
 al. 2015) <https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m>`__.
 
-.. image:: figs/pyPPG_piplne.svg
-   :width: 400px
-   :height: 300px
+.. image:: figs/pyPPG_pipline.svg
    :align: center
 
 The toolbox identifies individual pulse waves in a PPG signal by identifying **systolic peaks (sp)**, and then identifying the **pulse onset (on)** and **offset (off)** on either side of each systolic peak which indicate the start and end of the pulse wave, respectively.
 
 .. image:: figs/PPG_sample.svg
-   :width: 400px
-   :height: 300px
    :align: center
 
 Installation
