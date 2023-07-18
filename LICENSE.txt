@@ -1,4 +1,4 @@
-The GNU GPL License (MIT)
+The GNU GPL License
 
 Copyright (c) 2022 Marton Aron GODA, PhD
 
