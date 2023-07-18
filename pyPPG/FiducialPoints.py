@@ -48,12 +48,15 @@ def getFiducialPoints(s,correct):
         - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
 
     :param s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.filt_sig: a vector of PPG values
-        - s.filt_d1: a vector of PPG values
-        - s.filt_d2: a vector of PPG values
-        - s.filt_d3: a vector of PPG values
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     :param correct: a bool for fiducials points corretion
 
     :return fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
@@ -105,13 +108,15 @@ def abdp_beat_detector(s, peak_detector):
     using the improved 'Automatic Beat Detection' beat detector of Aboy M et al.
 
     :param s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.filt_sig: a vector of PPG values
-        - s.filt_d1: a vector of PPG values
-        - s.filt_d2: a vector of PPG values
-        - s.filt_d3: a vector of PPG values
-
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
 
     :return:
         - peaks: indices of detected pulse peaks
@@ -165,7 +170,8 @@ def abdp_beat_detector(s, peak_detector):
     px = DetectMaxima(x, 0, hr_win, peak_detector) # detect all maxima
     if len(px)==0:
         peaks = []
-        return
+        onsets = []
+        return peaks, onsets
 
     # detect peaks in windows
     all_p4 = []
@@ -409,7 +415,16 @@ def elim_vhfs(s, up, upper_cutoff):
     """
     This function filter the high frequency components.
 
-    :param s: 1-d array, of shape (N,) where N is the length of the signal
+    :param s: a struct of PPG signal:
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     :param up: setup up parameters of the algorithm
     :type up: DotMap
     :param upper_cutoff: upper cutoff frequency
@@ -790,12 +805,15 @@ def getDicroticNotch (s, peaks, onsets):
     Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak
 
     :param s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.filt_sig: a vector of PPG values
-        - s.filt_d1: a vector of PPG values
-        - s.filt_d2: a vector of PPG values
-        - s.filt_d3: a vector of PPG values
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     :param peaks: 1-d array, peaks of the signal
     :param onsets: 1-d array, onsets of the signal
 
@@ -880,12 +898,15 @@ def getDiastolicPeak(s, onsets, dicroticnotch, e_point):
     Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak
 
     :param s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.filt_sig: a vector of PPG values
-        - s.filt_d1: a vector of PPG values
-        - s.filt_d2: a vector of PPG values
-        - s.filt_d3: a vector of PPG values
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     :param onsets: 1-d array, onsets of the signal
     :param dicroticnotches: 1-d array, dicrotic notches of the signal
     :param e_point: 1-d array, e-points of the signal
@@ -928,12 +949,15 @@ def getFirstDerivitivePoints(s, onsets):
     """Calculate first derivitive points u and v from the PPG' signal
 
     :param s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.filt_sig: a vector of PPG values
-        - s.filt_d1: a vector of PPG values
-        - s.filt_d2: a vector of PPG values
-        - s.filt_d3: a vector of PPG values
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     :param onsets: 1-d array, onsets of the signal
 
     :return
@@ -981,12 +1005,15 @@ def getFirstDerivitivePoints(s, onsets):
 def getSecondDerivitivePoints(s, onsets, peaks):
     """Calculate Second derivitive points a, b, c, d, e, and f from the PPG" signal
     :param s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.filt_sig: a vector of PPG values
-        - s.filt_d1: a vector of PPG values
-        - s.filt_d2: a vector of PPG values
-        - s.filt_d3: a vector of PPG values
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     :param onsets: 1-d array, onsets of the signal
     :param peaks: 1-d array, peaks of the signal
 
@@ -1101,10 +1128,13 @@ def getThirdDerivitivePoints(s, onsets,drt2_fp):
         :param s: a struct of PPG signal:
             - s.v: a vector of PPG values
             - s.fs: the sampling frequency of the PPG in Hz
-            - s.filt_sig: a vector of PPG values
-            - s.filt_d1: a vector of PPG values
-            - s.filt_d2: a vector of PPG values
-            - s.filt_d3: a vector of PPG values
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
         :param onsets: 1-d array, onsets of the signal
 
         :return
@@ -1173,10 +1203,13 @@ def CorrectFiducialPoints(s,fiducials):
         :param s: a struct of PPG signal:
             - s.v: a vector of PPG values
             - s.fs: the sampling frequency of the PPG in Hz
-            - s.filt_sig: a vector of PPG values
-            - s.filt_d1: a vector of PPG values
-            - s.filt_d2: a vector of PPG values
-            - s.filt_d3: a vector of PPG values
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
         :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
 
         :return

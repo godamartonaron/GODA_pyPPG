@@ -20,10 +20,12 @@ def load_data(filtering):
             - s.v: a vector of PPG values
             - s.fs: the sampling frequency of the PPG in Hz
             - s.name: name of the record
-            - s.filt_sig: a vector of PPG values
-            - s.filt_d1: a vector of PPG values
-            - s.filt_d2: a vector of PPG values
-            - s.filt_d3: a vector of PPG values
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     """
 
     sig_path = filedialog.askopenfilename(title='Select SIGNAL file', filetypes=[("Input Files", ".mat .csv .edf .pkl .txt")])
@@ -91,10 +93,12 @@ def plot_fiducials(s, fiducials, savefig):
             - s.v: a vector of PPG values
             - s.fs: the sampling frequency of the PPG in Hz
             - s.name: name of the record
-            - s.filt_sig: a vector of PPG values
-            - s.filt_d1: a vector of PPG values
-            - s.filt_d2: a vector of PPG values
-            - s.filt_d3: a vector of PPG values
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     :param fiducials: a dictionary where the key is the name of the fiducial pints
             and the value is the list of fiducial points.
     :param savefig: a bool for fiducial points saving
@@ -183,13 +187,15 @@ def save_data(s,fiducials,ppg_biomarkers,ppg_statistics):
     """
     Save the results of the filtered PPG analysis.
     :param s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.name: name of the record
-        - s.filt_sig: a vector of PPG values
-        - s.filt_d1: a vector of PPG values
-        - s.filt_d2: a vector of PPG values
-        - s.filt_d3: a vector of PPG values
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     :param fiducials: a dictionary where the key is the name of the fiducial pints
             and the value is the list of fiducial points.
     :param biomarkers: dictionary of biomarkers in different categories:

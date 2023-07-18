@@ -13,24 +13,27 @@ def Biomarkers (s, fiducials):
     CP, SUT, DT, SW50, DW50, DW50/SW50, Tpi, SPA, SUT/CP, SOC, W50/Tpi, W50/SUT, SPA/(Tpi-SUT), AUCPPG
 
     :param s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.filt_sig: a vector of PPG values
-        - s.filt_d1: a vector of PPG values
-        - s.filt_d2: a vector of PPG values
-        - s.filt_d3: a vector of PPG values
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
         PPG Fiducials Points.
-        - PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak
-        - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
-        - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
-        - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)
+            - PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak
+            - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
+            - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
+            - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)
 
     :return biomarkers: dictionary of biomarkers in different categories:
-        - PPG signal
-        - Signal ratios
-        - PPG derivatives
-        - Derivatives ratios
+            - PPG signal
+            - Signal ratios
+            - PPG derivatives
+            - Derivatives ratios
     """
 
     BM_OSignal = get_BM_OSignal(s, fiducials)
@@ -266,6 +269,7 @@ class features_extract_PPG:
                     "AUCpi": self.getAUCpi(),
                     "AUCsys": self.getAUCsys(),
                     "AUCdia": self.getAUCdia(),
+
                     "IPR": self.getIPR(),
                     "Tsys/Tdia": self.get_ratio_Tsys_Tdia(),
                     "Tpw25/Tpi": self.get_ratio_Tpwx_Tpi(25),
@@ -288,6 +292,7 @@ class features_extract_PPG:
                     "Tsp/Asp": self.get_ratio_Tsp_Asp(),
                     "Asp/deltaT": self.get_ratio_Asp_deltaT(),
                     "Asp/(Tpi-Tsp)": self.get_ratio_Asp_TpiTsp(),
+
                     "u": self.get_u(),
                     "v": self.get_v(),
                     "w": self.get_v(),
@@ -1280,6 +1285,7 @@ class features_extract_PPG:
         Ae = self.segment_d2[self.get_e()]
         Af = self.segment_d2[self.get_e()]
         return (Ab-Ac-Ad-Ae-Af)/Aa
+
 ###########################################################################
 ############################# Get PPG features ############################
 ###########################################################################
@@ -1289,12 +1295,15 @@ def get_features(s, fiducials, features_lst):
     The function calculates the biomedical features of PPG signal.
 
     :param s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.filt_sig: a vector of PPG values
-        - s.filt_d1: a vector of PPG values
-        - s.filt_d2: a vector of PPG values
-        - s.filt_d3: a vector of PPG values
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     :param fiducials: M-d Dateframe, where M is the number of fiducial points
     :param features_lst: list of features
 
@@ -1314,7 +1323,7 @@ def get_features(s, fiducials, features_lst):
 
     # display(df_features)
     for i in range(len(onsets) - 1):
-        #         #     print(f'i is {i}')
+        #   print(f'i is {i}')
         onset = onsets[i]
         offset = onsets[i + 1]
         data.sig = ppg[int(onset):int(offset)]
@@ -1358,7 +1367,7 @@ def get_features(s, fiducials, features_lst):
                 lst = list(features_vec)
                 df_features.loc[len(df_features.index)] = lst
                 #         display(df_features)
-                df = df.append({'onset': onset, 'offset': offset, 'peak': peak}, ignore_index=True)
+                df = pd.concat({'onset': onset, 'offset': offset, 'peak': peak}, ignore_index=True)
             except:
                 pass
         else:

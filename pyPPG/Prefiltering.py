@@ -15,7 +15,11 @@ def Prefiltering(s):
     :param s.v: a vector of PPG values
     :param s.fs: the sampling frequency of the PPG in Hz
 
-    :return prefiltered PPG, PPg', PPG", and PPG'".
+    :return prefiltered PPG, PPG', PPG", and PPG'".
+        - s.filt_sig: 1-d array, a vector of the filtered PPG values
+        - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+        - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+        - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     '''
 
     ## PPG filtering
