@@ -7,6 +7,7 @@ from dotmap import DotMap
 from tkinter import filedialog
 import mne
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import os
 
 ###########################################################################
 ####################### Data Acquisition from Files #######################
@@ -25,7 +26,7 @@ def load_data(filtering):
             - s.filt_d3: a vector of PPG values
     """
 
-    sig_path = filedialog.askopenfilename(title='Select SIGNAL file', filetypes=[("Input Files", ".mat .csv .edf .pkl")])
+    sig_path = filedialog.askopenfilename(title='Select SIGNAL file', filetypes=[("Input Files", ".mat .csv .edf .pkl .txt")])
 
     if sig_path.rfind('/')>0:
         start_c = sig_path.rfind('/')+1
@@ -40,15 +41,35 @@ def load_data(filtering):
     if sig_format=='mat':
         input_sig = scipy.io.loadmat(sig_path)
         hr = np.float64(np.squeeze(input_sig.get("Data")))[0:]
-        fs = np.squeeze(input_sig.get("Fs"))
+        try:
+            fs = np.squeeze(input_sig.get("Fs"))
+        except:
+            fs = 100
+            print('The default sampling frequency is 100 Hz for .mat.')
     elif sig_format=='csv':
         input_sig = np.loadtxt(sig_path, delimiter=',').astype(int)
         hr = input_sig
         fs = 75
+        print('The default sampling frequency is 75 Hz for .csv.')
+    elif sig_format=='txt':
+        try:
+            input_sig = np.loadtxt(sig_path, delimiter='\t').astype(int)
+        except:
+            try:
+                input_sig = np.loadtxt(sig_path, delimiter=' ').astype(int)
+            except:
+                print('ERROR! The data separator is not supported for .txt.')
+        hr = input_sig
+        fs = 1000
+        print('The default sampling frequency is 1 kHz for .txt.')
     elif sig_format == 'edf':
         input_sig = mne.io.read_raw_edf(sig_path)
-        hr=-input_sig[22][0][0]
-        fs = 256
+        hr = -input_sig['Pleth'][0][0]
+        try:
+            fs = int(np.round(input_sig.info['sfreq']))
+        except:
+            fs = 256
+            print('The default sampling frequency is 256 Hz for .edf.')
 
     s = DotMap()
     s.v=hr
@@ -102,8 +123,13 @@ def plot_fiducials(s, fiducials, savefig):
     len_sig=end_sig-str_sig
     step_small = 1
     step_big = step_small * 5
-    major_ticks = np.arange(str_sig, end_sig, int(step_big * s.fs))
-    minor_ticks = np.arange(str_sig, end_sig, int(step_small * s.fs))
+
+    major_ticks_names = range(0, int(len_sig/s.fs),step_big)
+    len_ticks_names=len(major_ticks_names)
+    major_diff=len_sig/len_ticks_names
+    minor_diff = len_sig / len_ticks_names / step_big
+    major_ticks = np.arange(str_sig, end_sig, major_diff)
+    minor_ticks = np.arange(str_sig, end_sig, minor_diff)
 
     for n in fid_names:
         ind = fid_names.index(n)
@@ -137,21 +163,33 @@ def plot_fiducials(s, fiducials, savefig):
         plt.yticks([])
 
     plt.xlabel('Time [s]', fontsize=20)
-    major_ticks_names = range(0, int(len_sig/s.fs),step_big)
     plt.xticks(major_ticks,major_ticks_names, fontsize=20)
     plt.show()
 
     if savefig:
         canvas = FigureCanvas(fig)
-        canvas.print_png(('temp_dir/PPG_Figures/%s.png') % (s.name))
+        tmp_dir='temp_dir'+os.sep+'PPG_Figures'+os.sep
+        if not os.path.exists(tmp_dir):
+            os.mkdir(tmp_dir)
+
+        canvas.print_png((tmp_dir+'%s.png') % (s.name))
+        print('Figure has been saved in the "temp_dir".')
 
 ###########################################################################
 ################################# Save Data ###############################
 ###########################################################################
 
-def save_data(fiducials,ppg_biomarkers,ppg_statistics):
+def save_data(s,fiducials,ppg_biomarkers,ppg_statistics):
     """
     Save the results of the filtered PPG analysis.
+    :param s: a struct of PPG signal:
+        - s.v: a vector of PPG values
+        - s.fs: the sampling frequency of the PPG in Hz
+        - s.name: name of the record
+        - s.filt_sig: a vector of PPG values
+        - s.filt_d1: a vector of PPG values
+        - s.filt_d2: a vector of PPG values
+        - s.filt_d3: a vector of PPG values
     :param fiducials: a dictionary where the key is the name of the fiducial pints
             and the value is the list of fiducial points.
     :param biomarkers: dictionary of biomarkers in different categories:
@@ -162,10 +200,16 @@ def save_data(fiducials,ppg_biomarkers,ppg_statistics):
     :param Statistics: data frame with summary of PPG features
     """
 
-    fiducials.to_csv((r'./temp_dir/PPG_Fiducials/Fiducial.csv'))
+    temp_dirs= ['PPG_Fiducials','PPG_Biomarkers','PPG_Statistics']
+    for i in temp_dirs:
+        temp_dir = 'temp_dir'+os.sep+i+os.sep
+        if not os.path.exists(temp_dir):
+            os.mkdir(temp_dir)
+
+    fiducials.to_csv((r'.'+os.sep+'temp_dir'+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducial.csv'))
     BM_keys=ppg_biomarkers.keys()
     for key in BM_keys:
-        ppg_biomarkers[key].to_csv((r'./temp_dir/PPG_Biomarkers/%s.csv')% (key),index=True,header=True)
-        ppg_statistics[key].to_csv((r'./temp_dir/PPG_Statistics/%s.csv') % (key), index=True, header=True)
+        ppg_biomarkers[key].to_csv((r'.'+os.sep+'temp_dir'+os.sep+temp_dirs[1]+os.sep+'%s.csv')% (s.name+'_'+key),index=True,header=True)
+        ppg_statistics[key].to_csv((r'.'+os.sep+'temp_dir'+os.sep+temp_dirs[2]+os.sep+'%s.csv') % (s.name+'_'+key), index=True, header=True)
 
-
+    print('Results have been saved in the "temp_dir".')

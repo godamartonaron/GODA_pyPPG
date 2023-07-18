@@ -28,6 +28,6 @@ if __name__ == '__main__':
     ppg_statistics = Statistics(fiducials['sp'], fiducials['on'], ppg_biomarkers)
 
     ## Save data
-    save_data(fiducials,ppg_biomarkers,ppg_statistics)
+    save_data(s,fiducials,ppg_biomarkers,ppg_statistics)
 
     print('Program finished')
