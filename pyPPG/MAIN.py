@@ -1,6 +1,7 @@
 from DataHandling import*
 from Prefiltering import*
-from FiducialPoints import*
+# from FiducialPoints import*
+import FiducialPoints as Fp
 from Biomarkers import*
 from Statistics import*
 
@@ -18,7 +19,9 @@ if __name__ == '__main__':
     s=load_data(filtering=True)
 
     ## Get Fiducials Points
-    fiducials = getFiducialPoints(s,correct=True)
+    # fiducials = getFiducialPoints(s,correct=True)
+    fp = Fp.FiducialPoints(s)
+    fiducials=fp.getFiducialPoints(correct=True)
 
     ## Plot Fiducials Points
     plot_fiducials(s, fiducials,savefig=True)
