@@ -3,21 +3,27 @@ from scipy.signal import detrend, find_peaks, correlate
 from numpy.fft import fft, ifft, fftshift
 
 def ppgSQI(ppg, fs, ann_ppg):
-    # PPG Signal Quality Index based on beat template correlation.
-    # input:
-    #   ppg: PPG data
-    #   fs: Samples frequency
-    #   annppg: PPG annotation time(samples)
-    # output:
-    #   psqi: PPG SQI
-    #
-    # Author:
-    # Marton A. Goda: Faculty of Biomedical Engineering,
-    # Technion – Israel Institute of Technology, Haifa, Israel(October 2022)
-    #
-    # Original Matlab implementation:
-    # Qiao Li, November 10, 2014.
-    # https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m
+    '''
+    PPG Signal Quality Index based on beat template correlation.
+
+    :param ppg: PPG data
+    :param fs: Samples frequency
+    :param ann_ppg: PPG annotation time(samples)
+    :return psqi: PPG SQI
+
+    Reference
+    ---------
+    Li, Qiao, and Gari D. Clifford. "Dynamic time warping and machine learning for signal quality assessment of pulsatile signals."
+    Physiological measurement 33.9 (2012): 1491.
+
+    Author:
+    Marton A. Goda: Faculty of Biomedical Engineering,
+    Technion – Israel Institute of Technology, Haifa, Israel(October 2022)
+
+    Original Matlab implementation:
+    Qiao Li, November 10, 2014.
+    https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m
+    '''
 
     Fs = fs
     # Create PPG template

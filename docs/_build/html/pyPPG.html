@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyPPG package &mdash; pyPPG 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyPPG.ppg_bm package" href="pyPPG.ppg_bm.html" />
+    <link rel="prev" title="GODA_pyPPG" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pyPPG
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GODA_pyPPG</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyPPG package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyPPG.ppg_bm.html">pyPPG.ppg_bm package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.Biomarkers">pyPPG.Biomarkers module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.Biomarkers.Biomarkers"><code class="docutils literal notranslate"><span class="pre">Biomarkers</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.DataHandling">pyPPG.DataHandling module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.DataHandling.load_data"><code class="docutils literal notranslate"><span class="pre">load_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.DataHandling.plot_fiducials"><code class="docutils literal notranslate"><span class="pre">plot_fiducials()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.DataHandling.save_data"><code class="docutils literal notranslate"><span class="pre">save_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.FiducialPoints">pyPPG.FiducialPoints module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.FiducialPoints.FiducialPoints"><code class="docutils literal notranslate"><span class="pre">FiducialPoints</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.MAIN">pyPPG.MAIN module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.Prefiltering">pyPPG.Prefiltering module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.Prefiltering.Prefiltering"><code class="docutils literal notranslate"><span class="pre">Prefiltering()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.Statistics">pyPPG.Statistics module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.Statistics.Statistics"><code class="docutils literal notranslate"><span class="pre">Statistics()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.ppgSQI">pyPPG.ppgSQI module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.ppgSQI.ppgSQI"><code class="docutils literal notranslate"><span class="pre">ppgSQI()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.ppgSQI.template"><code class="docutils literal notranslate"><span class="pre">template()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyppg-test-annot-04-module">pyPPG.test_annot_04 module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyppg-test-annot-bidmc-module">pyPPG.test_annot_BIDMC module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyPPG">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyPPG.ppg_bm.html">pyPPG.ppg_bm package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyPPG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">GODA_pyPPG</a></li>
+      <li class="breadcrumb-item active">pyPPG package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/pyPPG.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyppg-package">
+<h1>pyPPG package<a class="headerlink" href="#pyppg-package" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyPPG.ppg_bm.html">pyPPG.ppg_bm package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyPPG.ppg_bm.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyPPG.ppg_bm.html#module-pyPPG.ppg_bm.get_biomarkers">pyPPG.ppg_bm.get_biomarkers module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG"><code class="docutils literal notranslate"><span class="pre">biomarkers_extract_PPG</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.get_biomarkers"><code class="docutils literal notranslate"><span class="pre">get_biomarkers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyPPG.ppg_bm.html#module-pyPPG.ppg_bm.get_bm_derivs_ratios">pyPPG.ppg_bm.get_bm_derivs_ratios module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_bm_derivs_ratios.get_bm_derivs_ratios"><code class="docutils literal notranslate"><span class="pre">get_bm_derivs_ratios()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyPPG.ppg_bm.html#module-pyPPG.ppg_bm.get_bm_ppg_derivs">pyPPG.ppg_bm.get_bm_ppg_derivs module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_bm_ppg_derivs.get_bm_ppg_derivs"><code class="docutils literal notranslate"><span class="pre">get_bm_ppg_derivs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyPPG.ppg_bm.html#module-pyPPG.ppg_bm.get_bm_ppg_sig">pyPPG.ppg_bm.get_bm_ppg_sig module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_bm_ppg_sig.get_bm_ppg_sig"><code class="docutils literal notranslate"><span class="pre">get_bm_ppg_sig()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyPPG.ppg_bm.html#module-pyPPG.ppg_bm.get_bm_sig_ratios">pyPPG.ppg_bm.get_bm_sig_ratios module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_bm_sig_ratios.get_bm_sig_ratios"><code class="docutils literal notranslate"><span class="pre">get_bm_sig_ratios()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyPPG.ppg_bm.html#module-pyPPG.ppg_bm">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-pyPPG.Biomarkers">
+<span id="pyppg-biomarkers-module"></span><h2>pyPPG.Biomarkers module<a class="headerlink" href="#module-pyPPG.Biomarkers" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyPPG.Biomarkers.Biomarkers">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyPPG.Biomarkers.</span></span><span class="sig-name descname"><span class="pre">Biomarkers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/Biomarkers.html#Biomarkers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.Biomarkers.Biomarkers" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.Biomarkers.Biomarkers.getBiomarkers">
+<span class="sig-name descname"><span class="pre">getBiomarkers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/Biomarkers.html#Biomarkers.getBiomarkers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.Biomarkers.Biomarkers.getBiomarkers" title="Permalink to this definition"></a></dt>
+<dd><p>This function returns the PPG biomarkers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return biomarkers<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dictionary of biomarkers in different categories
+- PPG signal
+- Signal ratios
+- PPG derivatives
+- Derivatives ratios</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pyPPG.DataHandling">
+<span id="pyppg-datahandling-module"></span><h2>pyPPG.DataHandling module<a class="headerlink" href="#module-pyPPG.DataHandling" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyPPG.DataHandling.load_data">
+<span class="sig-prename descclassname"><span class="pre">pyPPG.DataHandling.</span></span><span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filtering</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/DataHandling.html#load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.DataHandling.load_data" title="Permalink to this definition"></a></dt>
+<dd><p>Load PPG data function load the raw PPG data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filtering</strong> – a bool for filtering</p>
+</dd>
+<dt class="field-even">Return s<span class="colon">:</span></dt>
+<dd class="field-even"><p>a struct of PPG signal
+- s.v: a vector of PPG values
+- s.fs: the sampling frequency of the PPG in Hz
+- s.name: name of the record
+- s.v: 1-d array, a vector of PPG values
+- s.fs: the sampling frequency of the PPG in Hz
+- s.filt_sig: 1-d array, a vector of the filtered PPG values
+- s.filt_d1: 1-d array, a vector of the filtered PPG’ values
+- s.filt_d2: 1-d array, a vector of the filtered PPG” values
+- s.filt_d3: 1-d array, a vector of the filtered PPG’” values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyPPG.DataHandling.plot_fiducials">
+<span class="sig-prename descclassname"><span class="pre">pyPPG.DataHandling.</span></span><span class="sig-name descname"><span class="pre">plot_fiducials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/DataHandling.html#plot_fiducials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.DataHandling.plot_fiducials" title="Permalink to this definition"></a></dt>
+<dd><p>Plot fiducial points of the filtered PPG signal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s</strong> – a struct of PPG signal
+- s.v: a vector of PPG values
+- s.fs: the sampling frequency of the PPG in Hz
+- s.name: name of the record
+- s.v: 1-d array, a vector of PPG values
+- s.fs: the sampling frequency of the PPG in Hz
+- s.filt_sig: 1-d array, a vector of the filtered PPG values
+- s.filt_d1: 1-d array, a vector of the filtered PPG’ values
+- s.filt_d2: 1-d array, a vector of the filtered PPG” values
+- s.filt_d3: 1-d array, a vector of the filtered PPG’” values</p></li>
+<li><p><strong>fiducials</strong> – a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</p></li>
+<li><p><strong>savefig</strong> – a bool for fiducial points saving</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyPPG.DataHandling.save_data">
+<span class="sig-prename descclassname"><span class="pre">pyPPG.DataHandling.</span></span><span class="sig-name descname"><span class="pre">save_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ppg_biomarkers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ppg_statistics</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/DataHandling.html#save_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.DataHandling.save_data" title="Permalink to this definition"></a></dt>
+<dd><p>Save the results of the filtered PPG analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s</strong> – a struct of PPG signal
+- s.v: a vector of PPG values
+- s.fs: the sampling frequency of the PPG in Hz
+- s.name: name of the record
+- s.v: 1-d array, a vector of PPG values
+- s.fs: the sampling frequency of the PPG in Hz
+- s.filt_sig: 1-d array, a vector of the filtered PPG values
+- s.filt_d1: 1-d array, a vector of the filtered PPG’ values
+- s.filt_d2: 1-d array, a vector of the filtered PPG” values
+- s.filt_d3: 1-d array, a vector of the filtered PPG’” values</p></li>
+<li><p><strong>fiducials</strong> – a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</p></li>
+<li><p><strong>biomarkers</strong> – dictionary of biomarkers in different categories
+- PPG signal
+- Signal ratios
+- PPG derivatives
+- Derivatives ratios</p></li>
+<li><p><strong>Statistics</strong> – data frame with summary of PPG features</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyPPG.FiducialPoints">
+<span id="pyppg-fiducialpoints-module"></span><h2>pyPPG.FiducialPoints module<a class="headerlink" href="#module-pyPPG.FiducialPoints" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyPPG.FiducialPoints.</span></span><span class="sig-name descname"><span class="pre">FiducialPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.Bandpass">
+<span class="sig-name descname"><span class="pre">Bandpass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_cutoff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.Bandpass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.Bandpass" title="Permalink to this definition"></a></dt>
+<dd><p>Bandpass filter function detects all peaks in the raw and also in the filtered signal to find.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – sampling frequency</p></li>
+<li><p><strong>lower_cutoff</strong> (<em>float</em>) – lower cutoff frequency</p></li>
+<li><p><strong>upper_cutoff</strong> (<em>float</em>) – upper cutoff frequency</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>bandpass filtered signal, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.CorrectFiducialPoints">
+<span class="sig-name descname"><span class="pre">CorrectFiducialPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fiducials</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.CorrectFiducialPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.CorrectFiducialPoints" title="Permalink to this definition"></a></dt>
+<dd><p>Correct the Fiducial Points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fiducials</strong> – a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.DetectMaxima">
+<span class="sig-name descname"><span class="pre">DetectMaxima</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hr_win</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_detector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.DetectMaxima"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.DetectMaxima" title="Permalink to this definition"></a></dt>
+<dd><p>Detect Maxima function detects all peaks in the raw and also in the filtered signal to find.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
+<li><p><strong>percentile</strong> (<em>int</em>) – in each signal partition, a rank filter detects the peaks above a given percentile</p></li>
+<li><p><strong>hr_win</strong> (<em>int</em>) – window for adaptive the heart rate estimate</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>maximum peaks of signal, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.EstimateDeriv">
+<span class="sig-name descname"><span class="pre">EstimateDeriv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.EstimateDeriv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.EstimateDeriv" title="Permalink to this definition"></a></dt>
+<dd><p>Derivative Estimation function estimate derivative from highly filtered signal based on the
+General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>derivative, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.EstimateHeartRate">
+<span class="sig-name descname"><span class="pre">EstimateHeartRate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hr_past</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.EstimateHeartRate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.EstimateHeartRate" title="Permalink to this definition"></a></dt>
+<dd><p>Heart Rate Estimation function estimate the heart rate according to the previous heart rate in given time window</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – sampling frequency</p></li>
+<li><p><strong>up</strong> (<em>DotMap</em>) – setup up parameters of the algorithm</p></li>
+<li><p><strong>hr_past</strong> (<em>int</em>) – the average heart rate in the past in given time window</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>estimated heart rate, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.IBICorrect">
+<span class="sig-name descname"><span class="pre">IBICorrect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.IBICorrect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.IBICorrect" title="Permalink to this definition"></a></dt>
+<dd><p>This function corrects the peaks’ location error</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> (<em>1-d numpy array</em>) – systolic peaks of the PPG signal</p></li>
+<li><p><strong>m</strong> (<em>1-d numpy array</em>) – all maxima of the PPG signal</p></li>
+<li><p><strong>hr</strong> (<em>1-d numpy array</em>) – heart rate</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – sampling frequency</p></li>
+<li><p><strong>up</strong> (<em>DotMap</em>) – setup up parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>onsets, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.abdp_beat_detector">
+<span class="sig-name descname"><span class="pre">abdp_beat_detector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peak_detector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.abdp_beat_detector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.abdp_beat_detector" title="Permalink to this definition"></a></dt>
+<dd><p>ABDP_BEAT_DETECTOR detects beats in a photoplethysmogram (PPG) signal
+using the improved ‘Automatic Beat Detection’ beat detector of Aboy M et al.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>peak_detector</strong> – type of peak detector</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>peaks: indices of detected pulse peaks</p></li>
+<li><p>onsets: indices of detected pulse onsets</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<section id="reference">
+<h3>Reference<a class="headerlink" href="#reference" title="Permalink to this heading"></a></h3>
+<p>Aboy M et al., An automatic beat detection algorithm for pressure signals.
+IEEE Trans Biomed Eng 2005; 52: 1662 - 70. &lt;<a class="reference external" href="https://doi.org/10.1109/TBME.2005.855725">https://doi.org/10.1109/TBME.2005.855725</a>&gt;</p>
+<p>Author:
+Marton A. Goda – Faculty of Biomedical Engineering,
+Technion – Israel Institute of Technology, Haifa, Israel (August 2022)</p>
+<p>Original Matlab implementation:
+Peter H. Charlton – King’s College London (August 2017) – University of Cambridge (February 2022)
+&lt;<a class="reference external" href="https://github.com/peterhcharlton/ppg-beats">https://github.com/peterhcharlton/ppg-beats</a>&gt;</p>
+<dl class="simple">
+<dt>Changes from Charlton’s implementation:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>Detect Maxima:</dt><dd><ol class="arabic simple">
+<li><p>Systolic peak-to-peak distance is predicted by the heart rate estimate over the preceding 10 sec window.</p></li>
+<li><p>The peak location is estimated by distances and prominences of the previous peaks.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Find Onsets:</dt><dd><ol class="arabic simple">
+<li><p>The onset is a local minimum, which is always calculated from the peak that follows it within a given time window</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Tidy of Peaks and Onsets:</dt><dd><ol class="arabic simple">
+<li><p>There is a one-to-one correspondence between onsets and peaks</p></li>
+<li><p>There are only onset and peak pairs</p></li>
+<li><p>The distance between the onset and peak pairs can’t be smaller than 30 ms</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Correct Peaks and Onsets:</dt><dd><ol class="arabic simple">
+<li><p>The Peaks must be the highest amplitude between two consecutive pulse onsets, if not, then these are corrected</p></li>
+<li><p>After the correction of Peaks, the Onsets are recalculated</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.elim_vhfs">
+<span class="sig-name descname"><span class="pre">elim_vhfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.elim_vhfs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.elim_vhfs" title="Permalink to this definition"></a></dt>
+<dd><p>This function filter the high frequency components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>up</strong> (<em>DotMap</em>) – setup up parameters of the algorithm</p></li>
+<li><p><strong>upper_cutoff</strong> (<em>float</em>) – upper cutoff frequency</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>low frequency filtered signal, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.elim_vlfs_abd">
+<span class="sig-name descname"><span class="pre">elim_vlfs_abd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.elim_vlfs_abd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.elim_vlfs_abd" title="Permalink to this definition"></a></dt>
+<dd><p>This function filter the high frequency components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
+<li><p><strong>up</strong> (<em>DotMap</em>) – setup up parameters of the algorithm</p></li>
+<li><p><strong>lower_cutoff</strong> (<em>float</em>) – lower cutoff frequency</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>high frequency filtered signal, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.find_onsets">
+<span class="sig-name descname"><span class="pre">find_onsets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peaks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">med_hr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.find_onsets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.find_onsets" title="Permalink to this definition"></a></dt>
+<dd><p>This function finds the onsets of PPG sigal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – sampling frequency</p></li>
+<li><p><strong>up</strong> (<em>DotMap</em>) – setup up parameters of the algorithm</p></li>
+<li><p><strong>peaks</strong> (<em>1-d array</em>) – peaks of the signal</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>onsets, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.find_prolonged_IBIs">
+<span class="sig-name descname"><span class="pre">find_prolonged_IBIs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">med_hr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.find_prolonged_IBIs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.find_prolonged_IBIs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.find_pulse_peaks">
+<span class="sig-name descname"><span class="pre">find_pulse_peaks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.find_pulse_peaks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.find_pulse_peaks" title="Permalink to this definition"></a></dt>
+<dd><p>Pulse detection function detect the pulse peaks according to the peaks of 1st and 2nd derivatives
+General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p2</strong> – 1-d array, peaks of the 1st derivatives</p></li>
+<li><p><strong>p3</strong> – 1-d array, peaks of the 2nd derivatives</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>pulse peaks, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.find_reduced_IBIs">
+<span class="sig-name descname"><span class="pre">find_reduced_IBIs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">med_hr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.find_reduced_IBIs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.find_reduced_IBIs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.getDiastolicPeak">
+<span class="sig-name descname"><span class="pre">getDiastolicPeak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dicroticnotch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.getDiastolicPeak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.getDiastolicPeak" title="Permalink to this definition"></a></dt>
+<dd><p>Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>onsets</strong> – 1-d array, onsets of the signal</p></li>
+<li><p><strong>dicroticnotches</strong> – 1-d array, dicrotic notches of the signal</p></li>
+<li><p><strong>e_point</strong> – 1-d array, e-points of the signal</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return diastolicpeak<span class="colon">:</span></dt>
+<dd class="field-even"><p>location of dicrotic notches, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.getDicroticNotch">
+<span class="sig-name descname"><span class="pre">getDicroticNotch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peaks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onsets</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.getDicroticNotch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.getDicroticNotch" title="Permalink to this definition"></a></dt>
+<dd><p>Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>peaks</strong> – 1-d array, peaks of the signal</p></li>
+<li><p><strong>onsets</strong> – 1-d array, onsets of the signal</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>location of dicrotic notches, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.getFiducialPoints">
+<span class="sig-name descname"><span class="pre">getFiducialPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correct</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.getFiducialPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.getFiducialPoints" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>The function calculates the PPG Fiducial Points.</dt><dd><ul class="simple">
+<li><p>Original signal: List of pulse onset, pea and dicrotic notch</p></li>
+<li><p>1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</p></li>
+<li><p>2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>correct</strong> – a bool for fiducials points corretion</p>
+</dd>
+<dt class="field-even">Return fiducials<span class="colon">:</span></dt>
+<dd class="field-even"><p>a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.getFirstDerivitivePoints">
+<span class="sig-name descname"><span class="pre">getFirstDerivitivePoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onsets</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.getFirstDerivitivePoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.getFirstDerivitivePoints" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate first derivitive points u and v from the PPG’ signal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>onsets</strong> – 1-d array, onsets of the signal</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>u: The highest amplitude between the pulse onset and systolic peak on PPG’</p></li>
+<li><p>v: The lowest amplitude between the u-point and diastolic peak on PPG’</p></li>
+<li><p>w: The first local maximum or inflection point after the dicrotic notch on PPG’</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.getSecondDerivitivePoints">
+<span class="sig-name descname"><span class="pre">getSecondDerivitivePoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peaks</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.getSecondDerivitivePoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.getSecondDerivitivePoints" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate Second derivitive points a, b, c, d, e, and f from the PPG” signal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>onsets</strong> – 1-d array, onsets of the signal</p></li>
+<li><p><strong>peaks</strong> – 1-d array, peaks of the signal</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>a: The highest amplitude between pulse onset and systolic peak on PPG”</p></li>
+<li><p>b: The first local minimum after the a-point on PPG”</p></li>
+<li><p>c: The local maximum with the highest amplitude between the b-point and e-point, or if no local maximum is present then the inflection point on PPG”</p></li>
+<li><p>d: The local minimum with the lowest amplitude between the c-point and e-point, or if no local minimum is present then the inflection point on PPG”</p></li>
+<li><p>e: The local maximum with the highest amplitude after the b-point and before the diastolic peak on PPG”</p></li>
+<li><p>f: The first local minimum after the e-point on PPG”</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.getThirdDerivitivePoints">
+<span class="sig-name descname"><span class="pre">getThirdDerivitivePoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drt2_fp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.getThirdDerivitivePoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.getThirdDerivitivePoints" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate third derivitive points p1 and p2 from the PPG’” signal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>onsets</strong> – 1-d array, onsets of the signal</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>p1: The first local maximum after the b-point on PPG’”</p></li>
+<li><p>p2: The last local minimum after the b-point and before the d-point on PPG’”</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.savitzky_golay_abd">
+<span class="sig-name descname"><span class="pre">savitzky_golay_abd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv_no</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.savitzky_golay_abd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.savitzky_golay_abd" title="Permalink to this definition"></a></dt>
+<dd><p>This function estimate the Savitzky Golay derivative from highly filtered signal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
+<li><p><strong>deriv_no</strong> (<em>int</em>) – number of derivative</p></li>
+<li><p><strong>win_size</strong> (<em>int</em>) – size of window</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Savitzky Golay derivative, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.setup_up_abdp_algorithm">
+<span class="sig-name descname"><span class="pre">setup_up_abdp_algorithm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.setup_up_abdp_algorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.setup_up_abdp_algorithm" title="Permalink to this definition"></a></dt>
+<dd><p>This function setups the filter parameters of the algorithm</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>filter parameters of the algorithm, DotMap.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pyPPG.MAIN">
+<span id="pyppg-main-module"></span><h2>pyPPG.MAIN module<a class="headerlink" href="#module-pyPPG.MAIN" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-pyPPG.Prefiltering">
+<span id="pyppg-prefiltering-module"></span><h2>pyPPG.Prefiltering module<a class="headerlink" href="#module-pyPPG.Prefiltering" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyPPG.Prefiltering.Prefiltering">
+<span class="sig-prename descclassname"><span class="pre">pyPPG.Prefiltering.</span></span><span class="sig-name descname"><span class="pre">Prefiltering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/Prefiltering.html#Prefiltering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.Prefiltering.Prefiltering" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the prefiltered PPG, PPg’, PPG”, and PPG’”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s.v</strong> – a vector of PPG values</p></li>
+<li><p><strong>s.fs</strong> – the sampling frequency of the PPG in Hz</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>:return prefiltered PPG, PPG’, PPG”, and PPG’”.</dt><dd><ul class="simple">
+<li><p>s.filt_sig: 1-d array, a vector of the filtered PPG values</p></li>
+<li><p>s.filt_d1: 1-d array, a vector of the filtered PPG’ values</p></li>
+<li><p>s.filt_d2: 1-d array, a vector of the filtered PPG” values</p></li>
+<li><p>s.filt_d3: 1-d array, a vector of the filtered PPG’” values</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyPPG.Statistics">
+<span id="pyppg-statistics-module"></span><h2>pyPPG.Statistics module<a class="headerlink" href="#module-pyPPG.Statistics" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyPPG.Statistics.Statistics">
+<span class="sig-prename descclassname"><span class="pre">pyPPG.Statistics.</span></span><span class="sig-name descname"><span class="pre">Statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peaks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ppg_biomarkers</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/Statistics.html#Statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.Statistics.Statistics" title="Permalink to this definition"></a></dt>
+<dd><p>The function compares the different biomedical features of PPG signal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ppg</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
+<li><p><strong>peaks</strong> – 1-d array, peaks of the signal</p></li>
+<li><p><strong>onsets</strong> – 1-d array, onsets of the signal</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – sampling frequency</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return df_windows<span class="colon">:</span></dt>
+<dd class="field-even"><p>data frame with summary of PPG features</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyPPG.ppgSQI">
+<span id="pyppg-ppgsqi-module"></span><h2>pyPPG.ppgSQI module<a class="headerlink" href="#module-pyPPG.ppgSQI" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyPPG.ppgSQI.ppgSQI">
+<span class="sig-prename descclassname"><span class="pre">pyPPG.ppgSQI.</span></span><span class="sig-name descname"><span class="pre">ppgSQI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ppg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ann_ppg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppgSQI.html#ppgSQI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppgSQI.ppgSQI" title="Permalink to this definition"></a></dt>
+<dd><p>PPG Signal Quality Index based on beat template correlation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ppg</strong> – PPG data</p></li>
+<li><p><strong>fs</strong> – Samples frequency</p></li>
+<li><p><strong>ann_ppg</strong> – PPG annotation time(samples)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return psqi<span class="colon">:</span></dt>
+<dd class="field-even"><p>PPG SQI</p>
+</dd>
+</dl>
+<section id="id1">
+<h3>Reference<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>Li, Qiao, and Gari D. Clifford. “Dynamic time warping and machine learning for signal quality assessment of pulsatile signals.”
+Physiological measurement 33.9 (2012): 1491.</p>
+<p>Author:
+Marton A. Goda: Faculty of Biomedical Engineering,
+Technion – Israel Institute of Technology, Haifa, Israel(October 2022)</p>
+<p>Original Matlab implementation:
+Qiao Li, November 10, 2014.
+<a class="reference external" href="https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m">https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m</a></p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyPPG.ppgSQI.template">
+<span class="sig-prename descclassname"><span class="pre">pyPPG.ppgSQI.</span></span><span class="sig-name descname"><span class="pre">template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anntime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samp_freq</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppgSQI.html#template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppgSQI.template" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="pyppg-test-annot-04-module">
+<h2>pyPPG.test_annot_04 module<a class="headerlink" href="#pyppg-test-annot-04-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="pyppg-test-annot-bidmc-module">
+<h2>pyPPG.test_annot_BIDMC module<a class="headerlink" href="#pyppg-test-annot-bidmc-module" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-pyPPG">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyPPG" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="GODA_pyPPG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyPPG.ppg_bm.html" class="btn btn-neutral float-right" title="pyPPG.ppg_bm package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Marton A. GODA, PhD.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

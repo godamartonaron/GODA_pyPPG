@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyPPG.ppg_bm.get_bm_ppg_sig &mdash; pyPPG alpha documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pyPPG
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">GODA_pyPPG</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyPPG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyPPG.ppg_bm.get_bm_ppg_sig</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyPPG.ppg_bm.get_bm_ppg_sig</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pyPPG.ppg_bm.get_biomarkers</span> <span class="kn">import</span><span class="o">*</span>
+
+<span class="c1">###########################################################################</span>
+<span class="c1">####################### Get Biomarkers of PPG Signal ######################</span>
+<span class="c1">###########################################################################</span>
+<div class="viewcode-block" id="get_bm_ppg_sig"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_bm_ppg_sig.get_bm_ppg_sig">[docs]</a><span class="k">def</span> <span class="nf">get_bm_ppg_sig</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function returns the biomarkers of PPG signal.</span>
+
+<span class="sd">    :param s: a struct of PPG signal:</span>
+<span class="sd">    - s.v: a vector of PPG values</span>
+<span class="sd">    - s.fs: the sampling frequency of the PPG in Hz</span>
+<span class="sd">    - s.name: name of the record</span>
+<span class="sd">    - s.v: 1-d array, a vector of PPG values</span>
+<span class="sd">    - s.fs: the sampling frequency of the PPG in Hz</span>
+<span class="sd">    - s.filt_sig: 1-d array, a vector of the filtered PPG values</span>
+<span class="sd">    - s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
+<span class="sd">    - s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
+<span class="sd">    - s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
+
+<span class="sd">    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</span>
+<span class="sd">    - PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak</span>
+<span class="sd">    - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</span>
+<span class="sd">    - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</span>
+<span class="sd">    - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</span>
+
+<span class="sd">    :return biomarkers: dictionary of biomarkers of PPG signal</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">biomarkers_lst</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Tpi&quot;</span><span class="p">,</span>   <span class="c1"># Pulse Interval, the time between the pulse onset and pulse offset</span>
+                    <span class="s2">&quot;Tpp&quot;</span><span class="p">,</span>   <span class="c1"># Peak-to-Peak Interval, the time between two consecutive systolic peaks</span>
+                    <span class="s2">&quot;Tsys&quot;</span><span class="p">,</span>	 <span class="c1"># Systolic Time, the time between the pulse onset and dicrotic notch</span>
+                    <span class="s2">&quot;Tdia&quot;</span><span class="p">,</span>  <span class="c1"># Diastolic Time, the time is between the dicrotic notch and pulse offset</span>
+                    <span class="s2">&quot;Tsp&quot;</span><span class="p">,</span>   <span class="c1"># Systolic Peak Time, the time between the pulse onset and systolic peak</span>
+                    <span class="s2">&quot;Tdp&quot;</span><span class="p">,</span>	 <span class="c1"># Diastolic Peak Time, the time between the pulse onset and diastolic peak</span>
+                    <span class="s2">&quot;deltaT&quot;</span><span class="p">,</span><span class="c1"># Time Delay, the time between the systolic peak and diastolic peak</span>
+                    <span class="s2">&quot;Tsw10&quot;</span><span class="p">,</span> <span class="c1"># Systolic Width, the width at 10% of the Systolic Peak Amplitude between the pulse onset and systolic peak</span>
+                    <span class="s2">&quot;Tsw25&quot;</span><span class="p">,</span> <span class="c1"># Systolic Width, the width at 25% of the Systolic Peak Amplitude between the pulse onset and systolic peak</span>
+                    <span class="s2">&quot;Tsw33&quot;</span><span class="p">,</span> <span class="c1"># Systolic Width, the width at 33% of the Systolic Peak Amplitude between the pulse onset and systolic peak</span>
+                    <span class="s2">&quot;Tsw50&quot;</span><span class="p">,</span> <span class="c1"># Systolic Width, the width at 50% of the Systolic Peak Amplitude between the pulse onset and systolic peak</span>
+                    <span class="s2">&quot;Tsw66&quot;</span><span class="p">,</span> <span class="c1"># Systolic Width, the width at 66% of the Systolic Peak Amplitude between the pulse onset and systolic peak</span>
+                    <span class="s2">&quot;Tsw75&quot;</span><span class="p">,</span> <span class="c1"># Systolic Width, the width at 75% of the Systolic Peak Amplitude between the pulse onset and systolic peak</span>
+                    <span class="s2">&quot;Tsw90&quot;</span><span class="p">,</span> <span class="c1"># Systolic Width, the width at 90% of the Systolic Peak Amplitude between the pulse onset and systolic peak</span>
+                    <span class="s2">&quot;Tdw10&quot;</span><span class="p">,</span> <span class="c1"># Diastolic Width, the width at 10% of the Systolic Peak Amplitude between the systolic peak and pulse offset</span>
+                    <span class="s2">&quot;Tdw25&quot;</span><span class="p">,</span> <span class="c1"># Diastolic Width, the width at 25% of the Systolic Peak Amplitude between the systolic peak and pulse offset</span>
+                    <span class="s2">&quot;Tdw33&quot;</span><span class="p">,</span> <span class="c1"># Diastolic Width, the width at 33% of the Systolic Peak Amplitude between the systolic peak and pulse offset</span>
+                    <span class="s2">&quot;Tdw50&quot;</span><span class="p">,</span> <span class="c1"># Diastolic Width, the width at 50% of the Systolic Peak Amplitude between the systolic peak and pulse offset</span>
+                    <span class="s2">&quot;Tdw66&quot;</span><span class="p">,</span> <span class="c1"># Diastolic Width, the width at 66% of the Systolic Peak Amplitude between the systolic peak and pulse offset</span>
+                    <span class="s2">&quot;Tdw75&quot;</span><span class="p">,</span> <span class="c1"># Diastolic Width, the width at 75% of the Systolic Peak Amplitude between the systolic peak and pulse offset</span>
+                    <span class="s2">&quot;Tdw90&quot;</span><span class="p">,</span> <span class="c1"># Diastolic Width, the width at 90% of the Systolic Peak Amplitude between the systolic peak and pulse offset</span>
+                    <span class="s2">&quot;Tpw10&quot;</span><span class="p">,</span> <span class="c1"># Pulse Width, the sum of the Systolic Width and the Diastolic Width at 10%</span>
+                    <span class="s2">&quot;Tpw25&quot;</span><span class="p">,</span> <span class="c1"># Pulse Width, the sum of the Systolic Width and the Diastolic Width at 25%</span>
+                    <span class="s2">&quot;Tpw33&quot;</span><span class="p">,</span> <span class="c1"># Pulse Width, the sum of the Systolic Width and the Diastolic Width at 33%</span>
+                    <span class="s2">&quot;Tpw50&quot;</span><span class="p">,</span> <span class="c1"># Pulse Width, the sum of the Systolic Width and the Diastolic Width at 50%</span>
+                    <span class="s2">&quot;Tpw66&quot;</span><span class="p">,</span> <span class="c1"># Pulse Width, the sum of the Systolic Width and the Diastolic Width at 66%</span>
+                    <span class="s2">&quot;Tpw75&quot;</span><span class="p">,</span> <span class="c1"># Pulse Width, the sum of the Systolic Width and the Diastolic Width at 75%</span>
+                    <span class="s2">&quot;Tpw90&quot;</span><span class="p">,</span> <span class="c1"># Pulse Width, the sum of the Systolic Width and the Diastolic Width at 90%</span>
+                    <span class="s2">&quot;Asp&quot;</span><span class="p">,</span>   <span class="c1"># Systolic Peak Amplitude, the difference in amplitude between the pulse onset and systolic peak</span>
+                    <span class="s2">&quot;Adn&quot;</span><span class="p">,</span>   <span class="c1"># Dicrotic Notch Amplitude, the difference in amplitude between the pulse onset and dicrotic notch</span>
+                    <span class="s2">&quot;Adp&quot;</span><span class="p">,</span>   <span class="c1"># Diastolic Peak Amplitude, the difference in amplitude between the pulse onset and diastolic peak</span>
+                    <span class="s2">&quot;Aoff&quot;</span><span class="p">,</span>  <span class="c1"># Pulse Onset Amplitude, the difference in amplitude between the pulse onset and pulse offset</span>
+                    <span class="s2">&quot;AUCpi&quot;</span><span class="p">,</span> <span class="c1"># Area Under Pulse Interval Curve, the area under the pulse wave between pulse onset and pulse offset</span>
+                    <span class="s2">&quot;AUCsys&quot;</span><span class="p">,</span><span class="c1"># Area Under Systolic Curve, the area under the pulse wave between the pulse onset and the dicrotic notch</span>
+                    <span class="s2">&quot;AUCdia&quot;</span><span class="p">,</span><span class="c1"># Area Under Diastolic Curve, the area under the pulse wave between the dicrotic notch and pulse offset</span>
+                    <span class="p">]</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">df_biomarkers</span> <span class="o">=</span> <span class="n">get_biomarkers</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">,</span> <span class="n">biomarkers_lst</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df_biomarkers</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Marton A. GODA, PhD.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

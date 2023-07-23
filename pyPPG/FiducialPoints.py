@@ -9,22 +9,25 @@ import matplotlib.pyplot as plt
 import time
 from scipy import signal
 
-
 class FiducialPoints:
+
+    ###########################################################################
+    ###################### Initialization of Fiducial Points ##################
+    ###########################################################################
     def __init__(self, s):
         """
         The purpose of the FiducialPoints class is to calculate the fiducial points.
 
         :param s: a struct of PPG signal:
-                - s.v: a vector of PPG values
-                - s.fs: the sampling frequency of the PPG in Hz
-                - s.name: name of the record
-                - s.v: 1-d array, a vector of PPG values
-                - s.fs: the sampling frequency of the PPG in Hz
-                - s.filt_sig: 1-d array, a vector of the filtered PPG values
-                - s.filt_d1: 1-d array, a vector of the filtered PPG' values
-                - s.filt_d2: 1-d array, a vector of the filtered PPG" values
-                - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+            - s.v: a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.name: name of the record
+            - s.v: 1-d array, a vector of PPG values
+            - s.fs: the sampling frequency of the PPG in Hz
+            - s.filt_sig: 1-d array, a vector of the filtered PPG values
+            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
 
         """
         if s.fs <= 0:
@@ -37,7 +40,7 @@ class FiducialPoints:
             exec('self.'+i+' = s[i]')
 
     ###########################################################################
-    ############################ Get Fiducial Points #########################
+    ############################ Get Fiducial Points ##########################
     ###########################################################################
     def getFiducialPoints(self,correct):
         '''The function calculates the PPG Fiducial Points.
@@ -50,6 +53,7 @@ class FiducialPoints:
         :return fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
         '''
 
+        # 'abp' refers the improved Aboy++, and 'aby' refers the original Aboy peak detector
         peak_detector='abp'
 
         # Extract Fiducial Points
@@ -106,39 +110,37 @@ class FiducialPoints:
         Aboy M et al., An automatic beat detection algorithm for pressure signals.
         IEEE Trans Biomed Eng 2005; 52: 1662 - 70. <https://doi.org/10.1109/TBME.2005.855725>
 
-        # Author
-        Marton A. Goda: Faculty of Biomedical Engineering,
-        Technion – Israel Institute of Technology, Haifa, Israel (October 2022)
+        Author:
+        Marton A. Goda – Faculty of Biomedical Engineering,
+        Technion – Israel Institute of Technology, Haifa, Israel (August 2022)
 
-        # Original Matlab implementation:
-       Peter H. Charlton: King's College London (August 2017) – University of Cambridge (February 2022)
-       <https://github.com/peterhcharlton/ppg-beats>
+        Original Matlab implementation:
+        Peter H. Charlton – King's College London (August 2017) – University of Cambridge (February 2022)
+        <https://github.com/peterhcharlton/ppg-beats>
 
-        # Changes from Charlton's implementation:
-        I) Detect Maxima:
-            1)  Systolic peak-to-peak distance is predicted by the heart rate estimate
-                over the preceding 10 sec window.
-            2)  The peak location is estimated by distances and prominences of the previous peaks.
-        II) Find Onsets:
-            1)  The onset is a local minimum, which is always calculated
-                from the peak that follows it within a given time window
-        III) Tidy of Peaks and Onsets:
-            1)  There is a one-to-one correspondence between onsets and peaks
-            2)  There are only onset and peak pairs
-            3)  The distance between the onset and peak pairs can't be smaller than 30 ms
-        IV) Correct Peaks and Onsets:
-            1) The Peaks must be the highest amplitude between two consecutive pulse onsets, if not, then these are corrected
-            2) After the correction of Peaks, the Onsets are recalculated
+        Changes from Charlton's implementation:
+            * Detect Maxima:
+                1)  Systolic peak-to-peak distance is predicted by the heart rate estimate over the preceding 10 sec window.
+                2)  The peak location is estimated by distances and prominences of the previous peaks.
+            * Find Onsets:
+                1)  The onset is a local minimum, which is always calculated from the peak that follows it within a given time window
+            * Tidy of Peaks and Onsets:
+                1)  There is a one-to-one correspondence between onsets and peaks
+                2)  There are only onset and peak pairs
+                3)  The distance between the onset and peak pairs can't be smaller than 30 ms
+            * Correct Peaks and Onsets:
+                1) The Peaks must be the highest amplitude between two consecutive pulse onsets, if not, then these are corrected
+                2) After the correction of Peaks, the Onsets are recalculated
         '''
 
         # inputs
-        x = copy.deepcopy(self.filt_sig)                          #signal
+        x = copy.deepcopy(self.filt_sig)                    #signal
         fso=self.fs
         fs = 75
         x = resample(x, int(len(self.filt_sig)*(fs/fso)))
-        up = self.setup_up_abdp_algorithm()                  #settings
+        up = self.setup_up_abdp_algorithm()                 #settings
         win_sec=10
-        w = fs * win_sec                                #window length(number of samples)
+        w = fs * win_sec                                    #window length(number of samples)
         win_starts = np.array(list(range(0,len(x),round(0.8*w))))
         win_starts = win_starts[0:min(np.where([win_starts >= len(x) - w])[1])]
         win_starts = np.insert(win_starts,len(win_starts), len(x) + 1 - w)
@@ -163,8 +165,8 @@ class FiducialPoints:
             curr_els = range(win_starts[win_no],win_starts[win_no] + w)
             curr_x = x[curr_els]
 
-            y1 = self.Bandpass(curr_x, fs, 0.9 * up.fl_hz, 3 * up.fh_hz)     #Filter no.1
-            hr = self.EstimateHeartRate(y1, fs, up, hr_past)  #Estimate HR from weakly filtered signal
+            y1 = self.Bandpass(curr_x, fs, 0.9 * up.fl_hz, 3 * up.fh_hz)   # Filter no.1
+            hr = self.EstimateHeartRate(y1, fs, up, hr_past)               # Estimate HR from weakly filtered signal
             hr_past=hr
             all_hr[win_no] = hr
 
@@ -181,11 +183,11 @@ class FiducialPoints:
             else:
                 hr_win=0
 
-            y2 = self.Bandpass(curr_x, fs, 0.9 * up.fl_hz, 2.5 * hr / 60)    # Filter no.2
-            y2_deriv = self.EstimateDeriv(y2)    #Estimate derivative from highly filtered signal
-            p2 = self.DetectMaxima(y2_deriv, up.deriv_threshold,hr_win, peak_detector) #Detect maxima in derivative
+            y2 = self.Bandpass(curr_x, fs, 0.9 * up.fl_hz, 2.5 * hr / 60)              # Filter no.2
+            y2_deriv = self.EstimateDeriv(y2)                                          # Estimate derivative from highly filtered signal
+            p2 = self.DetectMaxima(y2_deriv, up.deriv_threshold,hr_win, peak_detector) # Detect maxima in derivative
             y3 = self.Bandpass(curr_x, fs, 0.9 * up.fl_hz, 10 * hr / 60)
-            p3 = self.DetectMaxima(y3, 50, hr_win, peak_detector)   #Detect maxima in moderately filtered signal
+            p3 = self.DetectMaxima(y3, 50, hr_win, peak_detector)                      # Detect maxima in moderately filtered signal
             p4 = self.find_pulse_peaks(p2, p3)
             p4 = np.unique(p4)
 
@@ -203,14 +205,6 @@ class FiducialPoints:
 
         all_p4=all_p4.astype(int)
         all_p4 = np.unique(all_p4)
-
-        # IBT_0 = time.time()
-        # if len(all_p4)>0:
-        #     peaks, fn = IBICorrect(all_p4, px, np.median(all_hr), fs, up)
-        #     peaks = np.unique(peaks)
-        # else:
-        #     peaks = all_p4
-        # print('IBICorrect Time: ' + str(time.time() - IBT_0))
 
         peaks = (all_p4/fs*fso).astype(int)
         onsets, peaks = self.find_onsets(self.filt_sig, fso, up, peaks,60/np.median(all_hr)*fs)
@@ -255,7 +249,6 @@ class FiducialPoints:
         """
 
         tr = np.percentile(sig, percentile)
-        ld = len(sig)
 
         if peak_detector=='aby':
 
@@ -367,17 +360,10 @@ class FiducialPoints:
         if N * 3 > len(s):
             N = round(N / 3)
         b = firwin(N, fc * 2 / s.fs, window=('kaiser', beta), scale=('True'))
-        AMfilter = b#dfilt.dffir(b)
-        #AMfilter = AMfilter[:50]
-        ## Check frequency response
-        # Gives a -3 dB cutoff at ? Hz, using:
-        # freqz(AMfilter.Numerator)
-        # norm_cutoff_freq = 0.0266;    % insert freq here from plot
-        # cutoff_freq = norm_cutoff_freq*(fs/2);
+        AMfilter = b
 
         s_filt=DotMap()
         try:
-            # s_filt.v = filtfilt(AMfilter.numerator, 1, s.v)
             s_filt.v = filtfilt(AMfilter, 1, s.v)
             s_filt.v = s.v-s_filt.v
         except:
@@ -413,13 +399,8 @@ class FiducialPoints:
 
         ##Check to see if sampling freq is at least twice the freq of interest
         if (up.paramSet.elim_vhf.Fpass/(s.fs/2)) >= 1:
-            #then the fs is too low to perform this filtering
             s_filt.v = s.v
             return
-
-        ## Create filter
-        # parameters for the low-pass filter to be used
-        # flag  = 'scale';
 
         fc = upper_cutoff
         ripple = -20 * np.log10(up.paramSet.elim_vhf.Dstop)
@@ -427,16 +408,8 @@ class FiducialPoints:
         [N, beta] = kaiserord(ripple, width)
         if N * 3 > len(s):
             N = round(N / 3)
-        #b  = fir1(N, Wn, TYPE, kaiser(N+1, BETA), flag)
         b = firwin(N, fc * 2 / s.fs, window=('kaiser', beta), scale=('True'))
-        AMfilter = b#dfilt.dffir(b)
-        #AMfilter = AMfilter[:50]
-
-        ## Check frequency response
-        # Gives a -3 dB cutoff at cutoff_freq Hz, using:
-        # freqz(AMfilter.Numerator)
-        # norm_cutoff_freq = 0.3355;    % insert freq here from plot
-        # cutoff_freq = norm_cutoff_freq*(s.fs/2);
+        AMfilter = b
 
         ## Remove VHFs
         s_dt=detrend(s.v)
@@ -664,6 +637,7 @@ class FiducialPoints:
         # identify FPs
         d = np.diff(pc1)/fs    # interbeat intervals in secs
         fp = self.find_reduced_IBIs(d, hr, up)
+
         # remove FPs
         pc = np.array(pc1)[fp]
 
@@ -684,7 +658,7 @@ class FiducialPoints:
     def find_prolonged_IBIs(IBIs, med_hr, up):
         IBI_thresh = up.upper_hr_thresh_prop*60/med_hr
         fn = IBIs > IBI_thresh
-        # fn = [*np.where(fn == 0)[0].astype(int)]
+
         return fn
 
     ###########################################################################
@@ -899,7 +873,7 @@ class FiducialPoints:
 
         :param onsets: 1-d array, onsets of the signal
 
-        :return
+        :return:
             - u: The highest amplitude between the pulse onset and systolic peak on PPG'
             - v: The lowest amplitude between the u-point and diastolic peak on PPG'
             - w: The first local maximum or inflection point after the dicrotic notch on PPG’
@@ -947,13 +921,11 @@ class FiducialPoints:
         :param onsets: 1-d array, onsets of the signal
         :param peaks: 1-d array, peaks of the signal
 
-        :return
+        :return:
             - a: The highest amplitude between pulse onset and systolic peak on PPG"
             - b: The first local minimum after the a-point on PPG"
-            - c: The local maximum with the highest amplitude between the b-point and e-point,
-                    or if no local maximum is present then the inflection point on PPG"
-            - d: The local minimum with the lowest amplitude between the c-point and e-point,
-                    or if no local minimum is present then the inflection point on PPG"
+            - c: The local maximum with the highest amplitude between the b-point and e-point, or if no local maximum is present then the inflection point on PPG"
+            - d: The local minimum with the lowest amplitude between the c-point and e-point, or if no local minimum is present then the inflection point on PPG"
             - e: The local maximum with the highest amplitude after the b-point and before the diastolic peak on PPG"
             - f: The first local minimum after the e-point on PPG"
         """
@@ -1058,9 +1030,9 @@ class FiducialPoints:
 
             :param onsets: 1-d array, onsets of the signal
 
-            :return
-            - p1: The first local maximum after the b-point on PPG'"
-            - p2: The last local minimum after the b-point and before the d-point on PPG'"
+            :return:
+                - p1: The first local maximum after the b-point on PPG'"
+                - p2: The last local minimum after the b-point and before the d-point on PPG'"
 
         """
         dddx = self.filt_d3
@@ -1124,8 +1096,8 @@ class FiducialPoints:
 
             :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
 
-            :return
-            - fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
+            :return:
+                - fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
         """
 
         for i in range(0,len(fiducials.on)):
