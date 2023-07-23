@@ -186,8 +186,8 @@ class biomarkers_extract_PPG:
     def _getPeaksOnsets(self,x):
         """Find the peaks and onsets of a short FILTERED segment of PPG
 
-        :return peaks
-        :return onsets
+        :return: peaks
+        :return: onsets
         """
         peaks, _ = find_peaks(x)
         onsets, _ = find_peaks(-x)
@@ -196,10 +196,10 @@ class biomarkers_extract_PPG:
     def _getDicroticNotchDiastolicPeak(self):
         """Calculate Dicrotic Notch and Diastolic Peak of PPG
 
-        :return dn: Sample distance from PPG onset to the Dicrotic Notch on PPG
-        :return dp: Sample distance from PPG onset to the Diastolic Peak on PPG
-        :return Tdn: Time from PPG onset to the Dicrotic Notch on PPG
-        :return Tdp: Time from PPG onset to the Diastolic Peak on PPG
+        :return: dn: Sample distance from PPG onset to the Dicrotic Notch on PPG
+        :return: dp: Sample distance from PPG onset to the Diastolic Peak on PPG
+        :return: Tdn: Time from PPG onset to the Dicrotic Notch on PPG
+        :return: Tdp: Time from PPG onset to the Diastolic Peak on PPG
         """
 
         dn = (self.fiducials.dn-self.fiducials.on).values[0]
@@ -211,12 +211,12 @@ class biomarkers_extract_PPG:
     def _getFirstDerivitivePoints(self):
         """Calculate first derivitive points from a SINGLE Onset-Onset segment of PPG'
 
-        :return u: Sample distance from PPG onset to the greatest maximum peak between the left systolic onset and the systolic peak on PPG'
-        :return v: Sample distance from PPG onset to the lowest minimum pits between the systolic peak and the right systolic onset on PPG'
-        :return w: Sample distance from PPG onset to the first maximum peak after v on PPG'
-        :return Tu: Time from PPG onset to the greatest maximum peak between the left systolic onset and the systolic peak on PPG'
-        :return Tv: Time from PPG onset to the lowest minimum pits between the systolic peak and the right systolic onset on PPG'
-        :return Tw: Time from PPG onset to the first maximum peak after v on PPG'
+        :return: u: Sample distance from PPG onset to the greatest maximum peak between the left systolic onset and the systolic peak on PPG'
+        :return: v: Sample distance from PPG onset to the lowest minimum pits between the systolic peak and the right systolic onset on PPG'
+        :return: w: Sample distance from PPG onset to the first maximum peak after v on PPG'
+        :return: Tu: Time from PPG onset to the greatest maximum peak between the left systolic onset and the systolic peak on PPG'
+        :return: Tv: Time from PPG onset to the lowest minimum pits between the systolic peak and the right systolic onset on PPG'
+        :return: Tw: Time from PPG onset to the first maximum peak after v on PPG'
         """
 
         u = (self.fiducials.u-self.fiducials.on).values[0]
@@ -231,18 +231,18 @@ class biomarkers_extract_PPG:
     def _getSecondDerivitivePoints(self):
         """Calculate second derivitive points from a SINGLE Onset-Onset segment of PPG"
 
-        :return a: Sample distance from PPG onset to the first maximum peak between left systolic onset and systolic peak on PPG"
-        :return b: Sample distance from PPG onset to the first minimum pits after a on PPG"
-        :return c: Sample distance from PPG onset to the greatest maximum peak between b and e, or if no maximum peak is present then the inflection point on PPG"
-        :return d: Sample distance from PPG onset to the lowest minimum pits between c and e, or if no minimum pits is present then the inflection point on PPG"
-        :return e: Sample distance from PPG onset to the greatest maximum peak between the systolic peak and  the right systolic onset on PPG"
-        :return f: Sample distance from PPG onset to the first minimum pits after e on PPG"
-        :return Ta: Time from PPG onset to the first maximum peak between left systolic onset and systolic peak on PPG"
-        :return Tb: Time from PPG onset to the first minimum pits after a on PPG"
-        :return Tc: Time from PPG onset to the greatest maximum peak between b and e, or if no maximum peak is present then the inflection point on PPG"
-        :return Td: Time from PPG onset to the lowest minimum pits between c and e, or if no minimum pits is present then the inflection point on PPG"
-        :return Te: Time from PPG onset to the greatest maximum peak between the systolic peak and  the right systolic onset on PPG"
-        :return Tf: Time from PPG onset to the first minimum pits after e on PPG"
+        :return: a: Sample distance from PPG onset to the first maximum peak between left systolic onset and systolic peak on PPG"
+        :return: b: Sample distance from PPG onset to the first minimum pits after a on PPG"
+        :return: c: Sample distance from PPG onset to the greatest maximum peak between b and e, or if no maximum peak is present then the inflection point on PPG"
+        :return: d: Sample distance from PPG onset to the lowest minimum pits between c and e, or if no minimum pits is present then the inflection point on PPG"
+        :return: e: Sample distance from PPG onset to the greatest maximum peak between the systolic peak and  the right systolic onset on PPG"
+        :return: f: Sample distance from PPG onset to the first minimum pits after e on PPG"
+        :return: Ta: Time from PPG onset to the first maximum peak between left systolic onset and systolic peak on PPG"
+        :return: Tb: Time from PPG onset to the first minimum pits after a on PPG"
+        :return: Tc: Time from PPG onset to the greatest maximum peak between b and e, or if no maximum peak is present then the inflection point on PPG"
+        :return: Td: Time from PPG onset to the lowest minimum pits between c and e, or if no minimum pits is present then the inflection point on PPG"
+        :return: Te: Time from PPG onset to the greatest maximum peak between the systolic peak and  the right systolic onset on PPG"
+        :return: Tf: Time from PPG onset to the first minimum pits after e on PPG"
         """
 
         a = (self.fiducials.a-self.fiducials.on).values[0]
@@ -263,10 +263,10 @@ class biomarkers_extract_PPG:
     def _getThirdDerivitivePoints(self):
         """Calculate third derivitive points from a SINGLE Onset-Onset segment of PPG'"
 
-        :return p1: Sample distance from PPG onset to the first local maximum after b on PPG'"
-        :return p2: Sample distance from PPG onset to the last local minimum before d, if c = d, then the first local minimum after d on PPG'"
-        :return Tp1: Time from PPG onset to the first local maximum after b on PPG'"
-        :return Tp2: Time from PPG onset to last local minimum before d, if c = d, then the first local minimum after d on PPG'"
+        :return: p1: Sample distance from PPG onset to the first local maximum after b on PPG'"
+        :return: p2: Sample distance from PPG onset to the last local minimum before d, if c = d, then the first local minimum after d on PPG'"
+        :return: Tp1: Time from PPG onset to the first local maximum after b on PPG'"
+        :return: Tp2: Time from PPG onset to last local minimum before d, if c = d, then the first local minimum after d on PPG'"
         """
 
         p1 = (self.fiducials.p1-self.fiducials.on).values[0]
@@ -281,7 +281,7 @@ class biomarkers_extract_PPG:
             :param arr: the array where to find the index
             :param value: the value to be compared with
 
-            :return idx: the index of the value closest to the arg value
+            :return: idx: the index of the value closest to the arg value
             """
         idx = (np.abs(arr - value)).argmin()
         return idx
@@ -290,7 +290,7 @@ class biomarkers_extract_PPG:
         """ get the time of a value in the PPG waveform  data vector
             :param vec: the array where to find the index
             :param val: the value to be compared with
-            :return index: the index of the value closest to the arg value
+            :return: index: the index of the value closest to the arg value
             """
         tmp_vec = np.array([vec[i]-val for i in range(0, len(vec))])
         index = self._find_nearest(tmp_vec, 0)
@@ -301,7 +301,7 @@ class biomarkers_extract_PPG:
 
             :param val: the value from which we need the time in the timeserie
 
-            :return t_data: the time corresponding to the value
+            :return: t_data: the time corresponding to the value
             """
         idx_ons = int(self.onsets_times[0]*self.sample_rate)
         idx_peak = int(self.peak_time*self.sample_rate)
@@ -316,7 +316,7 @@ class biomarkers_extract_PPG:
 
             :param val: the value from which we need the time in the timeserie
 
-            :return t_data: the time corresponding to the value
+            :return: t_data: the time corresponding to the value
             """
         idx_ons_right = int(self.onsets_times[1]*self.sample_rate)
         idx_ons_left = int(self.onsets_times[0] * self.sample_rate)
@@ -331,7 +331,7 @@ class biomarkers_extract_PPG:
     def _getBaselineSlope(self):
         """ get the baseline slope in the PPG waveform  data vector
 
-            :return baseline slope
+            :return: baseline slope
         """
         left_onset_time = self.onsets_times[0]
         right_onset_time = self.onsets_times[1]
@@ -344,7 +344,7 @@ class biomarkers_extract_PPG:
     def _getBaselineCst(self):
         """ get the difference between the right and the left onset values
 
-            :return cst
+            :return: cst
         """
         left_onset_value = self.onsets_values[0]
         right_onset_value = self.onsets_values[1]
@@ -353,13 +353,14 @@ class biomarkers_extract_PPG:
 
     def getTpi(self):
         """ Tpi which means the Pulse Interval, the time between the pulse onset and pulse offset.
-            :return Tpi feature
+
+            :return: Tpi feature
         """
         return self.onsets_times[1] - self.onsets_times[0]
     def getTpp(self):
         """ Tpp means the Peak-to-Peak Interval, the time between two consecutive systolic peaks.
 
-            :return  Tpp feature
+            :return:  Tpp feature
         """
         cardiac_period = self.next_peak_time - self.peak_time
         return cardiac_period
@@ -367,7 +368,7 @@ class biomarkers_extract_PPG:
     def getTsys(self):
         """ Tsys means the Systolic Time, the time between the pulse onset and dicrotic notch.
 
-        :return Tsys feature
+        :return: Tsys feature
         """
 
         Tsys = self.Tdn
@@ -376,7 +377,7 @@ class biomarkers_extract_PPG:
     def getTdia(self):
         """ Tdia means the Diastolic Time, the time between the dicrotic notch and pulse offset.
 
-        :return Tdia feature
+        :return: Tdia feature
         """
 
         Tdia = self.getTpi()-self.Tdp
@@ -385,7 +386,7 @@ class biomarkers_extract_PPG:
     def getTsp(self):
         """ Tsp means the Systolic Peak Time, the time between the pulse onset and systolic peak.
 
-        :return Tsp feature
+        :return: Tsp feature
         """
         left_onset = self.onsets_times[0]
         Tsp = self.peak_time - left_onset
@@ -394,7 +395,7 @@ class biomarkers_extract_PPG:
     def getTdp(self):
         """ Tdp means the Diastolic Peak Time, the time between the pulse onset and diastolic peak.
 
-        :return Tdp feature
+        :return: Tdp feature
         """
 
         Tdp = self.Tdp
@@ -403,7 +404,7 @@ class biomarkers_extract_PPG:
     def get_deltaT(self):
         """ deltaT means the Time Delay, the time between the systolic peak and diastolic peak.
 
-        :return deltaT feature
+        :return: deltaT feature
         """
 
         deltaT = self.Tdp-self.getTsp()
@@ -415,7 +416,7 @@ class biomarkers_extract_PPG:
 
             :param d: the percentage chosen to calculate the width
 
-            :return Tswx feature
+            :return: Tswx feature
         """
         # value in segment corresponding to d percent of pulse height
         d_percent_val = (d/100)*(self.peak_value - self.onsets_values[0]) + self.onsets_values[0]
@@ -430,7 +431,7 @@ class biomarkers_extract_PPG:
 
             :param d: the percentage chosen to calculate the width
 
-            :return Tdwx feature
+            :return: Tdwx feature
         """
         # value in segment corresponding to d percent of pulse height
         d_percent_val = (d/100)*(self.peak_value - self.onsets_values[1]) + self.onsets_values[1]
@@ -444,7 +445,7 @@ class biomarkers_extract_PPG:
 
             :param d: the percentage chosen to calculate the width
 
-            :return Tpwx feature
+            :return: Tpwx feature
         """
         Tswx = self.getSystolicWidth_d_percent(d)
         Tdwx = self.getDiastolicWidth_d_percent(d)
@@ -453,14 +454,14 @@ class biomarkers_extract_PPG:
     def getSystolicPeak(self):
         """ The function calculates the Systolic Peak Amplitude, the difference in amplitude between the pulse onset and systolic peak.
 
-            :return Systolic Peak Amplitude feature
+            :return: Systolic Peak Amplitude feature
         """
         sys_peak = self.peak_value - self.onsets_values[0]
         return sys_peak
     def getDicroticNotchAmplitude(self):
         """ The function calculates the Dicrotic Notch Amplitude, the difference in amplitude between the pulse onset and the dicrotic notch.
 
-            :return Dicrotic Notch Amplitude feature
+            :return: Dicrotic Notch Amplitude feature
         """
         dn_value = self.segment[self.dn]
         dn_amp = dn_value - self.onsets_values[0]
@@ -469,7 +470,7 @@ class biomarkers_extract_PPG:
     def getDiastolicPeak(self):
         """ The function calculates the Diastolic Peak Amplitude, the difference in amplitude between the pulse onset and the diastolic peak.
 
-            :return Diastolic Peak Amplitude feature
+            :return: Diastolic Peak Amplitude feature
         """
         ## temp solution 04/04/2023 --> if DN==DP
         dp_value = self.segment[self.dp+20]
@@ -479,7 +480,7 @@ class biomarkers_extract_PPG:
     def getPulseOffsetAmplitude(self):
         """ The function calculates the Pulse Offset Amplitude, the difference in amplitude between the pulse onset and pulse offset.
 
-            :return Pulse Offset Amplitude feature
+            :return: Pulse Offset Amplitude feature
         """
 
         offset_value = self.onsets_values[1]
@@ -489,7 +490,7 @@ class biomarkers_extract_PPG:
     def getAUCpi(self):
         """ The function the Area Under Pulse Interval Curve, the area under the pulse wave between pulse onset and pulse offset.
 
-            :return AUCpi feature
+            :return: AUCpi feature
         """
         left_onset_time = self.onsets_times[0]*self.sample_rate
         right_onset_time = self.onsets_times[1]*self.sample_rate
@@ -508,7 +509,7 @@ class biomarkers_extract_PPG:
     def getAUCsys(self):
         """ The function calculates the Area Under Systolic Curve, the area under the pulse wave between the pulse onset and dicrotic notch.
 
-            :return AUCsys feature
+            :return: AUCsys feature
         """
         left_onset_time = self.onsets_times[0]*self.sample_rate
         right_onset_time = self.onsets_times[1]*self.sample_rate
@@ -527,7 +528,7 @@ class biomarkers_extract_PPG:
     def getAUCdia(self):
         """ The function calculates Area Under Diastolic Curve, the area under the pulse wave between the dicrotic notch and pulse offset.
 
-            :return AUCdia feature
+            :return: AUCdia feature
         """
         AUCdia = self.getAUCpi()-self.getAUCsys()
         return AUCdia
@@ -535,7 +536,7 @@ class biomarkers_extract_PPG:
     def getIPR(self):
         """ The function calculates the Instantaneous Pulse Rate, 60/CP.
 
-            :return IPR feature
+            :return: IPR feature
         """
         IPR = 60/self.getTpp()
         return IPR
@@ -543,7 +544,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Tsys_Tdia(self):
         """ The function calculates the ratio of the Systolic Time to the Diastolic Time.
 
-            :return Tsys/Tdia feature
+            :return: Tsys/Tdia feature
         """
         Tsys_Tdia = self.getTsys()/self.getTdia()
         return Tsys_Tdia
@@ -553,7 +554,7 @@ class biomarkers_extract_PPG:
 
             :param d: the percentage chosen to calculate the width
 
-            :return The ratio of the Tpi to the Pulse Width feature
+            :return: The ratio of the Tpi to the Pulse Width feature
         """
         sys_width = self.getSystolicWidth_d_percent(d)
         dia_width = self.getDiastolicWidth_d_percent(d)
@@ -566,7 +567,7 @@ class biomarkers_extract_PPG:
 
             :param d: the percentage chosen to calculate the width
 
-            :return Tpwx/Tsp feature
+            :return: Tpwx/Tsp feature
         """
         Tswx = self.getSystolicWidth_d_percent(d)
         Tdwx = self.getDiastolicWidth_d_percent(d)
@@ -579,7 +580,7 @@ class biomarkers_extract_PPG:
 
             :param d: the percentage chosen to calculate the width
 
-            :return Tdwx/Tswx feature
+            :return: Tdwx/Tswx feature
         """
         Tswx = self.getSystolicWidth_d_percent(d)
         Tdwx = self.getDiastolicWidth_d_percent(d)
@@ -588,7 +589,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Tsp_Tpi(self):
         """ The function calculates the ratio of the Systolic Peak Time to the Pulse Interval
 
-            :return Tsp/Tpi feature
+            :return: Tsp/Tpi feature
         """
         Tsp = self.getSystolicPeakTime()
         Tpi = self.getTpi()
@@ -597,7 +598,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Asp_Aoff(self):
         """ The function calculates the ratio of the Systolic Peak Time to the Pulse Interval
 
-            :return Asp/Aoff feature
+            :return: Asp/Aoff feature
         """
         Asp = self.getSystolicPeak()
         Aoff = self.onsets_values[1]
@@ -606,14 +607,14 @@ class biomarkers_extract_PPG:
     def get_ratio_Adp_Asp(self):
         """ The function calculates Reflection Index, the ratio of the Diastolic Peak Amplitude to the Systolic Peak Amplitude.
 
-            :return Reflection Index feature
+            :return: Reflection Index feature
         """
         RI = self.getDiastolicPeak()/self.getSystolicPeak()
         return RI
     def getIPA(self):
         """ The function calculates the Inflection Point Area, the ratio of the Area Under Diastolic Curve to the Area Under Systolic Curve.
 
-            :return IPA feature
+            :return: IPA feature
         """
         IPA = self.getAUCdia()/self.getAUCsys()
         return IPA
@@ -621,14 +622,14 @@ class biomarkers_extract_PPG:
     def get_ratio_Tsp_Asp(self):
         """ The function calculates the ratio of the Systolic Peak Time to the Systolic Peak Amplitude.
 
-            :return Tsp/Asp feature
+            :return: Tsp/Asp feature
         """
 
         return self.getTsp()/self.getSystolicPeak()
     def get_ratio_Asp_deltaT(self):
         """ The function calculates the Stiffness Index, the ratio of the Systolic Peak Amplitude to the Time Delay.
 
-            :return Stiffness Index feature
+            :return: Stiffness Index feature
         """
         SI = self.getSystolicPeak()/(self.getTdp()-self.getTsp())
         return SI
@@ -636,7 +637,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Asp_TpiTsp(self):
         """ The function calculates the ratio of the Systolic Peak Amplitude to the difference between the Pulse Interval and Systolic Peak Time.
 
-            :return Asp/(Tpi-Tsp)
+            :return: Asp/(Tpi-Tsp)
         """
         Tpi = self.getTpi()
         Tsp = self.getSystolicPeakTime()
@@ -647,7 +648,7 @@ class biomarkers_extract_PPG:
     def get_u(self):
         """ u means the u-point sample, the sample between the pulse onset and u-point.
 
-            :return u feature
+            :return: u feature
         """
         return self.u
 
@@ -655,105 +656,105 @@ class biomarkers_extract_PPG:
     def get_v(self):
         """ v means the v-point sample, the sample between the pulse onset and v-point.
 
-            :return v feature
+            :return: v feature
         """
         return self.v
 
     def get_w(self):
         """ w means the w-point sample, the sample between the pulse onset and w-point.
 
-            :return w feature
+            :return: w feature
         """
         return self.w
 
     def get_a(self):
         """ a means the a-point sample, the sample between the pulse onset and a-point.
 
-            :return a feature
+            :return: a feature
         """
         return self.a
 
     def get_b(self):
         """ b means the b-point sample, the sample between the pulse onset and b-point.
 
-            :return b feature
+            :return: b feature
         """
         return self.b
 
     def get_c(self):
         """ c means the c-point sample, the sample between the pulse onset and c-point.
 
-            :return c feature
+            :return: c feature
         """
         return self.c
 
     def get_d(self):
         """ d means the d-point sample, the sample between the pulse onset and d-point.
 
-            :return d feature
+            :return: d feature
         """
         return self.d
 
     def get_e(self):
         """ e means the e-point sample, the sample between the pulse onset and e-point.
 
-            :return e feature
+            :return: e feature
         """
         return self.e
 
     def get_f(self):
         """ f means the f-point sample, the sample between the pulse onset and f-point.
 
-            :return f feature
+            :return: f feature
         """
         return self.f
 
     def get_Tu(self):
         """ Tu means the u-point time, the time between the pulse onset and u-point.
 
-            :return Tu feature
+            :return: Tu feature
         """
         return self.Tu
 
     def get_Tv(self):
         """ Tv means the v-point time, the time between the pulse onset and v-point.
 
-            :return Tv feature
+            :return: Tv feature
         """
         return self.Tv
 
     def get_Tw(self):
         """ Tw means the v-point time, the time between the pulse onset and w-point.
 
-            :return Tw feature
+            :return: Tw feature
         """
         return self.Tw
 
     def get_Ta(self):
         """ Ta means the a-point time, the time between the pulse onset and a-point.
 
-            :return Ta feature
+            :return: Ta feature
         """
         return self.Ta
 
     def get_Tb(self):
         """ Tb means the b-point time, the time between the pulse onset and b-point.
 
-            :return Tb feature
+            :return: Tb feature
         """
         return self.Tb
 
     def get_Tc(self):
         """ Tc means the c-point time, the time between the pulse onset and c-point.
 
-            :return Tb feature
+            :return: Tb feature
         """
         return self.Tc
 
     def get_Td(self):
         """ Td means the d-point time, the time between the pulse onset and d-point.
 
-            :return Td feature
+            :return: Td feature
         """
         return self.Td
 
@@ -761,49 +762,49 @@ class biomarkers_extract_PPG:
     def get_Te(self):
         """ Te means the e-point time, the time between the pulse onset and e-point.
 
-            :return Te feature
+            :return: Te feature
         """
         return self.Te
 
     def get_Tf(self):
         """ Tf means the f-point time, the time between the pulse onset and f-point.
 
-            :return Tf feature
+            :return: Tf feature
         """
         return self.Tf
 
     def get_Tbc(self):
         """ Tbc means the b–c time, the time between the b-point and c-point.
 
-            :return Tbc feature
+            :return: Tbc feature
         """
         return self.Tc-self.Tb
 
     def get_Tbd(self):
         """ Tbd means the b–d time, the time between the b-point and d-point.
 
-            :return Tbd feature
+            :return: Tbd feature
         """
         return self.Td - self.Tb
 
     def get_Tp1(self):
         """ Tp1 means the p1-point time, the time between the pulse onset and p1-point.
 
-            :return Tp1 feature
+            :return: Tp1 feature
         """
         return self.Tp1
 
     def get_Tp2(self):
         """ Tp2 means the p1-point time, the time between the pulse onset and p2-point.
 
-            :return Tp2 feature
+            :return: Tp2 feature
         """
         return self.Tp2
 
     def get_Tp1_dp(self):
         """ The function calculatesthe p1–dia time, the time between the p1-point and diastolic peak.
 
-            :return Tdia-Tp1 feature
+            :return: Tdia-Tp1 feature
         """
         Tp1_dia=(self.dp-self.p1)/self.sample_rate
         return Tp1_dia
@@ -811,7 +812,7 @@ class biomarkers_extract_PPG:
     def get_Tp2_dp(self):
         """ The function calculatesthe p2–dia time, the time between the p2-point and diastolic peak.
 
-            :return Tdia-Tp2 feature
+            :return: Tdia-Tp2 feature
         """
         Tp2_dia=(self.dp-self.p2)/self.sample_rate
         return Tp2_dia
@@ -820,7 +821,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Tu_Tpi(self):
         """ The function calculates the ratio of the u-point time to the Pulse Interval.
 
-            :return Tu/Tpi feature
+            :return: Tu/Tpi feature
         """
         T1 = self.get_Tu()
         return T1 / self.getTpp()
@@ -829,7 +830,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Tv_Tpi(self):
         """ The function calculates the ratio of the v-point time to the Pulse Interval.
 
-            :return Tv/Tpi feature
+            :return: Tv/Tpi feature
         """
         Tv = self.get_Tv()
         return Tv / self.getTpp()
@@ -837,7 +838,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Tw_Tpi(self):
         """ The function calculates the ratio of the w-point time to the Pulse Interval.
 
-            :return Tw/Tpi feature
+            :return: Tw/Tpi feature
         """
         Tw = self.get_Tw()
         return Tw / self.getTpp()
@@ -845,7 +846,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Ta_Tpi(self):
         """ The function calculates the ratio of the a-point time to the Pulse Interval.
 
-            :return Ta/Tpi feature
+            :return: Ta/Tpi feature
         """
         Ta = self.get_Ta()
         return Ta / self.getTpp()
@@ -853,7 +854,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Tb_Tpi(self):
         """ The function calculates the ratio of the b-point time to the Pulse Interval.
 
-            :return Tb/Tpi feature
+            :return: Tb/Tpi feature
         """
         Tb = self.get_Tb()
         return Tb / self.getTpp()
@@ -861,7 +862,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Tc_Tpi(self):
         """ The function calculates the ratio of the c-point time to the Pulse Interval.
 
-            :return Tc/Tpi feature
+            :return: Tc/Tpi feature
         """
         Tc = self.get_Tc()
         return Tc / self.getTpp()
@@ -869,7 +870,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Td_Tpi(self):
         """ The function calculates the ratio of the d-point time to the Pulse Interval.
 
-            :return Td/Tpi feature
+            :return: Td/Tpi feature
         """
         Td = self.get_Td()
         return Td / self.getTpp()
@@ -877,7 +878,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Te_Tpi(self):
         """ The function calculates the ratio of the e-point time to the Pulse Interval.
 
-            :return Te/Tpi feature
+            :return: Te/Tpi feature
         """
         Te = self.get_Te()
         return Te / self.getTpp()
@@ -885,7 +886,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Tf_Tpi(self):
         """ The function calculates the ratio of the f-point time to the Pulse Interval.
 
-            :return Tf/Tpi feature
+            :return: Tf/Tpi feature
         """
         Tf = self.get_Tf()
         return Tf / self.getTpp()
@@ -893,7 +894,7 @@ class biomarkers_extract_PPG:
     def get_ratio_TuTa_Tpi(self):
         """ The function calculates the ratio of the difference between the u-point time and a-point time to the Pulse Interval.
 
-            :return (Tu-Ta)/Tpi feature
+            :return: (Tu-Ta)/Tpi feature
         """
         Ta = self.get_Ta()
         Tu = self.get_Tu()
@@ -903,7 +904,7 @@ class biomarkers_extract_PPG:
     def get_ratio_TvTb_Tpi(self):
         """ The function calculates the ratio of the difference between the v-point time and b-point time to the Pulse Interval.
 
-            :return (Tv-Tb)/Tpi
+            :return: (Tv-Tb)/Tpi
         """
         Tb = self.get_Tb()
         Tv = self.get_Tv()
@@ -913,7 +914,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Au_Asp(self):
         """ This function calculates the ratio of the u-point amplitude to the Systolic Peak Amplitude.
 
-            :return Au/Asp feature
+            :return: Au/Asp feature
         """
         u_max = self.segment_d1[self.get_u()]
         sp_amp = self.peak_value
@@ -922,7 +923,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Av_Au(self):
         """ This function calculates the ratio of the v-point amplitude to the u-point amplitude.
 
-            :return Av/Au feature
+            :return: Av/Au feature
         """
         u_max = self.segment_d1[self.get_u()]
         v_min = self.segment_d1[self.get_v()]
@@ -931,7 +932,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Aw_Au(self):
         """ This function calculates the ratio of the w-point amplitude to the u-point amplitude.
 
-            :return Aw/Au feature
+            :return: Aw/Au feature
         """
         u_max = self.segment_d1[self.get_u()]
         w_max = self.segment_d1[self.get_w()]
@@ -940,7 +941,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Ab_Aa(self):
         """ This function calculates the ratio of the b-point amplitude to the a-point amplitude.
 
-            :return Ab/Aa feature
+            :return: Ab/Aa feature
         """
         a_max = self.segment_d2[self.get_a()]
         b_min = self.segment_d2[self.get_b()]
@@ -949,7 +950,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Ac_Aa(self):
         """ This function calculates the ratio of the c-point amplitude to the a-point amplitude.
 
-            :return Ac/Aa feature
+            :return: Ac/Aa feature
         """
         a_max = self.segment_d2[self.get_a()]
         c_max = self.segment_d2[self.get_c()]
@@ -958,7 +959,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Ad_Aa(self):
         """ This function calculates the ratio of the d-point amplitude to the a-point amplitude.
 
-            :return Ad/Aa feature
+            :return: Ad/Aa feature
         """
         a_max = self.segment_d2[self.get_a()]
         d_min = self.segment_d2[self.get_d()]
@@ -967,7 +968,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Ae_Aa(self):
         """ This function calculates the ratio of the e-point amplitude to the a-point amplitude.
 
-            :return Ae/Aa feature
+            :return: Ae/Aa feature
         """
         a_max = self.segment_d2[self.get_a()]
         e_max = self.segment_d2[self.get_e()]
@@ -976,7 +977,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Af_Aa(self):
         """ This function calculates the ratio of the f-point amplitude to the a-point amplitude.
 
-            :return Af/Aa feature
+            :return: Af/Aa feature
         """
         a_max = self.segment_d2[self.get_a()]
         f_min = self.segment_d2[self.get_f()]
@@ -985,7 +986,7 @@ class biomarkers_extract_PPG:
     def get_ratio_Ap2_Ap1(self):
         """ The function calculates the ratio of the p2-point amplitude to the p1-point amplitude.
 
-            :return Ap2/Ap1 feature
+            :return: Ap2/Ap1 feature
         """
         Rp2p1 = self.segment[self.p2]/self.segment[self.p1]
         return Rp2p1
@@ -993,7 +994,7 @@ class biomarkers_extract_PPG:
     def get_ratio_AcAb_Aa(self):
         """ The function calculates the ratio of the difference between the b-point amplitude and c-point amplitude to the a-point amplitude.
 
-            :return (Ac-Ab)/Aa feature
+            :return: (Ac-Ab)/Aa feature
         """
         Aa = self.segment_d2[self.get_a()]
         Ab = self.segment_d2[self.get_b()]
@@ -1003,7 +1004,7 @@ class biomarkers_extract_PPG:
     def get_ratio_AdAb_Aa(self):
         """ The function calculates the ratio of the difference between the b-point amplitude and d-point amplitude to the a-point amplitude.
 
-            :return (Ad-Ab)/Aa feature
+            :return: (Ad-Ab)/Aa feature
         """
         Aa = self.segment_d2[self.get_a()]
         Ab = self.segment_d2[self.get_b()]
@@ -1013,7 +1014,7 @@ class biomarkers_extract_PPG:
     def getAGI(self):
         """ The function calculates the Aging Index.
 
-            :return (Ab-Ac-Ad-Ae)/Aa feature
+            :return: (Ab-Ac-Ad-Ae)/Aa feature
         """
         Aa = self.segment_d2[self.get_a()]
         Ab = self.segment_d2[self.get_b()]
@@ -1025,7 +1026,7 @@ class biomarkers_extract_PPG:
     def getAGImod(self):
         """ The function calculates the Modified Aging Index.
 
-            :return (Ab-Ac-Ad)/Aa feature
+            :return: (Ab-Ac-Ad)/Aa feature
         """
         Aa = self.segment_d2[self.get_a()]
         Ab = self.segment_d2[self.get_b()]
@@ -1036,7 +1037,7 @@ class biomarkers_extract_PPG:
     def getAGIinf(self):
         """ The function calculates the Informal Aging Index.
 
-            :return (Ab-Ae)/Aa feature
+            :return: (Ab-Ae)/Aa feature
         """
         Aa = self.segment_d2[self.get_a()]
         Ab = self.segment_d2[self.get_b()]
@@ -1046,7 +1047,7 @@ class biomarkers_extract_PPG:
     def getAI(self):
         """ The function calculates the Augmentation Index, (PPG(Tp2) − PPG(Tp1))/Asp.
 
-            :return AI feature
+            :return: AI feature
         """
         AI = (self.segment[self.p2]-self.segment[self.p1])/self.peak_value
         return AI
@@ -1054,7 +1055,7 @@ class biomarkers_extract_PPG:
     def getRIp1(self):
         """ The function calculates the Reflection Index of p1, Adp/(PPG(Tp1) − PPG(Tpi(0))).
 
-            :return RIp1 feature
+            :return: RIp1 feature
         """
         RIp1 = self.getDiastolicPeak()/self.segment[self.p1]
         return RIp1
@@ -1062,7 +1063,7 @@ class biomarkers_extract_PPG:
     def getRIp2(self):
         """ The function calculates the Reflection Index of p2, Adp/(PPG(Tp2) − PPG(Tpi(0))).
 
-            :return RIp2 feature
+            :return: RIp2 feature
         """
         RIp2 = self.getDiastolicPeak()/self.segment[self.p2]
         return RIp2
@@ -1070,7 +1071,7 @@ class biomarkers_extract_PPG:
     def getSC(self):
         """ The function calculates the Spring Constant, PPG"(Tsp)/((Asp-Au)/Asp).
 
-            :return SC feature
+            :return: SC feature
         """
         ddxSPA=self.segment_d2[(self.getTsp()*self.sample_rate).astype(int)]
         SPA=self.getSystolicPeak()
@@ -1081,7 +1082,7 @@ class biomarkers_extract_PPG:
     def getIPAD(self):
         """ The function calculates the Inflection point area plus normalised d-point amplitude, AUCdia/AUCsys+Ad/Aa.
 
-            :return IPAD feature
+            :return: IPAD feature
         """
         IPAD = self.getAUCdia()/self.getAUCsys()+self.get_ratio_Ad_Aa()
         return IPAD
@@ -1090,7 +1091,7 @@ class biomarkers_extract_PPG:
 
             :param d: the percentage chosen to calculate the width
 
-            :return ratio feature
+            :return: ratio feature
         """
         sw_d = self.getSystolicWidth_d_percent(d)
         dw_d = self.getDiastolicWidth_d_percent(d)
@@ -1100,7 +1101,7 @@ class biomarkers_extract_PPG:
     def getPIR(self):
         """ The function calculates the ratio between the peak value and the right onset value
 
-            :return pir feature
+            :return: pir feature
         """
         pir = self.peak_value/self.onsets_values[1]
         return pir
@@ -1108,7 +1109,7 @@ class biomarkers_extract_PPG:
     def getMS(self):
         """ The function calculates Maximum slope, PPG'(u)/(PPG(systolic peak) − PPG(systolic onset))
 
-            :return MS feature
+            :return: MS feature
         """
         MS = self.segment_d1[self.u]
         return MS
@@ -1116,7 +1117,7 @@ class biomarkers_extract_PPG:
     def getUpslope(self):
         """ The function calculates Systolic Upslope between the left onset and the systolic peak.
 
-            :return Systolic Upslope
+            :return: Systolic Upslope
         """
         left_onset_time = self.onsets_times[0]*self.sample_rate
         left_onset_value = self.onsets_values[0]
@@ -1127,7 +1128,7 @@ class biomarkers_extract_PPG:
     def getdiffVal(self):
         """ The function calculates the time between the left onset and the systolic peak.
 
-            :return left onset and systolic peak time
+            :return: left onset and systolic peak time
         """
         left_onset_value = self.onsets_values[0]
         diff = self.peak_value - left_onset_value
@@ -1136,7 +1137,7 @@ class biomarkers_extract_PPG:
     def getSTT(self):
         """ STT means slope transit time, which based on geometrical considerations of the PPG pulse wave to account for simultaneous.
 
-            :return STT feature
+            :return: STT feature
         """
         upslope = self.getUpslope()
         A = self.getdiffVal()
@@ -1145,14 +1146,14 @@ class biomarkers_extract_PPG:
     def getSystolicPeakTime(self):
         """ Systolic Peak Time means the distance between the consecutive Systolic Peaks
 
-        :return Systolic Peak Times
+        :return: Systolic Peak Times
          """
         return self.peak_time - self.onsets_times[0]
 
     def getSystolicPeakOutputCurve(self):
         """Peak time divided by systolic amplitude
 
-        :return sys_peak_time/sys_amplitude
+        :return: sys_peak_time/sys_amplitude
         """
         sys_peak_time = self.getSystolicPeakTime()
         sys_amplitude = self.getSystolicPeak()
@@ -1161,7 +1162,7 @@ class biomarkers_extract_PPG:
     def getAGIext(self):
         """ The function calculates the Extended Aging Index.
 
-            :return (Ab-Ac-Ad-Ae-Af)/Aa feature
+            :return: (Ab-Ac-Ad-Ae-Af)/Aa feature
         """
         Aa = self.segment_d2[self.get_a()]
         Ab = self.segment_d2[self.get_b()]
@@ -1180,21 +1181,21 @@ def get_biomarkers(s, fiducials, biomarkers_lst):
     The function calculates the biomedical biomarkers of PPG signal.
 
     :param s: a struct of PPG signal:
-    - s.v: a vector of PPG values
-    - s.fs: the sampling frequency of the PPG in Hz
-    - s.name: name of the record
-    - s.v: 1-d array, a vector of PPG values
-    - s.fs: the sampling frequency of the PPG in Hz
-    - s.filt_sig: 1-d array, a vector of the filtered PPG values
-    - s.filt_d1: 1-d array, a vector of the filtered PPG' values
-    - s.filt_d2: 1-d array, a vector of the filtered PPG" values
-    - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+        - s.v: a vector of PPG values
+        - s.fs: the sampling frequency of the PPG in Hz
+        - s.name: name of the record
+        - s.v: 1-d array, a vector of PPG values
+        - s.fs: the sampling frequency of the PPG in Hz
+        - s.filt_sig: 1-d array, a vector of the filtered PPG values
+        - s.filt_d1: 1-d array, a vector of the filtered PPG' values
+        - s.filt_d2: 1-d array, a vector of the filtered PPG" values
+        - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     :param fiducials: M-d Dateframe, where M is the number of fiducial points
     :param biomarkers_lst: list of biomarkers
 
     :return:
-    - df: data frame with onsets, offset and peaks
-    - df_biomarkers: data frame with PPG signal biomarkers
+        - df: data frame with onsets, offset and peaks
+        - df_biomarkers: data frame with PPG signal biomarkers
     """
 
     fs=s.fs

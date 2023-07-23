@@ -1,4 +1,4 @@
-from Prefiltering import*
+from pyPPG.Prefiltering import*
 
 import matplotlib.pyplot as plt
 import scipy.io
@@ -18,7 +18,7 @@ def load_data(filtering):
 
     :param filtering: a bool for filtering
 
-    :return s: a struct of PPG signal
+    :return s: a struct of PPG signal:
         - s.v: a vector of PPG values
         - s.fs: the sampling frequency of the PPG in Hz
         - s.name: name of the record
@@ -92,7 +92,7 @@ def plot_fiducials(s, fiducials, savefig):
     """
     Plot fiducial points of the filtered PPG signal.
 
-    :param s: a struct of PPG signal
+    :param s: a struct of PPG signal:
         - s.v: a vector of PPG values
         - s.fs: the sampling frequency of the PPG in Hz
         - s.name: name of the record
@@ -189,7 +189,7 @@ def save_data(s,fiducials,ppg_biomarkers,ppg_statistics):
     """
     Save the results of the filtered PPG analysis.
 
-    :param s: a struct of PPG signal
+    :param s: a struct of PPG signal:
         - s.v: a vector of PPG values
         - s.fs: the sampling frequency of the PPG in Hz
         - s.name: name of the record

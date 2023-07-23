@@ -43,4 +43,9 @@ html_static_path = ['_static']
 html_logo = "logo.png"
 html_theme_options = {"logo_only": False}
 
-exclude_patterns = ['test_annot_04', 'test_annot_BIDMC']
+exclude_patterns = ['../pyPPG/test_annot_04.py', '../pyPPG/test_annot_BIDMC.py']
+
+source_suffix = [".rst", ".md"]
+
+# The master toctree document.
+master_doc = "index"

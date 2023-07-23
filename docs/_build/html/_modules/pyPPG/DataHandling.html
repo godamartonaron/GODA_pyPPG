@@ -70,7 +70,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pyPPG.DataHandling</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">Prefiltering</span> <span class="kn">import</span><span class="o">*</span>
+<span></span><span class="kn">from</span> <span class="nn">pyPPG.Prefiltering</span> <span class="kn">import</span><span class="o">*</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">scipy.io</span>
@@ -90,7 +90,7 @@
 
 <span class="sd">    :param filtering: a bool for filtering</span>
 
-<span class="sd">    :return s: a struct of PPG signal</span>
+<span class="sd">    :return s: a struct of PPG signal:</span>
 <span class="sd">        - s.v: a vector of PPG values</span>
 <span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
 <span class="sd">        - s.name: name of the record</span>
@@ -164,7 +164,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot fiducial points of the filtered PPG signal.</span>
 
-<span class="sd">    :param s: a struct of PPG signal</span>
+<span class="sd">    :param s: a struct of PPG signal:</span>
 <span class="sd">        - s.v: a vector of PPG values</span>
 <span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
 <span class="sd">        - s.name: name of the record</span>
@@ -261,7 +261,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save the results of the filtered PPG analysis.</span>
 
-<span class="sd">    :param s: a struct of PPG signal</span>
+<span class="sd">    :param s: a struct of PPG signal:</span>
 <span class="sd">        - s.v: a vector of PPG values</span>
 <span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
 <span class="sd">        - s.name: name of the record</span>

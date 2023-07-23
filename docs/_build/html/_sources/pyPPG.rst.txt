@@ -36,10 +36,10 @@ pyPPG.FiducialPoints module
    :undoc-members:
    :show-inheritance:
 
-pyPPG.MAIN module
+pyPPG.EXAMPLE module
 -----------------
 
-.. automodule:: pyPPG.MAIN
+.. automodule:: pyPPG.EXAMPLE
    :members:
    :undoc-members:
    :show-inheritance:
@@ -64,22 +64,6 @@ pyPPG.ppgSQI module
 -------------------
 
 .. automodule:: pyPPG.ppgSQI
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyPPG.test\_annot\_04 module
-----------------------------
-
-.. automodule:: pyPPG.test_annot_04
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyPPG.test\_annot\_BIDMC module
--------------------------------
-
-.. automodule:: pyPPG.test_annot_BIDMC
    :members:
    :undoc-members:
    :show-inheritance:

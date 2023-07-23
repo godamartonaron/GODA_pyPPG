@@ -17,8 +17,8 @@ def ppgSQI(ppg, fs, ann_ppg):
     Physiological measurement 33.9 (2012): 1491.
 
     Author:
-    Marton A. Goda: Faculty of Biomedical Engineering,
-    Technion – Israel Institute of Technology, Haifa, Israel(October 2022)
+    Marton A. Goda – Faculty of Biomedical Engineering,
+    Technion – Israel Institute of Technology, Haifa, Israel (August 2022)
 
     Original Matlab implementation:
     Qiao Li, November 10, 2014.

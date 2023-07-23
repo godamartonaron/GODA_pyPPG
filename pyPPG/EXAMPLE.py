@@ -10,7 +10,7 @@ from dotmap import DotMap
 import time
 
 ###########################################################################
-################################### MAIN ##################################
+################################## EXAMPLE ################################
 ###########################################################################
 if __name__ == '__main__':
 
@@ -24,7 +24,7 @@ if __name__ == '__main__':
     ## Plot Fiducials Points
     plot_fiducials(s, fiducials,savefig=True)
 
-    ## Get Fiducials Biomarkers
+    ## Get Biomarkers
     bm = Bm.Biomarkers(s, fiducials)
     biomarkers = bm.getBiomarkers()
 

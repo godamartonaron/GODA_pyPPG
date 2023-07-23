@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyPPG.ppg_bm.get_bm_ppg_derivs &mdash; pyPPG alpha documentation</title>
+  <title>pyPPG.ppg_bm.get_bm_ppg_derivs &mdash; pyPPG 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,9 +32,6 @@
             pyPPG
               <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                1
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -83,21 +80,20 @@
 <span class="sd">    This function returns the biomarkers of PPG derivatives.</span>
 
 <span class="sd">    :param s: a struct of PPG signal:</span>
-<span class="sd">    - s.v: a vector of PPG values</span>
-<span class="sd">    - s.fs: the sampling frequency of the PPG in Hz</span>
-<span class="sd">    - s.name: name of the record</span>
-<span class="sd">    - s.v: 1-d array, a vector of PPG values</span>
-<span class="sd">    - s.fs: the sampling frequency of the PPG in Hz</span>
-<span class="sd">    - s.filt_sig: 1-d array, a vector of the filtered PPG values</span>
-<span class="sd">    - s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
-<span class="sd">    - s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
-<span class="sd">    - s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
-
+<span class="sd">        - s.v: a vector of PPG values</span>
+<span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
+<span class="sd">        - s.name: name of the record</span>
+<span class="sd">        - s.v: 1-d array, a vector of PPG values</span>
+<span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
+<span class="sd">        - s.filt_sig: 1-d array, a vector of the filtered PPG values</span>
+<span class="sd">        - s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
+<span class="sd">        - s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
+<span class="sd">        - s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
 <span class="sd">    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</span>
-<span class="sd">    - PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak</span>
-<span class="sd">    - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</span>
-<span class="sd">    - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</span>
-<span class="sd">    - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</span>
+<span class="sd">        - PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak</span>
+<span class="sd">        - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</span>
+<span class="sd">        - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</span>
+<span class="sd">        - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</span>
 
 <span class="sd">    :return biomarkers: dictionary of biomarkers of PPG derivatives</span>
 <span class="sd">    &quot;&quot;&quot;</span>

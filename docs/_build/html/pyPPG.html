@@ -66,7 +66,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#pyPPG.FiducialPoints.FiducialPoints"><code class="docutils literal notranslate"><span class="pre">FiducialPoints</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.MAIN">pyPPG.MAIN module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyppg-example-module">pyPPG.EXAMPLE module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.Prefiltering">pyPPG.Prefiltering module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#pyPPG.Prefiltering.Prefiltering"><code class="docutils literal notranslate"><span class="pre">Prefiltering()</span></code></a></li>
 </ul>
@@ -80,8 +80,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#pyPPG.ppgSQI.template"><code class="docutils literal notranslate"><span class="pre">template()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#pyppg-test-annot-04-module">pyPPG.test_annot_04 module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pyppg-test-annot-bidmc-module">pyPPG.test_annot_BIDMC module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pyPPG">Module contents</a></li>
 </ul>
 </li>
@@ -188,7 +186,7 @@
 <dd class="field-odd"><p><strong>filtering</strong> – a bool for filtering</p>
 </dd>
 <dt class="field-even">Return s<span class="colon">:</span></dt>
-<dd class="field-even"><p>a struct of PPG signal
+<dd class="field-even"><p>a struct of PPG signal:
 - s.v: a vector of PPG values
 - s.fs: the sampling frequency of the PPG in Hz
 - s.name: name of the record
@@ -209,7 +207,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> – a struct of PPG signal
+<li><p><strong>s</strong> – a struct of PPG signal:
 - s.v: a vector of PPG values
 - s.fs: the sampling frequency of the PPG in Hz
 - s.name: name of the record
@@ -233,7 +231,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> – a struct of PPG signal
+<li><p><strong>s</strong> – a struct of PPG signal:
 - s.v: a vector of PPG values
 - s.fs: the sampling frequency of the PPG in Hz
 - s.name: name of the record
@@ -669,9 +667,9 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 </dd></dl>
 
 </section>
-<section id="module-pyPPG.MAIN">
-<span id="pyppg-main-module"></span><h2>pyPPG.MAIN module<a class="headerlink" href="#module-pyPPG.MAIN" title="Permalink to this heading"></a></h2>
-</section>
+<section id="pyppg-example-module">
+<h2>pyPPG.EXAMPLE module<a class="headerlink" href="#pyppg-example-module" title="Permalink to this heading"></a></h2>
+<span class="target" id="module-pyPPG.EXAMPLE"></span></section>
 <section id="module-pyPPG.Prefiltering">
 <span id="pyppg-prefiltering-module"></span><h2>pyPPG.Prefiltering module<a class="headerlink" href="#module-pyPPG.Prefiltering" title="Permalink to this heading"></a></h2>
 <dl class="py function">
@@ -685,14 +683,12 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 <li><p><strong>s.fs</strong> – the sampling frequency of the PPG in Hz</p></li>
 </ul>
 </dd>
-</dl>
-<dl class="simple">
-<dt>:return prefiltered PPG, PPG’, PPG”, and PPG’”.</dt><dd><ul class="simple">
-<li><p>s.filt_sig: 1-d array, a vector of the filtered PPG values</p></li>
-<li><p>s.filt_d1: 1-d array, a vector of the filtered PPG’ values</p></li>
-<li><p>s.filt_d2: 1-d array, a vector of the filtered PPG” values</p></li>
-<li><p>s.filt_d3: 1-d array, a vector of the filtered PPG’” values</p></li>
-</ul>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>prefiltered PPG, PPG’, PPG”, and PPG’”:
+- s.filt_sig: 1-d array, a vector of the filtered PPG values
+- s.filt_d1: 1-d array, a vector of the filtered PPG’ values
+- s.filt_d2: 1-d array, a vector of the filtered PPG” values
+- s.filt_d3: 1-d array, a vector of the filtered PPG’” values</p>
 </dd>
 </dl>
 </dd></dl>
@@ -743,8 +739,8 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 <p>Li, Qiao, and Gari D. Clifford. “Dynamic time warping and machine learning for signal quality assessment of pulsatile signals.”
 Physiological measurement 33.9 (2012): 1491.</p>
 <p>Author:
-Marton A. Goda: Faculty of Biomedical Engineering,
-Technion – Israel Institute of Technology, Haifa, Israel(October 2022)</p>
+Marton A. Goda – Faculty of Biomedical Engineering,
+Technion – Israel Institute of Technology, Haifa, Israel (August 2022)</p>
 <p>Original Matlab implementation:
 Qiao Li, November 10, 2014.
 <a class="reference external" href="https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m">https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m</a></p>
@@ -756,12 +752,6 @@ Qiao Li, November 10, 2014.
 <span class="sig-prename descclassname"><span class="pre">pyPPG.ppgSQI.</span></span><span class="sig-name descname"><span class="pre">template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anntime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samp_freq</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppgSQI.html#template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppgSQI.template" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
-</section>
-<section id="pyppg-test-annot-04-module">
-<h2>pyPPG.test_annot_04 module<a class="headerlink" href="#pyppg-test-annot-04-module" title="Permalink to this heading"></a></h2>
-</section>
-<section id="pyppg-test-annot-bidmc-module">
-<h2>pyPPG.test_annot_BIDMC module<a class="headerlink" href="#pyppg-test-annot-bidmc-module" title="Permalink to this heading"></a></h2>
 </section>
 <section id="module-pyPPG">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyPPG" title="Permalink to this heading"></a></h2>
