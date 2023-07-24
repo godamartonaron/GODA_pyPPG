@@ -6,12 +6,22 @@
 Welcome to pyPPG's documentation!
 =================================
 
+.. include:: README.rst
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    modules
 
+TUTORIALS
+==================
+
+.. toctree::
+   :maxdepth: 4
+   :caption: tutorials:
+
+   tutorials/pyPPG_analysis.rst
 
 Indices and tables
 ==================
