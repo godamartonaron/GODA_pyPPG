@@ -114,7 +114,7 @@ class biomarkers_extract_PPG:
                     # PPG derivatives
                     "u": self.get_u(),
                     "v": self.get_v(),
-                    "w": self.get_v(),
+                    "w": self.get_w(),
                     "a": self.get_a(),
                     "b": self.get_b(),
                     "c": self.get_c(),
