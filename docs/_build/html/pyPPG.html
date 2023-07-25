@@ -680,6 +680,40 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 <dt class="sig sig-object py" id="pyPPG.EXAMPLE.example">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyPPG.EXAMPLE.</span></span><span class="sig-name descname"><span class="pre">example</span></span><a class="reference internal" href="_modules/pyPPG/EXAMPLE.html#example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.EXAMPLE.example" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.EXAMPLE.example.example_code">
+<span class="sig-name descname"><span class="pre">example_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correct</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/EXAMPLE.html#example.example_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.EXAMPLE.example.example_code" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>This is an example code for PPG analysis. The main parts:</dt><dd><ol class="arabic simple">
+<li><p>Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.</p></li>
+<li><p>Get Fiducial points: extract the fiducial points of PPG, PPG’, PPG’’ and PPG’” signals</p></li>
+<li><p>Plot Fiducials Points</p></li>
+<li><dl class="simple">
+<dt>Get Biomarkers: extract 74 PPG biomarkers in four categories</dt><dd><ul class="simple">
+<li><p>PPG signal</p></li>
+<li><p>Signal ratios</p></li>
+<li><p>PPG derivatives</p></li>
+<li><p>Derivatives ratios</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Get Statistics: summary of the 74 PPG biomarkers</p></li>
+<li><p>Save data: save the extracted Fiducial points, Biomarkers, and Statistics into .csv file</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filtering</strong> – a bool for filtering</p></li>
+<li><p><strong>savefig</strong> – a bool for fiducial points saving</p></li>
+<li><p><strong>correct</strong> – a bool for fiducials points corretion</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>

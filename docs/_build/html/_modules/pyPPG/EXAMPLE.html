@@ -89,7 +89,7 @@
 <span class="c1">################################## EXAMPLE ################################</span>
 <span class="c1">###########################################################################</span>
 <div class="viewcode-block" id="example"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.EXAMPLE.example">[docs]</a><span class="k">class</span> <span class="nc">example</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="example.example_code"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.EXAMPLE.example.example_code">[docs]</a>    <span class="k">def</span> <span class="nf">example_code</span><span class="p">(</span><span class="n">filtering</span><span class="p">,</span><span class="n">correct</span><span class="p">,</span><span class="n">savefig</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        This is an example code for PPG analysis. The main parts:</span>
 <span class="sd">            1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.</span>
@@ -103,18 +103,20 @@
 <span class="sd">            5) Get Statistics: summary of the 74 PPG biomarkers</span>
 <span class="sd">            6) Save data: save the extracted Fiducial points, Biomarkers, and Statistics into .csv file</span>
 
-<span class="sd">        :return:</span>
+<span class="sd">        :param filtering: a bool for filtering</span>
+<span class="sd">        :param savefig: a bool for fiducial points saving</span>
+<span class="sd">        :param correct: a bool for fiducials points corretion</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1">## Loading a raw PPG signal</span>
-        <span class="n">s</span><span class="o">=</span><span class="n">load_data</span><span class="p">(</span><span class="n">filtering</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">=</span><span class="n">load_data</span><span class="p">(</span><span class="n">filtering</span><span class="p">)</span>
 
         <span class="c1">## Get Fiducial points</span>
         <span class="n">fp</span> <span class="o">=</span> <span class="n">Fp</span><span class="o">.</span><span class="n">FiducialPoints</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-        <span class="n">fiducials</span><span class="o">=</span><span class="n">fp</span><span class="o">.</span><span class="n">getFiducialPoints</span><span class="p">(</span><span class="n">correct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">fiducials</span><span class="o">=</span><span class="n">fp</span><span class="o">.</span><span class="n">getFiducialPoints</span><span class="p">(</span><span class="n">correct</span><span class="p">)</span>
 
         <span class="c1">## Plot Fiducials Points</span>
-        <span class="n">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">,</span><span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">,</span><span class="n">savefig</span><span class="p">)</span>
 
         <span class="c1">## Get Biomarkers</span>
         <span class="n">bm</span> <span class="o">=</span> <span class="n">Bm</span><span class="o">.</span><span class="n">Biomarkers</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">)</span>
@@ -126,7 +128,14 @@
         <span class="c1">## Save data</span>
         <span class="n">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">fiducials</span><span class="p">,</span><span class="n">biomarkers</span><span class="p">,</span><span class="n">statistics</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Program finished&#39;</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Program finished&#39;</span><span class="p">)</span></div></div>
+
+
+
+<span class="c1">###########################################################################</span>
+<span class="c1">############################## RUN EXAMPLE CODE ###########################</span>
+<span class="c1">###########################################################################</span>
+<span class="c1">#example.example_code(filtering=True,correct=True,savefig=True)</span>
 </pre></div>
 
            </div>

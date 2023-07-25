@@ -13,7 +13,7 @@ import time
 ################################## EXAMPLE ################################
 ###########################################################################
 class example:
-    def __init__(self):
+    def example_code(filtering,correct,savefig):
         '''
         This is an example code for PPG analysis. The main parts:
             1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -27,18 +27,20 @@ class example:
             5) Get Statistics: summary of the 74 PPG biomarkers
             6) Save data: save the extracted Fiducial points, Biomarkers, and Statistics into .csv file
 
-        :return:
+        :param filtering: a bool for filtering
+        :param savefig: a bool for fiducial points saving
+        :param correct: a bool for fiducials points corretion
         '''
 
         ## Loading a raw PPG signal
-        s=load_data(filtering=True)
+        s=load_data(filtering)
 
         ## Get Fiducial points
         fp = Fp.FiducialPoints(s)
-        fiducials=fp.getFiducialPoints(correct=True)
+        fiducials=fp.getFiducialPoints(correct)
 
         ## Plot Fiducials Points
-        plot_fiducials(s, fiducials,savefig=True)
+        plot_fiducials(s, fiducials,savefig)
 
         ## Get Biomarkers
         bm = Bm.Biomarkers(s, fiducials)
@@ -51,3 +53,10 @@ class example:
         save_data(s,fiducials,biomarkers,statistics)
 
         print('Program finished')
+
+
+
+###########################################################################
+############################## RUN EXAMPLE CODE ###########################
+###########################################################################
+#example.example_code(filtering=True,correct=True,savefig=True)
