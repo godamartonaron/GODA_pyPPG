@@ -8,23 +8,39 @@ from scipy.signal import find_peaks
 ###########################################################################
 
 class biomarkers_extract_PPG:
-    def __init__(self, data, peak_value, peak_time, next_peak_value, next_peak_time, onsets_values, onsets_times,
-                 sample_rate,list_biomarkers, fiducials):
+    '''
+    Class that extracts the PPG biomarkers.
+    '''
+
+    def __init__(self, data: DotMap, peak_value: float, peak_time: float, next_peak_value: float, next_peak_time: float, onsets_values: np.array, onsets_times: np.array,
+                 sample_rate: int, list_biomarkers: list, fiducials: pd.DataFrame):
         """
+
         :param data: struct of PPG,PPG',PPG",PPG'"
-        - data.sig: segment of PPG timeseries to analyse and extract biomarkers as a np array
-        - data.d1: segment of PPG'
-        - data.d2: segment of PPG"
-        - data.d3: segment of PPG'"
+            - data.sig: segment of PPG timeseries to analyse and extract biomarkers as a np array
+            - data.d1: segment of PPG'
+            - data.d2: segment of PPG"
+            - data.d3: segment of PPG'"
+        :type data: DotMap
         :param peak_value: PPG peak value
+        :type peak_value: float
         :param peak_time: the time corresponding to the peak detected
+        :type peak_time: float
         :param next_peak_value: PPG next peak value
+        :type next_peak_value: float
         :param next_peak_time: the time corresponding to the peak detected
+        :type next_peak_time: float
         :param onsets_values: array of PPG two onsets values surrounding the peak
+        :type onsets_values: Numpy array
         :param onsets_times: array of the two times corresponding to each onset detected
+        :type onsets_times: Numpy array
         :param sample_rate: segment data sample rate
+        :type sample_rate: int
         :param list_biomarkers: list of biomarkers
+        :type list_biomarkers: list
         :param fiducials: location of fiducial points of the given pulse wave
+        :type fiducials: DataFrame
+
         """
 
         self.fiducials=fiducials

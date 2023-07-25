@@ -59,4 +59,4 @@ class example:
 ###########################################################################
 ############################## RUN EXAMPLE CODE ###########################
 ###########################################################################
-#example.example_code(filtering=True,correct=True,savefig=True)
+# example.example_code(filtering=True,correct=True,savefig=True)
