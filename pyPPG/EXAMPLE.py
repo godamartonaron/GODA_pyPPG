@@ -12,26 +12,42 @@ import time
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-if __name__ == '__main__':
+class example:
+    def __init__(self):
+        '''
+        This is an example code for PPG analysis. The main parts:
+            1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
+            2) Get Fiducial points: extract the fiducial points of PPG, PPG', PPG'' and PPG'" signals
+            3) Plot Fiducials Points
+            4) Get Biomarkers: extract 74 PPG biomarkers in four categories
+                - PPG signal
+                - Signal ratios
+                - PPG derivatives
+                - Derivatives ratios
+            5) Get Statistics: summary of the 74 PPG biomarkers
+            6) Save data: save the extracted Fiducial points, Biomarkers, and Statistics into .csv file
 
-    ## Load data
-    s=load_data(filtering=True)
+        :return:
+        '''
 
-    ## Get Fiducials Points
-    fp = Fp.FiducialPoints(s)
-    fiducials=fp.getFiducialPoints(correct=True)
+        ## Loading a raw PPG signal
+        s=load_data(filtering=True)
 
-    ## Plot Fiducials Points
-    plot_fiducials(s, fiducials,savefig=True)
+        ## Get Fiducial points
+        fp = Fp.FiducialPoints(s)
+        fiducials=fp.getFiducialPoints(correct=True)
 
-    ## Get Biomarkers
-    bm = Bm.Biomarkers(s, fiducials)
-    biomarkers = bm.getBiomarkers()
+        ## Plot Fiducials Points
+        plot_fiducials(s, fiducials,savefig=True)
 
-    ## Get Statistics
-    statistics = Statistics(fiducials['sp'], fiducials['on'], biomarkers)
+        ## Get Biomarkers
+        bm = Bm.Biomarkers(s, fiducials)
+        biomarkers = bm.getBiomarkers()
 
-    ## Save data
-    save_data(s,fiducials,biomarkers,statistics)
+        ## Get Statistics
+        statistics = Statistics(fiducials['sp'], fiducials['on'], biomarkers)
 
-    print('Program finished')
+        ## Save data
+        save_data(s,fiducials,biomarkers,statistics)
+
+        print('Program finished')

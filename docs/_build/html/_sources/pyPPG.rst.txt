@@ -37,7 +37,7 @@ pyPPG.FiducialPoints module
    :show-inheritance:
 
 pyPPG.EXAMPLE module
------------------
+--------------------
 
 .. automodule:: pyPPG.EXAMPLE
    :members:
