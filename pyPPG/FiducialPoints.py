@@ -119,18 +119,18 @@ class FiducialPoints:
         <https://github.com/peterhcharlton/ppg-beats>
 
         Changes from Charlton's implementation:
-            * Detect Maxima:
-                1)  Systolic peak-to-peak distance is predicted by the heart rate estimate over the preceding 10 sec window.
-                2)  The peak location is estimated by distances and prominences of the previous peaks.
-            * Find Onsets:
-                1)  The onset is a local minimum, which is always calculated from the peak that follows it within a given time window
-            * Tidy of Peaks and Onsets:
-                1)  There is a one-to-one correspondence between onsets and peaks
-                2)  There are only onset and peak pairs
-                3)  The distance between the onset and peak pairs can't be smaller than 30 ms
-            * Correct Peaks and Onsets:
-                1) The Peaks must be the highest amplitude between two consecutive pulse onsets, if not, then these are corrected
-                2) After the correction of Peaks, the Onsets are recalculated
+            1) Detect Maxima:
+                *  Systolic peak-to-peak distance is predicted by the heart rate estimate over the preceding 10 sec window.
+                *  The peak location is estimated by distances and prominences of the previous peaks.
+            2) Find Onsets:
+                *  The onset is a local minimum, which is always calculated from the peak that follows it within a given time window
+            3) Tidy of Peaks and Onsets:
+                *  There is a one-to-one correspondence between onsets and peaks
+                *  There are only onset and peak pairs
+                *  The distance between the onset and peak pairs can't be smaller than 30 ms
+            4) Correct Peaks and Onsets:
+                * The Peaks must be the highest amplitude between two consecutive pulse onsets, if not, then these are corrected
+                * After the correction of Peaks, the Onsets are recalculated
         '''
 
         # inputs

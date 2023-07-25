@@ -403,40 +403,40 @@ Technion – Israel Institute of Technology, Haifa, Israel (August 2022)</p>
 Peter H. Charlton – King’s College London (August 2017) – University of Cambridge (February 2022)
 &lt;<a class="reference external" href="https://github.com/peterhcharlton/ppg-beats">https://github.com/peterhcharlton/ppg-beats</a>&gt;</p>
 <dl class="simple">
-<dt>Changes from Charlton’s implementation:</dt><dd><ul class="simple">
+<dt>Changes from Charlton’s implementation:</dt><dd><ol class="arabic simple">
 <li><dl class="simple">
-<dt>Detect Maxima:</dt><dd><ol class="arabic simple">
+<dt>Detect Maxima:</dt><dd><ul class="simple">
 <li><p>Systolic peak-to-peak distance is predicted by the heart rate estimate over the preceding 10 sec window.</p></li>
 <li><p>The peak location is estimated by distances and prominences of the previous peaks.</p></li>
-</ol>
+</ul>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>Find Onsets:</dt><dd><ol class="arabic simple">
+<dt>Find Onsets:</dt><dd><ul class="simple">
 <li><p>The onset is a local minimum, which is always calculated from the peak that follows it within a given time window</p></li>
-</ol>
+</ul>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>Tidy of Peaks and Onsets:</dt><dd><ol class="arabic simple">
+<dt>Tidy of Peaks and Onsets:</dt><dd><ul class="simple">
 <li><p>There is a one-to-one correspondence between onsets and peaks</p></li>
 <li><p>There are only onset and peak pairs</p></li>
 <li><p>The distance between the onset and peak pairs can’t be smaller than 30 ms</p></li>
-</ol>
+</ul>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>Correct Peaks and Onsets:</dt><dd><ol class="arabic simple">
+<dt>Correct Peaks and Onsets:</dt><dd><ul class="simple">
 <li><p>The Peaks must be the highest amplitude between two consecutive pulse onsets, if not, then these are corrected</p></li>
 <li><p>After the correction of Peaks, the Onsets are recalculated</p></li>
-</ol>
+</ul>
 </dd>
 </dl>
 </li>
-</ul>
+</ol>
 </dd>
 </dl>
 </section>

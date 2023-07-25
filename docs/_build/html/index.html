@@ -84,34 +84,19 @@
 comprhessive assessment of standard biomarkers.</p>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
-<p>The <strong>pyPPG</strong> is a standardised toolbox to analyze long-term finger PPG
-recordings in real-time. The state-of-the-art PPG biomarkers have been
-identified, implemented in the <em>pyPPG</em> toolbox, and validated on
-standard, public available PPG databases. The <em>pyPPG</em> using the improved
-<em>Automatic Beat Detector</em> <a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/1510850">(Aboy et
-al. 2005)</a>.
-The PPG peak and onset detection are implemented with. The <em>pyPPG</em>
-offers a robust beat detection, and a comprhessive assessment of
-clinically relevant biomarkers of continuous PPG time series.</p>
+<p>The <strong>pyPPG</strong> is a standardised toolbox to analyze long-term finger PPG recordings in real-time. The state-of-the-art PPG biomarkers have been identified, implemented in the <em>pyPPG</em> toolbox, and validated on standard, public available PPG databases. The <em>pyPPG</em> using the improved <em>Automatic Beat Detector</em> <a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/1510850">(Aboy et al. 2005)</a>. The PPG peak and onset detection are implemented with. The <em>pyPPG</em> offers a robust beat detection, and a comprhessive assessment of clinically relevant biomarkers of continuous PPG time series.</p>
 </section>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
-<p>The following steps are implemented in the <strong>pyPPG</strong> toolbox:
-1. <strong>Loading a raw PPG signal</strong>: The toolbox can accept various file
-formats such as <em>.mat</em>, <em>.csv</em>, <em>.txt</em>, or <em>.edf</em>. These files should
-contain raw PPG data along with the corresponding sampling rate. 2.
-<strong>Preprocessing</strong>: The raw signal is filtered to remove unwanted noise
-and artifacts. Subsequently, the signal is resampled to a uniform rate
-of 75 Hz. 3. <strong>Pulse wave segmentation</strong>: The toolbox employs a peak
-detector to identify the systolic peaks. Based on the peak locations,
-the toolbox also detects the pulse onsets and offsets, which indicate
-the start and end of the PPG pulse waves. 4. <strong>Fiducial points
-identification</strong>: For each pulse wave, the toolbox detects a set of
-fiducial points. 5. <strong>Biomarker engineering</strong>: Based on the fiducial
-points, a set of 74 PPG digital biomarkers are engineered.</p>
-<p>The <em>pyPPG</em> toolbox also provides an optional PPG signal quality index
-based on the Matlab implementation of the work by <a class="reference external" href="https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m">(Li et
-al. 2015)</a>.</p>
+<p>The following steps are implemented in the <strong>pyPPG</strong> toolbox:</p>
+<ol class="arabic simple">
+<li><p><strong>Loading a raw PPG signal</strong>: The toolbox can accept various file formats such as <em>.mat</em>, <em>.csv</em>, <em>.txt</em>, or <em>.edf</em>. These files should contain raw PPG data along with the corresponding sampling rate.</p></li>
+<li><p><strong>Preprocessing</strong>: The raw signal is filtered to remove unwanted noise and artifacts. Subsequently, the signal is resampled to a uniform rate of 75 Hz.</p></li>
+<li><p><strong>Pulse wave segmentation</strong>: The toolbox employs a peak detector to identify the systolic peaks. Based on the peak locations, the toolbox also detects the pulse onsets and offsets, which indicate the start and end of the PPG pulse waves.</p></li>
+<li><p><strong>Fiducial points identification</strong>: For each pulse wave, the toolbox detects a set of fiducial points.</p></li>
+<li><p><strong>Biomarker engineering</strong>: Based on the fiducial points, a set of 74 PPG digital biomarkers are engineered.</p></li>
+</ol>
+<p>The <em>pyPPG</em> toolbox also provides an optional PPG signal quality index based on the Matlab implementation of the work by <a class="reference external" href="https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m">(Li et al. 2015)</a>.</p>
 <img alt="_images/pyPPG_pipeline.svg" class="align-center" src="_images/pyPPG_pipeline.svg" /><p>The toolbox identifies individual pulse waves in a PPG signal by identifying <strong>systolic peaks (sp)</strong>, and then identifying the <strong>pulse onset (on)</strong> and <strong>offset (off)</strong> on either side of each systolic peak which indicate the start and end of the pulse wave, respectively.</p>
 <img alt="_images/PPG_sample.svg" class="align-center" src="_images/PPG_sample.svg" /></section>
 <section id="installation">
@@ -122,10 +107,14 @@ al. 2015)</a>.</p>
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
 <section id="python-requirements">
 <h3>Python Requirements:<a class="headerlink" href="#python-requirements" title="Permalink to this heading"></a></h3>
-<p>Python &gt;= 3.10 scipy == 1.9.1 numpy == 1.23.2 dotmap == 1.3.30 pandas ==
-1.5.0 wfdb == 4.0.0 mne == 1.2.0</p>
-<p>All the python requirements are installed when the toolbox is installed,
-no need for additional commands.</p>
+<p>Python &gt;= 3.10</p>
+<p>scipy == 1.9.1</p>
+<p>numpy == 1.23.2</p>
+<p>dotmap == 1.3.30</p>
+<p>pandas == 1.5.0</p>
+<p>wfdb == 4.0.0</p>
+<p>mne == 1.2.0</p>
+<p>All the python requirements are installed when the toolbox is installed, no need for additional commands.</p>
 </section>
 </section>
 <section id="documentation">
@@ -137,28 +126,21 @@ no need for additional commands.</p>
 <ol class="arabic simple">
 <li><p><strong>Software</strong></p>
 <ul class="simple">
-<li><p>An open-source algorithmic <strong>pyPPG</strong> toolbox, which implements the
-PPG peak and onsets detection algorithms and prefiltering
-routines. This can be used within your own data analysis code
-using the <strong>pyPPG</strong> API.</p></li>
+<li><p>An open-source algorithmic <strong>pyPPG</strong> toolbox, which implements the PPG peak and onsets detection algorithms and prefiltering routines. This can be used within your own data analysis code using the <strong>pyPPG</strong> API.</p></li>
 </ul>
 </li>
 <li><p><strong>Databases</strong></p>
 <ul class="simple">
-<li><p>The PPG signals are based on the <strong>PhysioNet Databases</strong>.
-Available <a class="reference external" href="https://physionet.org/about/database/">here</a> .</p></li>
+<li><p>The PPG signals are based on the <strong>PhysioNet Databases</strong>. Available <a class="reference external" href="https://physionet.org/about/database/">here</a> .</p></li>
 </ul>
 </li>
 <li><p><strong>Configuration</strong></p>
 <ul class="simple">
-<li><p>A set of configuration files that adapt the PPG peak detection and
-<strong>pyPPG</strong> algorithms to work with sleep PPG data.</p></li>
+<li><p>A set of configuration files that adapt the PPG peak detection and <strong>pyPPG</strong> algorithms to work with sleep PPG data.</p></li>
 </ul>
 </li>
 </ol>
-<p>All PPG measures can be further adapted for the analysis for efficient
-heart rate measurement as well as health assessment with clinically
-relevant biomarkers.</p>
+<p>All PPG measures can be further adapted for the analysis for efficient heart rate measurement as well as health assessment with clinically relevant biomarkers.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>

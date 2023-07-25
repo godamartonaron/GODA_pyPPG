@@ -44,6 +44,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">GODA_pyPPG</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/pyPPG_analysis.html">PCG morphological analysis</a></li>
+</ul>
 
         </div>
       </div>
@@ -191,18 +195,18 @@
 <span class="sd">        &lt;https://github.com/peterhcharlton/ppg-beats&gt;</span>
 
 <span class="sd">        Changes from Charlton&#39;s implementation:</span>
-<span class="sd">            * Detect Maxima:</span>
-<span class="sd">                1)  Systolic peak-to-peak distance is predicted by the heart rate estimate over the preceding 10 sec window.</span>
-<span class="sd">                2)  The peak location is estimated by distances and prominences of the previous peaks.</span>
-<span class="sd">            * Find Onsets:</span>
-<span class="sd">                1)  The onset is a local minimum, which is always calculated from the peak that follows it within a given time window</span>
-<span class="sd">            * Tidy of Peaks and Onsets:</span>
-<span class="sd">                1)  There is a one-to-one correspondence between onsets and peaks</span>
-<span class="sd">                2)  There are only onset and peak pairs</span>
-<span class="sd">                3)  The distance between the onset and peak pairs can&#39;t be smaller than 30 ms</span>
-<span class="sd">            * Correct Peaks and Onsets:</span>
-<span class="sd">                1) The Peaks must be the highest amplitude between two consecutive pulse onsets, if not, then these are corrected</span>
-<span class="sd">                2) After the correction of Peaks, the Onsets are recalculated</span>
+<span class="sd">            1) Detect Maxima:</span>
+<span class="sd">                *  Systolic peak-to-peak distance is predicted by the heart rate estimate over the preceding 10 sec window.</span>
+<span class="sd">                *  The peak location is estimated by distances and prominences of the previous peaks.</span>
+<span class="sd">            2) Find Onsets:</span>
+<span class="sd">                *  The onset is a local minimum, which is always calculated from the peak that follows it within a given time window</span>
+<span class="sd">            3) Tidy of Peaks and Onsets:</span>
+<span class="sd">                *  There is a one-to-one correspondence between onsets and peaks</span>
+<span class="sd">                *  There are only onset and peak pairs</span>
+<span class="sd">                *  The distance between the onset and peak pairs can&#39;t be smaller than 30 ms</span>
+<span class="sd">            4) Correct Peaks and Onsets:</span>
+<span class="sd">                * The Peaks must be the highest amplitude between two consecutive pulse onsets, if not, then these are corrected</span>
+<span class="sd">                * After the correction of Peaks, the Onsets are recalculated</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># inputs</span>
