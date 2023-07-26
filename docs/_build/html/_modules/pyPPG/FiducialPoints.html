@@ -128,7 +128,7 @@
 <span class="sd">        :param correct: a bool for fiducials points corretion</span>
 <span class="sd">        :type correct: bool</span>
 
-<span class="sd">        :return fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</span>
+<span class="sd">        :return: fiducial points, a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># &#39;abp&#39; refers the improved Aboy++, and &#39;aby&#39; refers the original Aboy peak detector</span>
@@ -173,15 +173,16 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################ PPG beat detector ############################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.abdp_beat_detector"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.abdp_beat_detector">[docs]</a>    <span class="k">def</span> <span class="nf">abdp_beat_detector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peak_detector</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.abdp_beat_detector"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.abdp_beat_detector">[docs]</a>    <span class="k">def</span> <span class="nf">abdp_beat_detector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peak_detector</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;ABDP_BEAT_DETECTOR detects beats in a photoplethysmogram (PPG) signal</span>
 <span class="sd">        using the improved &#39;Automatic Beat Detection&#39; beat detector of Aboy M et al.</span>
 
 <span class="sd">        :param peak_detector: type of peak detector</span>
+<span class="sd">        :type peak_detector: str</span>
 
 <span class="sd">        :return:</span>
-<span class="sd">            - peaks: indices of detected pulse peaks</span>
-<span class="sd">            - onsets: indices of detected pulse onsets</span>
+<span class="sd">            - peaks, 1-d array: indices of detected systolic peaks</span>
+<span class="sd">            - onsets, 1-d array: indices of detected pulse onsets</span>
 
 <span class="sd">        Reference</span>
 <span class="sd">        ---------</span>
@@ -311,16 +312,19 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################# Maximum detector ############################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.DetectMaxima"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.DetectMaxima">[docs]</a>    <span class="k">def</span> <span class="nf">DetectMaxima</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">percentile</span><span class="p">,</span><span class="n">hr_win</span><span class="p">,</span> <span class="n">peak_detector</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.DetectMaxima"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.DetectMaxima">[docs]</a>    <span class="k">def</span> <span class="nf">DetectMaxima</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">percentile</span><span class="p">:</span> <span class="nb">int</span> <span class="p">,</span><span class="n">hr_win</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">peak_detector</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="c1">#Table VI pseudocode</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Detect Maxima function detects all peaks in the raw and also in the filtered signal to find.</span>
 
-<span class="sd">        :param sig: 1-d array, of shape (N,) where N is the length of the signal</span>
+<span class="sd">        :param sig: array of signal with shape (N,) where N is the length of the signal</span>
+<span class="sd">        :type sig: 1-d array</span>
 <span class="sd">        :param percentile: in each signal partition, a rank filter detects the peaks above a given percentile</span>
 <span class="sd">        :type percentile: int</span>
 <span class="sd">        :param hr_win: window for adaptive the heart rate estimate</span>
 <span class="sd">        :type hr_win: int</span>
+<span class="sd">        :param peak_detector: type of peak detector</span>
+<span class="sd">        :type peak_detector: str</span>
 
 <span class="sd">        :return: maximum peaks of signal, 1-d numpy array.</span>
 
@@ -366,11 +370,12 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################ Bandpass filtering ###########################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.Bandpass"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.Bandpass">[docs]</a>    <span class="k">def</span> <span class="nf">Bandpass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">lower_cutoff</span><span class="p">,</span> <span class="n">upper_cutoff</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.Bandpass"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.Bandpass">[docs]</a>    <span class="k">def</span> <span class="nf">Bandpass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lower_cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">upper_cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Bandpass filter function detects all peaks in the raw and also in the filtered signal to find.</span>
 
-<span class="sd">        :param sig: 1-d array, of shape (N,) where N is the length of the signal</span>
+<span class="sd">        :param sig: array of signal with shape (N,) where N is the length of the signal</span>
+<span class="sd">        :type sig: 1-d array</span>
 <span class="sd">        :param fs: sampling frequency</span>
 <span class="sd">        :type fs: int</span>
 <span class="sd">        :param lower_cutoff: lower cutoff frequency</span>
@@ -410,11 +415,12 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">################### Filter the high frequency components  #################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.elim_vlfs_abd"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.elim_vlfs_abd">[docs]</a>    <span class="k">def</span> <span class="nf">elim_vlfs_abd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">lower_cutoff</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.elim_vlfs_abd"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.elim_vlfs_abd">[docs]</a>    <span class="k">def</span> <span class="nf">elim_vlfs_abd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">lower_cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function filter the high frequency components.</span>
 
-<span class="sd">        :param s: 1-d array, of shape (N,) where N is the length of the signal</span>
+<span class="sd">        :param s: array of signal with shape (N,) where N is the length of the signal</span>
+<span class="sd">        :type s: 1-d array</span>
 <span class="sd">        :param up: setup up parameters of the algorithm</span>
 <span class="sd">        :type up: DotMap</span>
 <span class="sd">        :param lower_cutoff: lower cutoff frequency</span>
@@ -454,13 +460,15 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">################### Filter the low frequency components  ##################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.elim_vhfs"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.elim_vhfs">[docs]</a>    <span class="k">def</span> <span class="nf">elim_vhfs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">upper_cutoff</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.elim_vhfs"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.elim_vhfs">[docs]</a>    <span class="k">def</span> <span class="nf">elim_vhfs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">upper_cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function filter the high frequency components.</span>
 
+<span class="sd">        :param s: array of signal with shape (N,) where N is the length of the signal</span>
+<span class="sd">        :type s: 1-d array</span>
 <span class="sd">        :param up: setup up parameters of the algorithm</span>
 <span class="sd">        :type up: DotMap</span>
-<span class="sd">        :param upper_cutoff: upper cutoff frequency</span>
+<span class="sd">        :param upper_cutoff: lower cutoff frequency</span>
 <span class="sd">        :type upper_cutoff: float</span>
 
 <span class="sd">        :return: low frequency filtered signal, 1-d numpy array.</span>
@@ -498,12 +506,12 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">########################### Heart Rate estimation #########################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.EstimateHeartRate"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.EstimateHeartRate">[docs]</a>    <span class="k">def</span> <span class="nf">EstimateHeartRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">hr_past</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.EstimateHeartRate"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.EstimateHeartRate">[docs]</a>    <span class="k">def</span> <span class="nf">EstimateHeartRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">hr_past</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Heart Rate Estimation function estimate the heart rate according to the previous heart rate in given time window</span>
 
-<span class="sd">        :param sig: 1-d array, of shape (N,) where N is the length of the signal</span>
-<span class="sd">        :param fs: sampling frequency</span>
+<span class="sd">        :param sig: array of signal with shape (N,) where N is the length of the signal</span>
+<span class="sd">        :type sig: 1-d array</span>
 <span class="sd">        :type fs: int</span>
 <span class="sd">        :param up: setup up parameters of the algorithm</span>
 <span class="sd">        :type up: DotMap</span>
@@ -537,12 +545,14 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############# Estimate derivative from highly filtered signal #############</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.EstimateDeriv"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.EstimateDeriv">[docs]</a>    <span class="k">def</span> <span class="nf">EstimateDeriv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.EstimateDeriv"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.EstimateDeriv">[docs]</a>    <span class="k">def</span> <span class="nf">EstimateDeriv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Derivative Estimation function estimate derivative from highly filtered signal based on the</span>
 <span class="sd">        General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method</span>
 
-<span class="sd">        :param sig: 1-d array, of shape (N,) where N is the length of the signal</span>
+<span class="sd">        :param sig: array of signal with shape (N,) where N is the length of the signal</span>
+<span class="sd">        :type sig: 1-d array</span>
+
 <span class="sd">        :return: derivative, 1-d numpy array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -555,11 +565,12 @@
         <span class="k">return</span> <span class="n">deriv</span></div>
 
 
-<div class="viewcode-block" id="FiducialPoints.savitzky_golay_abd"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.savitzky_golay_abd">[docs]</a>    <span class="k">def</span> <span class="nf">savitzky_golay_abd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">deriv_no</span><span class="p">,</span> <span class="n">win_size</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.savitzky_golay_abd"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.savitzky_golay_abd">[docs]</a>    <span class="k">def</span> <span class="nf">savitzky_golay_abd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">deriv_no</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">win_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function estimate the Savitzky Golay derivative from highly filtered signal</span>
 
-<span class="sd">        :param sig: 1-d array, of shape (N,) where N is the length of the signal</span>
+<span class="sd">        :param sig: array of signal with shape (N,) where N is the length of the signal</span>
+<span class="sd">        :type sig: 1-d array</span>
 <span class="sd">        :param deriv_no: number of derivative</span>
 <span class="sd">        :type deriv_no: int</span>
 <span class="sd">        :param win_size: size of window</span>
@@ -658,13 +669,16 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################# Pulse detection #############################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.find_pulse_peaks"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.find_pulse_peaks">[docs]</a>    <span class="k">def</span> <span class="nf">find_pulse_peaks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span><span class="n">p3</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.find_pulse_peaks"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.find_pulse_peaks">[docs]</a>    <span class="k">def</span> <span class="nf">find_pulse_peaks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">p3</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Pulse detection function detect the pulse peaks according to the peaks of 1st and 2nd derivatives</span>
 <span class="sd">        General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method</span>
 
-<span class="sd">        :param p2: 1-d array, peaks of the 1st derivatives</span>
-<span class="sd">        :param p3: 1-d array, peaks of the 2nd derivatives</span>
+<span class="sd">        :param p2: peaks of the 1st derivatives</span>
+<span class="sd">        :type p2: 1-d array</span>
+<span class="sd">        :param p3: peaks of the 2nd derivatives</span>
+<span class="sd">        :type p2: 1-d array</span>
+
 <span class="sd">        :return: pulse peaks, 1-d numpy array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -683,7 +697,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">####################### Correct peaks&#39; location error #####################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.IBICorrect"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.IBICorrect">[docs]</a>    <span class="k">def</span>  <span class="nf">IBICorrect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">hr</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">up</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.IBICorrect"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.IBICorrect">[docs]</a>    <span class="k">def</span>  <span class="nf">IBICorrect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">hr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function corrects the peaks&#39; location error</span>
 
@@ -769,17 +783,20 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################## Find PPG onsets ############################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.find_onsets"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.find_onsets">[docs]</a>    <span class="k">def</span> <span class="nf">find_onsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sig</span><span class="p">,</span><span class="n">fs</span><span class="p">,</span><span class="n">up</span><span class="p">,</span><span class="n">peaks</span><span class="p">,</span><span class="n">med_hr</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.find_onsets"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.find_onsets">[docs]</a>    <span class="k">def</span> <span class="nf">find_onsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">peaks</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">med_hr</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function finds the onsets of PPG sigal</span>
 
-<span class="sd">        :param sig: 1-d array, of shape (N,) where N is the length of the signal</span>
+<span class="sd">        :param sig: array of signal with shape (N,) where N is the length of the signal</span>
+<span class="sd">        :type sig: 1-d array</span>
 <span class="sd">        :param fs: sampling frequency</span>
 <span class="sd">        :type fs: int</span>
 <span class="sd">        :param up: setup up parameters of the algorithm</span>
 <span class="sd">        :type up: DotMap</span>
 <span class="sd">        :param peaks: peaks of the signal</span>
 <span class="sd">        :type peaks: 1-d array</span>
+<span class="sd">        :param med_hr: median heart rate</span>
+<span class="sd">        :type med_hr: float</span>
 
 <span class="sd">        :return: onsets, 1-d numpy array.</span>
 

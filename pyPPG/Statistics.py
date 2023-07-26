@@ -13,7 +13,7 @@ def Statistics(peaks: pd.Series, onsets: pd.Series, ppg_biomarkers: dict):
     :param peaks: 1-d array, peaks of the signal
     :type peaks: Series
     :param onsets: 1-d array, onsets of the signal
-    :type peaks: Series
+    :type onsets: Series
     :param ppg_biomarkers: dictionary of the PPG biomarkers
     :type ppg_biomarkers: dict
 

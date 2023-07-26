@@ -52,7 +52,7 @@ class FiducialPoints:
         :param correct: a bool for fiducials points corretion
         :type correct: bool
 
-        :return fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
+        :return: fiducial points, a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
         '''
 
         # 'abp' refers the improved Aboy++, and 'aby' refers the original Aboy peak detector
@@ -97,15 +97,16 @@ class FiducialPoints:
     ###########################################################################
     ############################ PPG beat detector ############################
     ###########################################################################
-    def abdp_beat_detector(self, peak_detector):
+    def abdp_beat_detector(self, peak_detector: str):
         '''ABDP_BEAT_DETECTOR detects beats in a photoplethysmogram (PPG) signal
         using the improved 'Automatic Beat Detection' beat detector of Aboy M et al.
 
         :param peak_detector: type of peak detector
+        :type peak_detector: str
 
         :return:
-            - peaks: indices of detected pulse peaks
-            - onsets: indices of detected pulse onsets
+            - peaks, 1-d array: indices of detected systolic peaks
+            - onsets, 1-d array: indices of detected pulse onsets
 
         Reference
         ---------
@@ -235,16 +236,19 @@ class FiducialPoints:
     ###########################################################################
     ############################# Maximum detector ############################
     ###########################################################################
-    def DetectMaxima(self, sig, percentile,hr_win, peak_detector):
+    def DetectMaxima(self, sig: np.array, percentile: int ,hr_win: int, peak_detector: str):
         #Table VI pseudocode
         """
         Detect Maxima function detects all peaks in the raw and also in the filtered signal to find.
 
-        :param sig: 1-d array, of shape (N,) where N is the length of the signal
+        :param sig: array of signal with shape (N,) where N is the length of the signal
+        :type sig: 1-d array
         :param percentile: in each signal partition, a rank filter detects the peaks above a given percentile
         :type percentile: int
         :param hr_win: window for adaptive the heart rate estimate
         :type hr_win: int
+        :param peak_detector: type of peak detector
+        :type peak_detector: str
 
         :return: maximum peaks of signal, 1-d numpy array.
 
@@ -290,11 +294,12 @@ class FiducialPoints:
     ###########################################################################
     ############################ Bandpass filtering ###########################
     ###########################################################################
-    def Bandpass(self, sig, fs, lower_cutoff, upper_cutoff):
+    def Bandpass(self, sig: np.array, fs: int, lower_cutoff: float, upper_cutoff: float):
         """
         Bandpass filter function detects all peaks in the raw and also in the filtered signal to find.
 
-        :param sig: 1-d array, of shape (N,) where N is the length of the signal
+        :param sig: array of signal with shape (N,) where N is the length of the signal
+        :type sig: 1-d array
         :param fs: sampling frequency
         :type fs: int
         :param lower_cutoff: lower cutoff frequency
@@ -334,11 +339,12 @@ class FiducialPoints:
     ###########################################################################
     ################### Filter the high frequency components  #################
     ###########################################################################
-    def elim_vlfs_abd(self, s, up, lower_cutoff):
+    def elim_vlfs_abd(self, s: np.array, up: DotMap, lower_cutoff: float):
         """
         This function filter the high frequency components.
 
-        :param s: 1-d array, of shape (N,) where N is the length of the signal
+        :param s: array of signal with shape (N,) where N is the length of the signal
+        :type s: 1-d array
         :param up: setup up parameters of the algorithm
         :type up: DotMap
         :param lower_cutoff: lower cutoff frequency
@@ -378,13 +384,15 @@ class FiducialPoints:
     ###########################################################################
     ################### Filter the low frequency components  ##################
     ###########################################################################
-    def elim_vhfs(self, s, up, upper_cutoff):
+    def elim_vhfs(self, s: np.array, up: DotMap, upper_cutoff: float):
         """
         This function filter the high frequency components.
 
+        :param s: array of signal with shape (N,) where N is the length of the signal
+        :type s: 1-d array
         :param up: setup up parameters of the algorithm
         :type up: DotMap
-        :param upper_cutoff: upper cutoff frequency
+        :param upper_cutoff: lower cutoff frequency
         :type upper_cutoff: float
 
         :return: low frequency filtered signal, 1-d numpy array.
@@ -422,12 +430,12 @@ class FiducialPoints:
     ###########################################################################
     ########################### Heart Rate estimation #########################
     ###########################################################################
-    def EstimateHeartRate(self, sig, fs, up, hr_past):
+    def EstimateHeartRate(self, sig: np.array, fs: int, up: DotMap, hr_past: int):
         """
         Heart Rate Estimation function estimate the heart rate according to the previous heart rate in given time window
 
-        :param sig: 1-d array, of shape (N,) where N is the length of the signal
-        :param fs: sampling frequency
+        :param sig: array of signal with shape (N,) where N is the length of the signal
+        :type sig: 1-d array
         :type fs: int
         :param up: setup up parameters of the algorithm
         :type up: DotMap
@@ -461,12 +469,14 @@ class FiducialPoints:
     ###########################################################################
     ############# Estimate derivative from highly filtered signal #############
     ###########################################################################
-    def EstimateDeriv(self, sig):
+    def EstimateDeriv(self, sig: np.array):
         """
         Derivative Estimation function estimate derivative from highly filtered signal based on the
         General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method
 
-        :param sig: 1-d array, of shape (N,) where N is the length of the signal
+        :param sig: array of signal with shape (N,) where N is the length of the signal
+        :type sig: 1-d array
+
         :return: derivative, 1-d numpy array.
 
         """
@@ -479,11 +489,12 @@ class FiducialPoints:
         return deriv
 
 
-    def savitzky_golay_abd(self, sig, deriv_no, win_size):
+    def savitzky_golay_abd(self, sig: np.array, deriv_no: int, win_size: int):
         """
         This function estimate the Savitzky Golay derivative from highly filtered signal
 
-        :param sig: 1-d array, of shape (N,) where N is the length of the signal
+        :param sig: array of signal with shape (N,) where N is the length of the signal
+        :type sig: 1-d array
         :param deriv_no: number of derivative
         :type deriv_no: int
         :param win_size: size of window
@@ -582,13 +593,16 @@ class FiducialPoints:
     ###########################################################################
     ############################# Pulse detection #############################
     ###########################################################################
-    def find_pulse_peaks(self, p2,p3):
+    def find_pulse_peaks(self, p2: np.array, p3: np.array):
         """
         Pulse detection function detect the pulse peaks according to the peaks of 1st and 2nd derivatives
         General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method
 
-        :param p2: 1-d array, peaks of the 1st derivatives
-        :param p3: 1-d array, peaks of the 2nd derivatives
+        :param p2: peaks of the 1st derivatives
+        :type p2: 1-d array
+        :param p3: peaks of the 2nd derivatives
+        :type p2: 1-d array
+
         :return: pulse peaks, 1-d numpy array.
 
         """
@@ -607,7 +621,7 @@ class FiducialPoints:
     ###########################################################################
     ####################### Correct peaks' location error #####################
     ###########################################################################
-    def  IBICorrect(self, p, m, hr, fs, up):
+    def  IBICorrect(self, p: np.array, m: np.array, hr: np.array, fs: int, up: DotMap):
         """
         This function corrects the peaks' location error
 
@@ -693,17 +707,20 @@ class FiducialPoints:
     ###########################################################################
     ############################## Find PPG onsets ############################
     ###########################################################################
-    def find_onsets(self,sig,fs,up,peaks,med_hr):
+    def find_onsets(self,sig: np.array, fs: int, up: DotMap, peaks: np.array, med_hr: float):
         """
         This function finds the onsets of PPG sigal
 
-        :param sig: 1-d array, of shape (N,) where N is the length of the signal
+        :param sig: array of signal with shape (N,) where N is the length of the signal
+        :type sig: 1-d array
         :param fs: sampling frequency
         :type fs: int
         :param up: setup up parameters of the algorithm
         :type up: DotMap
         :param peaks: peaks of the signal
         :type peaks: 1-d array
+        :param med_hr: median heart rate
+        :type med_hr: float
 
         :return: onsets, 1-d numpy array.
 
