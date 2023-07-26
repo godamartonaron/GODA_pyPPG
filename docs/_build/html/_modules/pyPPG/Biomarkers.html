@@ -44,6 +44,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">GODA_pyPPG</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/pyPPG_analysis.html">PCG morphological analysis</a></li>
+</ul>
 
         </div>
       </div>
@@ -81,7 +85,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">######################## Initialization of Biomarkers #####################</span>
     <span class="c1">###########################################################################</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The purpose of the Biomarkers class is to calculate the ppg biomarkers.</span>
 
@@ -95,12 +99,13 @@
 <span class="sd">            - s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
 <span class="sd">            - s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
 <span class="sd">            - s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
-
+<span class="sd">        :type s: DotMap</span>
 <span class="sd">        :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</span>
 <span class="sd">            - PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak</span>
 <span class="sd">            - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</span>
 <span class="sd">            - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</span>
 <span class="sd">            - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</span>
+<span class="sd">        :type fiducials: DataFrame</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>

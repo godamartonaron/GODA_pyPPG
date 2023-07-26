@@ -6,15 +6,16 @@ import scipy.stats
 ###################### Statistics of PPG Biomarkers #######################
 ###########################################################################
 
-def Statistics(peaks, onsets, ppg_biomarkers):
+def Statistics(peaks: pd.Series, onsets: pd.Series, ppg_biomarkers: dict):
     """
     The function compares the different biomedical features of PPG signal.
 
-    :param ppg: 1-d array, of shape (N,) where N is the length of the signal
     :param peaks: 1-d array, peaks of the signal
+    :type peaks: Series
     :param onsets: 1-d array, onsets of the signal
-    :param fs: sampling frequency
-    :type fs: int
+    :type peaks: Series
+    :param ppg_biomarkers: dictionary of the PPG biomarkers
+    :type ppg_biomarkers: dict
 
     :return df_windows: data frame with summary of PPG features
     """

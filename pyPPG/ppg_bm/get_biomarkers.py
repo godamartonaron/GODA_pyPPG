@@ -16,7 +16,7 @@ class biomarkers_extract_PPG:
                  sample_rate: int, list_biomarkers: list, fiducials: pd.DataFrame):
         """
 
-        :param data: struct of PPG,PPG',PPG",PPG'"
+        :param data: struct of PPG,PPG', PPG", PPG'":
             - data.sig: segment of PPG timeseries to analyse and extract biomarkers as a np array
             - data.d1: segment of PPG'
             - data.d2: segment of PPG"

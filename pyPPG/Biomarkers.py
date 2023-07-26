@@ -9,7 +9,7 @@ class Biomarkers:
     ###########################################################################
     ######################## Initialization of Biomarkers #####################
     ###########################################################################
-    def __init__(self, s, fiducials):
+    def __init__(self, s: DotMap, fiducials: pd.DataFrame):
         """
         The purpose of the Biomarkers class is to calculate the ppg biomarkers.
 
@@ -23,12 +23,13 @@ class Biomarkers:
             - s.filt_d1: 1-d array, a vector of the filtered PPG' values
             - s.filt_d2: 1-d array, a vector of the filtered PPG" values
             - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
-
+        :type s: DotMap
         :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.
             - PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak
             - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
             - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
             - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)
+        :type fiducials: DataFrame
 
         """
         if s.fs <= 0:

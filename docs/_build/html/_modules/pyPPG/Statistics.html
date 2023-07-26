@@ -30,6 +30,7 @@
           
           <a href="../../index.html" class="icon icon-home">
             pyPPG
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -42,6 +43,10 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">GODA_pyPPG</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/pyPPG_analysis.html">PCG morphological analysis</a></li>
 </ul>
 
         </div>
@@ -77,15 +82,16 @@
 <span class="c1">###################### Statistics of PPG Biomarkers #######################</span>
 <span class="c1">###########################################################################</span>
 
-<div class="viewcode-block" id="Statistics"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.Statistics.Statistics">[docs]</a><span class="k">def</span> <span class="nf">Statistics</span><span class="p">(</span><span class="n">peaks</span><span class="p">,</span> <span class="n">onsets</span><span class="p">,</span> <span class="n">ppg_biomarkers</span><span class="p">):</span>
+<div class="viewcode-block" id="Statistics"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.Statistics.Statistics">[docs]</a><span class="k">def</span> <span class="nf">Statistics</span><span class="p">(</span><span class="n">peaks</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">onsets</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">ppg_biomarkers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The function compares the different biomedical features of PPG signal.</span>
 
-<span class="sd">    :param ppg: 1-d array, of shape (N,) where N is the length of the signal</span>
 <span class="sd">    :param peaks: 1-d array, peaks of the signal</span>
+<span class="sd">    :type peaks: Series</span>
 <span class="sd">    :param onsets: 1-d array, onsets of the signal</span>
-<span class="sd">    :param fs: sampling frequency</span>
-<span class="sd">    :type fs: int</span>
+<span class="sd">    :type peaks: Series</span>
+<span class="sd">    :param ppg_biomarkers: dictionary of the PPG biomarkers</span>
+<span class="sd">    :type ppg_biomarkers: dict</span>
 
 <span class="sd">    :return df_windows: data frame with summary of PPG features</span>
 <span class="sd">    &quot;&quot;&quot;</span>

@@ -14,7 +14,7 @@ class FiducialPoints:
     ###########################################################################
     ###################### Initialization of Fiducial Points ##################
     ###########################################################################
-    def __init__(self, s):
+    def __init__(self, s: DotMap):
         """
         The purpose of the FiducialPoints class is to calculate the fiducial points.
 
@@ -28,6 +28,7 @@ class FiducialPoints:
             - s.filt_d1: 1-d array, a vector of the filtered PPG' values
             - s.filt_d2: 1-d array, a vector of the filtered PPG" values
             - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+        :type s: DotMap
 
         """
         if s.fs <= 0:
@@ -42,13 +43,14 @@ class FiducialPoints:
     ###########################################################################
     ############################ Get Fiducial Points ##########################
     ###########################################################################
-    def getFiducialPoints(self,correct):
+    def getFiducialPoints(self,correct: bool):
         '''The function calculates the PPG Fiducial Points.
             - Original signal: List of pulse onset, pea and dicrotic notch
             - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
             - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
 
         :param correct: a bool for fiducials points corretion
+        :type correct: bool
 
         :return fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
         '''

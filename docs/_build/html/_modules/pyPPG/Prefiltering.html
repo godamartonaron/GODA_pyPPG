@@ -44,6 +44,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">GODA_pyPPG</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/pyPPG_analysis.html">PCG morphological analysis</a></li>
+</ul>
 
         </div>
       </div>
@@ -81,11 +85,12 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
 
-<div class="viewcode-block" id="Prefiltering"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.Prefiltering.Prefiltering">[docs]</a><span class="k">def</span> <span class="nf">Prefiltering</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<div class="viewcode-block" id="Prefiltering"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.Prefiltering.Prefiltering">[docs]</a><span class="k">def</span> <span class="nf">Prefiltering</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;The function calculates the prefiltered PPG, PPg&#39;, PPG&quot;, and PPG&#39;&quot;.</span>
 
 <span class="sd">    :param s.v: a vector of PPG values</span>
 <span class="sd">    :param s.fs: the sampling frequency of the PPG in Hz</span>
+<span class="sd">    :type s: DotMap</span>
 
 <span class="sd">    :return: prefiltered PPG, PPG&#39;, PPG&quot;, and PPG&#39;&quot;:</span>
 <span class="sd">        - s.filt_sig: 1-d array, a vector of the filtered PPG values</span>

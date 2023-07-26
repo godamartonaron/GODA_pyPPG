@@ -9,11 +9,12 @@ import matplotlib.pyplot as plt
 import time
 from scipy import signal
 
-def Prefiltering(s):
+def Prefiltering(s: DotMap):
     '''The function calculates the prefiltered PPG, PPg', PPG", and PPG'".
 
     :param s.v: a vector of PPG values
     :param s.fs: the sampling frequency of the PPG in Hz
+    :type s: DotMap
 
     :return: prefiltered PPG, PPG', PPG", and PPG'":
         - s.filt_sig: 1-d array, a vector of the filtered PPG values

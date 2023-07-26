@@ -1,3 +1,5 @@
+import pandas as pd
+
 from pyPPG.Prefiltering import*
 
 import matplotlib.pyplot as plt
@@ -12,11 +14,12 @@ import os
 ###########################################################################
 ####################### Data Acquisition from Files #######################
 ###########################################################################
-def load_data(filtering):
+def load_data(filtering: bool):
     """
     Load PPG data function load the raw PPG data.
 
     :param filtering: a bool for filtering
+    :type filtering: bool
 
     :return s: a struct of PPG signal:
         - s.v: a vector of PPG values
@@ -88,7 +91,7 @@ def load_data(filtering):
 ###########################################################################
 ########################### Plot Fiducial points ##########################
 ###########################################################################
-def plot_fiducials(s, fiducials, savefig):
+def plot_fiducials(s: DotMap, fiducials: pd.DataFrame, savefig: bool):
     """
     Plot fiducial points of the filtered PPG signal.
 
@@ -102,8 +105,11 @@ def plot_fiducials(s, fiducials, savefig):
         - s.filt_d1: 1-d array, a vector of the filtered PPG' values
         - s.filt_d2: 1-d array, a vector of the filtered PPG" values
         - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+    :type s: DotMap
     :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
+    :type fiducials: DataFrame
     :param savefig: a bool for fiducial points saving
+    :type savefig: bool
     """
 
     fig = plt.figure(figsize=(20, 12))
@@ -185,7 +191,7 @@ def plot_fiducials(s, fiducials, savefig):
 ################################# Save Data ###############################
 ###########################################################################
 
-def save_data(s,fiducials,ppg_biomarkers,ppg_statistics):
+def save_data(s: DotMap, fiducials: pd.DataFrame, ppg_biomarkers: dict, ppg_statistics: dict):
     """
     Save the results of the filtered PPG analysis.
 
@@ -199,13 +205,17 @@ def save_data(s,fiducials,ppg_biomarkers,ppg_statistics):
         - s.filt_d1: 1-d array, a vector of the filtered PPG' values
         - s.filt_d2: 1-d array, a vector of the filtered PPG" values
         - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
-    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
+    :type s: DotMap
+    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
+    :type fiducials: DataFrame
     :param biomarkers: dictionary of biomarkers in different categories
         - PPG signal
         - Signal ratios
         - PPG derivatives
         - Derivatives ratios
+    :type ppg_biomarkers: dict
     :param Statistics: data frame with summary of PPG features
+    :type Statistics: dict
     """
 
     temp_dirs= ['PPG_Fiducials','PPG_Biomarkers','PPG_Statistics']

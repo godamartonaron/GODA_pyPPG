@@ -44,6 +44,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">GODA_pyPPG</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/pyPPG_analysis.html">PCG morphological analysis</a></li>
+</ul>
 
         </div>
       </div>
@@ -70,7 +74,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pyPPG.DataHandling</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pyPPG.Prefiltering</span> <span class="kn">import</span><span class="o">*</span>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">pyPPG.Prefiltering</span> <span class="kn">import</span><span class="o">*</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">scipy.io</span>
@@ -84,11 +90,12 @@
 <span class="c1">###########################################################################</span>
 <span class="c1">####################### Data Acquisition from Files #######################</span>
 <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="load_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.DataHandling.load_data">[docs]</a><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">filtering</span><span class="p">):</span>
+<div class="viewcode-block" id="load_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.DataHandling.load_data">[docs]</a><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">filtering</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load PPG data function load the raw PPG data.</span>
 
 <span class="sd">    :param filtering: a bool for filtering</span>
+<span class="sd">    :type filtering: bool</span>
 
 <span class="sd">    :return s: a struct of PPG signal:</span>
 <span class="sd">        - s.v: a vector of PPG values</span>
@@ -160,7 +167,7 @@
 <span class="c1">###########################################################################</span>
 <span class="c1">########################### Plot Fiducial points ##########################</span>
 <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="plot_fiducials"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.DataHandling.plot_fiducials">[docs]</a><span class="k">def</span> <span class="nf">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">,</span> <span class="n">savefig</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_fiducials"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.DataHandling.plot_fiducials">[docs]</a><span class="k">def</span> <span class="nf">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">savefig</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot fiducial points of the filtered PPG signal.</span>
 
@@ -174,8 +181,11 @@
 <span class="sd">        - s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
 <span class="sd">        - s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
 <span class="sd">        - s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
+<span class="sd">    :type s: DotMap</span>
 <span class="sd">    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</span>
+<span class="sd">    :type fiducials: DataFrame</span>
 <span class="sd">    :param savefig: a bool for fiducial points saving</span>
+<span class="sd">    :type savefig: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
@@ -257,7 +267,7 @@
 <span class="c1">################################# Save Data ###############################</span>
 <span class="c1">###########################################################################</span>
 
-<div class="viewcode-block" id="save_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.DataHandling.save_data">[docs]</a><span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">fiducials</span><span class="p">,</span><span class="n">ppg_biomarkers</span><span class="p">,</span><span class="n">ppg_statistics</span><span class="p">):</span>
+<div class="viewcode-block" id="save_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.DataHandling.save_data">[docs]</a><span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ppg_biomarkers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ppg_statistics</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save the results of the filtered PPG analysis.</span>
 
@@ -271,13 +281,17 @@
 <span class="sd">        - s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
 <span class="sd">        - s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
 <span class="sd">        - s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
-<span class="sd">    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</span>
+<span class="sd">    :type s: DotMap</span>
+<span class="sd">    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points</span>
+<span class="sd">    :type fiducials: DataFrame</span>
 <span class="sd">    :param biomarkers: dictionary of biomarkers in different categories</span>
 <span class="sd">        - PPG signal</span>
 <span class="sd">        - Signal ratios</span>
 <span class="sd">        - PPG derivatives</span>
 <span class="sd">        - Derivatives ratios</span>
+<span class="sd">    :type ppg_biomarkers: dict</span>
 <span class="sd">    :param Statistics: data frame with summary of PPG features</span>
+<span class="sd">    :type Statistics: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">temp_dirs</span><span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PPG_Fiducials&#39;</span><span class="p">,</span><span class="s1">&#39;PPG_Biomarkers&#39;</span><span class="p">,</span><span class="s1">&#39;PPG_Statistics&#39;</span><span class="p">]</span>
