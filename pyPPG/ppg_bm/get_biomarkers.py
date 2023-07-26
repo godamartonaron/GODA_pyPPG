@@ -8,9 +8,9 @@ from scipy.signal import find_peaks
 ###########################################################################
 
 class biomarkers_extract_PPG:
-    '''
+    """
     Class that extracts the PPG biomarkers.
-    '''
+    """
 
     def __init__(self, data: DotMap, peak_value: float, peak_time: float, next_peak_value: float, next_peak_time: float, onsets_values: np.array, onsets_times: np.array,
                  sample_rate: int, list_biomarkers: list, fiducials: pd.DataFrame):

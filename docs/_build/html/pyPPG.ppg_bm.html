@@ -55,7 +55,7 @@
 <li class="toctree-l3"><a class="reference internal" href="pyPPG.html#module-pyPPG.Biomarkers">pyPPG.Biomarkers module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyPPG.html#module-pyPPG.DataHandling">pyPPG.DataHandling module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyPPG.html#module-pyPPG.FiducialPoints">pyPPG.FiducialPoints module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyPPG.html#pyppg-example-module">pyPPG.EXAMPLE module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyPPG.html#module-pyPPG.EXAMPLE">pyPPG.EXAMPLE module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyPPG.html#module-pyPPG.Prefiltering">pyPPG.Prefiltering module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyPPG.html#module-pyPPG.Statistics">pyPPG.Statistics module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyPPG.html#module-pyPPG.ppgSQI">pyPPG.ppgSQI module</a></li>
@@ -134,101 +134,136 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.get_biomarkers.</span></span><span class="sig-name descname"><span class="pre">biomarkers_extract_PPG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DotMap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_peak_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_peak_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onsets_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onsets_times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_biomarkers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class that extracts the PPG biomarkers.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGI">
-<span class="sig-name descname"><span class="pre">getAGI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAGI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGI" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Aging Index.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(Ab-Ac-Ad-Ae)/Aa feature</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>DotMap</em>) – struct of PPG,PPG’,PPG”,PPG’”
+- data.sig: segment of PPG timeseries to analyse and extract biomarkers as a np array
+- data.d1: segment of PPG’
+- data.d2: segment of PPG”
+- data.d3: segment of PPG’”</p></li>
+<li><p><strong>peak_value</strong> (<em>float</em>) – PPG peak value</p></li>
+<li><p><strong>peak_time</strong> (<em>float</em>) – the time corresponding to the peak detected</p></li>
+<li><p><strong>next_peak_value</strong> (<em>float</em>) – PPG next peak value</p></li>
+<li><p><strong>next_peak_time</strong> (<em>float</em>) – the time corresponding to the peak detected</p></li>
+<li><p><strong>onsets_values</strong> (<em>Numpy array</em>) – array of PPG two onsets values surrounding the peak</p></li>
+<li><p><strong>onsets_times</strong> (<em>Numpy array</em>) – array of the two times corresponding to each onset detected</p></li>
+<li><p><strong>sample_rate</strong> (<em>int</em>) – segment data sample rate</p></li>
+<li><p><strong>list_biomarkers</strong> (<em>list</em>) – list of biomarkers</p></li>
+<li><p><strong>fiducials</strong> (<em>DataFrame</em>) – location of fiducial points of the given pulse wave</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.map_func">
+<span class="sig-name descname"><span class="pre">map_func</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.map_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.map_func" title="Permalink to this definition"></a></dt>
+<dd><p>This function assign for each name of biomarkers a function that calculates it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns my_funcs<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a dictionary where the key is the name of the feature and the value is the function to call</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGIext">
-<span class="sig-name descname"><span class="pre">getAGIext</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAGIext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGIext" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Extended Aging Index.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_feature_extract_func">
+<span class="sig-name descname"><span class="pre">get_feature_extract_func</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_feature_extract_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_feature_extract_func" title="Permalink to this definition"></a></dt>
+<dd><p>This function go through the list of biomarkers and call the function that is relevant to calculate it each feature takes two spots in the feature vector: one for the average value and one for its standard deviation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(Ab-Ac-Ad-Ae-Af)/Aa feature</p>
+<dt class="field-odd">Returns biomarkers_vec<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a vector of each feature avg value and std of the patient</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGIinf">
-<span class="sig-name descname"><span class="pre">getAGIinf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAGIinf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGIinf" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Informal Aging Index.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTpi">
+<span class="sig-name descname"><span class="pre">getTpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getTpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTpi" title="Permalink to this definition"></a></dt>
+<dd><p>Tpi which means the Pulse Interval, the time between the pulse onset and pulse offset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(Ab-Ae)/Aa feature</p>
+<dd class="field-odd"><p>Tpi feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGImod">
-<span class="sig-name descname"><span class="pre">getAGImod</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAGImod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGImod" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Modified Aging Index.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTpp">
+<span class="sig-name descname"><span class="pre">getTpp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getTpp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTpp" title="Permalink to this definition"></a></dt>
+<dd><p>Tpp means the Peak-to-Peak Interval, the time between two consecutive systolic peaks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(Ab-Ac-Ad)/Aa feature</p>
+<dd class="field-odd"><p>Tpp feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAI">
-<span class="sig-name descname"><span class="pre">getAI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAI" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Augmentation Index, (PPG(Tp2) − PPG(Tp1))/Asp.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTsys">
+<span class="sig-name descname"><span class="pre">getTsys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getTsys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTsys" title="Permalink to this definition"></a></dt>
+<dd><p>Tsys means the Systolic Time, the time between the pulse onset and dicrotic notch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>AI feature</p>
+<dd class="field-odd"><p>Tsys feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCdia">
-<span class="sig-name descname"><span class="pre">getAUCdia</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAUCdia"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCdia" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates Area Under Diastolic Curve, the area under the pulse wave between the dicrotic notch and pulse offset.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTdia">
+<span class="sig-name descname"><span class="pre">getTdia</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getTdia"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTdia" title="Permalink to this definition"></a></dt>
+<dd><p>Tdia means the Diastolic Time, the time between the dicrotic notch and pulse offset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>AUCdia feature</p>
+<dd class="field-odd"><p>Tdia feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCpi">
-<span class="sig-name descname"><span class="pre">getAUCpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAUCpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCpi" title="Permalink to this definition"></a></dt>
-<dd><p>The function the Area Under Pulse Interval Curve, the area under the pulse wave between pulse onset and pulse offset.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTsp">
+<span class="sig-name descname"><span class="pre">getTsp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getTsp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTsp" title="Permalink to this definition"></a></dt>
+<dd><p>Tsp means the Systolic Peak Time, the time between the pulse onset and systolic peak.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>AUCpi feature</p>
+<dd class="field-odd"><p>Tsp feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCsys">
-<span class="sig-name descname"><span class="pre">getAUCsys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAUCsys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCsys" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Area Under Systolic Curve, the area under the pulse wave between the pulse onset and dicrotic notch.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTdp">
+<span class="sig-name descname"><span class="pre">getTdp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getTdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTdp" title="Permalink to this definition"></a></dt>
+<dd><p>Tdp means the Diastolic Peak Time, the time between the pulse onset and diastolic peak.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>AUCsys feature</p>
+<dd class="field-odd"><p>Tdp feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getDiastolicPeak">
-<span class="sig-name descname"><span class="pre">getDiastolicPeak</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getDiastolicPeak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getDiastolicPeak" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Diastolic Peak Amplitude, the difference in amplitude between the pulse onset and the diastolic peak.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_deltaT">
+<span class="sig-name descname"><span class="pre">get_deltaT</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_deltaT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_deltaT" title="Permalink to this definition"></a></dt>
+<dd><p>deltaT means the Time Delay, the time between the systolic peak and diastolic peak.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Diastolic Peak Amplitude feature</p>
+<dd class="field-odd"><p>deltaT feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicWidth_d_percent">
+<span class="sig-name descname"><span class="pre">getSystolicWidth_d_percent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getSystolicWidth_d_percent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicWidth_d_percent" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Systolic Width,
+the width at x% of the Systolic Peak Amplitude between the pulse onset and systolic peak.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – the percentage chosen to calculate the width</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tswx feature</p>
 </dd>
 </dl>
 </dd></dl>
@@ -244,141 +279,6 @@ the width at x% of the Systolic Peak Amplitude between the systolic peak and pul
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Tdwx feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getDicroticNotchAmplitude">
-<span class="sig-name descname"><span class="pre">getDicroticNotchAmplitude</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getDicroticNotchAmplitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getDicroticNotchAmplitude" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Dicrotic Notch Amplitude, the difference in amplitude between the pulse onset and the dicrotic notch.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dicrotic Notch Amplitude feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPA">
-<span class="sig-name descname"><span class="pre">getIPA</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getIPA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPA" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Inflection Point Area, the ratio of the Area Under Diastolic Curve to the Area Under Systolic Curve.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>IPA feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPAD">
-<span class="sig-name descname"><span class="pre">getIPAD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getIPAD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPAD" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Inflection point area plus normalised d-point amplitude, AUCdia/AUCsys+Ad/Aa.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>IPAD feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPR">
-<span class="sig-name descname"><span class="pre">getIPR</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getIPR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPR" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Instantaneous Pulse Rate, 60/CP.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>IPR feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getMS">
-<span class="sig-name descname"><span class="pre">getMS</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getMS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getMS" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates Maximum slope, PPG’(u)/(PPG(systolic peak) − PPG(systolic onset))</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>MS feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getPIR">
-<span class="sig-name descname"><span class="pre">getPIR</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getPIR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getPIR" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio between the peak value and the right onset value</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pir feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getPulseOffsetAmplitude">
-<span class="sig-name descname"><span class="pre">getPulseOffsetAmplitude</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getPulseOffsetAmplitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getPulseOffsetAmplitude" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Pulse Offset Amplitude, the difference in amplitude between the pulse onset and pulse offset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Pulse Offset Amplitude feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRIp1">
-<span class="sig-name descname"><span class="pre">getRIp1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getRIp1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRIp1" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Reflection Index of p1, Adp/(PPG(Tp1) − PPG(Tpi(0))).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>RIp1 feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRIp2">
-<span class="sig-name descname"><span class="pre">getRIp2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getRIp2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRIp2" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Reflection Index of p2, Adp/(PPG(Tp2) − PPG(Tpi(0))).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>RIp2 feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRatioSW_DW">
-<span class="sig-name descname"><span class="pre">getRatioSW_DW</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getRatioSW_DW"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRatioSW_DW" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of systolic and diastolic width at d percent of the pulse height</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>d</strong> – the percentage chosen to calculate the width</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>ratio feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSC">
-<span class="sig-name descname"><span class="pre">getSC</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getSC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSC" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Spring Constant, PPG”(Tsp)/((Asp-Au)/Asp).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>SC feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSTT">
-<span class="sig-name descname"><span class="pre">getSTT</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getSTT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSTT" title="Permalink to this definition"></a></dt>
-<dd><p>STT means slope transit time, which based on geometrical considerations of the PPG pulse wave to account for simultaneous.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>STT feature</p>
 </dd>
 </dl>
 </dd></dl>
@@ -410,280 +310,241 @@ the sum of the Systolic Width and Diastolic Width at x%.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicPeakOutputCurve">
-<span class="sig-name descname"><span class="pre">getSystolicPeakOutputCurve</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getSystolicPeakOutputCurve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicPeakOutputCurve" title="Permalink to this definition"></a></dt>
-<dd><p>Peak time divided by systolic amplitude</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getDicroticNotchAmplitude">
+<span class="sig-name descname"><span class="pre">getDicroticNotchAmplitude</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getDicroticNotchAmplitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getDicroticNotchAmplitude" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Dicrotic Notch Amplitude, the difference in amplitude between the pulse onset and the dicrotic notch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>sys_peak_time/sys_amplitude</p>
+<dd class="field-odd"><p>Dicrotic Notch Amplitude feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicPeakTime">
-<span class="sig-name descname"><span class="pre">getSystolicPeakTime</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getSystolicPeakTime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicPeakTime" title="Permalink to this definition"></a></dt>
-<dd><p>Systolic Peak Time means the distance between the consecutive Systolic Peaks</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getDiastolicPeak">
+<span class="sig-name descname"><span class="pre">getDiastolicPeak</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getDiastolicPeak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getDiastolicPeak" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Diastolic Peak Amplitude, the difference in amplitude between the pulse onset and the diastolic peak.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Systolic Peak Times</p>
+<dd class="field-odd"><p>Diastolic Peak Amplitude feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicWidth_d_percent">
-<span class="sig-name descname"><span class="pre">getSystolicWidth_d_percent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getSystolicWidth_d_percent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicWidth_d_percent" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Systolic Width,
-the width at x% of the Systolic Peak Amplitude between the pulse onset and systolic peak.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getPulseOffsetAmplitude">
+<span class="sig-name descname"><span class="pre">getPulseOffsetAmplitude</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getPulseOffsetAmplitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getPulseOffsetAmplitude" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Pulse Offset Amplitude, the difference in amplitude between the pulse onset and pulse offset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pulse Offset Amplitude feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCpi">
+<span class="sig-name descname"><span class="pre">getAUCpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAUCpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCpi" title="Permalink to this definition"></a></dt>
+<dd><p>The function the Area Under Pulse Interval Curve, the area under the pulse wave between pulse onset and pulse offset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AUCpi feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCsys">
+<span class="sig-name descname"><span class="pre">getAUCsys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAUCsys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCsys" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Area Under Systolic Curve, the area under the pulse wave between the pulse onset and dicrotic notch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AUCsys feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCdia">
+<span class="sig-name descname"><span class="pre">getAUCdia</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAUCdia"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCdia" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates Area Under Diastolic Curve, the area under the pulse wave between the dicrotic notch and pulse offset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AUCdia feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPR">
+<span class="sig-name descname"><span class="pre">getIPR</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getIPR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPR" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Instantaneous Pulse Rate, 60/CP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>IPR feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsys_Tdia">
+<span class="sig-name descname"><span class="pre">get_ratio_Tsys_Tdia</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tsys_Tdia"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsys_Tdia" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the Systolic Time to the Diastolic Time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tsys/Tdia feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tpwx_Tpi">
+<span class="sig-name descname"><span class="pre">get_ratio_Tpwx_Tpi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tpwx_Tpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tpwx_Tpi" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the Pulse Width at x% of the Systolic Peak Amplitude to the Systolic Peak Time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>d</strong> – the percentage chosen to calculate the width</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tswx feature</p>
+<dd class="field-even"><p>The ratio of the Tpi to the Pulse Width feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTdia">
-<span class="sig-name descname"><span class="pre">getTdia</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getTdia"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTdia" title="Permalink to this definition"></a></dt>
-<dd><p>Tdia means the Diastolic Time, the time between the dicrotic notch and pulse offset.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tpwx_Tsp">
+<span class="sig-name descname"><span class="pre">get_ratio_Tpwx_Tsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tpwx_Tsp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tpwx_Tsp" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the Pulse Width at x% of the Systolic Peak Amplitude to the Systolic Peak Time.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tdia feature</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – the percentage chosen to calculate the width</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tpwx/Tsp feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTdp">
-<span class="sig-name descname"><span class="pre">getTdp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getTdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTdp" title="Permalink to this definition"></a></dt>
-<dd><p>Tdp means the Diastolic Peak Time, the time between the pulse onset and diastolic peak.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tdwx_Tswx">
+<span class="sig-name descname"><span class="pre">get_ratio_Tdwx_Tswx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tdwx_Tswx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tdwx_Tswx" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the Diastolic Width to the Systolic Width at x% width.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tdp feature</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – the percentage chosen to calculate the width</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tdwx/Tswx feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTpi">
-<span class="sig-name descname"><span class="pre">getTpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getTpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTpi" title="Permalink to this definition"></a></dt>
-<dd><p>Tpi which means the Pulse Interval, the time between the pulse onset and pulse offset.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsp_Tpi">
+<span class="sig-name descname"><span class="pre">get_ratio_Tsp_Tpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tsp_Tpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsp_Tpi" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the Systolic Peak Time to the Pulse Interval</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tpi feature</p>
+<dd class="field-odd"><p>Tsp/Tpi feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTpp">
-<span class="sig-name descname"><span class="pre">getTpp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getTpp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTpp" title="Permalink to this definition"></a></dt>
-<dd><p>Tpp means the Peak-to-Peak Interval, the time between two consecutive systolic peaks.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_Aoff">
+<span class="sig-name descname"><span class="pre">get_ratio_Asp_Aoff</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Asp_Aoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_Aoff" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the Systolic Peak Time to the Pulse Interval</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tpp feature</p>
+<dd class="field-odd"><p>Asp/Aoff feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTsp">
-<span class="sig-name descname"><span class="pre">getTsp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getTsp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTsp" title="Permalink to this definition"></a></dt>
-<dd><p>Tsp means the Systolic Peak Time, the time between the pulse onset and systolic peak.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Adp_Asp">
+<span class="sig-name descname"><span class="pre">get_ratio_Adp_Asp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Adp_Asp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Adp_Asp" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates Reflection Index, the ratio of the Diastolic Peak Amplitude to the Systolic Peak Amplitude.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tsp feature</p>
+<dd class="field-odd"><p>Reflection Index feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTsys">
-<span class="sig-name descname"><span class="pre">getTsys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getTsys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTsys" title="Permalink to this definition"></a></dt>
-<dd><p>Tsys means the Systolic Time, the time between the pulse onset and dicrotic notch.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPA">
+<span class="sig-name descname"><span class="pre">getIPA</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getIPA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPA" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Inflection Point Area, the ratio of the Area Under Diastolic Curve to the Area Under Systolic Curve.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tsys feature</p>
+<dd class="field-odd"><p>IPA feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getUpslope">
-<span class="sig-name descname"><span class="pre">getUpslope</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getUpslope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getUpslope" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates Systolic Upslope between the left onset and the systolic peak.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsp_Asp">
+<span class="sig-name descname"><span class="pre">get_ratio_Tsp_Asp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tsp_Asp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsp_Asp" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the Systolic Peak Time to the Systolic Peak Amplitude.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Systolic Upslope</p>
+<dd class="field-odd"><p>Tsp/Asp feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Ta">
-<span class="sig-name descname"><span class="pre">get_Ta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Ta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Ta" title="Permalink to this definition"></a></dt>
-<dd><p>Ta means the a-point time, the time between the pulse onset and a-point.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_deltaT">
+<span class="sig-name descname"><span class="pre">get_ratio_Asp_deltaT</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Asp_deltaT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_deltaT" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Stiffness Index, the ratio of the Systolic Peak Amplitude to the Time Delay.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Ta feature</p>
+<dd class="field-odd"><p>Stiffness Index feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tb">
-<span class="sig-name descname"><span class="pre">get_Tb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tb" title="Permalink to this definition"></a></dt>
-<dd><p>Tb means the b-point time, the time between the pulse onset and b-point.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_TpiTsp">
+<span class="sig-name descname"><span class="pre">get_ratio_Asp_TpiTsp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Asp_TpiTsp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_TpiTsp" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the Systolic Peak Amplitude to the difference between the Pulse Interval and Systolic Peak Time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tb feature</p>
+<dd class="field-odd"><p>Asp/(Tpi-Tsp)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tbc">
-<span class="sig-name descname"><span class="pre">get_Tbc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tbc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tbc" title="Permalink to this definition"></a></dt>
-<dd><p>Tbc means the b–c time, the time between the b-point and c-point.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_u">
+<span class="sig-name descname"><span class="pre">get_u</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_u"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_u" title="Permalink to this definition"></a></dt>
+<dd><p>u means the u-point sample, the sample between the pulse onset and u-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tbc feature</p>
+<dd class="field-odd"><p>u feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tbd">
-<span class="sig-name descname"><span class="pre">get_Tbd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tbd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tbd" title="Permalink to this definition"></a></dt>
-<dd><p>Tbd means the b–d time, the time between the b-point and d-point.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_v">
+<span class="sig-name descname"><span class="pre">get_v</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_v"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_v" title="Permalink to this definition"></a></dt>
+<dd><p>v means the v-point sample, the sample between the pulse onset and v-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tbd feature</p>
+<dd class="field-odd"><p>v feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tc">
-<span class="sig-name descname"><span class="pre">get_Tc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tc" title="Permalink to this definition"></a></dt>
-<dd><p>Tc means the c-point time, the time between the pulse onset and c-point.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_w">
+<span class="sig-name descname"><span class="pre">get_w</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_w"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_w" title="Permalink to this definition"></a></dt>
+<dd><p>w means the w-point sample, the sample between the pulse onset and w-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tb feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Td">
-<span class="sig-name descname"><span class="pre">get_Td</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Td"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Td" title="Permalink to this definition"></a></dt>
-<dd><p>Td means the d-point time, the time between the pulse onset and d-point.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Td feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Te">
-<span class="sig-name descname"><span class="pre">get_Te</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Te"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Te" title="Permalink to this definition"></a></dt>
-<dd><p>Te means the e-point time, the time between the pulse onset and e-point.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Te feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tf">
-<span class="sig-name descname"><span class="pre">get_Tf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tf" title="Permalink to this definition"></a></dt>
-<dd><p>Tf means the f-point time, the time between the pulse onset and f-point.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tf feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp1">
-<span class="sig-name descname"><span class="pre">get_Tp1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tp1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp1" title="Permalink to this definition"></a></dt>
-<dd><p>Tp1 means the p1-point time, the time between the pulse onset and p1-point.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tp1 feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp1_dp">
-<span class="sig-name descname"><span class="pre">get_Tp1_dp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tp1_dp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp1_dp" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculatesthe p1–dia time, the time between the p1-point and diastolic peak.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tdia-Tp1 feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp2">
-<span class="sig-name descname"><span class="pre">get_Tp2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tp2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp2" title="Permalink to this definition"></a></dt>
-<dd><p>Tp2 means the p1-point time, the time between the pulse onset and p2-point.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tp2 feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp2_dp">
-<span class="sig-name descname"><span class="pre">get_Tp2_dp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tp2_dp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp2_dp" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculatesthe p2–dia time, the time between the p2-point and diastolic peak.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tdia-Tp2 feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tu">
-<span class="sig-name descname"><span class="pre">get_Tu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tu" title="Permalink to this definition"></a></dt>
-<dd><p>Tu means the u-point time, the time between the pulse onset and u-point.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tu feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tv">
-<span class="sig-name descname"><span class="pre">get_Tv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tv" title="Permalink to this definition"></a></dt>
-<dd><p>Tv means the v-point time, the time between the pulse onset and v-point.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tv feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tw">
-<span class="sig-name descname"><span class="pre">get_Tw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tw" title="Permalink to this definition"></a></dt>
-<dd><p>Tw means the v-point time, the time between the pulse onset and w-point.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tw feature</p>
+<dd class="field-odd"><p>w feature</p>
 </dd>
 </dl>
 </dd></dl>
@@ -733,17 +594,6 @@ the width at x% of the Systolic Peak Amplitude between the pulse onset and systo
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_deltaT">
-<span class="sig-name descname"><span class="pre">get_deltaT</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_deltaT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_deltaT" title="Permalink to this definition"></a></dt>
-<dd><p>deltaT means the Time Delay, the time between the systolic peak and diastolic peak.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>deltaT feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_e">
 <span class="sig-name descname"><span class="pre">get_e</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_e"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_e" title="Permalink to this definition"></a></dt>
 <dd><p>e means the e-point sample, the sample between the pulse onset and e-point.</p>
@@ -766,177 +616,199 @@ the width at x% of the Systolic Peak Amplitude between the pulse onset and systo
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_feature_extract_func">
-<span class="sig-name descname"><span class="pre">get_feature_extract_func</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_feature_extract_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_feature_extract_func" title="Permalink to this definition"></a></dt>
-<dd><p>This function go through the list of biomarkers and call the function that is relevant to calculate it each feature takes two spots in the feature vector: one for the average value and one for its standard deviation.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tu">
+<span class="sig-name descname"><span class="pre">get_Tu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tu" title="Permalink to this definition"></a></dt>
+<dd><p>Tu means the u-point time, the time between the pulse onset and u-point.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns biomarkers_vec<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a vector of each feature avg value and std of the patient</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tu feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ab_Aa">
-<span class="sig-name descname"><span class="pre">get_ratio_Ab_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Ab_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ab_Aa" title="Permalink to this definition"></a></dt>
-<dd><p>This function calculates the ratio of the b-point amplitude to the a-point amplitude.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tv">
+<span class="sig-name descname"><span class="pre">get_Tv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tv" title="Permalink to this definition"></a></dt>
+<dd><p>Tv means the v-point time, the time between the pulse onset and v-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Ab/Aa feature</p>
+<dd class="field-odd"><p>Tv feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_AcAb_Aa">
-<span class="sig-name descname"><span class="pre">get_ratio_AcAb_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_AcAb_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_AcAb_Aa" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the difference between the b-point amplitude and c-point amplitude to the a-point amplitude.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tw">
+<span class="sig-name descname"><span class="pre">get_Tw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tw" title="Permalink to this definition"></a></dt>
+<dd><p>Tw means the v-point time, the time between the pulse onset and w-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(Ac-Ab)/Aa feature</p>
+<dd class="field-odd"><p>Tw feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ac_Aa">
-<span class="sig-name descname"><span class="pre">get_ratio_Ac_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Ac_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ac_Aa" title="Permalink to this definition"></a></dt>
-<dd><p>This function calculates the ratio of the c-point amplitude to the a-point amplitude.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Ta">
+<span class="sig-name descname"><span class="pre">get_Ta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Ta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Ta" title="Permalink to this definition"></a></dt>
+<dd><p>Ta means the a-point time, the time between the pulse onset and a-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Ac/Aa feature</p>
+<dd class="field-odd"><p>Ta feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_AdAb_Aa">
-<span class="sig-name descname"><span class="pre">get_ratio_AdAb_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_AdAb_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_AdAb_Aa" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the difference between the b-point amplitude and d-point amplitude to the a-point amplitude.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tb">
+<span class="sig-name descname"><span class="pre">get_Tb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tb" title="Permalink to this definition"></a></dt>
+<dd><p>Tb means the b-point time, the time between the pulse onset and b-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(Ad-Ab)/Aa feature</p>
+<dd class="field-odd"><p>Tb feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ad_Aa">
-<span class="sig-name descname"><span class="pre">get_ratio_Ad_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Ad_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ad_Aa" title="Permalink to this definition"></a></dt>
-<dd><p>This function calculates the ratio of the d-point amplitude to the a-point amplitude.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tc">
+<span class="sig-name descname"><span class="pre">get_Tc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tc" title="Permalink to this definition"></a></dt>
+<dd><p>Tc means the c-point time, the time between the pulse onset and c-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Ad/Aa feature</p>
+<dd class="field-odd"><p>Tb feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Adp_Asp">
-<span class="sig-name descname"><span class="pre">get_ratio_Adp_Asp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Adp_Asp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Adp_Asp" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates Reflection Index, the ratio of the Diastolic Peak Amplitude to the Systolic Peak Amplitude.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Td">
+<span class="sig-name descname"><span class="pre">get_Td</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Td"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Td" title="Permalink to this definition"></a></dt>
+<dd><p>Td means the d-point time, the time between the pulse onset and d-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Reflection Index feature</p>
+<dd class="field-odd"><p>Td feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ae_Aa">
-<span class="sig-name descname"><span class="pre">get_ratio_Ae_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Ae_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ae_Aa" title="Permalink to this definition"></a></dt>
-<dd><p>This function calculates the ratio of the e-point amplitude to the a-point amplitude.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Te">
+<span class="sig-name descname"><span class="pre">get_Te</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Te"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Te" title="Permalink to this definition"></a></dt>
+<dd><p>Te means the e-point time, the time between the pulse onset and e-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Ae/Aa feature</p>
+<dd class="field-odd"><p>Te feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Af_Aa">
-<span class="sig-name descname"><span class="pre">get_ratio_Af_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Af_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Af_Aa" title="Permalink to this definition"></a></dt>
-<dd><p>This function calculates the ratio of the f-point amplitude to the a-point amplitude.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tf">
+<span class="sig-name descname"><span class="pre">get_Tf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tf" title="Permalink to this definition"></a></dt>
+<dd><p>Tf means the f-point time, the time between the pulse onset and f-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Af/Aa feature</p>
+<dd class="field-odd"><p>Tf feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ap2_Ap1">
-<span class="sig-name descname"><span class="pre">get_ratio_Ap2_Ap1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Ap2_Ap1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ap2_Ap1" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the p2-point amplitude to the p1-point amplitude.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tbc">
+<span class="sig-name descname"><span class="pre">get_Tbc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tbc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tbc" title="Permalink to this definition"></a></dt>
+<dd><p>Tbc means the b–c time, the time between the b-point and c-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Ap2/Ap1 feature</p>
+<dd class="field-odd"><p>Tbc feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_Aoff">
-<span class="sig-name descname"><span class="pre">get_ratio_Asp_Aoff</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Asp_Aoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_Aoff" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the Systolic Peak Time to the Pulse Interval</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tbd">
+<span class="sig-name descname"><span class="pre">get_Tbd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tbd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tbd" title="Permalink to this definition"></a></dt>
+<dd><p>Tbd means the b–d time, the time between the b-point and d-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Asp/Aoff feature</p>
+<dd class="field-odd"><p>Tbd feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_TpiTsp">
-<span class="sig-name descname"><span class="pre">get_ratio_Asp_TpiTsp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Asp_TpiTsp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_TpiTsp" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the Systolic Peak Amplitude to the difference between the Pulse Interval and Systolic Peak Time.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp1">
+<span class="sig-name descname"><span class="pre">get_Tp1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tp1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp1" title="Permalink to this definition"></a></dt>
+<dd><p>Tp1 means the p1-point time, the time between the pulse onset and p1-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Asp/(Tpi-Tsp)</p>
+<dd class="field-odd"><p>Tp1 feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_deltaT">
-<span class="sig-name descname"><span class="pre">get_ratio_Asp_deltaT</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Asp_deltaT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_deltaT" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the Stiffness Index, the ratio of the Systolic Peak Amplitude to the Time Delay.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp2">
+<span class="sig-name descname"><span class="pre">get_Tp2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tp2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp2" title="Permalink to this definition"></a></dt>
+<dd><p>Tp2 means the p1-point time, the time between the pulse onset and p2-point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Stiffness Index feature</p>
+<dd class="field-odd"><p>Tp2 feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Au_Asp">
-<span class="sig-name descname"><span class="pre">get_ratio_Au_Asp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Au_Asp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Au_Asp" title="Permalink to this definition"></a></dt>
-<dd><p>This function calculates the ratio of the u-point amplitude to the Systolic Peak Amplitude.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp1_dp">
+<span class="sig-name descname"><span class="pre">get_Tp1_dp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tp1_dp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp1_dp" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculatesthe p1–dia time, the time between the p1-point and diastolic peak.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Au/Asp feature</p>
+<dd class="field-odd"><p>Tdia-Tp1 feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Av_Au">
-<span class="sig-name descname"><span class="pre">get_ratio_Av_Au</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Av_Au"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Av_Au" title="Permalink to this definition"></a></dt>
-<dd><p>This function calculates the ratio of the v-point amplitude to the u-point amplitude.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp2_dp">
+<span class="sig-name descname"><span class="pre">get_Tp2_dp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_Tp2_dp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp2_dp" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculatesthe p2–dia time, the time between the p2-point and diastolic peak.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Av/Au feature</p>
+<dd class="field-odd"><p>Tdia-Tp2 feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Aw_Au">
-<span class="sig-name descname"><span class="pre">get_ratio_Aw_Au</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Aw_Au"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Aw_Au" title="Permalink to this definition"></a></dt>
-<dd><p>This function calculates the ratio of the w-point amplitude to the u-point amplitude.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tu_Tpi">
+<span class="sig-name descname"><span class="pre">get_ratio_Tu_Tpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tu_Tpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tu_Tpi" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the u-point time to the Pulse Interval.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Aw/Au feature</p>
+<dd class="field-odd"><p>Tu/Tpi feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tv_Tpi">
+<span class="sig-name descname"><span class="pre">get_ratio_Tv_Tpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tv_Tpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tv_Tpi" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the v-point time to the Pulse Interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tv/Tpi feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tw_Tpi">
+<span class="sig-name descname"><span class="pre">get_ratio_Tw_Tpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tw_Tpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tw_Tpi" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the w-point time to the Pulse Interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tw/Tpi feature</p>
 </dd>
 </dl>
 </dd></dl>
@@ -986,20 +858,6 @@ the width at x% of the Systolic Peak Amplitude between the pulse onset and systo
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tdwx_Tswx">
-<span class="sig-name descname"><span class="pre">get_ratio_Tdwx_Tswx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tdwx_Tswx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tdwx_Tswx" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the Diastolic Width to the Systolic Width at x% width.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>d</strong> – the percentage chosen to calculate the width</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tdwx/Tswx feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Te_Tpi">
 <span class="sig-name descname"><span class="pre">get_ratio_Te_Tpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Te_Tpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Te_Tpi" title="Permalink to this definition"></a></dt>
 <dd><p>The function calculates the ratio of the e-point time to the Pulse Interval.</p>
@@ -1022,84 +880,12 @@ the width at x% of the Systolic Peak Amplitude between the pulse onset and systo
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tpwx_Tpi">
-<span class="sig-name descname"><span class="pre">get_ratio_Tpwx_Tpi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tpwx_Tpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tpwx_Tpi" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the Pulse Width at x% of the Systolic Peak Amplitude to the Systolic Peak Time.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>d</strong> – the percentage chosen to calculate the width</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The ratio of the Tpi to the Pulse Width feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tpwx_Tsp">
-<span class="sig-name descname"><span class="pre">get_ratio_Tpwx_Tsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tpwx_Tsp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tpwx_Tsp" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the Pulse Width at x% of the Systolic Peak Amplitude to the Systolic Peak Time.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>d</strong> – the percentage chosen to calculate the width</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tpwx/Tsp feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsp_Asp">
-<span class="sig-name descname"><span class="pre">get_ratio_Tsp_Asp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tsp_Asp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsp_Asp" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the Systolic Peak Time to the Systolic Peak Amplitude.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tsp/Asp feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsp_Tpi">
-<span class="sig-name descname"><span class="pre">get_ratio_Tsp_Tpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tsp_Tpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsp_Tpi" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the Systolic Peak Time to the Pulse Interval</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tsp/Tpi feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsys_Tdia">
-<span class="sig-name descname"><span class="pre">get_ratio_Tsys_Tdia</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tsys_Tdia"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsys_Tdia" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the Systolic Time to the Diastolic Time.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tsys/Tdia feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_TuTa_Tpi">
 <span class="sig-name descname"><span class="pre">get_ratio_TuTa_Tpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_TuTa_Tpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_TuTa_Tpi" title="Permalink to this definition"></a></dt>
 <dd><p>The function calculates the ratio of the difference between the u-point time and a-point time to the Pulse Interval.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(Tu-Ta)/Tpi feature</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tu_Tpi">
-<span class="sig-name descname"><span class="pre">get_ratio_Tu_Tpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tu_Tpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tu_Tpi" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the u-point time to the Pulse Interval.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tu/Tpi feature</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1116,56 +902,257 @@ the width at x% of the Systolic Peak Amplitude between the pulse onset and systo
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tv_Tpi">
-<span class="sig-name descname"><span class="pre">get_ratio_Tv_Tpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tv_Tpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tv_Tpi" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the v-point time to the Pulse Interval.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Au_Asp">
+<span class="sig-name descname"><span class="pre">get_ratio_Au_Asp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Au_Asp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Au_Asp" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the ratio of the u-point amplitude to the Systolic Peak Amplitude.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tv/Tpi feature</p>
+<dd class="field-odd"><p>Au/Asp feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tw_Tpi">
-<span class="sig-name descname"><span class="pre">get_ratio_Tw_Tpi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Tw_Tpi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tw_Tpi" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the ratio of the w-point time to the Pulse Interval.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Av_Au">
+<span class="sig-name descname"><span class="pre">get_ratio_Av_Au</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Av_Au"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Av_Au" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the ratio of the v-point amplitude to the u-point amplitude.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tw/Tpi feature</p>
+<dd class="field-odd"><p>Av/Au feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_u">
-<span class="sig-name descname"><span class="pre">get_u</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_u"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_u" title="Permalink to this definition"></a></dt>
-<dd><p>u means the u-point sample, the sample between the pulse onset and u-point.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Aw_Au">
+<span class="sig-name descname"><span class="pre">get_ratio_Aw_Au</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Aw_Au"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Aw_Au" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the ratio of the w-point amplitude to the u-point amplitude.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>u feature</p>
+<dd class="field-odd"><p>Aw/Au feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_v">
-<span class="sig-name descname"><span class="pre">get_v</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_v"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_v" title="Permalink to this definition"></a></dt>
-<dd><p>v means the v-point sample, the sample between the pulse onset and v-point.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ab_Aa">
+<span class="sig-name descname"><span class="pre">get_ratio_Ab_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Ab_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ab_Aa" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the ratio of the b-point amplitude to the a-point amplitude.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>v feature</p>
+<dd class="field-odd"><p>Ab/Aa feature</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_w">
-<span class="sig-name descname"><span class="pre">get_w</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_w"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_w" title="Permalink to this definition"></a></dt>
-<dd><p>w means the w-point sample, the sample between the pulse onset and w-point.</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ac_Aa">
+<span class="sig-name descname"><span class="pre">get_ratio_Ac_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Ac_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ac_Aa" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the ratio of the c-point amplitude to the a-point amplitude.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>w feature</p>
+<dd class="field-odd"><p>Ac/Aa feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ad_Aa">
+<span class="sig-name descname"><span class="pre">get_ratio_Ad_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Ad_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ad_Aa" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the ratio of the d-point amplitude to the a-point amplitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ad/Aa feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ae_Aa">
+<span class="sig-name descname"><span class="pre">get_ratio_Ae_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Ae_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ae_Aa" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the ratio of the e-point amplitude to the a-point amplitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ae/Aa feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Af_Aa">
+<span class="sig-name descname"><span class="pre">get_ratio_Af_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Af_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Af_Aa" title="Permalink to this definition"></a></dt>
+<dd><p>This function calculates the ratio of the f-point amplitude to the a-point amplitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Af/Aa feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ap2_Ap1">
+<span class="sig-name descname"><span class="pre">get_ratio_Ap2_Ap1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_Ap2_Ap1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ap2_Ap1" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the p2-point amplitude to the p1-point amplitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ap2/Ap1 feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_AcAb_Aa">
+<span class="sig-name descname"><span class="pre">get_ratio_AcAb_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_AcAb_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_AcAb_Aa" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the difference between the b-point amplitude and c-point amplitude to the a-point amplitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(Ac-Ab)/Aa feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_AdAb_Aa">
+<span class="sig-name descname"><span class="pre">get_ratio_AdAb_Aa</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.get_ratio_AdAb_Aa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_AdAb_Aa" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of the difference between the b-point amplitude and d-point amplitude to the a-point amplitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(Ad-Ab)/Aa feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGI">
+<span class="sig-name descname"><span class="pre">getAGI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAGI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGI" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Aging Index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(Ab-Ac-Ad-Ae)/Aa feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGImod">
+<span class="sig-name descname"><span class="pre">getAGImod</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAGImod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGImod" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Modified Aging Index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(Ab-Ac-Ad)/Aa feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGIinf">
+<span class="sig-name descname"><span class="pre">getAGIinf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAGIinf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGIinf" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Informal Aging Index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(Ab-Ae)/Aa feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAI">
+<span class="sig-name descname"><span class="pre">getAI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAI" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Augmentation Index, (PPG(Tp2) − PPG(Tp1))/Asp.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AI feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRIp1">
+<span class="sig-name descname"><span class="pre">getRIp1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getRIp1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRIp1" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Reflection Index of p1, Adp/(PPG(Tp1) − PPG(Tpi(0))).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RIp1 feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRIp2">
+<span class="sig-name descname"><span class="pre">getRIp2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getRIp2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRIp2" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Reflection Index of p2, Adp/(PPG(Tp2) − PPG(Tpi(0))).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RIp2 feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSC">
+<span class="sig-name descname"><span class="pre">getSC</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getSC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSC" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Spring Constant, PPG”(Tsp)/((Asp-Au)/Asp).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SC feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPAD">
+<span class="sig-name descname"><span class="pre">getIPAD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getIPAD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPAD" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Inflection point area plus normalised d-point amplitude, AUCdia/AUCsys+Ad/Aa.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>IPAD feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRatioSW_DW">
+<span class="sig-name descname"><span class="pre">getRatioSW_DW</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getRatioSW_DW"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRatioSW_DW" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio of systolic and diastolic width at d percent of the pulse height</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – the percentage chosen to calculate the width</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ratio feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getPIR">
+<span class="sig-name descname"><span class="pre">getPIR</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getPIR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getPIR" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the ratio between the peak value and the right onset value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pir feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getMS">
+<span class="sig-name descname"><span class="pre">getMS</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getMS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getMS" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates Maximum slope, PPG’(u)/(PPG(systolic peak) − PPG(systolic onset))</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MS feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getUpslope">
+<span class="sig-name descname"><span class="pre">getUpslope</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getUpslope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getUpslope" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates Systolic Upslope between the left onset and the systolic peak.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Systolic Upslope</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1182,12 +1169,45 @@ the width at x% of the Systolic Peak Amplitude between the pulse onset and systo
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.map_func">
-<span class="sig-name descname"><span class="pre">map_func</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.map_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.map_func" title="Permalink to this definition"></a></dt>
-<dd><p>This function assign for each name of biomarkers a function that calculates it</p>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSTT">
+<span class="sig-name descname"><span class="pre">getSTT</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getSTT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSTT" title="Permalink to this definition"></a></dt>
+<dd><p>STT means slope transit time, which based on geometrical considerations of the PPG pulse wave to account for simultaneous.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns my_funcs<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a dictionary where the key is the name of the feature and the value is the function to call</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>STT feature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicPeakTime">
+<span class="sig-name descname"><span class="pre">getSystolicPeakTime</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getSystolicPeakTime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicPeakTime" title="Permalink to this definition"></a></dt>
+<dd><p>Systolic Peak Time means the distance between the consecutive Systolic Peaks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Systolic Peak Times</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicPeakOutputCurve">
+<span class="sig-name descname"><span class="pre">getSystolicPeakOutputCurve</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getSystolicPeakOutputCurve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicPeakOutputCurve" title="Permalink to this definition"></a></dt>
+<dd><p>Peak time divided by systolic amplitude</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sys_peak_time/sys_amplitude</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGIext">
+<span class="sig-name descname"><span class="pre">getAGIext</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/get_biomarkers.html#biomarkers_extract_PPG.getAGIext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGIext" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the Extended Aging Index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(Ab-Ac-Ad-Ae-Af)/Aa feature</p>
 </dd>
 </dl>
 </dd></dl>

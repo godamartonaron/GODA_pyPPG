@@ -164,6 +164,28 @@
 <dt class="sig sig-object py" id="pyPPG.Biomarkers.Biomarkers">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyPPG.Biomarkers.</span></span><span class="sig-name descname"><span class="pre">Biomarkers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/Biomarkers.html#Biomarkers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.Biomarkers.Biomarkers" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The purpose of the Biomarkers class is to calculate the ppg biomarkers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s</strong> – a struct of PPG signal:
+- s.v: a vector of PPG values
+- s.fs: the sampling frequency of the PPG in Hz
+- s.name: name of the record
+- s.v: 1-d array, a vector of PPG values
+- s.fs: the sampling frequency of the PPG in Hz
+- s.filt_sig: 1-d array, a vector of the filtered PPG values
+- s.filt_d1: 1-d array, a vector of the filtered PPG’ values
+- s.filt_d2: 1-d array, a vector of the filtered PPG” values
+- s.filt_d3: 1-d array, a vector of the filtered PPG’” values</p></li>
+<li><p><strong>fiducials</strong> – a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.
+- PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak
+- 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
+- 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
+- 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyPPG.Biomarkers.Biomarkers.getBiomarkers">
 <span class="sig-name descname"><span class="pre">getBiomarkers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/Biomarkers.html#Biomarkers.getBiomarkers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.Biomarkers.Biomarkers.getBiomarkers" title="Permalink to this definition"></a></dt>
@@ -267,110 +289,38 @@
 <dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyPPG.FiducialPoints.</span></span><span class="sig-name descname"><span class="pre">FiducialPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.Bandpass">
-<span class="sig-name descname"><span class="pre">Bandpass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_cutoff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.Bandpass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.Bandpass" title="Permalink to this definition"></a></dt>
-<dd><p>Bandpass filter function detects all peaks in the raw and also in the filtered signal to find.</p>
+<p>The purpose of the FiducialPoints class is to calculate the fiducial points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
-<li><p><strong>fs</strong> (<em>int</em>) – sampling frequency</p></li>
-<li><p><strong>lower_cutoff</strong> (<em>float</em>) – lower cutoff frequency</p></li>
-<li><p><strong>upper_cutoff</strong> (<em>float</em>) – upper cutoff frequency</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>bandpass filtered signal, 1-d numpy array.</p>
+<dd class="field-odd"><p><strong>s</strong> – a struct of PPG signal:
+- s.v: a vector of PPG values
+- s.fs: the sampling frequency of the PPG in Hz
+- s.name: name of the record
+- s.v: 1-d array, a vector of PPG values
+- s.fs: the sampling frequency of the PPG in Hz
+- s.filt_sig: 1-d array, a vector of the filtered PPG values
+- s.filt_d1: 1-d array, a vector of the filtered PPG’ values
+- s.filt_d2: 1-d array, a vector of the filtered PPG” values
+- s.filt_d3: 1-d array, a vector of the filtered PPG’” values</p>
 </dd>
 </dl>
-</dd></dl>
-
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.CorrectFiducialPoints">
-<span class="sig-name descname"><span class="pre">CorrectFiducialPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fiducials</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.CorrectFiducialPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.CorrectFiducialPoints" title="Permalink to this definition"></a></dt>
-<dd><p>Correct the Fiducial Points</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fiducials</strong> – a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.DetectMaxima">
-<span class="sig-name descname"><span class="pre">DetectMaxima</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hr_win</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_detector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.DetectMaxima"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.DetectMaxima" title="Permalink to this definition"></a></dt>
-<dd><p>Detect Maxima function detects all peaks in the raw and also in the filtered signal to find.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
-<li><p><strong>percentile</strong> (<em>int</em>) – in each signal partition, a rank filter detects the peaks above a given percentile</p></li>
-<li><p><strong>hr_win</strong> (<em>int</em>) – window for adaptive the heart rate estimate</p></li>
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.getFiducialPoints">
+<span class="sig-name descname"><span class="pre">getFiducialPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correct</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.getFiducialPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.getFiducialPoints" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>The function calculates the PPG Fiducial Points.</dt><dd><ul class="simple">
+<li><p>Original signal: List of pulse onset, pea and dicrotic notch</p></li>
+<li><p>1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</p></li>
+<li><p>2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>maximum peaks of signal, 1-d numpy array.</p>
-</dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.EstimateDeriv">
-<span class="sig-name descname"><span class="pre">EstimateDeriv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.EstimateDeriv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.EstimateDeriv" title="Permalink to this definition"></a></dt>
-<dd><p>Derivative Estimation function estimate derivative from highly filtered signal based on the
-General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p>
+<dd class="field-odd"><p><strong>correct</strong> – a bool for fiducials points corretion</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>derivative, 1-d numpy array.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.EstimateHeartRate">
-<span class="sig-name descname"><span class="pre">EstimateHeartRate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hr_past</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.EstimateHeartRate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.EstimateHeartRate" title="Permalink to this definition"></a></dt>
-<dd><p>Heart Rate Estimation function estimate the heart rate according to the previous heart rate in given time window</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
-<li><p><strong>fs</strong> (<em>int</em>) – sampling frequency</p></li>
-<li><p><strong>up</strong> (<em>DotMap</em>) – setup up parameters of the algorithm</p></li>
-<li><p><strong>hr_past</strong> (<em>int</em>) – the average heart rate in the past in given time window</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>estimated heart rate, 1-d numpy array.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.IBICorrect">
-<span class="sig-name descname"><span class="pre">IBICorrect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.IBICorrect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.IBICorrect" title="Permalink to this definition"></a></dt>
-<dd><p>This function corrects the peaks’ location error</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>p</strong> (<em>1-d numpy array</em>) – systolic peaks of the PPG signal</p></li>
-<li><p><strong>m</strong> (<em>1-d numpy array</em>) – all maxima of the PPG signal</p></li>
-<li><p><strong>hr</strong> (<em>1-d numpy array</em>) – heart rate</p></li>
-<li><p><strong>fs</strong> (<em>int</em>) – sampling frequency</p></li>
-<li><p><strong>up</strong> (<em>DotMap</em>) – setup up parameters of the algorithm</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>onsets, 1-d numpy array.</p>
+<dt class="field-even">Return fiducials<span class="colon">:</span></dt>
+<dd class="field-even"><p>a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -443,18 +393,38 @@ Peter H. Charlton – King’s College London (August 2017) – University of Ca
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.elim_vhfs">
-<span class="sig-name descname"><span class="pre">elim_vhfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.elim_vhfs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.elim_vhfs" title="Permalink to this definition"></a></dt>
-<dd><p>This function filter the high frequency components.</p>
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.DetectMaxima">
+<span class="sig-name descname"><span class="pre">DetectMaxima</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hr_win</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_detector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.DetectMaxima"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.DetectMaxima" title="Permalink to this definition"></a></dt>
+<dd><p>Detect Maxima function detects all peaks in the raw and also in the filtered signal to find.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>up</strong> (<em>DotMap</em>) – setup up parameters of the algorithm</p></li>
+<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
+<li><p><strong>percentile</strong> (<em>int</em>) – in each signal partition, a rank filter detects the peaks above a given percentile</p></li>
+<li><p><strong>hr_win</strong> (<em>int</em>) – window for adaptive the heart rate estimate</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>maximum peaks of signal, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.Bandpass">
+<span class="sig-name descname"><span class="pre">Bandpass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_cutoff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.Bandpass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.Bandpass" title="Permalink to this definition"></a></dt>
+<dd><p>Bandpass filter function detects all peaks in the raw and also in the filtered signal to find.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – sampling frequency</p></li>
+<li><p><strong>lower_cutoff</strong> (<em>float</em>) – lower cutoff frequency</p></li>
 <li><p><strong>upper_cutoff</strong> (<em>float</em>) – upper cutoff frequency</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>low frequency filtered signal, 1-d numpy array.</p>
+<dd class="field-even"><p>bandpass filtered signal, 1-d numpy array.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -473,6 +443,134 @@ Peter H. Charlton – King’s College London (August 2017) – University of Ca
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>high frequency filtered signal, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.elim_vhfs">
+<span class="sig-name descname"><span class="pre">elim_vhfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.elim_vhfs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.elim_vhfs" title="Permalink to this definition"></a></dt>
+<dd><p>This function filter the high frequency components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>up</strong> (<em>DotMap</em>) – setup up parameters of the algorithm</p></li>
+<li><p><strong>upper_cutoff</strong> (<em>float</em>) – upper cutoff frequency</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>low frequency filtered signal, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.EstimateHeartRate">
+<span class="sig-name descname"><span class="pre">EstimateHeartRate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hr_past</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.EstimateHeartRate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.EstimateHeartRate" title="Permalink to this definition"></a></dt>
+<dd><p>Heart Rate Estimation function estimate the heart rate according to the previous heart rate in given time window</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – sampling frequency</p></li>
+<li><p><strong>up</strong> (<em>DotMap</em>) – setup up parameters of the algorithm</p></li>
+<li><p><strong>hr_past</strong> (<em>int</em>) – the average heart rate in the past in given time window</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>estimated heart rate, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.EstimateDeriv">
+<span class="sig-name descname"><span class="pre">EstimateDeriv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.EstimateDeriv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.EstimateDeriv" title="Permalink to this definition"></a></dt>
+<dd><p>Derivative Estimation function estimate derivative from highly filtered signal based on the
+General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>derivative, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.savitzky_golay_abd">
+<span class="sig-name descname"><span class="pre">savitzky_golay_abd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv_no</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.savitzky_golay_abd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.savitzky_golay_abd" title="Permalink to this definition"></a></dt>
+<dd><p>This function estimate the Savitzky Golay derivative from highly filtered signal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
+<li><p><strong>deriv_no</strong> (<em>int</em>) – number of derivative</p></li>
+<li><p><strong>win_size</strong> (<em>int</em>) – size of window</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Savitzky Golay derivative, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.find_pulse_peaks">
+<span class="sig-name descname"><span class="pre">find_pulse_peaks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.find_pulse_peaks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.find_pulse_peaks" title="Permalink to this definition"></a></dt>
+<dd><p>Pulse detection function detect the pulse peaks according to the peaks of 1st and 2nd derivatives
+General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p2</strong> – 1-d array, peaks of the 1st derivatives</p></li>
+<li><p><strong>p3</strong> – 1-d array, peaks of the 2nd derivatives</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>pulse peaks, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.IBICorrect">
+<span class="sig-name descname"><span class="pre">IBICorrect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.IBICorrect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.IBICorrect" title="Permalink to this definition"></a></dt>
+<dd><p>This function corrects the peaks’ location error</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> (<em>1-d numpy array</em>) – systolic peaks of the PPG signal</p></li>
+<li><p><strong>m</strong> (<em>1-d numpy array</em>) – all maxima of the PPG signal</p></li>
+<li><p><strong>hr</strong> (<em>1-d numpy array</em>) – heart rate</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – sampling frequency</p></li>
+<li><p><strong>up</strong> (<em>DotMap</em>) – setup up parameters of the algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>onsets, 1-d numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.find_reduced_IBIs">
+<span class="sig-name descname"><span class="pre">find_reduced_IBIs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">med_hr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.find_reduced_IBIs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.find_reduced_IBIs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.find_prolonged_IBIs">
+<span class="sig-name descname"><span class="pre">find_prolonged_IBIs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">med_hr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.find_prolonged_IBIs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.find_prolonged_IBIs" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.setup_up_abdp_algorithm">
+<span class="sig-name descname"><span class="pre">setup_up_abdp_algorithm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.setup_up_abdp_algorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.setup_up_abdp_algorithm" title="Permalink to this definition"></a></dt>
+<dd><p>This function setups the filter parameters of the algorithm</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>filter parameters of the algorithm, DotMap.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -497,52 +595,6 @@ Peter H. Charlton – King’s College London (August 2017) – University of Ca
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.find_prolonged_IBIs">
-<span class="sig-name descname"><span class="pre">find_prolonged_IBIs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">med_hr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.find_prolonged_IBIs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.find_prolonged_IBIs" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.find_pulse_peaks">
-<span class="sig-name descname"><span class="pre">find_pulse_peaks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.find_pulse_peaks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.find_pulse_peaks" title="Permalink to this definition"></a></dt>
-<dd><p>Pulse detection function detect the pulse peaks according to the peaks of 1st and 2nd derivatives
-General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>p2</strong> – 1-d array, peaks of the 1st derivatives</p></li>
-<li><p><strong>p3</strong> – 1-d array, peaks of the 2nd derivatives</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>pulse peaks, 1-d numpy array.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.find_reduced_IBIs">
-<span class="sig-name descname"><span class="pre">find_reduced_IBIs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">med_hr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.find_reduced_IBIs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.find_reduced_IBIs" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.getDiastolicPeak">
-<span class="sig-name descname"><span class="pre">getDiastolicPeak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dicroticnotch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.getDiastolicPeak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.getDiastolicPeak" title="Permalink to this definition"></a></dt>
-<dd><p>Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>onsets</strong> – 1-d array, onsets of the signal</p></li>
-<li><p><strong>dicroticnotches</strong> – 1-d array, dicrotic notches of the signal</p></li>
-<li><p><strong>e_point</strong> – 1-d array, e-points of the signal</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return diastolicpeak<span class="colon">:</span></dt>
-<dd class="field-even"><p>location of dicrotic notches, 1-d numpy array.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.getDicroticNotch">
 <span class="sig-name descname"><span class="pre">getDicroticNotch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peaks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onsets</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.getDicroticNotch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.getDicroticNotch" title="Permalink to this definition"></a></dt>
 <dd><p>Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak</p>
@@ -560,22 +612,19 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.getFiducialPoints">
-<span class="sig-name descname"><span class="pre">getFiducialPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correct</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.getFiducialPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.getFiducialPoints" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>The function calculates the PPG Fiducial Points.</dt><dd><ul class="simple">
-<li><p>Original signal: List of pulse onset, pea and dicrotic notch</p></li>
-<li><p>1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</p></li>
-<li><p>2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</p></li>
-</ul>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.getDiastolicPeak">
+<span class="sig-name descname"><span class="pre">getDiastolicPeak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dicroticnotch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.getDiastolicPeak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.getDiastolicPeak" title="Permalink to this definition"></a></dt>
+<dd><p>Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>correct</strong> – a bool for fiducials points corretion</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>onsets</strong> – 1-d array, onsets of the signal</p></li>
+<li><p><strong>dicroticnotches</strong> – 1-d array, dicrotic notches of the signal</p></li>
+<li><p><strong>e_point</strong> – 1-d array, e-points of the signal</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return fiducials<span class="colon">:</span></dt>
-<dd class="field-even"><p>a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</p>
+<dt class="field-even">Return diastolicpeak<span class="colon">:</span></dt>
+<dd class="field-even"><p>location of dicrotic notches, 1-d numpy array.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -643,30 +692,18 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.savitzky_golay_abd">
-<span class="sig-name descname"><span class="pre">savitzky_golay_abd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv_no</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.savitzky_golay_abd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.savitzky_golay_abd" title="Permalink to this definition"></a></dt>
-<dd><p>This function estimate the Savitzky Golay derivative from highly filtered signal</p>
+<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.CorrectFiducialPoints">
+<span class="sig-name descname"><span class="pre">CorrectFiducialPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fiducials</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.CorrectFiducialPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.CorrectFiducialPoints" title="Permalink to this definition"></a></dt>
+<dd><p>Correct the Fiducial Points</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sig</strong> – 1-d array, of shape (N,) where N is the length of the signal</p></li>
-<li><p><strong>deriv_no</strong> (<em>int</em>) – number of derivative</p></li>
-<li><p><strong>win_size</strong> (<em>int</em>) – size of window</p></li>
-</ul>
+<dd class="field-odd"><p><strong>fiducials</strong> – a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Savitzky Golay derivative, 1-d numpy array.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyPPG.FiducialPoints.FiducialPoints.setup_up_abdp_algorithm">
-<span class="sig-name descname"><span class="pre">setup_up_abdp_algorithm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/FiducialPoints.html#FiducialPoints.setup_up_abdp_algorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.FiducialPoints.FiducialPoints.setup_up_abdp_algorithm" title="Permalink to this definition"></a></dt>
-<dd><p>This function setups the filter parameters of the algorithm</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>filter parameters of the algorithm, DotMap.</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p>fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
