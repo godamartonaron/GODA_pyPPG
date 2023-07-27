@@ -667,7 +667,7 @@ class FiducialPoints:
 
         return pc, fn
 
-    def find_reduced_IBIs(self,IBIs, med_hr, up):
+    def find_reduced_IBIs(self,IBIs: np.array, med_hr: float, up: DotMap):
         """
         This function finds the reduced interbeat intervals
 
@@ -687,7 +687,7 @@ class FiducialPoints:
         fp = [*np.where(fp == 0)[0].astype(int)]
         return fp
 
-    def find_prolonged_IBIs(self, IBIs, med_hr, up):
+    def find_prolonged_IBIs(self, IBIs: np.array, med_hr: float, up: DotMap):
         """
         This function finds the prolonged interbeat intervals
 
