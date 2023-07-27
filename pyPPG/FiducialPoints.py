@@ -669,7 +669,7 @@ class FiducialPoints:
 
     def find_reduced_IBIs(self,IBIs, med_hr, up):
         """
-        This function calculates the
+        This function finds the reduced interbeat intervals
 
         :param IBIs: interbeat intervals in secs
         :type IBIs: 1-d array
@@ -689,7 +689,7 @@ class FiducialPoints:
 
     def find_prolonged_IBIs(self, IBIs, med_hr, up):
         """
-        This function calculates the
+        This function finds the prolonged interbeat intervals
 
         :param IBIs: interbeat intervals in secs
         :type IBIs: 1-d array
