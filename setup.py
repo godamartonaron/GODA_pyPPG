@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyPPG',
-    version='1.0.0',
+    version='1.0.2',
     description='pyPPG: a python toolbox for PPG morphological analysis.',
     author='Marton A. Goda, PhD',
     author_email="marton.goda@campus.technion.ac.il",
