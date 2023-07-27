@@ -1,7 +1,7 @@
-PCG morphological analysis
+PPG morphological analysis
 ==========================
 
-In this tutorial you will learn how to use **PhysioZoo PCG** to engineer morphological PCG  biomarkers and export their values.
+In this tutorial you will learn how to use **PhysioZoo PPG** to engineer morphological PPG  biomarkers and export their values.
 
 **Introduction**
 ----------------------
@@ -13,12 +13,12 @@ al. 2020) <https://ieeexplore.ieee.org/abstract/document/9733047/>`__; the auton
 al. 2010) <https://iopscience.iop.org/article/10.1088/0967-3334/31/9/015/meta>`__; and the respiratory system, which impacts the pulse wave through changes in intrathoracic pressure `(Charlton et
 al. 2017) <https://iopscience.iop.org/article/10.1088/1361-6579/aa670e/meta>`__. Thus, there is potential to extract much physiological information from the PPG signal.
 
-Studying the morphological characteristics of the PCG may provide information on  underlying physiological heart conditions.
-**PhysioZoo PCG** provides a framework and tools for extracting morphological biomarkers from the PCG signal.
+Studying the morphological characteristics of the PPG may provide information on  underlying physiological heart conditions.
+**PhysioZoo PPG** provides a framework and tools for extracting morphological biomarkers from the PPG signal.
 
-**Performing PCG morphological analysis**
+**Performing PPG morphological analysis**
 ------------------------------------------------------------
-Start by entering the PCG interface by clicking on the 'Pulse' menu on the top left, then load some PCG example by clicking File -> Open data file -> pcg_example.txt. The program will automaticly present the PCG file you imported.
+Start by entering the PPG interface by clicking on the 'Pulse' menu on the top left, then load some PPG example by clicking File -> Open data file -> ppg_example.txt. The program will automaticly present the PPG file you imported.
 
 .. .. image:: before_analysis.png
    :align: center
@@ -39,13 +39,13 @@ To perform the analysis, please follow the instructions:
 
 #. Click the **Find Fiducials** button. The fiducial poits will be detected and highlighted while the biomarkers will be automatically engineered and displayed on the lower pannels.
 
-Congrats! You have made your first morphological analysis with **PhysioZoo PCG**!
+Congrats! You have made your first morphological analysis with **PhysioZoo PPG**!
 The biomarkers are divided into two different categories: Duration and Amplitudes, the statistical measurments of the biomarkers will be presented in a table, in the bottom panel.
 
 .. .. image:: after_analysis.png
    :align: center
 
-.. note:: For PCG anlysis 9 statistical mesurment computed over the selected window (defined by W.S. W.L.) will be presented for each biomarker namely: signal duration; average (AVG); median (MED); standard deviation (STD); lower and upper quartiles (Q1, Q3); inter-quartile range (IQR); Skewness (SKW, indicating a lack of symmetry in the distribution; Kurtosis (KUR, indicating the pointedness of a peak in the distribution curve); and the average difference between the mean and each data value (MAD)
+.. note:: For PPG anlysis 9 statistical mesurment computed over the selected window (defined by W.S. W.L.) will be presented for each biomarker namely: signal duration; average (AVG); median (MED); standard deviation (STD); lower and upper quartiles (Q1, Q3); inter-quartile range (IQR); Skewness (SKW, indicating a lack of symmetry in the distribution; Kurtosis (KUR, indicating the pointedness of a peak in the distribution curve); and the average difference between the mean and each data value (MAD)
 
 **Exporting fiducial points**
 --------------------------------------------
@@ -59,7 +59,7 @@ You can export the fiducial points. Go to File -> Save fiducial points. The exce
 **Exporting morphological biomarkers**
 --------------------------------------------
 
-You can export the morphological biomarkers. Go to File -> Save fiducial biomarkers. The excel file contains the engineered PCG biomarkers.
+You can export the morphological biomarkers. Go to File -> Save fiducial biomarkers. The excel file contains the engineered PPG biomarkers.
 
 .. .. image:: results_mor_analysis.PNG
    :align: center
