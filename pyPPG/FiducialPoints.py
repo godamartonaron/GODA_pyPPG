@@ -209,6 +209,8 @@ class FiducialPoints:
         all_p4=all_p4.astype(int)
         all_p4 = np.unique(all_p4)
 
+        peaks, fn = self.IBICorrect(all_p4, px, np.median(all_hr), fs, up)
+
         peaks = (all_p4/fs*fso).astype(int)
         onsets, peaks = self.find_onsets(self.filt_sig, fso, up, peaks,60/np.median(all_hr)*fs)
 
@@ -621,7 +623,7 @@ class FiducialPoints:
     ###########################################################################
     ####################### Correct peaks' location error #####################
     ###########################################################################
-    def  IBICorrect(self, p: np.array, m: np.array, hr: np.array, fs: int, up: DotMap):
+    def  IBICorrect(self, p: np.array, m: np.array, hr: float, fs: int, up: DotMap):
         """
         This function corrects the peaks' location error
 
@@ -630,7 +632,7 @@ class FiducialPoints:
         :param m: all maxima of the PPG signal
         :type m: 1-d numpy array
         :param hr: heart rate
-        :type hr: 1-d numpy array
+        :type hr: float
         :param fs: sampling frequency
         :type fs: int
         :param up: setup up parameters of the algorithm
@@ -665,13 +667,40 @@ class FiducialPoints:
 
         return pc, fn
 
-    def find_reduced_IBIs(IBIs, med_hr, up):
+    def find_reduced_IBIs(self,IBIs, med_hr, up):
+        """
+        This function calculates the
+
+        :param IBIs: interbeat intervals in secs
+        :type IBIs: 1-d array
+        :param med_hr: median heart rate
+        :type med_hr: float
+        :param up: setup up parameters of the algorithm
+        :type up: DotMap
+
+        :return: fp, the false positive case
+
+        """
+
         IBI_thresh = up.lower_hr_thresh_prop*60/med_hr
         fp = IBIs < IBI_thresh
         fp = [*np.where(fp == 0)[0].astype(int)]
         return fp
 
-    def find_prolonged_IBIs(IBIs, med_hr, up):
+    def find_prolonged_IBIs(self, IBIs, med_hr, up):
+        """
+        This function calculates the
+
+        :param IBIs: interbeat intervals in secs
+        :type IBIs: 1-d array
+        :param med_hr: median heart rate
+        :type med_hr: float
+        :param up: setup up parameters of the algorithm
+        :type up: DotMap
+
+        :return: fn, the false negative case
+
+        """
         IBI_thresh = up.upper_hr_thresh_prop*60/med_hr
         fn = IBIs > IBI_thresh
 
@@ -762,12 +791,14 @@ class FiducialPoints:
     ###########################################################################
     ########################## Detect dicrotic notch ##########################
     ###########################################################################
-    def getDicroticNotch (self, peaks, onsets):
+    def getDicroticNotch (self, peaks: np.array, onsets: list):
         """
         Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak
 
-        :param peaks: 1-d array, peaks of the signal
-        :param onsets: 1-d array, onsets of the signal
+        :param peaks: peaks of the signal
+        :type peaks: 1-d array
+        :param onsets: onsets of the signal
+        :type onsets: list
 
         :return: location of dicrotic notches, 1-d numpy array.
         """
@@ -845,13 +876,16 @@ class FiducialPoints:
     ###########################################################################
     ########################## Detect diastolic peak ##########################
     ###########################################################################
-    def getDiastolicPeak(self, onsets, dicroticnotch, e_point):
+    def getDiastolicPeak(self, onsets: list, dicroticnotch: list, e_point: pd.Series):
         """
         Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak
 
-        :param onsets: 1-d array, onsets of the signal
-        :param dicroticnotches: 1-d array, dicrotic notches of the signal
-        :param e_point: 1-d array, e-points of the signal
+        :param onsets: onsets of the signal
+        :type onsets: list
+        :param dicroticnotches: dicrotic notches of the signal
+        :type dicroticnotches: list
+        :param e_point: e-points of the signal
+        :type e_point: pd.Series
 
         :return diastolicpeak: location of dicrotic notches, 1-d numpy array.
         """
@@ -887,10 +921,11 @@ class FiducialPoints:
     ###########################################################################
     ####################### Get First Derivitive Points #######################
     ###########################################################################
-    def getFirstDerivitivePoints(self, onsets):
+    def getFirstDerivitivePoints(self, onsets: list):
         """Calculate first derivitive points u and v from the PPG' signal
 
-        :param onsets: 1-d array, onsets of the signal
+        :param onsets: onsets of the signal
+        :type onsets: list
 
         :return:
             - u: The highest amplitude between the pulse onset and systolic peak on PPG'
@@ -934,11 +969,13 @@ class FiducialPoints:
     ###########################################################################
     ####################### Get Second Derivitive Points ######################
     ###########################################################################
-    def getSecondDerivitivePoints(self, onsets, peaks):
+    def getSecondDerivitivePoints(self, onsets: list, peaks: np.array):
         """Calculate Second derivitive points a, b, c, d, e, and f from the PPG" signal
 
-        :param onsets: 1-d array, onsets of the signal
-        :param peaks: 1-d array, peaks of the signal
+        :param onsets: onsets of the signal
+        :type onsets: list
+        :param peaks: peaks of the signal
+        :param types: 1-d array
 
         :return:
             - a: The highest amplitude between pulse onset and systolic peak on PPG"
@@ -1044,10 +1081,13 @@ class FiducialPoints:
         drt2_fp.a, drt2_fp.b, drt2_fp.c, drt2_fp.d, drt2_fp.e, drt2_fp.f = a, b, c, d, e, f
         return drt2_fp
 
-    def getThirdDerivitivePoints(self, onsets,drt2_fp):
+    def getThirdDerivitivePoints(self, onsets: list, drt2_fp: pd.DataFrame):
         """Calculate third derivitive points p1 and p2 from the PPG'" signal
 
-            :param onsets: 1-d array, onsets of the signal
+            :param onsets: onsets of the signal
+            :type onsets: list
+            :param drt2_fp: fiducial points of PPG" signal
+            :type drt2_fp: DataFrame
 
             :return:
                 - p1: The first local maximum after the b-point on PPG'"
@@ -1110,10 +1150,11 @@ class FiducialPoints:
 
         return drt3_fp
 
-    def CorrectFiducialPoints(self,fiducials):
+    def CorrectFiducialPoints(self,fiducials: pd.DataFrame):
         """Correct the Fiducial Points
 
             :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
+            :type fiducials: DataFrame
 
             :return:
                 - fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
