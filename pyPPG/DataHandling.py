@@ -83,8 +83,7 @@ def load_data(filtering: bool):
     s.fs=fs
     s.name=rec_name
 
-    if filtering:
-        s.filt_sig, s.filt_d1, s.filt_d2, s.filt_d3 = Prefiltering(s)
+    s.filt_sig, s.filt_d1, s.filt_d2, s.filt_d3 = Preprocessing(s, True)
 
     return s
 

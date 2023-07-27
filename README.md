@@ -33,11 +33,17 @@ start and end of the pulse wave, respectively.
 ### Python Requirements:
 
 Python >= 3.10
+
 scipy == 1.9.1
+
 numpy == 1.23.2
+
 dotmap == 1.3.30
+
 pandas == 1.5.0
+
 wfdb == 4.0.0
+
 mne == 1.2.0
 
 All the python requirements are installed when the toolbox is installed, no need for additional commands.
