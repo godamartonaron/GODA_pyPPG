@@ -9,14 +9,15 @@ import matplotlib.pyplot as plt
 import time
 from scipy import signal
 
-def Prefiltering(s: DotMap):
-    '''The function calculates the prefiltered PPG, PPg', PPG", and PPG'".
+def Preprocessing(s: DotMap, filtering: bool):
+    '''The function calculates the preprocessed PPG, PPG', PPG", and PPG'".
 
-    :param s.v: a vector of PPG values
-    :param s.fs: the sampling frequency of the PPG in Hz
+    :param s: a struct of PPG signal:
+        - s.v: a vector of PPG values
+        - s.fs: the sampling frequency of the PPG in Hz
     :type s: DotMap
 
-    :return: prefiltered PPG, PPG', PPG", and PPG'":
+    :return s: prefiltered PPG, PPG', PPG", and PPG'":
         - s.filt_sig: 1-d array, a vector of the filtered PPG values
         - s.filt_d1: 1-d array, a vector of the filtered PPG' values
         - s.filt_d2: 1-d array, a vector of the filtered PPG" values
@@ -24,18 +25,21 @@ def Prefiltering(s: DotMap):
     '''
 
     ## PPG filtering
-    fL = 0.5
-    fH = 12
-    order = 4
-    b,a = signal.cheby2(order, 20, [fL, fH], 'bandpass', fs=s.fs)
-    filt_sig_cb2 = filtfilt(b, a, s.v)
+    if filtering:
+        fL = 0.5
+        fH = 12
+        order = 4
+        b,a = signal.cheby2(order, 20, [fL, fH], 'bandpass', fs=s.fs)
+        filt_sig_cb2 = filtfilt(b, a, s.v)
 
-    if s.fs >= 75:
-        win = round(s.fs * 0.02)
-        B = 1 / win * np.ones(win)
-        filt_sig = filtfilt(B, 1, filt_sig_cb2)
+        if s.fs >= 75:
+            win = round(s.fs * 0.02)
+            B = 1 / win * np.ones(win)
+            filt_sig = filtfilt(B, 1, filt_sig_cb2)
+        else:
+            filt_sig=filt_sig_cb2
     else:
-        filt_sig=filt_sig_cb2
+        filt_sig=s.v
 
     if s.fs >= 150:
         ## PPG' filtering

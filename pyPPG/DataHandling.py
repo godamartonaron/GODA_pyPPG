@@ -1,6 +1,6 @@
 import pandas as pd
 
-from pyPPG.Prefiltering import*
+from pyPPG.Preprocessing import*
 
 import matplotlib.pyplot as plt
 import scipy.io

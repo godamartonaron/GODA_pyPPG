@@ -44,10 +44,10 @@ pyPPG.EXAMPLE module
    :undoc-members:
    :show-inheritance:
 
-pyPPG.Prefiltering module
--------------------------
+pyPPG.Preprocessing module
+--------------------------
 
-.. automodule:: pyPPG.Prefiltering
+.. automodule:: pyPPG.Preprocessing
    :members:
    :undoc-members:
    :show-inheritance:

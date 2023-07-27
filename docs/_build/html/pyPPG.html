@@ -70,8 +70,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#pyPPG.EXAMPLE.example_code"><code class="docutils literal notranslate"><span class="pre">example_code()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.Prefiltering">pyPPG.Prefiltering module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#pyPPG.Prefiltering.Prefiltering"><code class="docutils literal notranslate"><span class="pre">Prefiltering()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.Preprocessing">pyPPG.Preprocessing module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.Preprocessing.Preprocessing"><code class="docutils literal notranslate"><span class="pre">Preprocessing()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.Statistics">pyPPG.Statistics module</a><ul>
@@ -764,20 +764,19 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 </dd></dl>
 
 </section>
-<section id="module-pyPPG.Prefiltering">
-<span id="pyppg-prefiltering-module"></span><h2>pyPPG.Prefiltering module<a class="headerlink" href="#module-pyPPG.Prefiltering" title="Permalink to this heading"></a></h2>
+<section id="module-pyPPG.Preprocessing">
+<span id="pyppg-preprocessing-module"></span><h2>pyPPG.Preprocessing module<a class="headerlink" href="#module-pyPPG.Preprocessing" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="pyPPG.Prefiltering.Prefiltering">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.Prefiltering.</span></span><span class="sig-name descname"><span class="pre">Prefiltering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DotMap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/Prefiltering.html#Prefiltering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.Prefiltering.Prefiltering" title="Permalink to this definition"></a></dt>
-<dd><p>The function calculates the prefiltered PPG, PPg’, PPG”, and PPG’”.</p>
+<dt class="sig sig-object py" id="pyPPG.Preprocessing.Preprocessing">
+<span class="sig-prename descclassname"><span class="pre">pyPPG.Preprocessing.</span></span><span class="sig-name descname"><span class="pre">Preprocessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DotMap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtering</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/Preprocessing.html#Preprocessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.Preprocessing.Preprocessing" title="Permalink to this definition"></a></dt>
+<dd><p>The function calculates the preprocessed PPG, PPG’, PPG”, and PPG’”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>s.v</strong> – a vector of PPG values</p></li>
-<li><p><strong>s.fs</strong> – the sampling frequency of the PPG in Hz</p></li>
-</ul>
+<dd class="field-odd"><p><strong>s</strong> (<em>DotMap</em>) – a struct of PPG signal:
+- s.v: a vector of PPG values
+- s.fs: the sampling frequency of the PPG in Hz</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Return s<span class="colon">:</span></dt>
 <dd class="field-even"><p>prefiltered PPG, PPG’, PPG”, and PPG’”:
 - s.filt_sig: 1-d array, a vector of the filtered PPG values
 - s.filt_d1: 1-d array, a vector of the filtered PPG’ values
