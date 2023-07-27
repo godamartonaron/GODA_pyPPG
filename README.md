@@ -26,8 +26,8 @@ start and end of the pulse wave, respectively.
 ![alt text](figs/PPG_sample.svg)
 
 ## Installation
-(Available on pip, with the command: 
-***pip install pyppg***)
+Available on pip, with the command: 
+***pip install pyPPG***
 
 ## Requirements
 ### Python Requirements:

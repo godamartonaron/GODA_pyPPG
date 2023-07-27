@@ -2,5 +2,3 @@ __pycache__
 #sample_data
 .idea
 pyPPG/temp_dir
-pyPPG/test_annot_04.py
-pyPPG/test_annot_BIDMC.py

@@ -37,7 +37,7 @@ The toolbox identifies individual pulse waves in a PPG signal by identifying **s
 Installation
 ------------
 
-(Available on pip, with the command: **pip install pyppg**)
+Available on pip, with the command: **pip install pyPPG**
 
 Requirements
 ------------
