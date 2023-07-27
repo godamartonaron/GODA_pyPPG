@@ -328,7 +328,7 @@
 <span class="sd">        :param peak_detector: type of peak detector</span>
 <span class="sd">        :type peak_detector: str</span>
 
-<span class="sd">        :return: maximum peaks of signal, 1-d numpy array.</span>
+<span class="sd">        :return: maximum peaks of signal, 1-d array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -385,7 +385,7 @@
 <span class="sd">        :param upper_cutoff: upper cutoff frequency</span>
 <span class="sd">        :type upper_cutoff: float</span>
 
-<span class="sd">        :return: bandpass filtered signal, 1-d numpy array.</span>
+<span class="sd">        :return: bandpass filtered signal, 1-d array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -428,7 +428,7 @@
 <span class="sd">        :param lower_cutoff: lower cutoff frequency</span>
 <span class="sd">        :type lower_cutoff: float</span>
 
-<span class="sd">        :return: high frequency filtered signal, 1-d numpy array.</span>
+<span class="sd">        :return: high frequency filtered signal, 1-d array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -473,7 +473,7 @@
 <span class="sd">        :param upper_cutoff: lower cutoff frequency</span>
 <span class="sd">        :type upper_cutoff: float</span>
 
-<span class="sd">        :return: low frequency filtered signal, 1-d numpy array.</span>
+<span class="sd">        :return: low frequency filtered signal, 1-d array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -520,7 +520,7 @@
 <span class="sd">        :param hr_past: the average heart rate in the past in given time window</span>
 <span class="sd">        :type hr_past: int</span>
 
-<span class="sd">        :return: estimated heart rate, 1-d numpy array.</span>
+<span class="sd">        :return: estimated heart rate, 1-d array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -555,7 +555,7 @@
 <span class="sd">        :param sig: array of signal with shape (N,) where N is the length of the signal</span>
 <span class="sd">        :type sig: 1-d array</span>
 
-<span class="sd">        :return: derivative, 1-d numpy array.</span>
+<span class="sd">        :return: derivative, 1-d array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -578,7 +578,7 @@
 <span class="sd">        :param win_size: size of window</span>
 <span class="sd">        :type win_size: int</span>
 
-<span class="sd">        :return: Savitzky Golay derivative, 1-d numpy array.</span>
+<span class="sd">        :return: Savitzky Golay derivative, 1-d array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -681,7 +681,7 @@
 <span class="sd">        :param p3: peaks of the 2nd derivatives</span>
 <span class="sd">        :type p2: 1-d array</span>
 
-<span class="sd">        :return: pulse peaks, 1-d numpy array.</span>
+<span class="sd">        :return: pulse peaks, 1-d array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -704,9 +704,9 @@
 <span class="sd">        This function corrects the peaks&#39; location error</span>
 
 <span class="sd">        :param p: systolic peaks of the PPG signal</span>
-<span class="sd">        :type p: 1-d numpy array</span>
+<span class="sd">        :type p: 1-d array</span>
 <span class="sd">        :param m: all maxima of the PPG signal</span>
-<span class="sd">        :type m: 1-d numpy array</span>
+<span class="sd">        :type m: 1-d array</span>
 <span class="sd">        :param hr: heart rate</span>
 <span class="sd">        :type hr: float</span>
 <span class="sd">        :param fs: sampling frequency</span>
@@ -714,7 +714,7 @@
 <span class="sd">        :param up: setup up parameters of the algorithm</span>
 <span class="sd">        :type up: DotMap</span>
 
-<span class="sd">        :return: onsets, 1-d numpy array.</span>
+<span class="sd">        :return: onsets, 1-d array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -827,7 +827,7 @@
 <span class="sd">        :param med_hr: median heart rate</span>
 <span class="sd">        :type med_hr: float</span>
 
-<span class="sd">        :return: onsets, 1-d numpy array.</span>
+<span class="sd">        :return: onsets, 1-d array.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -876,7 +876,7 @@
 <span class="sd">        :param onsets: onsets of the signal</span>
 <span class="sd">        :type onsets: list</span>
 
-<span class="sd">        :return: location of dicrotic notches, 1-d numpy array.</span>
+<span class="sd">        :return: location of dicrotic notches, 1-d array.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1">## The 2nd derivative and Hamming low pass filter is calculated.</span>
@@ -963,7 +963,7 @@
 <span class="sd">        :param e_point: e-points of the signal</span>
 <span class="sd">        :type e_point: pd.Series</span>
 
-<span class="sd">        :return diastolicpeak: location of dicrotic notches, 1-d numpy array.</span>
+<span class="sd">        :return diastolicpeak: location of dicrotic notches, 1-d array.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">nan_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dicroticnotch</span><span class="p">))</span>

@@ -252,7 +252,7 @@ class FiducialPoints:
         :param peak_detector: type of peak detector
         :type peak_detector: str
 
-        :return: maximum peaks of signal, 1-d numpy array.
+        :return: maximum peaks of signal, 1-d array.
 
         """
 
@@ -309,7 +309,7 @@ class FiducialPoints:
         :param upper_cutoff: upper cutoff frequency
         :type upper_cutoff: float
 
-        :return: bandpass filtered signal, 1-d numpy array.
+        :return: bandpass filtered signal, 1-d array.
 
         """
 
@@ -352,7 +352,7 @@ class FiducialPoints:
         :param lower_cutoff: lower cutoff frequency
         :type lower_cutoff: float
 
-        :return: high frequency filtered signal, 1-d numpy array.
+        :return: high frequency filtered signal, 1-d array.
 
         """
 
@@ -397,7 +397,7 @@ class FiducialPoints:
         :param upper_cutoff: lower cutoff frequency
         :type upper_cutoff: float
 
-        :return: low frequency filtered signal, 1-d numpy array.
+        :return: low frequency filtered signal, 1-d array.
 
         """
 
@@ -444,7 +444,7 @@ class FiducialPoints:
         :param hr_past: the average heart rate in the past in given time window
         :type hr_past: int
 
-        :return: estimated heart rate, 1-d numpy array.
+        :return: estimated heart rate, 1-d array.
 
         """
 
@@ -479,7 +479,7 @@ class FiducialPoints:
         :param sig: array of signal with shape (N,) where N is the length of the signal
         :type sig: 1-d array
 
-        :return: derivative, 1-d numpy array.
+        :return: derivative, 1-d array.
 
         """
 
@@ -502,7 +502,7 @@ class FiducialPoints:
         :param win_size: size of window
         :type win_size: int
 
-        :return: Savitzky Golay derivative, 1-d numpy array.
+        :return: Savitzky Golay derivative, 1-d array.
 
         """
 
@@ -605,7 +605,7 @@ class FiducialPoints:
         :param p3: peaks of the 2nd derivatives
         :type p2: 1-d array
 
-        :return: pulse peaks, 1-d numpy array.
+        :return: pulse peaks, 1-d array.
 
         """
 
@@ -628,9 +628,9 @@ class FiducialPoints:
         This function corrects the peaks' location error
 
         :param p: systolic peaks of the PPG signal
-        :type p: 1-d numpy array
+        :type p: 1-d array
         :param m: all maxima of the PPG signal
-        :type m: 1-d numpy array
+        :type m: 1-d array
         :param hr: heart rate
         :type hr: float
         :param fs: sampling frequency
@@ -638,7 +638,7 @@ class FiducialPoints:
         :param up: setup up parameters of the algorithm
         :type up: DotMap
 
-        :return: onsets, 1-d numpy array.
+        :return: onsets, 1-d array.
 
         """
 
@@ -751,7 +751,7 @@ class FiducialPoints:
         :param med_hr: median heart rate
         :type med_hr: float
 
-        :return: onsets, 1-d numpy array.
+        :return: onsets, 1-d array.
 
         """
 
@@ -800,7 +800,7 @@ class FiducialPoints:
         :param onsets: onsets of the signal
         :type onsets: list
 
-        :return: location of dicrotic notches, 1-d numpy array.
+        :return: location of dicrotic notches, 1-d array.
         """
 
         ## The 2nd derivative and Hamming low pass filter is calculated.
@@ -887,7 +887,7 @@ class FiducialPoints:
         :param e_point: e-points of the signal
         :type e_point: pd.Series
 
-        :return diastolicpeak: location of dicrotic notches, 1-d numpy array.
+        :return diastolicpeak: location of dicrotic notches, 1-d array.
         """
 
         nan_v = np.empty(len(dicroticnotch))
