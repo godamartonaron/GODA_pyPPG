@@ -17,11 +17,7 @@ def Preprocessing(s: DotMap, filtering: bool):
         - s.fs: the sampling frequency of the PPG in Hz
     :type s: DotMap
 
-    :return s: prefiltered PPG, PPG', PPG", and PPG'":
-        - s.filt_sig: 1-d array, a vector of the filtered PPG values
-        - s.filt_d1: 1-d array, a vector of the filtered PPG' values
-        - s.filt_d2: 1-d array, a vector of the filtered PPG" values
-        - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+    :return filt_sig, filt_d1, filt_d2, filt_d3: preprocessed PPG, PPG', PPG", and PPG'"
     '''
 
     ## PPG filtering
