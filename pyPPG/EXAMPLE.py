@@ -56,10 +56,9 @@ def example_code(filtering=True,correct=True,savefig=True):
     save_data(s,fiducials,biomarkers,statistics)
 
     print('Program finished')
-
-
+    
 
 ###########################################################################
 ############################## RUN EXAMPLE CODE ###########################
 ###########################################################################
-example_code()
+# example_code()
