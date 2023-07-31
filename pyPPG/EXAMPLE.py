@@ -9,6 +9,8 @@ import numpy as np
 from dotmap import DotMap
 import time
 
+import sys
+
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
@@ -30,6 +32,8 @@ def example_code(filtering=True,correct=True,savefig=True):
     :param savefig: a bool for fiducial points saving
     :param correct: a bool for fiducials points corretion
     '''
+
+    python_executable_path = sys.executable
 
     ## Loading a raw PPG signal
     s=load_data(filtering)
@@ -58,4 +62,4 @@ def example_code(filtering=True,correct=True,savefig=True):
 ###########################################################################
 ############################## RUN EXAMPLE CODE ###########################
 ###########################################################################
-# example_code()
+example_code()

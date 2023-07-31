@@ -99,7 +99,7 @@ class FiducialPoints:
     ###########################################################################
     def abdp_beat_detector(self, peak_detector: str):
         '''ABDP_BEAT_DETECTOR detects beats in a photoplethysmogram (PPG) signal
-        using the improved 'Automatic Beat Detection' beat detector of Aboy M et al.
+        using the improved 'Automatic Beat Detection' of Aboy M et al.
 
         :param peak_detector: type of peak detector
         :type peak_detector: str

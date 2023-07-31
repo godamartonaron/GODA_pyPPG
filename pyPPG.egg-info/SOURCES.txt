@@ -16,6 +16,8 @@ pyPPG.egg-info/SOURCES.txt
 pyPPG.egg-info/dependency_links.txt
 pyPPG.egg-info/requires.txt
 pyPPG.egg-info/top_level.txt
+pyPPG/pack_ppg/_ErrorHandler.py
+pyPPG/pack_ppg/__init__.py
 pyPPG/ppg_bm/__init__.py
 pyPPG/ppg_bm/get_biomarkers.py
 pyPPG/ppg_bm/get_bm_derivs_ratios.py
