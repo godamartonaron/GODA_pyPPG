@@ -1,4 +1,4 @@
-GODA_pyPPG
+pyPPG
 ==========
 
 .. toctree::

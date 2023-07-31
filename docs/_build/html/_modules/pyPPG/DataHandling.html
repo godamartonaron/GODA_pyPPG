@@ -42,11 +42,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">GODA_pyPPG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">pyPPG</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/pyPPG_analysis.html">PCG morphological analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/pyPPG_analysis.html">PPG morphological analysis</a></li>
 </ul>
 
         </div>
@@ -256,8 +256,7 @@
     <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
         <span class="n">canvas</span> <span class="o">=</span> <span class="n">FigureCanvas</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
         <span class="n">tmp_dir</span><span class="o">=</span><span class="s1">&#39;temp_dir&#39;</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="s1">&#39;PPG_Figures&#39;</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">canvas</span><span class="o">.</span><span class="n">print_png</span><span class="p">((</span><span class="n">tmp_dir</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.png&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Figure has been saved in the &quot;temp_dir&quot;.&#39;</span><span class="p">)</span></div>
@@ -292,6 +291,9 @@
 <span class="sd">    :param Statistics: data frame with summary of PPG features</span>
 <span class="sd">    :type Statistics: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tmp_dir</span> <span class="o">=</span> <span class="s1">&#39;temp_dir&#39;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">temp_dirs</span><span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PPG_Fiducials&#39;</span><span class="p">,</span><span class="s1">&#39;PPG_Biomarkers&#39;</span><span class="p">,</span><span class="s1">&#39;PPG_Statistics&#39;</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">temp_dirs</span><span class="p">:</span>

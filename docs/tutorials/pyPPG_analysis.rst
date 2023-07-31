@@ -27,12 +27,9 @@ To perform the analysis, please follow the instructions:
 
 #. Prefiltering the signal: On the left panel, select the "Configuration" tab. On the bottom of the tab, you will find a section labeled: **Fiducials filtering parameters**. The following
    filters have been implemented as default in the pyPPG toolbox:
-    * **Bandpass filtering between 0.5-12 Hz**: A fourth-order Chebyshev Type II filter was used for the original signal. The 12 Hz low-pass cut-off was used to avoid time-shifting of fiducial
-      points (particularly pulse onset, and dicrotic notch) and to eliminate unwanted high-frequency content from the PPG
-      derivatives. The 0.5 Hz high-pass cut-off was used to minimize baseline wandering whilst retaining content at low heart rates.
-    * **20 ms moving average filtering (MAF)**: In the case of very noisy signals, some high-frequency content can remain in the
-      band-pass filter signal. For this purpose, a 20 ms standard flat (boxcar or top-hat) MAF with a 22.5 Hz cut-off frequency was
-      applied after the band-pass filtering.
+
+    * **Bandpass filtering between 0.5-12 Hz**: A fourth-order Chebyshev Type II filter was used for the original signal. The 12 Hz low-pass cut-off was used to avoid time-shifting of fiducial points (particularly pulse onset, and dicrotic notch) and to eliminate unwanted high-frequency content from the PPG derivatives. The 0.5 Hz high-pass cut-off was used to minimize baseline wandering whilst retaining content at low heart rates.
+    * **20 ms moving average filtering (MAF)**: In the case of very noisy signals, some high-frequency content can remain in the band-pass filter signal. For this purpose, a 20 ms standard flat (boxcar or top-hat) MAF with a 22.5 Hz cut-off frequency was applied after the band-pass filtering.
     * **10 ms MAF for the PPG derivatives**: To eliminate the high-frequency content in the PPG derivatives, a 10 ms standard flat (boxcar or top-hat) MAF with 45 Hz cut-off frequency was applied.
 
 #. Definition of the window for anlysis: On the right panel, define the W.S. (start of the window) and the W.L. (length of the window) you want to analyze. You can analyze all of your signal or part of it. Note that if you analyze a long window,it may take some time.
