@@ -9,7 +9,7 @@ def ppgSQI(ppg, fs, ann_ppg):
     :param ppg: PPG data
     :param fs: Samples frequency
     :param ann_ppg: PPG annotation time(samples)
-    :return: psqi, PPG SQI
+    :return: psqi: PPG Signal Quality Index
 
     Reference
     ---------
