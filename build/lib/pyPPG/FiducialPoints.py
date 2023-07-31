@@ -713,7 +713,7 @@ class FiducialPoints:
         """
         This function setups the filter parameters of the algorithm
 
-        :return: filter parameters of the algorithm, DotMap.
+        :return: filter parameters of the algorithm, DotMap
 
         """
         # plausible HR limits
@@ -751,7 +751,7 @@ class FiducialPoints:
         :param med_hr: median heart rate
         :type med_hr: float
 
-        :return: onsets, 1-d array.
+        :return: onsets, 1-d array
 
         """
 
@@ -800,7 +800,7 @@ class FiducialPoints:
         :param onsets: onsets of the signal
         :type onsets: list
 
-        :return: location of dicrotic notches, 1-d array.
+        :return: location of dicrotic notches, 1-d array
         """
 
         ## The 2nd derivative and Hamming low pass filter is calculated.
@@ -887,7 +887,7 @@ class FiducialPoints:
         :param e_point: e-points of the signal
         :type e_point: pd.Series
 
-        :return diastolicpeak: location of dicrotic notches, 1-d array.
+        :return: diastolicpeak location of dicrotic notches, 1-d array
         """
 
         nan_v = np.empty(len(dicroticnotch))
@@ -1157,7 +1157,7 @@ class FiducialPoints:
             :type fiducials: DataFrame
 
             :return:
-                - fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
+                - fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
         """
 
         for i in range(0,len(fiducials.on)):

@@ -789,7 +789,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function setups the filter parameters of the algorithm</span>
 
-<span class="sd">        :return: filter parameters of the algorithm, DotMap.</span>
+<span class="sd">        :return: filter parameters of the algorithm, DotMap</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># plausible HR limits</span>
@@ -827,7 +827,7 @@
 <span class="sd">        :param med_hr: median heart rate</span>
 <span class="sd">        :type med_hr: float</span>
 
-<span class="sd">        :return: onsets, 1-d array.</span>
+<span class="sd">        :return: onsets, 1-d array</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -876,7 +876,7 @@
 <span class="sd">        :param onsets: onsets of the signal</span>
 <span class="sd">        :type onsets: list</span>
 
-<span class="sd">        :return: location of dicrotic notches, 1-d array.</span>
+<span class="sd">        :return: location of dicrotic notches, 1-d array</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1">## The 2nd derivative and Hamming low pass filter is calculated.</span>
@@ -963,7 +963,7 @@
 <span class="sd">        :param e_point: e-points of the signal</span>
 <span class="sd">        :type e_point: pd.Series</span>
 
-<span class="sd">        :return diastolicpeak: location of dicrotic notches, 1-d array.</span>
+<span class="sd">        :return: diastolicpeak location of dicrotic notches, 1-d array</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">nan_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dicroticnotch</span><span class="p">))</span>
@@ -1233,7 +1233,7 @@
 <span class="sd">            :type fiducials: DataFrame</span>
 
 <span class="sd">            :return:</span>
-<span class="sd">                - fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</span>
+<span class="sd">                - fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">fiducials</span><span class="o">.</span><span class="n">on</span><span class="p">)):</span>

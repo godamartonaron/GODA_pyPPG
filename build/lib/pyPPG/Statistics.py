@@ -17,7 +17,7 @@ def Statistics(peaks: pd.Series, onsets: pd.Series, ppg_biomarkers: dict):
     :param ppg_biomarkers: dictionary of the PPG biomarkers
     :type ppg_biomarkers: dict
 
-    :return df_windows: data frame with summary of PPG features
+    :return: df_windows, data frame with summary of PPG features
     """
 
     BM_keys = list(ppg_biomarkers.keys())

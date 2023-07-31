@@ -46,7 +46,7 @@ class Biomarkers:
         """
         This function returns the PPG biomarkers.
 
-        :return biomarkers: dictionary of biomarkers in different categories
+        :return: biomarkers dictionary of biomarkers in different categories:
             - PPG signal
             - Signal ratios
             - PPG derivatives

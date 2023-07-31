@@ -20,7 +20,7 @@ def example_code(filtering=True,correct=True,savefig=True):
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
         2) Get Fiducial points: extract the fiducial points of PPG, PPG', PPG'' and PPG'" signals
         3) Plot Fiducials Points
-        4) Get Biomarkers: extract 74 PPG biomarkers in four categories
+        4) Get Biomarkers: extract 74 PPG biomarkers in four categories:
             - PPG signal
             - Signal ratios
             - PPG derivatives
@@ -58,7 +58,8 @@ def example_code(filtering=True,correct=True,savefig=True):
     print('Program finished')
 
 
+
 ###########################################################################
 ############################## RUN EXAMPLE CODE ###########################
 ###########################################################################
-# example_code()
+#example_code()

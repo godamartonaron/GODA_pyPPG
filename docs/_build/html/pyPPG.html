@@ -175,8 +175,8 @@
 <span class="sig-name descname"><span class="pre">getBiomarkers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/Biomarkers.html#Biomarkers.getBiomarkers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.Biomarkers.Biomarkers.getBiomarkers" title="Permalink to this definition"></a></dt>
 <dd><p>This function returns the PPG biomarkers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return biomarkers<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dictionary of biomarkers in different categories
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>biomarkers dictionary of biomarkers in different categories:
 - PPG signal
 - Signal ratios
 - PPG derivatives
@@ -581,7 +581,7 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 <dd><p>This function setups the filter parameters of the algorithm</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>filter parameters of the algorithm, DotMap.</p>
+<dd class="field-odd"><p>filter parameters of the algorithm, DotMap</p>
 </dd>
 </dl>
 </dd></dl>
@@ -601,7 +601,7 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>onsets, 1-d array.</p>
+<dd class="field-even"><p>onsets, 1-d array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -618,7 +618,7 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>location of dicrotic notches, 1-d array.</p>
+<dd class="field-even"><p>location of dicrotic notches, 1-d array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -635,8 +635,8 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 <li><p><strong>e_point</strong> (<em>pd.Series</em>) – e-points of the signal</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return diastolicpeak<span class="colon">:</span></dt>
-<dd class="field-even"><p>location of dicrotic notches, 1-d array.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>diastolicpeak location of dicrotic notches, 1-d array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -717,7 +717,7 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p>fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</p></li>
+<li><p>fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points</p></li>
 </ul>
 </p>
 </dd>
@@ -738,7 +738,7 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 <li><p>Get Fiducial points: extract the fiducial points of PPG, PPG’, PPG’’ and PPG’” signals</p></li>
 <li><p>Plot Fiducials Points</p></li>
 <li><dl class="simple">
-<dt>Get Biomarkers: extract 74 PPG biomarkers in four categories</dt><dd><ul class="simple">
+<dt>Get Biomarkers: extract 74 PPG biomarkers in four categories:</dt><dd><ul class="simple">
 <li><p>PPG signal</p></li>
 <li><p>Signal ratios</p></li>
 <li><p>PPG derivatives</p></li>
@@ -776,8 +776,8 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 - s.v: a vector of PPG values
 - s.fs: the sampling frequency of the PPG in Hz</p>
 </dd>
-<dt class="field-even">Return filt_sig, filt_d1, filt_d2, filt_d3<span class="colon">:</span></dt>
-<dd class="field-even"><p>preprocessed PPG, PPG’, PPG”, and PPG’”</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>filt_sig, filt_d1, filt_d2, filt_d3 preprocessed PPG, PPG’, PPG”, and PPG’”</p>
 </dd>
 </dl>
 </dd></dl>
@@ -797,8 +797,8 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 <li><p><strong>ppg_biomarkers</strong> (<em>dict</em>) – dictionary of the PPG biomarkers</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return df_windows<span class="colon">:</span></dt>
-<dd class="field-even"><p>data frame with summary of PPG features</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>df_windows, data frame with summary of PPG features</p>
 </dd>
 </dl>
 </dd></dl>
@@ -818,8 +818,8 @@ General least-squares smoothing and differentiation by the convolution (Savitzky
 <li><p><strong>ann_ppg</strong> – PPG annotation time(samples)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return psqi<span class="colon">:</span></dt>
-<dd class="field-even"><p>PPG SQI</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>psqi, PPG SQI</p>
 </dd>
 </dl>
 <section id="id1">
