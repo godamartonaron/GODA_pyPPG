@@ -14,12 +14,9 @@ Welcome to pyPPG's documentation!
 
    modules
 
-TUTORIALS
-==================
-
 .. toctree::
    :maxdepth: 4
-   :caption: tutorials:
+   :caption: Tutorials:
 
    tutorials/pyPPG_analysis.rst
 
