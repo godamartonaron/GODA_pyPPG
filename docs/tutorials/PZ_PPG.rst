@@ -1,7 +1,7 @@
 PhysioZoo PPG morphological analysis
 ====================================
 
-In this tutorial you will learn how to use **PhysioZoo PPG** to engineer morphological PPG  biomarkers and export their values.
+In this tutorial you will learn how to use **PhysioZoo PPG** to calculate morphological PPG biomarkers (_i.e._ pulse wave features) and export their values.
 
 **Introduction**
 ----------------------
@@ -13,7 +13,7 @@ al. 2020) <https://ieeexplore.ieee.org/abstract/document/9733047/>`__; the auton
 al. 2010) <https://iopscience.iop.org/article/10.1088/0967-3334/31/9/015/meta>`__; and the respiratory system, which impacts the pulse wave through changes in intrathoracic pressure `(Charlton et
 al. 2017) <https://iopscience.iop.org/article/10.1088/1361-6579/aa670e/meta>`__. Thus, there is potential to extract much physiological information from the PPG signal.
 
-Studying the morphological characteristics of the PPG may provide information on  underlying physiological heart conditions.
+Studying the morphological characteristics of the PPG may provide information on cardiovascular health.
 **PhysioZoo PPG** provides a framework and tools for extracting morphological biomarkers from the PPG signal.
 
 **Performing PPG morphological analysis**

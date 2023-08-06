@@ -14,12 +14,14 @@ Welcome to pyPPG's documentation!
 
    modules
 
-TUTORIALS
-==================
-
 .. toctree::
+<<<<<<< HEAD
    :maxdepth: 1
    :caption: tutorials:
+=======
+   :maxdepth: 4
+   :caption: Tutorials:
+>>>>>>> origin/petedev2
 
    tutorials/PZ_PPG.rst
    tutorials/pyPPG_example.rst
