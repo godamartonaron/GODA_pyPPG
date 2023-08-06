@@ -32,7 +32,6 @@ start and end of the pulse wave, respectively.
 ![](figs/PPG_sample.svg)
 
 =======
->>>>>>> origin/petedev2
 ## Installation
 Available on pip, with the command: 
 ***pip install pyPPG***
