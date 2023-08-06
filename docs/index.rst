@@ -18,10 +18,11 @@ TUTORIALS
 ==================
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 1
    :caption: tutorials:
 
-   tutorials/pyPPG_analysis.rst
+   tutorials/PZ_PPG.rst
+   tutorials/pyPPG_example.rst
 
 Indices and tables
 ==================

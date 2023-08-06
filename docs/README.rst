@@ -39,6 +39,8 @@ Installation
 
 Available on pip, with the command: **pip install pyPPG**
 
+pip project: https://pypi.org/project/pyPPG/
+
 Requirements
 ------------
 
@@ -74,8 +76,17 @@ The main components:
    -  An open-source algorithmic **pyPPG** toolbox, which implements the PPG peak and onsets detection algorithms and prefiltering routines. This can be used within your own data analysis code using the **pyPPG** API.
 
 2. **Databases**
+    - The **pyPPG** signal analysis is based on the following datasets:
 
-   -  The PPG signals are based on the **PhysioNet Databases**. Available `here <https://physionet.org/about/database/>`__ .
+      - `BIDMC Dataset <https://physionet.org/content/bidmc/1.0.0/>`__
+
+      - `MESA Dataset <https://sleepdata.org/datasets/mesa>`__
+
+    - Further PPG datasets:
+
+      - `Collection of Peter Charlton <https://peterhcharlton.github.io/post/ppg_datasets/>`__
+
+      - `Collection of Physionet <https://physionet.org/content/?topic=ppg>`__
 
 3. **Configuration**
 

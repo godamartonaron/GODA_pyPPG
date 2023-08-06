@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Overview: module code &mdash; pyPPG 1.0.0 documentation</title>
+  <title>Using pyPPG example code &mdash; pyPPG 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -44,11 +45,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">pyPPG</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/PZ_PPG.html">PhysioZoo PPG morphological analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/pyPPG_example.html">pyPPG example code</a></li>
-</ul>
 
         </div>
       </div>
@@ -64,8 +60,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Overview: module code</li>
+      <li class="breadcrumb-item active">Using pyPPG example code</li>
       <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/pyPPG_example_code.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -73,20 +70,38 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>All modules for which code is available</h1>
-<ul><li><a href="pyPPG/Biomarkers.html">pyPPG.Biomarkers</a></li>
-<li><a href="pyPPG/DataHandling.html">pyPPG.DataHandling</a></li>
-<li><a href="pyPPG/EXAMPLE.html">pyPPG.EXAMPLE</a></li>
-<li><a href="pyPPG/FiducialPoints.html">pyPPG.FiducialPoints</a></li>
-<li><a href="pyPPG/Preprocessing.html">pyPPG.Preprocessing</a></li>
-<li><a href="pyPPG/Statistics.html">pyPPG.Statistics</a></li>
-<li><a href="pyPPG/ppgSQI.html">pyPPG.ppgSQI</a></li>
-<li><a href="pyPPG/ppg_bm/get_biomarkers.html">pyPPG.ppg_bm.get_biomarkers</a></li>
-<li><a href="pyPPG/ppg_bm/get_bm_derivs_ratios.html">pyPPG.ppg_bm.get_bm_derivs_ratios</a></li>
-<li><a href="pyPPG/ppg_bm/get_bm_ppg_derivs.html">pyPPG.ppg_bm.get_bm_ppg_derivs</a></li>
-<li><a href="pyPPG/ppg_bm/get_bm_ppg_sig.html">pyPPG.ppg_bm.get_bm_ppg_sig</a></li>
-<li><a href="pyPPG/ppg_bm/get_bm_sig_ratios.html">pyPPG.ppg_bm.get_bm_sig_ratios</a></li>
-</ul>
+  <section id="using-pyppg-example-code">
+<h1>Using pyPPG example code<a class="headerlink" href="#using-pyppg-example-code" title="Permalink to this heading"></a></h1>
+<p>In this tutorial you will learn how to use <strong>pyPPG</strong> to engineer morphological PPG biomarkers and export their values.</p>
+<section id="introduction">
+<h2><strong>Introduction</strong><a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
+<p>Once you have installed the most recent version of Python on your computer, you can proceed to install the pyPPG toolbox by executing the command <strong>pip install pyPPG</strong> in your command line interface. The installation of pyPPG grants access to all the packages within the toolbox. If you encounter any errors during the installation process, please refer to the ‘requirements.txt’ list and consider upgrading your Python Interpreter accordingly.</p>
+</section>
+<section id="example-pyppg-code">
+<h2><strong>Example pyPPG code</strong><a class="headerlink" href="#example-pyppg-code" title="Permalink to this heading"></a></h2>
+<p>The provided example code consists of six modules that effectively showcase the capabilities of the pyPPG toolbox.</p>
+<ol class="arabic">
+<li><p><strong>Raw PPG Signal Loading</strong>: This module facilitates the loading of raw PPG signals from various file formats, including .mat, .csv, .txt, or .edf.</p></li>
+<li><p><strong>Fiducial Point Extraction</strong>: This module focuses on extracting fiducial points from PPG signals, encompassing PPG, PPG’, PPG’’, and PPG’’’.</p></li>
+<li><p><strong>Fiducial Points Plotting</strong>: Here, the extracted fiducial points are visually represented through plotting.</p></li>
+<li><p><strong>Biomarker Extraction</strong>: This module offers the extraction of 74 distinct PPG biomarkers, categorized into:</p>
+<blockquote>
+<div><ol class="upperroman simple">
+<li><p>PPG signal characteristics</p></li>
+<li><p>Signal ratios</p></li>
+<li><p>PPG derivatives</p></li>
+<li><p>Derivative ratios</p></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p><strong>Statistical Summary</strong>: A concise summary of the 74 PPG biomarkers is provided within this module.</p></li>
+<li><p><strong>Save data</strong>: This module allows for the saving of extracted Fiducial points, Biomarkers, and Statistics into a .csv file.</p></li>
+</ol>
+<p>The resulting figures and outcomes are stored within the <em>temp_dir</em> folder, which is automatically generated within the project directory.</p>
+<img alt="../_images/PPG_MAT_sample.png" class="align-center" src="../_images/PPG_MAT_sample.png" />
+</section>
+</section>
+
 
            </div>
           </div>

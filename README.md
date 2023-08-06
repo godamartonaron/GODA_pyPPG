@@ -17,17 +17,19 @@ The following steps are implemented in the ***pyPPG*** toolbox:
 
 The *pyPPG* toolbox also provides an optional PPG signal quality index based on the Matlab implementation of the work by [(*Li et al. 2015*)](https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m).
 
-![img.png](figs/pyPPG_pipeline.svg).
+![](figs/pyPPG_pipeline.svg).
 
 The toolbox identifies individual pulse waves in a PPG signal by identifying ***systolic peaks (sp)***, and then
 identifying the ***pulse onset (on)*** and ***offset (off)*** on either side of each systolic peak which indicate the
 start and end of the pulse wave, respectively.
 
-![alt text](figs/PPG_sample.svg)
+![](figs/PPG_sample.svg)
 
 ## Installation
 Available on pip, with the command: 
 ***pip install pyPPG***
+
+pip project: https://pypi.org/project/pyPPG/
 
 ## Requirements
 ### Python Requirements:
@@ -55,7 +57,13 @@ https://pyppg.readthedocs.io/en/latest/
 1. **Software**
     - An open-source algorithmic ***pyPPG*** toolbox, which implements the PPG peak and onsets detection algorithms and prefiltering routines. This can be used within your own data analysis code using the ***pyPPG*** API.
 2. **Databases**
-    - The PPG signals are based on the ***PhysioNet Databases***. Available [here](https://physionet.org/about/database/) .
+    - The ***pyPPG*** signal analysis is based on the following datasets: 
+      - [BIDMC Dataset](https://physionet.org/content/bidmc/1.0.0/)
+      - [MESA Dataset](https://sleepdata.org/datasets/mesa)
+    - Further PPG datasets:
+      - [Collection of Peter Charlton](https://peterhcharlton.github.io/post/ppg_datasets/) 
+      - [Collection of Physionet](https://physionet.org/content/?topic=ppg)
+
 3. **Configuration**
     - A set of configuration files that adapt the PPG peak detection and ***pyPPG*** algorithms to work with sleep PPG data.
 

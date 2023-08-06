@@ -1,5 +1,5 @@
-PPG morphological analysis
-==========================
+PhysioZoo PPG morphological analysis
+====================================
 
 In this tutorial you will learn how to use **PhysioZoo PPG** to engineer morphological PPG  biomarkers and export their values.
 

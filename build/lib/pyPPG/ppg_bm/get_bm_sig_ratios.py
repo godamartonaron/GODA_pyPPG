@@ -24,7 +24,7 @@ def get_bm_sig_ratios(s, fiducials):
         - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
         - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)
 
-    :return: dictionary of biomarkers of Signal ratios
+    :return biomarkers: dictionary of biomarkers of Signal ratios
     """
 
     biomarkers_lst = ["IPR",          # Instantaneous Pulse Rate, 60 / Tpi
