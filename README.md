@@ -10,7 +10,7 @@ Consequently, *pyPPG* offers robust and comprhessive assessment of clinically re
 ## Description
 The following steps are implemented in the ***pyPPG*** toolbox:
 
-![PPG processing pipeline](figs/pyPPG_pipeline.svg).
+![](figs/pyPPG_pipeline.svg).
 
 1. **Loading a raw PPG signal**: The toolbox can accept PPG signals in various file formats such as *.mat*, *.csv*, *.txt*, or *.edf*. These files should contain raw PPG data along with the corresponding sampling rate.
 2. **Preprocessing**: The raw signal is filtered to remove unwanted noise and artifacts. Subsequently, the signal is resampled to 75 Hz.
@@ -18,11 +18,8 @@ The following steps are implemented in the ***pyPPG*** toolbox:
 4. **Fiducial points identification**: For each pulse wave, the toolbox detects a set of fiducial points.
 5. **Biomarker engineering**: Based on the fiducial points, a set of 74 PPG digital biomarkers (_i.e._ pulse wave features) are calculated.
 
-![Fiducial point identification and biomarker engineering](figs/PPG_sample.svg)
-
 The *pyPPG* toolbox also provides an optional PPG signal quality index based on the Matlab implementation of the work by [(*Li et al. 2015*)](https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m).
 
-<<<<<<< HEAD
 ![](figs/pyPPG_pipeline.svg).
 
 The toolbox identifies individual pulse waves in a PPG signal by identifying ***systolic peaks (sp)***, and then
@@ -31,7 +28,6 @@ start and end of the pulse wave, respectively.
 
 ![](figs/PPG_sample.svg)
 
-=======
 ## Installation
 Available on pip, with the command: 
 ***pip install pyPPG***

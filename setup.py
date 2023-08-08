@@ -6,7 +6,7 @@ with io.open('README.md', 'r', encoding='utf-8') as f:
 
 setup(
     name='pyPPG',
-    version='1.0.6',
+    version='1.0.7',
     description='pyPPG: a python toolbox for PPG morphological analysis.',
     author='Marton A. Goda, PhD',
     author_email="marton.goda@campus.technion.ac.il",
