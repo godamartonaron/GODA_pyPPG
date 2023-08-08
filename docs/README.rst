@@ -7,7 +7,7 @@ comprhessive assessment of standard biomarkers.
 Introduction
 ------------
 
-**pyPPG** is a standardised toolbox to analyze long-term finger PPG recordings in real-time. The toolbox extracts state-of-the-art PPG biomarkers (_i.e._ pulse wave features) from PPG signals. The algorithms implemented in the *pyPPG* toolbox have been validated on publicly available PPG databases.
+**pyPPG** is a standardised toolbox to analyze long-term finger PPG recordings in real-time. The toolbox extracts state-of-the-art PPG biomarkers (*i.e.* pulse wave features) from PPG signals. The algorithms implemented in the *pyPPG* toolbox have been validated on publicly available PPG databases.
 Consequently, **pyPPG** offers robust and comprhessive assessment of clinically relevant biomarkers from continuous PPG signals.
 
 Description

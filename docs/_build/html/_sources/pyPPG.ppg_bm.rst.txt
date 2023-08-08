@@ -7,7 +7,7 @@ Submodules
 pyPPG.ppg\_bm.get\_biomarkers module
 ------------------------------------
 
-.. automodule:: pyPPG.ppg_bm.get_biomarkers
+.. automodule:: pyPPG.ppg_bm.biomarker_extractor
    :members:
    :undoc-members:
    :show-inheritance:

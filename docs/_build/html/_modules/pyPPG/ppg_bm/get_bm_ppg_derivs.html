@@ -42,7 +42,12 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">GODA_pyPPG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyPPG</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/PZ_PPG.html">PhysioZoo PPG morphological analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/pyPPG_example.html">pyPPG example code</a></li>
 </ul>
 
         </div>
@@ -70,7 +75,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pyPPG.ppg_bm.get_bm_ppg_derivs</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pyPPG.ppg_bm.get_biomarkers</span> <span class="kn">import</span><span class="o">*</span>
+<span></span><span class="kn">from</span> <span class="nn">pyPPG.ppg_bm.biomarker_extractor</span> <span class="kn">import</span><span class="o">*</span>
 
 <span class="c1">###########################################################################</span>
 <span class="c1">##################### Get Biomarkers of PPG Derivatives ###################</span>
@@ -96,28 +101,33 @@
 <span class="sd">        - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</span>
 
 <span class="sd">    :return biomarkers: dictionary of biomarkers of PPG derivatives</span>
+<span class="sd">    :return biomarkers_lst: list a biomarkers with name, definition and unit</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">biomarkers_lst</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Tu&quot;</span><span class="p">,</span>       <span class="c1"># u-point time, the time between the pulse onset and u-point</span>
-                    <span class="s2">&quot;Tv&quot;</span><span class="p">,</span>       <span class="c1"># v-point time, the time between the pulse onset and v-point</span>
-                    <span class="s2">&quot;Tw&quot;</span><span class="p">,</span>       <span class="c1"># w-point time, the time between the pulse onset and w-point</span>
-                    <span class="s2">&quot;Ta&quot;</span><span class="p">,</span>       <span class="c1"># a-point time, the time between the pulse onset and a-point</span>
-                    <span class="s2">&quot;Tb&quot;</span><span class="p">,</span>       <span class="c1"># b-point time, the time between the pulse onset and b-point</span>
-                    <span class="s2">&quot;Tc&quot;</span><span class="p">,</span>       <span class="c1"># c-point time, the time between the pulse onset and c-point</span>
-                    <span class="s2">&quot;Td&quot;</span><span class="p">,</span>       <span class="c1"># d-point time, the time between the pulse onset and d-point</span>
-                    <span class="s2">&quot;Te&quot;</span><span class="p">,</span>       <span class="c1"># e-point time, the time between the pulse onset and e-point</span>
-                    <span class="s2">&quot;Tf&quot;</span><span class="p">,</span>       <span class="c1"># f-point time, the time between the pulse onset and f-point</span>
-                    <span class="s2">&quot;Tb–c&quot;</span><span class="p">,</span>	    <span class="c1"># b–c interval time, the time between the b-point and c-point</span>
-                    <span class="s2">&quot;Tb–d&quot;</span><span class="p">,</span>	    <span class="c1"># b–d interval time, the time between the b-point and d-point</span>
-                    <span class="s2">&quot;Tp1&quot;</span><span class="p">,</span>	    <span class="c1"># p1-point time, the time between the pulse onset and p1-point</span>
-                    <span class="s2">&quot;Tp2&quot;</span><span class="p">,</span>      <span class="c1"># p2-point time, the time between the pulse onset and p2-point</span>
-                    <span class="s2">&quot;Tp1–dp&quot;</span><span class="p">,</span>   <span class="c1"># p1–dia interval time, the time between the p1-point and diastolic peak</span>
-                    <span class="s2">&quot;Tp2–dp&quot;</span><span class="p">,</span>   <span class="c1"># p2–dia interval time, the time between the p2-point and diastolic peak</span>
+    <span class="n">biomarkers_lst</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="p">[</span><span class="s2">&quot;Tu&quot;</span><span class="p">,</span>       <span class="s2">&quot;u-point time, the time between the pulse onset and u-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tv&quot;</span><span class="p">,</span>       <span class="s2">&quot;v-point time, the time between the pulse onset and v-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tw&quot;</span><span class="p">,</span>       <span class="s2">&quot;w-point time, the time between the pulse onset and w-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Ta&quot;</span><span class="p">,</span>       <span class="s2">&quot;a-point time, the time between the pulse onset and a-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tb&quot;</span><span class="p">,</span>       <span class="s2">&quot;b-point time, the time between the pulse onset and b-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tc&quot;</span><span class="p">,</span>       <span class="s2">&quot;c-point time, the time between the pulse onset and c-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Td&quot;</span><span class="p">,</span>       <span class="s2">&quot;d-point time, the time between the pulse onset and d-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Te&quot;</span><span class="p">,</span>       <span class="s2">&quot;e-point time, the time between the pulse onset and e-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tf&quot;</span><span class="p">,</span>       <span class="s2">&quot;f-point time, the time between the pulse onset and f-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tb-c&quot;</span><span class="p">,</span>	 <span class="s2">&quot;b-c time, the time between the b-point and c-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tb-d&quot;</span><span class="p">,</span>	 <span class="s2">&quot;b-d time, the time between the b-point and d-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tp1&quot;</span><span class="p">,</span>	     <span class="s2">&quot;p1-point time, the time between the pulse onset and p1-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tp2&quot;</span><span class="p">,</span>      <span class="s2">&quot;p2-point time, the time between the pulse onset and p2-point&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tp1-dp&quot;</span><span class="p">,</span>   <span class="s2">&quot;p1-dia time, the time between the p1-point and diastolic peak&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tp2-dp&quot;</span><span class="p">,</span>   <span class="s2">&quot;p2-dia time, the time between the p2-point and diastolic peak&quot;</span><span class="p">,</span> <span class="s2">&quot;[s]&quot;</span><span class="p">],</span>
     <span class="p">]</span>
 
-    <span class="n">df</span><span class="p">,</span> <span class="n">df_biomarkers</span> <span class="o">=</span> <span class="n">get_biomarkers</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">,</span> <span class="n">biomarkers_lst</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;definition&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">]</span>
+    <span class="n">biomarkers_lst</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">biomarkers_lst</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">df_biomarkers</span></div>
+    <span class="n">df</span><span class="p">,</span> <span class="n">df_biomarkers</span> <span class="o">=</span> <span class="n">get_biomarkers</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">,</span> <span class="n">biomarkers_lst</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">df_biomarkers</span><span class="p">,</span> <span class="n">biomarkers_lst</span></div>
 </pre></div>
 
            </div>

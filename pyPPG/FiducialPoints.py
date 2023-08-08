@@ -52,7 +52,7 @@ class FiducialPoints:
         :param correct: a bool for fiducials points corretion
         :type correct: bool
 
-        :return: fiducial points, a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
+        :return: fiducial points, a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
         '''
 
         # 'abp' refers the improved Aboy++, and 'aby' refers the original Aboy peak detector

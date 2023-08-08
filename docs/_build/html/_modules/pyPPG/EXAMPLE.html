@@ -44,6 +44,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">pyPPG</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/PZ_PPG.html">PhysioZoo PPG morphological analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/pyPPG_example.html">pyPPG example code</a></li>
+</ul>
 
         </div>
       </div>
@@ -71,7 +76,6 @@
              
   <h1>Source code for pyPPG.EXAMPLE</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">DataHandling</span> <span class="kn">import</span><span class="o">*</span>
-<span class="kn">from</span> <span class="nn">Preprocessing</span> <span class="kn">import</span><span class="o">*</span>
 <span class="kn">import</span> <span class="nn">FiducialPoints</span> <span class="k">as</span> <span class="nn">Fp</span>
 <span class="kn">import</span> <span class="nn">Biomarkers</span> <span class="k">as</span> <span class="nn">Bm</span>
 <span class="kn">from</span> <span class="nn">Statistics</span> <span class="kn">import</span><span class="o">*</span>
@@ -82,11 +86,12 @@
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
 <span class="c1">###########################################################################</span>
 <span class="c1">################################## EXAMPLE ################################</span>
 <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="example_code"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.EXAMPLE.example_code">[docs]</a><span class="k">def</span> <span class="nf">example_code</span><span class="p">(</span><span class="n">filtering</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">correct</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ppg_example"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.EXAMPLE.ppg_example">[docs]</a><span class="k">def</span> <span class="nf">ppg_example</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">filtering</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">correct</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">savedata</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">savingformat</span><span class="o">=</span><span class="s2">&quot;mat&quot;</span><span class="p">,</span><span class="n">savingfolder</span><span class="o">=</span><span class="s2">&quot;temp_dir&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This is an example code for PPG analysis. The main parts:</span>
 <span class="sd">        1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.</span>
@@ -100,41 +105,70 @@
 <span class="sd">        5) Get Statistics: summary of the 74 PPG biomarkers</span>
 <span class="sd">        6) Save data: save the extracted Fiducial points, Biomarkers, and Statistics into .csv file</span>
 
+<span class="sd">    :param data_path: path of the PPG signal</span>
+<span class="sd">    :type data_path: str</span>
 <span class="sd">    :param filtering: a bool for filtering</span>
-<span class="sd">    :param savefig: a bool for fiducial points saving</span>
+<span class="sd">    :type filtering: bool</span>
+<span class="sd">    :param savefig: a bool for current figure saving</span>
+<span class="sd">    :type savefig: bool</span>
 <span class="sd">    :param correct: a bool for fiducials points corretion</span>
+<span class="sd">    :type correct: bool</span>
+<span class="sd">    :param savedata: a bool for saving fiducial points, biomarkers, and statistics</span>
+<span class="sd">    :type savedata: bool</span>
+<span class="sd">    :param savingformat: file format of the saved date, the provided file formats .mat and .csv</span>
+<span class="sd">    :type savingformat: str</span>
+<span class="sd">    :param savingfolder: location of the saved data</span>
+<span class="sd">    :type savingfolder: str</span>
+
+<span class="sd">    :return: fiducial points, a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">python_executable_path</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">executable</span>
 
     <span class="c1">## Loading a raw PPG signal</span>
-    <span class="n">s</span><span class="o">=</span><span class="n">load_data</span><span class="p">(</span><span class="n">filtering</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">=</span><span class="n">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="n">filtering</span><span class="p">)</span>
 
     <span class="c1">## Get Fiducial points</span>
     <span class="n">fp</span> <span class="o">=</span> <span class="n">Fp</span><span class="o">.</span><span class="n">FiducialPoints</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
     <span class="n">fiducials</span><span class="o">=</span><span class="n">fp</span><span class="o">.</span><span class="n">getFiducialPoints</span><span class="p">(</span><span class="n">correct</span><span class="p">)</span>
 
-    <span class="c1">## Plot Fiducials Points</span>
-    <span class="n">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">,</span><span class="n">savefig</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+        <span class="c1">## Plot Fiducials Points</span>
+        <span class="n">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">)</span>
 
-    <span class="c1">## Get Biomarkers</span>
-    <span class="n">bm</span> <span class="o">=</span> <span class="n">Bm</span><span class="o">.</span><span class="n">Biomarkers</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">)</span>
-    <span class="n">biomarkers</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">getBiomarkers</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">savedata</span><span class="p">:</span>
+        <span class="c1">## Get Biomarkers</span>
+        <span class="n">bm</span> <span class="o">=</span> <span class="n">Bm</span><span class="o">.</span><span class="n">Biomarkers</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">)</span>
+        <span class="n">biomarkers_vals</span><span class="p">,</span> <span class="n">biomarkers_defs</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">getBiomarkers</span><span class="p">()</span>
 
-    <span class="c1">## Get Statistics</span>
-    <span class="n">statistics</span> <span class="o">=</span> <span class="n">Statistics</span><span class="p">(</span><span class="n">fiducials</span><span class="p">[</span><span class="s1">&#39;sp&#39;</span><span class="p">],</span> <span class="n">fiducials</span><span class="p">[</span><span class="s1">&#39;on&#39;</span><span class="p">],</span> <span class="n">biomarkers</span><span class="p">)</span>
+        <span class="c1">## Get Statistics</span>
+        <span class="n">statistics</span> <span class="o">=</span> <span class="n">Statistics</span><span class="p">(</span><span class="n">fiducials</span><span class="p">[</span><span class="s1">&#39;sp&#39;</span><span class="p">],</span> <span class="n">fiducials</span><span class="p">[</span><span class="s1">&#39;on&#39;</span><span class="p">],</span> <span class="n">biomarkers_vals</span><span class="p">)</span>
 
-    <span class="c1">## Save data</span>
-    <span class="n">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">fiducials</span><span class="p">,</span><span class="n">biomarkers</span><span class="p">,</span><span class="n">statistics</span><span class="p">)</span>
+        <span class="c1">## Save data</span>
+        <span class="n">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">fiducials</span><span class="p">,</span><span class="n">biomarkers_vals</span><span class="p">,</span><span class="n">biomarkers_defs</span><span class="p">,</span><span class="n">statistics</span><span class="p">,</span><span class="n">savingformat</span><span class="p">,</span><span class="n">savingfolder</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Program finished&#39;</span><span class="p">)</span></div>
-
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Program finished&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fiducials</span></div>
 
 
 <span class="c1">###########################################################################</span>
 <span class="c1">############################## RUN EXAMPLE CODE ###########################</span>
 <span class="c1">###########################################################################</span>
-<span class="c1">#example_code()</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">input_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">function_name</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">[</span><span class="s1">&#39;function&#39;</span><span class="p">]</span>
+        <span class="n">function_args</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">function_name</span> <span class="o">==</span> <span class="s1">&#39;ppg_example&#39;</span><span class="p">:</span>
+            <span class="n">fiducials</span> <span class="o">=</span> <span class="n">ppg_example</span><span class="p">(</span><span class="o">**</span><span class="n">function_args</span><span class="p">)</span>
+            <span class="n">json_data</span> <span class="o">=</span> <span class="n">fiducials</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;split&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json_data</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid function name&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please provide function name and arguments as JSON string&quot;</span><span class="p">)</span>
+        <span class="n">ppg_example</span><span class="p">(</span><span class="n">savedata</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
            </div>

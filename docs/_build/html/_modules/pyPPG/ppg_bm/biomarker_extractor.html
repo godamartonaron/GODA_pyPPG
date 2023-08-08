@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyPPG.ppg_bm.get_biomarkers &mdash; pyPPG 1.0.0 documentation</title>
+  <title>pyPPG.ppg_bm.biomarker_extractor &mdash; pyPPG 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -42,11 +42,12 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">GODA_pyPPG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyPPG</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/pyPPG_analysis.html">PCG morphological analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/PZ_PPG.html">PhysioZoo PPG morphological analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/pyPPG_example.html">pyPPG example code</a></li>
 </ul>
 
         </div>
@@ -64,7 +65,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">pyPPG.ppg_bm.get_biomarkers</li>
+      <li class="breadcrumb-item active">pyPPG.ppg_bm.biomarker_extractor</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -73,7 +74,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for pyPPG.ppg_bm.get_biomarkers</h1><div class="highlight"><pre>
+  <h1>Source code for pyPPG.ppg_bm.biomarker_extractor</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">dotmap</span> <span class="kn">import</span> <span class="n">DotMap</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -83,7 +84,7 @@
 <span class="c1">####################### PPG biomarkers extraction #########################</span>
 <span class="c1">###########################################################################</span>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG">[docs]</a><span class="k">class</span> <span class="nc">biomarkers_extract_PPG</span><span class="p">:</span>
+<div class="viewcode-block" id="BmExtractor"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor">[docs]</a><span class="k">class</span> <span class="nc">BmExtractor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class that extracts the PPG biomarkers.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -137,7 +138,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Td</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Te</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getSecondDerivitivePoints</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tp1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tp2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getThirdDerivitivePoints</span><span class="p">()</span>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.map_func"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.map_func">[docs]</a>    <span class="k">def</span> <span class="nf">map_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.map_func"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.map_func">[docs]</a>    <span class="k">def</span> <span class="nf">map_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; This function assign for each name of biomarkers a function that calculates it</span>
 
 <span class="sd">        :returns my_funcs: a dictionary where the key is the name of the feature and the value is the function to call</span>
@@ -222,12 +223,12 @@
                     <span class="s2">&quot;Td&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Td</span><span class="p">(),</span>
                     <span class="s2">&quot;Te&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Te</span><span class="p">(),</span>
                     <span class="s2">&quot;Tf&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tf</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tb–c&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tbc</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tb–d&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tbd</span><span class="p">(),</span>
+                    <span class="s2">&quot;Tb-c&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tbc</span><span class="p">(),</span>
+                    <span class="s2">&quot;Tb-d&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tbd</span><span class="p">(),</span>
                     <span class="s2">&quot;Tp1&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tp1</span><span class="p">(),</span>
                     <span class="s2">&quot;Tp2&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tp2</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tp1–dp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tp1_dp</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tp2–dp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tp2_dp</span><span class="p">(),</span>
+                    <span class="s2">&quot;Tp1-dp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tp1_dp</span><span class="p">(),</span>
+                    <span class="s2">&quot;Tp2-dp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tp2_dp</span><span class="p">(),</span>
 
                     <span class="c1"># Derivatives ratios</span>
                     <span class="s2">&quot;Tu/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tu_Tpi</span><span class="p">(),</span>
@@ -263,7 +264,7 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">my_funcs</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_feature_extract_func"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_feature_extract_func">[docs]</a>    <span class="k">def</span> <span class="nf">get_feature_extract_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_feature_extract_func"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_feature_extract_func">[docs]</a>    <span class="k">def</span> <span class="nf">get_feature_extract_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; This function go through the list of biomarkers and call the function that is relevant to calculate it each feature takes two spots in the feature vector: one for the average value and one for its standard deviation.</span>
 
 <span class="sd">            :returns biomarkers_vec: a vector of each feature avg value and std of the patient&quot;&quot;&quot;</span>
@@ -443,13 +444,13 @@
         <span class="n">cst</span> <span class="o">=</span> <span class="n">right_onset_value</span> <span class="o">-</span> <span class="n">left_onset_value</span>
         <span class="k">return</span> <span class="n">cst</span>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getTpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTpi">[docs]</a>    <span class="k">def</span> <span class="nf">getTpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getTpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getTpi">[docs]</a>    <span class="k">def</span> <span class="nf">getTpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tpi which means the Pulse Interval, the time between the pulse onset and pulse offset.</span>
 
 <span class="sd">            :return: Tpi feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_times</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
-<div class="viewcode-block" id="biomarkers_extract_PPG.getTpp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTpp">[docs]</a>    <span class="k">def</span> <span class="nf">getTpp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getTpp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getTpp">[docs]</a>    <span class="k">def</span> <span class="nf">getTpp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tpp means the Peak-to-Peak Interval, the time between two consecutive systolic peaks.</span>
 
 <span class="sd">            :return:  Tpp feature</span>
@@ -457,7 +458,7 @@
         <span class="n">cardiac_period</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_peak_time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_time</span>
         <span class="k">return</span> <span class="n">cardiac_period</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getTsys"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTsys">[docs]</a>    <span class="k">def</span> <span class="nf">getTsys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getTsys"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getTsys">[docs]</a>    <span class="k">def</span> <span class="nf">getTsys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tsys means the Systolic Time, the time between the pulse onset and dicrotic notch.</span>
 
 <span class="sd">        :return: Tsys feature</span>
@@ -466,7 +467,7 @@
         <span class="n">Tsys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tdn</span>
         <span class="k">return</span> <span class="n">Tsys</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getTdia"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTdia">[docs]</a>    <span class="k">def</span> <span class="nf">getTdia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getTdia"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getTdia">[docs]</a>    <span class="k">def</span> <span class="nf">getTdia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tdia means the Diastolic Time, the time between the dicrotic notch and pulse offset.</span>
 
 <span class="sd">        :return: Tdia feature</span>
@@ -475,7 +476,7 @@
         <span class="n">Tdia</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpi</span><span class="p">()</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Tdp</span>
         <span class="k">return</span> <span class="n">Tdia</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getTsp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTsp">[docs]</a>    <span class="k">def</span> <span class="nf">getTsp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getTsp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getTsp">[docs]</a>    <span class="k">def</span> <span class="nf">getTsp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tsp means the Systolic Peak Time, the time between the pulse onset and systolic peak.</span>
 
 <span class="sd">        :return: Tsp feature</span>
@@ -484,7 +485,7 @@
         <span class="n">Tsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_time</span> <span class="o">-</span> <span class="n">left_onset</span>
         <span class="k">return</span> <span class="n">Tsp</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getTdp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getTdp">[docs]</a>    <span class="k">def</span> <span class="nf">getTdp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getTdp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getTdp">[docs]</a>    <span class="k">def</span> <span class="nf">getTdp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tdp means the Diastolic Peak Time, the time between the pulse onset and diastolic peak.</span>
 
 <span class="sd">        :return: Tdp feature</span>
@@ -493,7 +494,7 @@
         <span class="n">Tdp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tdp</span>
         <span class="k">return</span> <span class="n">Tdp</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_deltaT"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_deltaT">[docs]</a>    <span class="k">def</span> <span class="nf">get_deltaT</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_deltaT"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_deltaT">[docs]</a>    <span class="k">def</span> <span class="nf">get_deltaT</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; deltaT means the Time Delay, the time between the systolic peak and diastolic peak.</span>
 
 <span class="sd">        :return: deltaT feature</span>
@@ -502,7 +503,7 @@
         <span class="n">deltaT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tdp</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">getTsp</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">deltaT</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getSystolicWidth_d_percent"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicWidth_d_percent">[docs]</a>    <span class="k">def</span> <span class="nf">getSystolicWidth_d_percent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getSystolicWidth_d_percent"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getSystolicWidth_d_percent">[docs]</a>    <span class="k">def</span> <span class="nf">getSystolicWidth_d_percent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Systolic Width,</span>
 <span class="sd">            the width at x% of the Systolic Peak Amplitude between the pulse onset and systolic peak.</span>
 
@@ -517,7 +518,7 @@
         <span class="k">return</span> <span class="n">Tswx</span></div>
 
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getDiastolicWidth_d_percent"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getDiastolicWidth_d_percent">[docs]</a>    <span class="k">def</span> <span class="nf">getDiastolicWidth_d_percent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getDiastolicWidth_d_percent"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getDiastolicWidth_d_percent">[docs]</a>    <span class="k">def</span> <span class="nf">getDiastolicWidth_d_percent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Diastolic Width,</span>
 <span class="sd">            the width at x% of the Systolic Peak Amplitude between the systolic peak and pulse offset.</span>
 
@@ -531,7 +532,7 @@
         <span class="n">Tdwx</span> <span class="o">=</span> <span class="p">(</span><span class="n">time_of_d</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_time</span>
         <span class="k">return</span> <span class="n">Tdwx</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getSumSW_DW"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSumSW_DW">[docs]</a>    <span class="k">def</span> <span class="nf">getSumSW_DW</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getSumSW_DW"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getSumSW_DW">[docs]</a>    <span class="k">def</span> <span class="nf">getSumSW_DW</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates Pulse Width,</span>
 <span class="sd">            the sum of the Systolic Width and Diastolic Width at x%.</span>
 
@@ -543,14 +544,14 @@
         <span class="n">Tdwx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicWidth_d_percent</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Tswx</span> <span class="o">+</span> <span class="n">Tdwx</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getSystolicPeak"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicPeak">[docs]</a>    <span class="k">def</span> <span class="nf">getSystolicPeak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getSystolicPeak"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getSystolicPeak">[docs]</a>    <span class="k">def</span> <span class="nf">getSystolicPeak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Systolic Peak Amplitude, the difference in amplitude between the pulse onset and systolic peak.</span>
 
 <span class="sd">            :return: Systolic Peak Amplitude feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sys_peak</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">sys_peak</span></div>
-<div class="viewcode-block" id="biomarkers_extract_PPG.getDicroticNotchAmplitude"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getDicroticNotchAmplitude">[docs]</a>    <span class="k">def</span> <span class="nf">getDicroticNotchAmplitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getDicroticNotchAmplitude"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getDicroticNotchAmplitude">[docs]</a>    <span class="k">def</span> <span class="nf">getDicroticNotchAmplitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Dicrotic Notch Amplitude, the difference in amplitude between the pulse onset and the dicrotic notch.</span>
 
 <span class="sd">            :return: Dicrotic Notch Amplitude feature</span>
@@ -559,7 +560,7 @@
         <span class="n">dn_amp</span> <span class="o">=</span> <span class="n">dn_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">dn_amp</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getDiastolicPeak"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getDiastolicPeak">[docs]</a>    <span class="k">def</span> <span class="nf">getDiastolicPeak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getDiastolicPeak"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getDiastolicPeak">[docs]</a>    <span class="k">def</span> <span class="nf">getDiastolicPeak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Diastolic Peak Amplitude, the difference in amplitude between the pulse onset and the diastolic peak.</span>
 
 <span class="sd">            :return: Diastolic Peak Amplitude feature</span>
@@ -569,7 +570,7 @@
         <span class="n">dia_peak</span> <span class="o">=</span> <span class="n">dp_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">dia_peak</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getPulseOffsetAmplitude"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getPulseOffsetAmplitude">[docs]</a>    <span class="k">def</span> <span class="nf">getPulseOffsetAmplitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getPulseOffsetAmplitude"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getPulseOffsetAmplitude">[docs]</a>    <span class="k">def</span> <span class="nf">getPulseOffsetAmplitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Pulse Offset Amplitude, the difference in amplitude between the pulse onset and pulse offset.</span>
 
 <span class="sd">            :return: Pulse Offset Amplitude feature</span>
@@ -579,7 +580,7 @@
         <span class="n">Aoff</span> <span class="o">=</span> <span class="n">offset_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">Aoff</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getAUCpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCpi">[docs]</a>    <span class="k">def</span> <span class="nf">getAUCpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getAUCpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getAUCpi">[docs]</a>    <span class="k">def</span> <span class="nf">getAUCpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function the Area Under Pulse Interval Curve, the area under the pulse wave between pulse onset and pulse offset.</span>
 
 <span class="sd">            :return: AUCpi feature</span>
@@ -598,7 +599,7 @@
 
         <span class="k">return</span> <span class="n">AUCpi</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getAUCsys"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCsys">[docs]</a>    <span class="k">def</span> <span class="nf">getAUCsys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getAUCsys"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getAUCsys">[docs]</a>    <span class="k">def</span> <span class="nf">getAUCsys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Area Under Systolic Curve, the area under the pulse wave between the pulse onset and dicrotic notch.</span>
 
 <span class="sd">            :return: AUCsys feature</span>
@@ -617,7 +618,7 @@
 
         <span class="k">return</span> <span class="n">AUCsys</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getAUCdia"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAUCdia">[docs]</a>    <span class="k">def</span> <span class="nf">getAUCdia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getAUCdia"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getAUCdia">[docs]</a>    <span class="k">def</span> <span class="nf">getAUCdia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates Area Under Diastolic Curve, the area under the pulse wave between the dicrotic notch and pulse offset.</span>
 
 <span class="sd">            :return: AUCdia feature</span>
@@ -625,7 +626,7 @@
         <span class="n">AUCdia</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAUCpi</span><span class="p">()</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">getAUCsys</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">AUCdia</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getIPR"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPR">[docs]</a>    <span class="k">def</span> <span class="nf">getIPR</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getIPR"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getIPR">[docs]</a>    <span class="k">def</span> <span class="nf">getIPR</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Instantaneous Pulse Rate, 60/CP.</span>
 
 <span class="sd">            :return: IPR feature</span>
@@ -633,7 +634,7 @@
         <span class="n">IPR</span> <span class="o">=</span> <span class="mi">60</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">getTpp</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">IPR</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Tsys_Tdia"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsys_Tdia">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tsys_Tdia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Tsys_Tdia"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Tsys_Tdia">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tsys_Tdia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the Systolic Time to the Diastolic Time.</span>
 
 <span class="sd">            :return: Tsys/Tdia feature</span>
@@ -641,7 +642,7 @@
         <span class="n">Tsys_Tdia</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTsys</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">getTdia</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Tsys_Tdia</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Tpwx_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tpwx_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tpwx_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Tpwx_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Tpwx_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tpwx_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the Pulse Width at x% of the Systolic Peak Amplitude to the Systolic Peak Time.</span>
 
 <span class="sd">            :param d: the percentage chosen to calculate the width</span>
@@ -654,7 +655,7 @@
         <span class="n">Tpi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpi</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">width</span><span class="o">/</span><span class="n">Tpi</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Tpwx_Tsp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tpwx_Tsp">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tpwx_Tsp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Tpwx_Tsp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Tpwx_Tsp">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tpwx_Tsp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the Pulse Width at x% of the Systolic Peak Amplitude to the Systolic Peak Time.</span>
 
 <span class="sd">            :param d: the percentage chosen to calculate the width</span>
@@ -667,7 +668,7 @@
         <span class="n">Tsp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSystolicPeakTime</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Tpwx</span><span class="o">/</span><span class="n">Tsp</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Tdwx_Tswx"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tdwx_Tswx">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tdwx_Tswx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Tdwx_Tswx"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Tdwx_Tswx">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tdwx_Tswx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the Diastolic Width to the Systolic Width at x% width.</span>
 
 <span class="sd">            :param d: the percentage chosen to calculate the width</span>
@@ -678,7 +679,7 @@
         <span class="n">Tdwx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicWidth_d_percent</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Tdwx</span><span class="o">/</span><span class="n">Tswx</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Tsp_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsp_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tsp_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Tsp_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Tsp_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tsp_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the Systolic Peak Time to the Pulse Interval</span>
 
 <span class="sd">            :return: Tsp/Tpi feature</span>
@@ -687,7 +688,7 @@
         <span class="n">Tpi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpi</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Tsp</span><span class="o">/</span><span class="n">Tpi</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Asp_Aoff"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_Aoff">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Asp_Aoff</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Asp_Aoff"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Asp_Aoff">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Asp_Aoff</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the Systolic Peak Time to the Pulse Interval</span>
 
 <span class="sd">            :return: Asp/Aoff feature</span>
@@ -696,14 +697,14 @@
         <span class="n">Aoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">Asp</span><span class="o">/</span><span class="n">Aoff</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Adp_Asp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Adp_Asp">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Adp_Asp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Adp_Asp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Adp_Asp">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Adp_Asp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates Reflection Index, the ratio of the Diastolic Peak Amplitude to the Systolic Peak Amplitude.</span>
 
 <span class="sd">            :return: Reflection Index feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">RI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicPeak</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">getSystolicPeak</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">RI</span></div>
-<div class="viewcode-block" id="biomarkers_extract_PPG.getIPA"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPA">[docs]</a>    <span class="k">def</span> <span class="nf">getIPA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getIPA"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getIPA">[docs]</a>    <span class="k">def</span> <span class="nf">getIPA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Inflection Point Area, the ratio of the Area Under Diastolic Curve to the Area Under Systolic Curve.</span>
 
 <span class="sd">            :return: IPA feature</span>
@@ -711,14 +712,14 @@
         <span class="n">IPA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAUCdia</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">getAUCsys</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">IPA</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Tsp_Asp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tsp_Asp">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tsp_Asp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Tsp_Asp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Tsp_Asp">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tsp_Asp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the Systolic Peak Time to the Systolic Peak Amplitude.</span>
 
 <span class="sd">            :return: Tsp/Asp feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTsp</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">getSystolicPeak</span><span class="p">()</span></div>
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Asp_deltaT"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_deltaT">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Asp_deltaT</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Asp_deltaT"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Asp_deltaT">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Asp_deltaT</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Stiffness Index, the ratio of the Systolic Peak Amplitude to the Time Delay.</span>
 
 <span class="sd">            :return: Stiffness Index feature</span>
@@ -726,7 +727,7 @@
         <span class="n">SI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSystolicPeak</span><span class="p">()</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getTdp</span><span class="p">()</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">getTsp</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">SI</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Asp_TpiTsp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Asp_TpiTsp">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Asp_TpiTsp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Asp_TpiTsp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Asp_TpiTsp">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Asp_TpiTsp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the Systolic Peak Amplitude to the difference between the Pulse Interval and Systolic Peak Time.</span>
 
 <span class="sd">            :return: Asp/(Tpi-Tsp)</span>
@@ -737,7 +738,7 @@
         <span class="k">return</span> <span class="n">Asp</span><span class="o">/</span><span class="p">(</span><span class="n">Tpi</span><span class="o">-</span><span class="n">Tsp</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_u"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_u">[docs]</a>    <span class="k">def</span> <span class="nf">get_u</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_u"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_u">[docs]</a>    <span class="k">def</span> <span class="nf">get_u</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; u means the u-point sample, the sample between the pulse onset and u-point.</span>
 
 <span class="sd">            :return: u feature</span>
@@ -745,105 +746,105 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span></div>
 
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_v"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_v">[docs]</a>    <span class="k">def</span> <span class="nf">get_v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_v"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_v">[docs]</a>    <span class="k">def</span> <span class="nf">get_v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; v means the v-point sample, the sample between the pulse onset and v-point.</span>
 
 <span class="sd">            :return: v feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_w"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_w">[docs]</a>    <span class="k">def</span> <span class="nf">get_w</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_w"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_w">[docs]</a>    <span class="k">def</span> <span class="nf">get_w</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; w means the w-point sample, the sample between the pulse onset and w-point.</span>
 
 <span class="sd">            :return: w feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_a"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_a">[docs]</a>    <span class="k">def</span> <span class="nf">get_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_a"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_a">[docs]</a>    <span class="k">def</span> <span class="nf">get_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; a means the a-point sample, the sample between the pulse onset and a-point.</span>
 
 <span class="sd">            :return: a feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_b"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_b">[docs]</a>    <span class="k">def</span> <span class="nf">get_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_b"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_b">[docs]</a>    <span class="k">def</span> <span class="nf">get_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; b means the b-point sample, the sample between the pulse onset and b-point.</span>
 
 <span class="sd">            :return: b feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_c"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_c">[docs]</a>    <span class="k">def</span> <span class="nf">get_c</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_c"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_c">[docs]</a>    <span class="k">def</span> <span class="nf">get_c</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; c means the c-point sample, the sample between the pulse onset and c-point.</span>
 
 <span class="sd">            :return: c feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_d"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_d">[docs]</a>    <span class="k">def</span> <span class="nf">get_d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_d"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_d">[docs]</a>    <span class="k">def</span> <span class="nf">get_d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; d means the d-point sample, the sample between the pulse onset and d-point.</span>
 
 <span class="sd">            :return: d feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_e"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_e">[docs]</a>    <span class="k">def</span> <span class="nf">get_e</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_e"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_e">[docs]</a>    <span class="k">def</span> <span class="nf">get_e</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; e means the e-point sample, the sample between the pulse onset and e-point.</span>
 
 <span class="sd">            :return: e feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">e</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_f"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_f">[docs]</a>    <span class="k">def</span> <span class="nf">get_f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_f"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_f">[docs]</a>    <span class="k">def</span> <span class="nf">get_f</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; f means the f-point sample, the sample between the pulse onset and f-point.</span>
 
 <span class="sd">            :return: f feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Tu"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tu">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Tu"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Tu">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tu means the u-point time, the time between the pulse onset and u-point.</span>
 
 <span class="sd">            :return: Tu feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tu</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Tv"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tv">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Tv"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Tv">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tv means the v-point time, the time between the pulse onset and v-point.</span>
 
 <span class="sd">            :return: Tv feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tv</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Tw"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tw">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Tw"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Tw">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tw means the v-point time, the time between the pulse onset and w-point.</span>
 
 <span class="sd">            :return: Tw feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tw</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Ta"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Ta">[docs]</a>    <span class="k">def</span> <span class="nf">get_Ta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Ta"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Ta">[docs]</a>    <span class="k">def</span> <span class="nf">get_Ta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Ta means the a-point time, the time between the pulse onset and a-point.</span>
 
 <span class="sd">            :return: Ta feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ta</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Tb"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tb">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Tb"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Tb">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tb means the b-point time, the time between the pulse onset and b-point.</span>
 
 <span class="sd">            :return: Tb feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tb</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Tc"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tc">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Tc"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Tc">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tc means the c-point time, the time between the pulse onset and c-point.</span>
 
 <span class="sd">            :return: Tb feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tc</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Td"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Td">[docs]</a>    <span class="k">def</span> <span class="nf">get_Td</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Td"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Td">[docs]</a>    <span class="k">def</span> <span class="nf">get_Td</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Td means the d-point time, the time between the pulse onset and d-point.</span>
 
 <span class="sd">            :return: Td feature</span>
@@ -851,49 +852,49 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Td</span></div>
 
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Te"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Te">[docs]</a>    <span class="k">def</span> <span class="nf">get_Te</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Te"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Te">[docs]</a>    <span class="k">def</span> <span class="nf">get_Te</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Te means the e-point time, the time between the pulse onset and e-point.</span>
 
 <span class="sd">            :return: Te feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Te</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Tf"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tf">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Tf"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Tf">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tf means the f-point time, the time between the pulse onset and f-point.</span>
 
 <span class="sd">            :return: Tf feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tf</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Tbc"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tbc">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tbc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Tbc"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Tbc">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tbc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tbc means the b–c time, the time between the b-point and c-point.</span>
 
 <span class="sd">            :return: Tbc feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tc</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Tb</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Tbd"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tbd">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tbd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Tbd"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Tbd">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tbd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tbd means the b–d time, the time between the b-point and d-point.</span>
 
 <span class="sd">            :return: Tbd feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Td</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tb</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Tp1"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp1">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tp1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Tp1"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Tp1">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tp1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tp1 means the p1-point time, the time between the pulse onset and p1-point.</span>
 
 <span class="sd">            :return: Tp1 feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tp1</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Tp2"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp2">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tp2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Tp2"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Tp2">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tp2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Tp2 means the p1-point time, the time between the pulse onset and p2-point.</span>
 
 <span class="sd">            :return: Tp2 feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tp2</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Tp1_dp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp1_dp">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tp1_dp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Tp1_dp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Tp1_dp">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tp1_dp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculatesthe p1–dia time, the time between the p1-point and diastolic peak.</span>
 
 <span class="sd">            :return: Tdia-Tp1 feature</span>
@@ -901,7 +902,7 @@
         <span class="n">Tp1_dia</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span>
         <span class="k">return</span> <span class="n">Tp1_dia</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_Tp2_dp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_Tp2_dp">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tp2_dp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_Tp2_dp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_Tp2_dp">[docs]</a>    <span class="k">def</span> <span class="nf">get_Tp2_dp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculatesthe p2–dia time, the time between the p2-point and diastolic peak.</span>
 
 <span class="sd">            :return: Tdia-Tp2 feature</span>
@@ -910,7 +911,7 @@
         <span class="k">return</span> <span class="n">Tp2_dia</span></div>
 
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Tu_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tu_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tu_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Tu_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Tu_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tu_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the u-point time to the Pulse Interval.</span>
 
 <span class="sd">            :return: Tu/Tpi feature</span>
@@ -919,7 +920,7 @@
         <span class="k">return</span> <span class="n">T1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpp</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Tv_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tv_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tv_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Tv_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Tv_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tv_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the v-point time to the Pulse Interval.</span>
 
 <span class="sd">            :return: Tv/Tpi feature</span>
@@ -927,7 +928,7 @@
         <span class="n">Tv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tv</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Tv</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpp</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Tw_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tw_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tw_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Tw_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Tw_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tw_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the w-point time to the Pulse Interval.</span>
 
 <span class="sd">            :return: Tw/Tpi feature</span>
@@ -935,7 +936,7 @@
         <span class="n">Tw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tw</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Tw</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpp</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Ta_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ta_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Ta_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Ta_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Ta_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Ta_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the a-point time to the Pulse Interval.</span>
 
 <span class="sd">            :return: Ta/Tpi feature</span>
@@ -943,7 +944,7 @@
         <span class="n">Ta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Ta</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Ta</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpp</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Tb_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tb_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tb_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Tb_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Tb_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tb_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the b-point time to the Pulse Interval.</span>
 
 <span class="sd">            :return: Tb/Tpi feature</span>
@@ -951,7 +952,7 @@
         <span class="n">Tb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tb</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Tb</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpp</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Tc_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tc_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tc_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Tc_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Tc_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tc_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the c-point time to the Pulse Interval.</span>
 
 <span class="sd">            :return: Tc/Tpi feature</span>
@@ -959,7 +960,7 @@
         <span class="n">Tc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tc</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Tc</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpp</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Td_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Td_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Td_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Td_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Td_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Td_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the d-point time to the Pulse Interval.</span>
 
 <span class="sd">            :return: Td/Tpi feature</span>
@@ -967,7 +968,7 @@
         <span class="n">Td</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Td</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Td</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpp</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Te_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Te_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Te_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Te_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Te_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Te_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the e-point time to the Pulse Interval.</span>
 
 <span class="sd">            :return: Te/Tpi feature</span>
@@ -975,7 +976,7 @@
         <span class="n">Te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Te</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Te</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpp</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Tf_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Tf_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tf_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Tf_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Tf_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Tf_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the f-point time to the Pulse Interval.</span>
 
 <span class="sd">            :return: Tf/Tpi feature</span>
@@ -983,7 +984,7 @@
         <span class="n">Tf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tf</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Tf</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpp</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_TuTa_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_TuTa_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_TuTa_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_TuTa_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_TuTa_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_TuTa_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the difference between the u-point time and a-point time to the Pulse Interval.</span>
 
 <span class="sd">            :return: (Tu-Ta)/Tpi feature</span>
@@ -993,7 +994,7 @@
         <span class="n">Tpi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpi</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Tu</span> <span class="o">-</span> <span class="n">Ta</span><span class="p">)</span> <span class="o">/</span> <span class="n">Tpi</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_TvTb_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_TvTb_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_TvTb_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_TvTb_Tpi"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_TvTb_Tpi">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_TvTb_Tpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the difference between the v-point time and b-point time to the Pulse Interval.</span>
 
 <span class="sd">            :return: (Tv-Tb)/Tpi</span>
@@ -1003,7 +1004,7 @@
         <span class="n">Tpi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpi</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Tv</span><span class="o">-</span><span class="n">Tb</span><span class="p">)</span><span class="o">/</span><span class="n">Tpi</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Au_Asp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Au_Asp">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Au_Asp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Au_Asp"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Au_Asp">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Au_Asp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; This function calculates the ratio of the u-point amplitude to the Systolic Peak Amplitude.</span>
 
 <span class="sd">            :return: Au/Asp feature</span>
@@ -1012,7 +1013,7 @@
         <span class="n">sp_amp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_value</span>
         <span class="k">return</span> <span class="n">u_max</span> <span class="o">/</span> <span class="n">sp_amp</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Av_Au"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Av_Au">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Av_Au</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Av_Au"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Av_Au">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Av_Au</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; This function calculates the ratio of the v-point amplitude to the u-point amplitude.</span>
 
 <span class="sd">            :return: Av/Au feature</span>
@@ -1021,7 +1022,7 @@
         <span class="n">v_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_v</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">v_min</span> <span class="o">/</span> <span class="n">u_max</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Aw_Au"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Aw_Au">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Aw_Au</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Aw_Au"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Aw_Au">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Aw_Au</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; This function calculates the ratio of the w-point amplitude to the u-point amplitude.</span>
 
 <span class="sd">            :return: Aw/Au feature</span>
@@ -1030,7 +1031,7 @@
         <span class="n">w_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_w</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">w_max</span> <span class="o">/</span> <span class="n">u_max</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Ab_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ab_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Ab_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Ab_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Ab_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Ab_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; This function calculates the ratio of the b-point amplitude to the a-point amplitude.</span>
 
 <span class="sd">            :return: Ab/Aa feature</span>
@@ -1039,7 +1040,7 @@
         <span class="n">b_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">b_min</span> <span class="o">/</span> <span class="n">a_max</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Ac_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ac_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Ac_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Ac_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Ac_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Ac_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; This function calculates the ratio of the c-point amplitude to the a-point amplitude.</span>
 
 <span class="sd">            :return: Ac/Aa feature</span>
@@ -1048,7 +1049,7 @@
         <span class="n">c_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">c_max</span> <span class="o">/</span> <span class="n">a_max</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Ad_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ad_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Ad_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Ad_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Ad_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Ad_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; This function calculates the ratio of the d-point amplitude to the a-point amplitude.</span>
 
 <span class="sd">            :return: Ad/Aa feature</span>
@@ -1057,7 +1058,7 @@
         <span class="n">d_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">d_min</span> <span class="o">/</span> <span class="n">a_max</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Ae_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ae_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Ae_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Ae_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Ae_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Ae_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; This function calculates the ratio of the e-point amplitude to the a-point amplitude.</span>
 
 <span class="sd">            :return: Ae/Aa feature</span>
@@ -1066,7 +1067,7 @@
         <span class="n">e_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">e_max</span> <span class="o">/</span> <span class="n">a_max</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Af_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Af_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Af_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Af_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Af_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Af_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; This function calculates the ratio of the f-point amplitude to the a-point amplitude.</span>
 
 <span class="sd">            :return: Af/Aa feature</span>
@@ -1075,7 +1076,7 @@
         <span class="n">f_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_f</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">f_min</span> <span class="o">/</span> <span class="n">a_max</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_Ap2_Ap1"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_Ap2_Ap1">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Ap2_Ap1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_Ap2_Ap1"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_Ap2_Ap1">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_Ap2_Ap1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the p2-point amplitude to the p1-point amplitude.</span>
 
 <span class="sd">            :return: Ap2/Ap1 feature</span>
@@ -1083,7 +1084,7 @@
         <span class="n">Rp2p1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">]</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">Rp2p1</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_AcAb_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_AcAb_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_AcAb_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_AcAb_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_AcAb_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_AcAb_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the difference between the b-point amplitude and c-point amplitude to the a-point amplitude.</span>
 
 <span class="sd">            :return: (Ac-Ab)/Aa feature</span>
@@ -1093,7 +1094,7 @@
         <span class="n">Ac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Ac</span><span class="o">-</span><span class="n">Ab</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.get_ratio_AdAb_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.get_ratio_AdAb_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_AdAb_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.get_ratio_AdAb_Aa"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.get_ratio_AdAb_Aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_ratio_AdAb_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the difference between the b-point amplitude and d-point amplitude to the a-point amplitude.</span>
 
 <span class="sd">            :return: (Ad-Ab)/Aa feature</span>
@@ -1103,7 +1104,7 @@
         <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Ad</span><span class="o">-</span><span class="n">Ab</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getAGI"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGI">[docs]</a>    <span class="k">def</span> <span class="nf">getAGI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getAGI"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getAGI">[docs]</a>    <span class="k">def</span> <span class="nf">getAGI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Aging Index.</span>
 
 <span class="sd">            :return: (Ab-Ac-Ad-Ae)/Aa feature</span>
@@ -1115,7 +1116,7 @@
         <span class="n">Ae</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Ab</span><span class="o">-</span><span class="n">Ac</span><span class="o">-</span><span class="n">Ad</span><span class="o">-</span><span class="n">Ae</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getAGImod"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGImod">[docs]</a>    <span class="k">def</span> <span class="nf">getAGImod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getAGImod"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getAGImod">[docs]</a>    <span class="k">def</span> <span class="nf">getAGImod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Modified Aging Index.</span>
 
 <span class="sd">            :return: (Ab-Ac-Ad)/Aa feature</span>
@@ -1126,7 +1127,7 @@
         <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Ab</span><span class="o">-</span><span class="n">Ac</span><span class="o">-</span><span class="n">Ad</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getAGIinf"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGIinf">[docs]</a>    <span class="k">def</span> <span class="nf">getAGIinf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getAGIinf"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getAGIinf">[docs]</a>    <span class="k">def</span> <span class="nf">getAGIinf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Informal Aging Index.</span>
 
 <span class="sd">            :return: (Ab-Ae)/Aa feature</span>
@@ -1136,7 +1137,7 @@
         <span class="n">Ae</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Ab</span><span class="o">-</span><span class="n">Ae</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getAI"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAI">[docs]</a>    <span class="k">def</span> <span class="nf">getAI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getAI"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getAI">[docs]</a>    <span class="k">def</span> <span class="nf">getAI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Augmentation Index, (PPG(Tp2) − PPG(Tp1))/Asp.</span>
 
 <span class="sd">            :return: AI feature</span>
@@ -1144,7 +1145,7 @@
         <span class="n">AI</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">])</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">peak_value</span>
         <span class="k">return</span> <span class="n">AI</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getRIp1"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRIp1">[docs]</a>    <span class="k">def</span> <span class="nf">getRIp1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getRIp1"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getRIp1">[docs]</a>    <span class="k">def</span> <span class="nf">getRIp1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Reflection Index of p1, Adp/(PPG(Tp1) − PPG(Tpi(0))).</span>
 
 <span class="sd">            :return: RIp1 feature</span>
@@ -1152,7 +1153,7 @@
         <span class="n">RIp1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicPeak</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">RIp1</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getRIp2"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRIp2">[docs]</a>    <span class="k">def</span> <span class="nf">getRIp2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getRIp2"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getRIp2">[docs]</a>    <span class="k">def</span> <span class="nf">getRIp2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Reflection Index of p2, Adp/(PPG(Tp2) − PPG(Tpi(0))).</span>
 
 <span class="sd">            :return: RIp2 feature</span>
@@ -1160,7 +1161,7 @@
         <span class="n">RIp2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicPeak</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">RIp2</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getSC"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSC">[docs]</a>    <span class="k">def</span> <span class="nf">getSC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getSC"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getSC">[docs]</a>    <span class="k">def</span> <span class="nf">getSC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Spring Constant, PPG&quot;(Tsp)/((Asp-Au)/Asp).</span>
 
 <span class="sd">            :return: SC feature</span>
@@ -1171,14 +1172,14 @@
         <span class="n">SC</span> <span class="o">=</span> <span class="n">ddxSPA</span><span class="o">/</span><span class="p">((</span><span class="n">SPA</span><span class="o">-</span><span class="n">MS</span><span class="p">)</span><span class="o">/</span><span class="n">SPA</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">SC</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getIPAD"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getIPAD">[docs]</a>    <span class="k">def</span> <span class="nf">getIPAD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getIPAD"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getIPAD">[docs]</a>    <span class="k">def</span> <span class="nf">getIPAD</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Inflection point area plus normalised d-point amplitude, AUCdia/AUCsys+Ad/Aa.</span>
 
 <span class="sd">            :return: IPAD feature</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">IPAD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAUCdia</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">getAUCsys</span><span class="p">()</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Ad_Aa</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">IPAD</span></div>
-<div class="viewcode-block" id="biomarkers_extract_PPG.getRatioSW_DW"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getRatioSW_DW">[docs]</a>    <span class="k">def</span> <span class="nf">getRatioSW_DW</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getRatioSW_DW"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getRatioSW_DW">[docs]</a>    <span class="k">def</span> <span class="nf">getRatioSW_DW</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of systolic and diastolic width at d percent of the pulse height</span>
 
 <span class="sd">            :param d: the percentage chosen to calculate the width</span>
@@ -1190,7 +1191,7 @@
         <span class="n">ratio</span> <span class="o">=</span> <span class="n">dw_d</span><span class="o">/</span><span class="n">sw_d</span>
         <span class="k">return</span> <span class="n">ratio</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getPIR"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getPIR">[docs]</a>    <span class="k">def</span> <span class="nf">getPIR</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getPIR"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getPIR">[docs]</a>    <span class="k">def</span> <span class="nf">getPIR</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio between the peak value and the right onset value</span>
 
 <span class="sd">            :return: pir feature</span>
@@ -1198,7 +1199,7 @@
         <span class="n">pir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_value</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">onsets_values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">pir</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getMS"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getMS">[docs]</a>    <span class="k">def</span> <span class="nf">getMS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getMS"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getMS">[docs]</a>    <span class="k">def</span> <span class="nf">getMS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates Maximum slope, PPG&#39;(u)/(PPG(systolic peak) − PPG(systolic onset))</span>
 
 <span class="sd">            :return: MS feature</span>
@@ -1206,7 +1207,7 @@
         <span class="n">MS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">MS</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getUpslope"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getUpslope">[docs]</a>    <span class="k">def</span> <span class="nf">getUpslope</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getUpslope"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getUpslope">[docs]</a>    <span class="k">def</span> <span class="nf">getUpslope</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates Systolic Upslope between the left onset and the systolic peak.</span>
 
 <span class="sd">            :return: Systolic Upslope</span>
@@ -1217,7 +1218,7 @@
         <span class="n">slope_denom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_time</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">-</span> <span class="n">left_onset_time</span>
         <span class="k">return</span> <span class="n">slope_numer</span><span class="o">/</span><span class="n">slope_denom</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getdiffVal"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getdiffVal">[docs]</a>    <span class="k">def</span> <span class="nf">getdiffVal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getdiffVal"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getdiffVal">[docs]</a>    <span class="k">def</span> <span class="nf">getdiffVal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the time between the left onset and the systolic peak.</span>
 
 <span class="sd">            :return: left onset and systolic peak time</span>
@@ -1226,7 +1227,7 @@
         <span class="n">diff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_value</span> <span class="o">-</span> <span class="n">left_onset_value</span>
         <span class="k">return</span> <span class="n">diff</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getSTT"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSTT">[docs]</a>    <span class="k">def</span> <span class="nf">getSTT</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getSTT"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getSTT">[docs]</a>    <span class="k">def</span> <span class="nf">getSTT</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; STT means slope transit time, which based on geometrical considerations of the PPG pulse wave to account for simultaneous.</span>
 
 <span class="sd">            :return: STT feature</span>
@@ -1235,14 +1236,14 @@
         <span class="n">A</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getdiffVal</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">A</span><span class="o">/</span><span class="n">upslope</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getSystolicPeakTime"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicPeakTime">[docs]</a>    <span class="k">def</span> <span class="nf">getSystolicPeakTime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getSystolicPeakTime"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getSystolicPeakTime">[docs]</a>    <span class="k">def</span> <span class="nf">getSystolicPeakTime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Systolic Peak Time means the distance between the consecutive Systolic Peaks</span>
 
 <span class="sd">        :return: Systolic Peak Times</span>
 <span class="sd">         &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getSystolicPeakOutputCurve"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getSystolicPeakOutputCurve">[docs]</a>    <span class="k">def</span> <span class="nf">getSystolicPeakOutputCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getSystolicPeakOutputCurve"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getSystolicPeakOutputCurve">[docs]</a>    <span class="k">def</span> <span class="nf">getSystolicPeakOutputCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Peak time divided by systolic amplitude</span>
 
 <span class="sd">        :return: sys_peak_time/sys_amplitude</span>
@@ -1251,7 +1252,7 @@
         <span class="n">sys_amplitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSystolicPeak</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">sys_peak_time</span><span class="o">/</span><span class="n">sys_amplitude</span></div>
 
-<div class="viewcode-block" id="biomarkers_extract_PPG.getAGIext"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.biomarkers_extract_PPG.getAGIext">[docs]</a>    <span class="k">def</span> <span class="nf">getAGIext</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmExtractor.getAGIext"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.BmExtractor.getAGIext">[docs]</a>    <span class="k">def</span> <span class="nf">getAGIext</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Extended Aging Index.</span>
 
 <span class="sd">            :return: (Ab-Ac-Ad-Ae-Af)/Aa feature</span>
@@ -1267,8 +1268,7 @@
 <span class="c1">###########################################################################</span>
 <span class="c1">############################# Get PPG biomarkers ############################</span>
 <span class="c1">###########################################################################</span>
-
-<div class="viewcode-block" id="get_biomarkers"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_biomarkers.get_biomarkers">[docs]</a><span class="k">def</span> <span class="nf">get_biomarkers</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">,</span> <span class="n">biomarkers_lst</span><span class="p">):</span>
+<div class="viewcode-block" id="get_biomarkers"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.biomarker_extractor.get_biomarkers">[docs]</a><span class="k">def</span> <span class="nf">get_biomarkers</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">,</span> <span class="n">biomarkers_lst</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The function calculates the biomedical biomarkers of PPG signal.</span>
 
@@ -1339,7 +1339,7 @@
             <span class="c1">#         plt.show()</span>
             <span class="c1">#         print(peak_value,peak_time,next_peak_value,next_peak_time,onsets_values,onsets_times)</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">biomarkers_extractor</span> <span class="o">=</span> <span class="n">biomarkers_extract_PPG</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">peak_value</span><span class="p">,</span> <span class="n">peak_time</span><span class="p">,</span> <span class="n">next_peak_value</span><span class="p">,</span> <span class="n">next_peak_time</span><span class="p">,</span>
+                <span class="n">biomarkers_extractor</span> <span class="o">=</span> <span class="n">BmExtractor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">peak_value</span><span class="p">,</span> <span class="n">peak_time</span><span class="p">,</span> <span class="n">next_peak_value</span><span class="p">,</span> <span class="n">next_peak_time</span><span class="p">,</span>
                                                           <span class="n">onsets_values</span><span class="p">,</span> <span class="n">onsets_times</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">biomarkers_lst</span><span class="p">,</span><span class="n">temp_fiducials</span><span class="p">)</span>
                 <span class="n">biomarkers_vec</span> <span class="o">=</span> <span class="n">biomarkers_extractor</span><span class="o">.</span><span class="n">get_feature_extract_func</span><span class="p">()</span>
                 <span class="n">lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">biomarkers_vec</span><span class="p">)</span>

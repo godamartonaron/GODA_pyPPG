@@ -19,7 +19,7 @@ pyPPG.egg-info/top_level.txt
 pyPPG/pack_ppg/_ErrorHandler.py
 pyPPG/pack_ppg/__init__.py
 pyPPG/ppg_bm/__init__.py
-pyPPG/ppg_bm/get_biomarkers.py
+pyPPG/ppg_bm/biomarker_extractor.py
 pyPPG/ppg_bm/get_bm_derivs_ratios.py
 pyPPG/ppg_bm/get_bm_ppg_derivs.py
 pyPPG/ppg_bm/get_bm_ppg_sig.py

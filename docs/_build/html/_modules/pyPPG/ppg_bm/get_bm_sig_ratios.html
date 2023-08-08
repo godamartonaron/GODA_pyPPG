@@ -42,7 +42,12 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">GODA_pyPPG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyPPG</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/PZ_PPG.html">PhysioZoo PPG morphological analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/pyPPG_example.html">pyPPG example code</a></li>
 </ul>
 
         </div>
@@ -70,7 +75,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pyPPG.ppg_bm.get_bm_sig_ratios</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pyPPG.ppg_bm.get_biomarkers</span> <span class="kn">import</span><span class="o">*</span>
+<span></span><span class="kn">from</span> <span class="nn">pyPPG.ppg_bm.biomarker_extractor</span> <span class="kn">import</span><span class="o">*</span>
 
 <span class="c1">###########################################################################</span>
 <span class="c1">######################### Get Ratios of PPG Signal ########################</span>
@@ -97,35 +102,40 @@
 <span class="sd">        - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</span>
 
 <span class="sd">    :return biomarkers: dictionary of biomarkers of Signal ratios</span>
+<span class="sd">    :return biomarkers_lst: list a biomarkers with name, definition and unit</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">biomarkers_lst</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;IPR&quot;</span><span class="p">,</span>          <span class="c1"># Instantaneous Pulse Rate, 60 / Tpi</span>
-                    <span class="s2">&quot;Tsys/Tdia&quot;</span><span class="p">,</span>    <span class="c1"># The ratio of the Systolic Time to the Diastolic Time</span>
-                    <span class="s2">&quot;Tpw25/Tpi&quot;</span><span class="p">,</span>    <span class="c1"># The ratio of the Pulse Width at 25% of the Systolic Peak Amplitude to the Pulse Interval</span>
-                    <span class="s2">&quot;Tpw50/Tpi&quot;</span><span class="p">,</span>    <span class="c1"># The ratio of the Pulse Width at 50% of the Systolic Peak Amplitude to the Pulse Interval</span>
-                    <span class="s2">&quot;Tpw75/Tpi&quot;</span><span class="p">,</span>    <span class="c1"># The ratio of the Pulse Width at 75% of the Systolic Peak Amplitude to the Pulse Interval</span>
-                    <span class="s2">&quot;Tpw25/Tsp&quot;</span><span class="p">,</span>    <span class="c1"># The ratio of the Pulse Width at 25% of the Systolic Peak Amplitude to the Systolic Peak Time</span>
-                    <span class="s2">&quot;Tpw50/Tsp&quot;</span><span class="p">,</span>    <span class="c1"># The ratio of the Pulse Width at 50% of the Systolic Peak Amplitude to the Systolic Peak Time</span>
-                    <span class="s2">&quot;Tpw75/Tsp&quot;</span><span class="p">,</span>    <span class="c1"># The ratio of the Pulse Width at 75% of the Systolic Peak Amplitude to the Systolic Peak Time</span>
-                    <span class="s2">&quot;Tdw10/Tsw10&quot;</span><span class="p">,</span>  <span class="c1"># The ratio of the Diastolic Width to the Systolic Width at 10% width</span>
-                    <span class="s2">&quot;Tdw25/Tsw25&quot;</span><span class="p">,</span>  <span class="c1"># The ratio of the Diastolic Width to the Systolic Width at 25% width</span>
-                    <span class="s2">&quot;Tdw33/Tsw33&quot;</span><span class="p">,</span>  <span class="c1"># The ratio of the Diastolic Width to the Systolic Width at 33% width</span>
-                    <span class="s2">&quot;Tdw50/Tsw50&quot;</span><span class="p">,</span>  <span class="c1"># The ratio of the Diastolic Width to the Systolic Width at 50% width</span>
-                    <span class="s2">&quot;Tdw66/Tsw66&quot;</span><span class="p">,</span>  <span class="c1"># The ratio of the Diastolic Width to the Systolic Width at 66% width</span>
-                    <span class="s2">&quot;Tdw75/Tsw75&quot;</span><span class="p">,</span>  <span class="c1"># The ratio of the Diastolic Width to the Systolic Width at 75% width</span>
-                    <span class="s2">&quot;Tdw90/Tsw90&quot;</span><span class="p">,</span>  <span class="c1"># The ratio of the Diastolic Width to the Systolic Width at 90% width</span>
-                    <span class="s2">&quot;Tsp/Tpi&quot;</span><span class="p">,</span>      <span class="c1"># The ratio of the Systolic Peak Time to the Pulse Interval</span>
-                    <span class="s2">&quot;Asp/Aoff&quot;</span><span class="p">,</span>     <span class="c1"># The ratio of the Systolic Peak Amplitude to the Pulse Offset Amplitude</span>
-                    <span class="s2">&quot;Adp/Asp&quot;</span><span class="p">,</span>      <span class="c1"># Reflection Index, the ratio of the Diastolic Peak Amplitude to the Systolic Peak Amplitude</span>
-                    <span class="s2">&quot;IPA&quot;</span><span class="p">,</span>          <span class="c1"># Inflection Point Area, the ratio of the Area Under Diastolic Curve to the Area Under Systolic Curve</span>
-                    <span class="s2">&quot;Tsp/Asp&quot;</span><span class="p">,</span>      <span class="c1"># The ratio of the Systolic Peak Time to the Systolic Peak Amplitude</span>
-                    <span class="s2">&quot;Asp/deltaT&quot;</span><span class="p">,</span>   <span class="c1"># Stiffness Index, the ratio of the Systolic Peak Amplitude to the Time Delay</span>
-                    <span class="s2">&quot;Asp/(Tpi-Tsp)&quot;</span><span class="p">,</span><span class="c1"># The ratio of the Systolic Peak Amplitude to the difference between the Pulse Interval and Systolic Peak Time</span>
+    <span class="n">biomarkers_lst</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="p">[</span><span class="s2">&quot;IPR&quot;</span><span class="p">,</span>          <span class="s2">&quot;Instantaneous pulse rate, 60 / Tpi&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tsys/Tdia&quot;</span><span class="p">,</span>    <span class="s2">&quot;Ratio of the systolic time vs. the diastolic time&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tpw25/Tpi&quot;</span><span class="p">,</span>    <span class="s2">&quot;Ratio of the pulse width at 25</span><span class="si">% o</span><span class="s2">f the systolic peak amplitude vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tpw50/Tpi&quot;</span><span class="p">,</span>    <span class="s2">&quot;Ratio of the pulse width at 50</span><span class="si">% o</span><span class="s2">f the systolic peak amplitude vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tpw75/Tpi&quot;</span><span class="p">,</span>    <span class="s2">&quot;Ratio of the pulse width at 75</span><span class="si">% o</span><span class="s2">f the systolic peak amplitude vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tpw25/Tsp&quot;</span><span class="p">,</span>    <span class="s2">&quot;Ratio of the pulse width at 25</span><span class="si">% o</span><span class="s2">f the systolic peak amplitude vs. the systolic peak time&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tpw50/Tsp&quot;</span><span class="p">,</span>    <span class="s2">&quot;Ratio of the pulse width at 50</span><span class="si">% o</span><span class="s2">f the systolic peak amplitude vs. the systolic peak time&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tpw75/Tsp&quot;</span><span class="p">,</span>    <span class="s2">&quot;Ratio of the pulse width at 75</span><span class="si">% o</span><span class="s2">f the systolic peak amplitude vs. the systolic peak time&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tdw10/Tsw10&quot;</span><span class="p">,</span>  <span class="s2">&quot;Ratio of the diastolic width vs. the systolic width at 10% width&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tdw25/Tsw25&quot;</span><span class="p">,</span>  <span class="s2">&quot;Ratio of the diastolic width vs. the systolic width at 25% width&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tdw33/Tsw33&quot;</span><span class="p">,</span>  <span class="s2">&quot;Ratio of the diastolic width vs. the systolic width at 33% width&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tdw50/Tsw50&quot;</span><span class="p">,</span>  <span class="s2">&quot;Ratio of the diastolic width vs. the systolic width at 50% width&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tdw66/Tsw66&quot;</span><span class="p">,</span>  <span class="s2">&quot;Ratio of the diastolic width vs. the systolic width at 66% width&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tdw75/Tsw75&quot;</span><span class="p">,</span>  <span class="s2">&quot;Ratio of the diastolic width vs. the systolic width at 75% width&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tdw90/Tsw90&quot;</span><span class="p">,</span>  <span class="s2">&quot;Ratio of the diastolic width vs. the systolic width at 90% width&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tsp/Tpi&quot;</span><span class="p">,</span>      <span class="s2">&quot;Ratio of the systolic peak time vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Asp/Aoff&quot;</span><span class="p">,</span>     <span class="s2">&quot;Ratio of the systolic peak amplitude vs. the pulse offset amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Adp/Asp&quot;</span><span class="p">,</span>      <span class="s2">&quot;Reflection index, the ratio of the diastolic peak amplitude vs. the systolic peak amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;IPA&quot;</span><span class="p">,</span>          <span class="s2">&quot;Inflection point area, the ratio of the area under diastolic curve vs. the area under systolic curve&quot;</span><span class="p">,</span> <span class="s2">&quot;[nu]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tsp/Asp&quot;</span><span class="p">,</span>      <span class="s2">&quot;Ratio of the systolic peak time vs. the systolic peak amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[nu]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Asp/deltaT&quot;</span><span class="p">,</span>   <span class="s2">&quot;Stiffness index, the ratio of the systolic peak amplitude vs. the time delay&quot;</span><span class="p">,</span> <span class="s2">&quot;[nu]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Asp/(Tpi-Tsp)&quot;</span><span class="p">,</span><span class="s2">&quot;Ratio of the systolic peak amplitude vs. the difference between the pulse interval and systolic peak time &quot;</span><span class="p">,</span> <span class="s2">&quot;[nu]&quot;</span><span class="p">],</span>
     <span class="p">]</span>
 
-    <span class="n">df</span><span class="p">,</span> <span class="n">df_biomarkers</span> <span class="o">=</span> <span class="n">get_biomarkers</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">,</span> <span class="n">biomarkers_lst</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;definition&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">]</span>
+    <span class="n">biomarkers_lst</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">biomarkers_lst</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">df_biomarkers</span></div>
+    <span class="n">df</span><span class="p">,</span> <span class="n">df_biomarkers</span> <span class="o">=</span> <span class="n">get_biomarkers</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">,</span> <span class="n">biomarkers_lst</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df_biomarkers</span><span class="p">,</span> <span class="n">biomarkers_lst</span></div>
 </pre></div>
 
            </div>

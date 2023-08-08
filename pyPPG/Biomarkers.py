@@ -46,7 +46,12 @@ class Biomarkers:
         """
         This function returns the PPG biomarkers.
 
-        :return: biomarkers dictionary of biomarkers in different categories:
+        :return: bm_vals: dictionary of biomarkers in different categories:
+            - PPG signal
+            - Signal ratios
+            - PPG derivatives
+            - Derivatives ratios
+        :return: bm_defs: dictionary of biomarkers with name, definition and unit:
             - PPG signal
             - Signal ratios
             - PPG derivatives
@@ -56,11 +61,12 @@ class Biomarkers:
         s=self.s
         fiducials = self.fiducials
 
-        bm_ppg_sig = get_bm_ppg_sig(s,fiducials)
-        bm_sig_ratios = get_bm_sig_ratios(s,fiducials)
-        bm_ppg_derivs = get_bm_ppg_derivs(s,fiducials)
-        bm_derivs_ratios = get_bm_derivs_ratios(s,fiducials)
+        bm_ppg_sig, lst_ppg_sig = get_bm_ppg_sig(s,fiducials)
+        bm_sig_ratios, lst_sig_ratios = get_bm_sig_ratios(s, fiducials)
+        bm_ppg_derivs, lst_ppg_derivs = get_bm_ppg_derivs(s,fiducials)
+        bm_derivs_ratios, lst_derivs_ratios = get_bm_derivs_ratios(s,fiducials)
 
-        biomarkers={'bm_ppg_sig': bm_ppg_sig , 'bm_sig_ratios': bm_sig_ratios, 'bm_ppg_derivs': bm_ppg_derivs, 'bm_derivs_ratios': bm_derivs_ratios}
+        bm_vals={'ppg_sig': bm_ppg_sig , 'sig_ratios': bm_sig_ratios, 'ppg_derivs': bm_ppg_derivs, 'derivs_ratios': bm_derivs_ratios}
+        bm_defs = {'ppg_sig': lst_ppg_sig, 'sig_ratios': lst_sig_ratios, 'ppg_derivs': lst_ppg_derivs, 'derivs_ratios': lst_derivs_ratios}
 
-        return biomarkers
+        return bm_vals, bm_defs

@@ -7,7 +7,7 @@ from scipy.signal import find_peaks
 ####################### PPG biomarkers extraction #########################
 ###########################################################################
 
-class biomarkers_extract_PPG:
+class BmExtractor:
     """
     Class that extracts the PPG biomarkers.
     """
@@ -146,12 +146,12 @@ class biomarkers_extract_PPG:
                     "Td": self.get_Td(),
                     "Te": self.get_Te(),
                     "Tf": self.get_Tf(),
-                    "Tb–c": self.get_Tbc(),
-                    "Tb–d": self.get_Tbd(),
+                    "Tb-c": self.get_Tbc(),
+                    "Tb-d": self.get_Tbd(),
                     "Tp1": self.get_Tp1(),
                     "Tp2": self.get_Tp2(),
-                    "Tp1–dp": self.get_Tp1_dp(),
-                    "Tp2–dp": self.get_Tp2_dp(),
+                    "Tp1-dp": self.get_Tp1_dp(),
+                    "Tp2-dp": self.get_Tp2_dp(),
 
                     # Derivatives ratios
                     "Tu/Tpi": self.get_ratio_Tu_Tpi(),
@@ -1191,7 +1191,6 @@ class biomarkers_extract_PPG:
 ###########################################################################
 ############################# Get PPG biomarkers ############################
 ###########################################################################
-
 def get_biomarkers(s, fiducials, biomarkers_lst):
     """
     The function calculates the biomedical biomarkers of PPG signal.
@@ -1263,7 +1262,7 @@ def get_biomarkers(s, fiducials, biomarkers_lst):
             #         plt.show()
             #         print(peak_value,peak_time,next_peak_value,next_peak_time,onsets_values,onsets_times)
             try:
-                biomarkers_extractor = biomarkers_extract_PPG(data, peak_value, peak_time, next_peak_value, next_peak_time,
+                biomarkers_extractor = BmExtractor(data, peak_value, peak_time, next_peak_value, next_peak_time,
                                                           onsets_values, onsets_times, fs, biomarkers_lst,temp_fiducials)
                 biomarkers_vec = biomarkers_extractor.get_feature_extract_func()
                 lst = list(biomarkers_vec)
