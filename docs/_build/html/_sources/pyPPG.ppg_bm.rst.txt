@@ -1,18 +1,7 @@
 pyPPG.ppg\_bm package
 =====================
 
-Submodules
-----------
-
-pyPPG.ppg\_bm.get\_biomarkers module
-------------------------------------
-
-.. automodule:: pyPPG.ppg_bm.biomarker_extractor
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyPPG.ppg\_bm.get\_bm\_derivs\_ratios module
+pyPPG.ppg\_bm.get\_bm\_derivs\_ratios
 --------------------------------------------
 
 .. automodule:: pyPPG.ppg_bm.get_bm_derivs_ratios
@@ -20,7 +9,7 @@ pyPPG.ppg\_bm.get\_bm\_derivs\_ratios module
    :undoc-members:
    :show-inheritance:
 
-pyPPG.ppg\_bm.get\_bm\_ppg\_derivs module
+pyPPG.ppg\_bm.get\_bm\_ppg\_derivs
 -----------------------------------------
 
 .. automodule:: pyPPG.ppg_bm.get_bm_ppg_derivs
@@ -28,7 +17,7 @@ pyPPG.ppg\_bm.get\_bm\_ppg\_derivs module
    :undoc-members:
    :show-inheritance:
 
-pyPPG.ppg\_bm.get\_bm\_ppg\_sig module
+pyPPG.ppg\_bm.get\_bm\_ppg\_sig
 --------------------------------------
 
 .. automodule:: pyPPG.ppg_bm.get_bm_ppg_sig
@@ -36,10 +25,18 @@ pyPPG.ppg\_bm.get\_bm\_ppg\_sig module
    :undoc-members:
    :show-inheritance:
 
-pyPPG.ppg\_bm.get\_bm\_sig\_ratios module
+pyPPG.ppg\_bm.get\_bm\_sig\_ratios
 -----------------------------------------
 
 .. automodule:: pyPPG.ppg_bm.get_bm_sig_ratios
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyPPG.ppg\_bm.get\_biomarkers
+------------------------------------
+
+.. automodule:: pyPPG.ppg_bm.biomarker_extractor
    :members:
    :undoc-members:
    :show-inheritance:

@@ -2,13 +2,16 @@ import numpy as np
 from scipy.signal import detrend, find_peaks, correlate
 from numpy.fft import fft, ifft, fftshift
 
-def ppgSQI(ppg, fs, ann_ppg):
+def ppgSQI(ppg: list, fs: int, ann_ppg: list):
     '''
     PPG Signal Quality Index based on beat template correlation.
 
-    :param ppg: PPG data
+    :param ppg: a vector of PPG values
     :param fs: Samples frequency
+    :type fs: int
     :param ann_ppg: PPG annotation time(samples)
+    :type ann_ppg: list
+
     :return: psqi: PPG Signal Quality Index
 
     Reference

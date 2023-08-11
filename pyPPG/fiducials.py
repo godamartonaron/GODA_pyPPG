@@ -1,12 +1,10 @@
 import copy
 import pandas as pd
 
-from pack_ppg._ErrorHandler import _check_shape_, WrongParameter
+import pyPPG
 import numpy as np
 from dotmap import DotMap
 from scipy.signal import kaiserord, firwin, filtfilt, detrend, periodogram, lfilter, find_peaks, firls, resample
-import matplotlib.pyplot as plt
-import time
 from scipy import signal
 
 class FiducialPoints:
@@ -14,31 +12,19 @@ class FiducialPoints:
     ###########################################################################
     ###################### Initialization of Fiducial Points ##################
     ###########################################################################
-    def __init__(self, s: DotMap):
+    def __init__(self, s: pyPPG.PPG):
         """
         The purpose of the FiducialPoints class is to calculate the fiducial points.
 
-        :param s: a struct of PPG signal:
-            - s.v: a vector of PPG values
-            - s.fs: the sampling frequency of the PPG in Hz
-            - s.name: name of the record
-            - s.v: 1-d array, a vector of PPG values
-            - s.fs: the sampling frequency of the PPG in Hz
-            - s.filt_sig: 1-d array, a vector of the filtered PPG values
-            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
-            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
-            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
-        :type s: DotMap
+        :param s: a struct of PPG signal
+        :type s: pyPPG.PPG object
 
         """
-        if s.fs <= 0:
-            raise WrongParameter("Sampling frequency should be strictly positive")
-        _check_shape_(s.v, s.fs)
 
-        keys=s.keys()
+        keys=s.__dict__.keys()
         keys_list = list(keys)
         for i in keys_list:
-            exec('self.'+i+' = s[i]')
+            exec('self.'+i+' = s.'+i)
 
     ###########################################################################
     ############################ Get Fiducial Points ##########################
@@ -284,8 +270,8 @@ class FiducialPoints:
                     min_i = np.where(min_v==values)[0][0]
                     intensity_v.append(sig[max_loc[i]] - sig[min_loc[min_i]])
 
-                # improvements:
-                #   - adaptive threshold
+                # possible improvements:
+                #   - adaptive thresholding of hr
                 #   - probability density of maximum
 
                 tr2 = np.mean(intensity_v)*0.25

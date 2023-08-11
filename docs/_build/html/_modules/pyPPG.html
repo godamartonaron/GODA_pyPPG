@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Overview: module code &mdash; pyPPG 1.0.0 documentation</title>
+  <title>pyPPG &mdash; pyPPG 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -64,7 +64,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Overview: module code</li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyPPG</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -73,21 +74,37 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>All modules for which code is available</h1>
-<ul><li><a href="pyPPG.html">pyPPG</a></li>
-<ul><li><a href="pyPPG/Statistics.html">pyPPG.Statistics</a></li>
-<li><a href="pyPPG/biomarkers.html">pyPPG.biomarkers</a></li>
-<li><a href="pyPPG/datahandling.html">pyPPG.datahandling</a></li>
-<li><a href="pyPPG/example.html">pyPPG.example</a></li>
-<li><a href="pyPPG/fiducials.html">pyPPG.fiducials</a></li>
-<li><a href="pyPPG/ppg_bm/biomarker_extractor.html">pyPPG.ppg_bm.biomarker_extractor</a></li>
-<li><a href="pyPPG/ppg_bm/get_bm_derivs_ratios.html">pyPPG.ppg_bm.get_bm_derivs_ratios</a></li>
-<li><a href="pyPPG/ppg_bm/get_bm_ppg_derivs.html">pyPPG.ppg_bm.get_bm_ppg_derivs</a></li>
-<li><a href="pyPPG/ppg_bm/get_bm_ppg_sig.html">pyPPG.ppg_bm.get_bm_ppg_sig</a></li>
-<li><a href="pyPPG/ppg_bm/get_bm_sig_ratios.html">pyPPG.ppg_bm.get_bm_sig_ratios</a></li>
-<li><a href="pyPPG/ppg_sqi.html">pyPPG.ppg_sqi</a></li>
-<li><a href="pyPPG/preproc.html">pyPPG.preproc</a></li>
-</ul></ul>
+  <h1>Source code for pyPPG</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pack_ppg._ErrorHandler</span> <span class="kn">import</span> <span class="n">_check_shape_</span><span class="p">,</span> <span class="n">WrongParameter</span>
+
+<div class="viewcode-block" id="PPG"><a class="viewcode-back" href="../pyPPG.html#pyPPG.PPG">[docs]</a><span class="k">class</span> <span class="nc">PPG</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param s: a struct of PPG signal:</span>
+
+<span class="sd">            * s.v: a vector of PPG values</span>
+<span class="sd">            * s.fs: the sampling frequency of the PPG in Hz</span>
+<span class="sd">            * s.name: name of the record</span>
+<span class="sd">            * s.v: 1-d array, a vector of PPG values</span>
+<span class="sd">            * s.fs: the sampling frequency of the PPG in Hz</span>
+<span class="sd">            * s.filt_sig: 1-d array, a vector of the filtered PPG values</span>
+<span class="sd">            * s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
+<span class="sd">            * s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
+<span class="sd">            * s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
+<span class="sd">        :type s: DotMap</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WrongParameter</span><span class="p">(</span><span class="s2">&quot;Sampling frequency should be strictly positive&quot;</span><span class="p">)</span>
+        <span class="n">_check_shape_</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span>
+
+        <span class="n">keys</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">keys_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="s1">&#39; = s[i]&#39;</span><span class="p">)</span></div>
+</pre></div>
 
            </div>
           </div>

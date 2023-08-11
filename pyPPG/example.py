@@ -1,12 +1,8 @@
-from DataHandling import*
-import FiducialPoints as Fp
-import Biomarkers as Bm
+from datahandling import*
+import fiducials as Fp
+import biomarkers as Bm
 from Statistics import*
-
-import matplotlib.pyplot as plt
-import numpy as np
-from dotmap import DotMap
-import time
+from pyPPG import PPG
 
 import sys
 import json
@@ -44,11 +40,22 @@ def ppg_example(data_path="",filtering=True,correct=True, savefig=True, savedata
     :type savingfolder: str
 
     :return: fiducial points, a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
+
+
+    Example:
+
+        .. code-block:: python
+
+            from pyPPG import ppg_example
+
+            # run example code
+            ppg_example(savedata=True, savefig=True)
+
     '''
 
-
     ## Loading a raw PPG signal
-    s=load_data(data_path,filtering)
+    ppg_data = load_data(data_path,filtering)
+    s = PPG(ppg_data)
 
     ## Get Fiducial points
     fp = Fp.FiducialPoints(s)

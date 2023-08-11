@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyPPG.FiducialPoints &mdash; pyPPG 1.0.0 documentation</title>
+  <title>pyPPG.fiducials &mdash; pyPPG 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -66,7 +66,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
           <li class="breadcrumb-item"><a href="../pyPPG.html">pyPPG</a></li>
-      <li class="breadcrumb-item active">pyPPG.FiducialPoints</li>
+      <li class="breadcrumb-item active">pyPPG.fiducials</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -75,20 +75,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for pyPPG.FiducialPoints</h1><div class="highlight"><pre>
+  <h1>Source code for pyPPG.fiducials</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">import</span> <span class="nn">pyPPG</span>
-<span class="kn">from</span> <span class="nn">pack_ppg._ErrorHandler</span> <span class="kn">import</span> <span class="n">_check_shape_</span><span class="p">,</span> <span class="n">WrongParameter</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">dotmap</span> <span class="kn">import</span> <span class="n">DotMap</span>
 <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">kaiserord</span><span class="p">,</span> <span class="n">firwin</span><span class="p">,</span> <span class="n">filtfilt</span><span class="p">,</span> <span class="n">detrend</span><span class="p">,</span> <span class="n">periodogram</span><span class="p">,</span> <span class="n">lfilter</span><span class="p">,</span> <span class="n">find_peaks</span><span class="p">,</span> <span class="n">firls</span><span class="p">,</span> <span class="n">resample</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
 
-<div class="viewcode-block" id="FiducialPoints"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints">[docs]</a><span class="k">class</span> <span class="nc">FiducialPoints</span><span class="p">:</span>
+<div class="viewcode-block" id="FiducialPoints"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints">[docs]</a><span class="k">class</span> <span class="nc">FiducialPoints</span><span class="p">:</span>
 
     <span class="c1">###########################################################################</span>
     <span class="c1">###################### Initialization of Fiducial Points ##################</span>
@@ -110,7 +107,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################ Get Fiducial Points ##########################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.getFiducialPoints"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.getFiducialPoints">[docs]</a>    <span class="k">def</span> <span class="nf">getFiducialPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">correct</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.getFiducialPoints"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.getFiducialPoints">[docs]</a>    <span class="k">def</span> <span class="nf">getFiducialPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">correct</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;The function calculates the PPG Fiducial Points.</span>
 <span class="sd">            - Original signal: List of pulse onset, pea and dicrotic notch</span>
 <span class="sd">            - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</span>
@@ -164,7 +161,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################ PPG beat detector ############################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.abdp_beat_detector"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.abdp_beat_detector">[docs]</a>    <span class="k">def</span> <span class="nf">abdp_beat_detector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peak_detector</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.abdp_beat_detector"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.abdp_beat_detector">[docs]</a>    <span class="k">def</span> <span class="nf">abdp_beat_detector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peak_detector</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;ABDP_BEAT_DETECTOR detects beats in a photoplethysmogram (PPG) signal</span>
 <span class="sd">        using the improved &#39;Automatic Beat Detection&#39; of Aboy M et al.</span>
 
@@ -305,7 +302,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################# Maximum detector ############################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.DetectMaxima"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.DetectMaxima">[docs]</a>    <span class="k">def</span> <span class="nf">DetectMaxima</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">percentile</span><span class="p">:</span> <span class="nb">int</span> <span class="p">,</span><span class="n">hr_win</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">peak_detector</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.DetectMaxima"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.DetectMaxima">[docs]</a>    <span class="k">def</span> <span class="nf">DetectMaxima</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">percentile</span><span class="p">:</span> <span class="nb">int</span> <span class="p">,</span><span class="n">hr_win</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">peak_detector</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="c1">#Table VI pseudocode</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Detect Maxima function detects all peaks in the raw and also in the filtered signal to find.</span>
@@ -363,7 +360,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################ Bandpass filtering ###########################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.Bandpass"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.Bandpass">[docs]</a>    <span class="k">def</span> <span class="nf">Bandpass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lower_cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">upper_cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.Bandpass"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.Bandpass">[docs]</a>    <span class="k">def</span> <span class="nf">Bandpass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">lower_cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">upper_cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Bandpass filter function detects all peaks in the raw and also in the filtered signal to find.</span>
 
@@ -408,7 +405,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">################### Filter the high frequency components  #################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.elim_vlfs_abd"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.elim_vlfs_abd">[docs]</a>    <span class="k">def</span> <span class="nf">elim_vlfs_abd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">lower_cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.elim_vlfs_abd"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.elim_vlfs_abd">[docs]</a>    <span class="k">def</span> <span class="nf">elim_vlfs_abd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">lower_cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function filter the high frequency components.</span>
 
@@ -453,7 +450,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">################### Filter the low frequency components  ##################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.elim_vhfs"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.elim_vhfs">[docs]</a>    <span class="k">def</span> <span class="nf">elim_vhfs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">upper_cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.elim_vhfs"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.elim_vhfs">[docs]</a>    <span class="k">def</span> <span class="nf">elim_vhfs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">upper_cutoff</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function filter the high frequency components.</span>
 
@@ -499,7 +496,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">########################### Heart Rate estimation #########################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.EstimateHeartRate"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.EstimateHeartRate">[docs]</a>    <span class="k">def</span> <span class="nf">EstimateHeartRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">hr_past</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.EstimateHeartRate"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.EstimateHeartRate">[docs]</a>    <span class="k">def</span> <span class="nf">EstimateHeartRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">hr_past</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Heart Rate Estimation function estimate the heart rate according to the previous heart rate in given time window</span>
 
@@ -538,7 +535,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############# Estimate derivative from highly filtered signal #############</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.EstimateDeriv"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.EstimateDeriv">[docs]</a>    <span class="k">def</span> <span class="nf">EstimateDeriv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.EstimateDeriv"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.EstimateDeriv">[docs]</a>    <span class="k">def</span> <span class="nf">EstimateDeriv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Derivative Estimation function estimate derivative from highly filtered signal based on the</span>
 <span class="sd">        General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method</span>
@@ -558,7 +555,7 @@
         <span class="k">return</span> <span class="n">deriv</span></div>
 
 
-<div class="viewcode-block" id="FiducialPoints.savitzky_golay_abd"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.savitzky_golay_abd">[docs]</a>    <span class="k">def</span> <span class="nf">savitzky_golay_abd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">deriv_no</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">win_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.savitzky_golay_abd"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.savitzky_golay_abd">[docs]</a>    <span class="k">def</span> <span class="nf">savitzky_golay_abd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">deriv_no</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">win_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function estimate the Savitzky Golay derivative from highly filtered signal</span>
 
@@ -662,7 +659,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################# Pulse detection #############################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.find_pulse_peaks"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.find_pulse_peaks">[docs]</a>    <span class="k">def</span> <span class="nf">find_pulse_peaks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">p3</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.find_pulse_peaks"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.find_pulse_peaks">[docs]</a>    <span class="k">def</span> <span class="nf">find_pulse_peaks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">p3</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Pulse detection function detect the pulse peaks according to the peaks of 1st and 2nd derivatives</span>
 <span class="sd">        General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method</span>
@@ -690,7 +687,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">####################### Correct peaks&#39; location error #####################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.IBICorrect"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.IBICorrect">[docs]</a>    <span class="k">def</span>  <span class="nf">IBICorrect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">hr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.IBICorrect"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.IBICorrect">[docs]</a>    <span class="k">def</span>  <span class="nf">IBICorrect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">hr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function corrects the peaks&#39; location error</span>
 
@@ -734,7 +731,7 @@
 
         <span class="k">return</span> <span class="n">pc</span><span class="p">,</span> <span class="n">fn</span></div>
 
-<div class="viewcode-block" id="FiducialPoints.find_reduced_IBIs"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.find_reduced_IBIs">[docs]</a>    <span class="k">def</span> <span class="nf">find_reduced_IBIs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">IBIs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">med_hr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.find_reduced_IBIs"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.find_reduced_IBIs">[docs]</a>    <span class="k">def</span> <span class="nf">find_reduced_IBIs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">IBIs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">med_hr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function finds the reduced interbeat intervals</span>
 
@@ -754,7 +751,7 @@
         <span class="n">fp</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">fp</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">fp</span></div>
 
-<div class="viewcode-block" id="FiducialPoints.find_prolonged_IBIs"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.find_prolonged_IBIs">[docs]</a>    <span class="k">def</span> <span class="nf">find_prolonged_IBIs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">IBIs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">med_hr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.find_prolonged_IBIs"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.find_prolonged_IBIs">[docs]</a>    <span class="k">def</span> <span class="nf">find_prolonged_IBIs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">IBIs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">med_hr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function finds the prolonged interbeat intervals</span>
 
@@ -776,7 +773,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">####################### Setup up the beat detector ########################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.setup_up_abdp_algorithm"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.setup_up_abdp_algorithm">[docs]</a>    <span class="k">def</span> <span class="nf">setup_up_abdp_algorithm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.setup_up_abdp_algorithm"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.setup_up_abdp_algorithm">[docs]</a>    <span class="k">def</span> <span class="nf">setup_up_abdp_algorithm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function setups the filter parameters of the algorithm</span>
 
@@ -803,7 +800,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################## Find PPG onsets ############################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.find_onsets"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.find_onsets">[docs]</a>    <span class="k">def</span> <span class="nf">find_onsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">peaks</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">med_hr</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.find_onsets"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.find_onsets">[docs]</a>    <span class="k">def</span> <span class="nf">find_onsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">up</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">peaks</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">med_hr</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function finds the onsets of PPG sigal</span>
 
@@ -858,7 +855,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">########################## Detect dicrotic notch ##########################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.getDicroticNotch"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.getDicroticNotch">[docs]</a>    <span class="k">def</span> <span class="nf">getDicroticNotch</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peaks</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">onsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.getDicroticNotch"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.getDicroticNotch">[docs]</a>    <span class="k">def</span> <span class="nf">getDicroticNotch</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">peaks</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">onsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak</span>
 
@@ -943,7 +940,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">########################## Detect diastolic peak ##########################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.getDiastolicPeak"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.getDiastolicPeak">[docs]</a>    <span class="k">def</span> <span class="nf">getDiastolicPeak</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">dicroticnotch</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">e_point</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.getDiastolicPeak"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.getDiastolicPeak">[docs]</a>    <span class="k">def</span> <span class="nf">getDiastolicPeak</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">dicroticnotch</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">e_point</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak</span>
 
@@ -988,7 +985,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">####################### Get First Derivitive Points #######################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.getFirstDerivitivePoints"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.getFirstDerivitivePoints">[docs]</a>    <span class="k">def</span> <span class="nf">getFirstDerivitivePoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.getFirstDerivitivePoints"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.getFirstDerivitivePoints">[docs]</a>    <span class="k">def</span> <span class="nf">getFirstDerivitivePoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate first derivitive points u and v from the PPG&#39; signal</span>
 
 <span class="sd">        :param onsets: onsets of the signal</span>
@@ -1036,7 +1033,7 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">####################### Get Second Derivitive Points ######################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FiducialPoints.getSecondDerivitivePoints"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.getSecondDerivitivePoints">[docs]</a>    <span class="k">def</span> <span class="nf">getSecondDerivitivePoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">peaks</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.getSecondDerivitivePoints"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.getSecondDerivitivePoints">[docs]</a>    <span class="k">def</span> <span class="nf">getSecondDerivitivePoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">peaks</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate Second derivitive points a, b, c, d, e, and f from the PPG&quot; signal</span>
 
 <span class="sd">        :param onsets: onsets of the signal</span>
@@ -1148,7 +1145,7 @@
         <span class="n">drt2_fp</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">drt2_fp</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">drt2_fp</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">drt2_fp</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="n">drt2_fp</span><span class="o">.</span><span class="n">e</span><span class="p">,</span> <span class="n">drt2_fp</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span>
         <span class="k">return</span> <span class="n">drt2_fp</span></div>
 
-<div class="viewcode-block" id="FiducialPoints.getThirdDerivitivePoints"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.getThirdDerivitivePoints">[docs]</a>    <span class="k">def</span> <span class="nf">getThirdDerivitivePoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">drt2_fp</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.getThirdDerivitivePoints"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.getThirdDerivitivePoints">[docs]</a>    <span class="k">def</span> <span class="nf">getThirdDerivitivePoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">onsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">drt2_fp</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate third derivitive points p1 and p2 from the PPG&#39;&quot; signal</span>
 
 <span class="sd">            :param onsets: onsets of the signal</span>
@@ -1217,7 +1214,7 @@
 
         <span class="k">return</span> <span class="n">drt3_fp</span></div>
 
-<div class="viewcode-block" id="FiducialPoints.CorrectFiducialPoints"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.FiducialPoints.FiducialPoints.CorrectFiducialPoints">[docs]</a>    <span class="k">def</span> <span class="nf">CorrectFiducialPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<div class="viewcode-block" id="FiducialPoints.CorrectFiducialPoints"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FiducialPoints.CorrectFiducialPoints">[docs]</a>    <span class="k">def</span> <span class="nf">CorrectFiducialPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Correct the Fiducial Points</span>
 
 <span class="sd">            :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</span>

@@ -3,6 +3,8 @@ from dotmap import DotMap
 import pandas as pd
 from scipy.signal import find_peaks
 
+import pyPPG
+
 ###########################################################################
 ####################### PPG biomarkers extraction #########################
 ###########################################################################
@@ -1191,20 +1193,12 @@ class BmExtractor:
 ###########################################################################
 ############################# Get PPG biomarkers ############################
 ###########################################################################
-def get_biomarkers(s, fiducials, biomarkers_lst):
+def get_biomarkers(s: pyPPG.PPG, fiducials, biomarkers_lst):
     """
     The function calculates the biomedical biomarkers of PPG signal.
 
-    :param s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.name: name of the record
-        - s.v: 1-d array, a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.filt_sig: 1-d array, a vector of the filtered PPG values
-        - s.filt_d1: 1-d array, a vector of the filtered PPG' values
-        - s.filt_d2: 1-d array, a vector of the filtered PPG" values
-        - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+    :param s: a struct of PPG signal
+    :type s: pyPPG.PPG object
     :param fiducials: M-d Dateframe, where M is the number of fiducial points
     :param biomarkers_lst: list of biomarkers
 

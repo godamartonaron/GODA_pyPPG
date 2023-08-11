@@ -1,6 +1,5 @@
-import pandas as pd
-
-from Preprocessing import*
+import pyPPG
+from preproc import*
 
 import matplotlib.pyplot as plt
 import scipy.io
@@ -14,7 +13,7 @@ import os
 ###########################################################################
 ####################### Data Acquisition from Files #######################
 ###########################################################################
-def load_data(data_path:str,filtering: bool):
+def load_data(data_path: str, filtering: bool):
     """
     Load PPG data function load the raw PPG data.
 
@@ -24,15 +23,16 @@ def load_data(data_path:str,filtering: bool):
     :type filtering: bool
 
     :return s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.name: name of the record
-        - s.v: 1-d array, a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.filt_sig: 1-d array, a vector of the filtered PPG values
-        - s.filt_d1: 1-d array, a vector of the filtered PPG' values
-        - s.filt_d2: 1-d array, a vector of the filtered PPG" values
-        - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+
+        * s.v: a vector of PPG values
+        * s.fs: the sampling frequency of the PPG in Hz
+        * s.name: name of the record
+        * s.v: 1-d array, a vector of PPG values
+        * s.fs: the sampling frequency of the PPG in Hz
+        * s.filt_sig: 1-d array, a vector of the filtered PPG values
+        * s.filt_d1: 1-d array, a vector of the filtered PPG' values
+        * s.filt_d2: 1-d array, a vector of the filtered PPG" values
+        * s.filt_d3: 1-d array, a vector of the filtered PPG'" values
     """
 
     if data_path=="":
@@ -91,28 +91,19 @@ def load_data(data_path:str,filtering: bool):
     s.fs=fs
     s.name=rec_name
 
-    s.filt_sig, s.filt_d1, s.filt_d2, s.filt_d3 = Preprocessing(s, True)
+    s.filt_sig, s.filt_d1, s.filt_d2, s.filt_d3 = Preprocessing(s, filtering = True)
 
     return s
 
 ###########################################################################
 ########################### Plot Fiducial points ##########################
 ###########################################################################
-def plot_fiducials(s: DotMap, fiducials: pd.DataFrame):
+def plot_fiducials(s: pyPPG.PPG, fiducials: pd.DataFrame):
     """
     Plot fiducial points of the filtered PPG signal.
 
-    :param s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.name: name of the record
-        - s.v: 1-d array, a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.filt_sig: 1-d array, a vector of the filtered PPG values
-        - s.filt_d1: 1-d array, a vector of the filtered PPG' values
-        - s.filt_d2: 1-d array, a vector of the filtered PPG" values
-        - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
-    :type s: DotMap
+    :param s: a struct of PPG signal
+    :type s: pyPPG.PPG object
     :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
     :type fiducials: DataFrame
     """
@@ -194,34 +185,28 @@ def plot_fiducials(s: DotMap, fiducials: pd.DataFrame):
 ################################# Save Data ###############################
 ###########################################################################
 
-def save_data(s: DotMap, fiducials: pd.DataFrame, biomarkers_vals: dict, biomarkers_defs: dict, ppg_statistics: dict, savingformat: str,savingfolder: str):
+def save_data(s: pyPPG.PPG, fiducials: pd.DataFrame, biomarkers_vals: dict, biomarkers_defs: dict, ppg_statistics: dict, savingformat: str,savingfolder: str):
     """
     Save the results of the filtered PPG analysis.
 
-    :param s: a struct of PPG signal:
-        - s.v: a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.name: name of the record
-        - s.v: 1-d array, a vector of PPG values
-        - s.fs: the sampling frequency of the PPG in Hz
-        - s.filt_sig: 1-d array, a vector of the filtered PPG values
-        - s.filt_d1: 1-d array, a vector of the filtered PPG' values
-        - s.filt_d2: 1-d array, a vector of the filtered PPG" values
-        - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+    :param s: a struct of PPG signal
+    :type s: pyPPG.PPG object
     :type s: DotMap
     :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
     :type fiducials: DataFrame
-    :param biomarkers_vals: dictionary of biomarkers in different categories:
-        - PPG signal
-        - Signal ratios
-        - PPG derivatives
-        - Derivatives ratios
+    :param biomarkers_vals: dictionary with values of biomarkers in different categories:
+
+        * bm_ppg_sig: biomarkers of the PPG signal
+        * bm_sig_ratios: biomarkers of the Signal ratios
+        * bm_ppg_derivs: biomarkers of the PPG derivatives
+        * bm_derivs_ratios: biomarkers of the Derivatives ratios
     :type biomarkers_vals: dict
-    :param biomarkers_defs: dictionary of biomarkers with name, definition and unit:
-        - PPG signal
-        - Signal ratios
-        - PPG derivatives
-        - Derivatives ratios
+    :param biomarkers_defs: dictionary with name, definition and unit of biomarkers in different categories:
+
+        * def_ppg_sig: description of the PPG signal
+        * def_sig_ratios: description of the Signal ratios
+        * def_ppg_derivs: description of the PPG derivatives
+        * def_derivs_ratios: description of the Derivatives ratios
     :type biomarkers_defs: dict
     :param Statistics: data frame with summary of PPG features
     :type Statistics: dict
@@ -234,11 +219,21 @@ def save_data(s: DotMap, fiducials: pd.DataFrame, biomarkers_vals: dict, biomark
     tmp_dir = savingfolder
     os.makedirs(tmp_dir, exist_ok=True)
 
-    temp_dirs= ['Fiducials','Biomarkers','Statistics','Biomarkers_defs']
+    temp_dirs = ['Fiducials', 'Biomarkers', 'Statistics', 'Biomarkers_defs', 'DATA']
     for i in temp_dirs:
-        temp_dir = tmp_dir+os.sep+i+os.sep
+        temp_dir = tmp_dir + os.sep + i + os.sep
         if not os.path.exists(temp_dir):
             os.mkdir(temp_dir)
+
+
+    keys=s.__dict__.keys()
+    keys_list = list(keys)
+    sc=DotMap()
+    for i in keys_list:
+        exec('sc.'+i+' = s.'+i)
+
+    file_name = (r'.' + os.sep + tmp_dir + os.sep + temp_dirs[4] + os.sep + s.name + '_data.mat')
+    scipy.io.savemat(file_name, sc)
 
     BM_keys = biomarkers_vals.keys()
 
@@ -259,17 +254,17 @@ def save_data(s: DotMap, fiducials: pd.DataFrame, biomarkers_vals: dict, biomark
         scipy.io.savemat(file_name,matlab_struct)
 
         for key in BM_keys:
-            matlab_struct = biomarkers_defs[key].to_dict(orient='list')
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s.mat')% (key)
-            scipy.io.savemat(file_name,matlab_struct)
 
             matlab_struct = biomarkers_vals[key].to_dict(orient='list')
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s.mat')% (s.name+'_'+key)
             scipy.io.savemat(file_name,matlab_struct)
 
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s.mat') % (s.name+'_'+key)
-            ppg_statistics[key].to_csv(file_name, index=True, header=True)
-            scipy.io.savemat(file_name, matlab_struct)
+            scipy.io.savemat(file_name, ppg_statistics[key])
+
+            matlab_struct = biomarkers_defs[key].to_dict(orient='list')
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s.mat')% (key)
+            scipy.io.savemat(file_name,matlab_struct)
     else:
         print('The file format is not suported for data saving! You can use "mat" or "csv" file formats.')
 

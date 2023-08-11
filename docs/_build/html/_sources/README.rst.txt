@@ -16,7 +16,7 @@ The following steps are implemented in the **pyPPG** toolbox:
 
 1. **Loading a raw PPG signal**: The toolbox can accept PPG signals in various file formats such as *.mat*, *.csv*, *.txt*, or *.edf*. These files should contain raw PPG data along with the corresponding sampling rate.
 2. **Preprocessing**: The raw signal is filtered to remove unwanted noise and artifacts. Subsequently, the signal is resampled to 75 Hz.
-3. **Pulse wave segmentation**: The toolbox employs a peak detector to identify the systolic peaks. It uses an `improved version <https://arxiv.org/abs/2307.10398>`__ of a beat detection algorithm originally proposed in `(*Aboy et al. 2005*) <https://doi.org/10.1109/TBME.2005.855725>`__. Based on the peak locations, the toolbox also detects the pulse onsets and offsets, which indicate the start and end of the PPG pulse waves.
+3. **Pulse wave segmentation**: The toolbox employs a peak detector to identify the systolic peaks. It uses an `improved version <https://arxiv.org/abs/2307.10398>`__ of a beat detection algorithm originally proposed in `(Aboy et al. 2005) <https://doi.org/10.1109/TBME.2005.855725>`__. Based on the peak locations, the toolbox also detects the pulse onsets and offsets, which indicate the start and end of the PPG pulse waves.
 4. **Fiducial points identification**: For each pulse wave, the toolbox detects a set of fiducial points.
 5. **Biomarker engineering**: Based on the fiducial points, a set of 74 PPG digital biomarkers (i.e. pulse wave features) are calculated.
 

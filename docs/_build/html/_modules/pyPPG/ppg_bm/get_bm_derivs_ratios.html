@@ -65,6 +65,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../pyPPG.html">pyPPG</a></li>
       <li class="breadcrumb-item active">pyPPG.ppg_bm.get_bm_derivs_ratios</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -80,25 +81,20 @@
 <span class="c1">###########################################################################</span>
 <span class="c1">####################### Get Ratios of PPG Derivatives #####################</span>
 <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="get_bm_derivs_ratios"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_bm_derivs_ratios.get_bm_derivs_ratios">[docs]</a><span class="k">def</span> <span class="nf">get_bm_derivs_ratios</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">):</span>
+<div class="viewcode-block" id="get_bm_derivs_ratios"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_bm_derivs_ratios.get_bm_derivs_ratios">[docs]</a><span class="k">def</span> <span class="nf">get_bm_derivs_ratios</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function returns the biomarkers of Derivatives ratios.</span>
 
-<span class="sd">    :param s: a struct of PPG signal:</span>
-<span class="sd">        - s.v: a vector of PPG values</span>
-<span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
-<span class="sd">        - s.name: name of the record</span>
-<span class="sd">        - s.v: 1-d array, a vector of PPG values</span>
-<span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
-<span class="sd">        - s.filt_sig: 1-d array, a vector of the filtered PPG values</span>
-<span class="sd">        - s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
-<span class="sd">        - s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
-<span class="sd">        - s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
+<span class="sd">    :param s: a struct of PPG signal</span>
+<span class="sd">    :type s: pyPPG.PPG object</span>
+<span class="sd">    :type s: DotMap</span>
 <span class="sd">    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</span>
-<span class="sd">        - PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak</span>
-<span class="sd">        - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</span>
-<span class="sd">        - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</span>
-<span class="sd">        - 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</span>
+
+<span class="sd">        * PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak</span>
+<span class="sd">        * 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</span>
+<span class="sd">        * 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</span>
+<span class="sd">        * 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</span>
+<span class="sd">    :type fiducials: DataFrame</span>
 
 <span class="sd">    :return df_biomarkers: dictionary of biomarkers of Derivatives ratios</span>
 <span class="sd">    :return biomarkers_lst: list a biomarkers with name, definition and unit</span>

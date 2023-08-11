@@ -5,54 +5,59 @@ Subpackages
 -----------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    pyPPG.ppg_bm
 
-Submodules
-----------
-
-pyPPG.Biomarkers module
------------------------
-
-.. automodule:: pyPPG.Biomarkers
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyPPG.DataHandling module
--------------------------
-
-.. automodule:: pyPPG.DataHandling
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyPPG.FiducialPoints module
----------------------------
-
-.. automodule:: pyPPG.FiducialPoints
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyPPG.EXAMPLE module
+pyPPG.example
 --------------------
 
-.. automodule:: pyPPG.EXAMPLE
+.. automodule:: pyPPG.example
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyPPG.Preprocessing module
+pyPPG
+------
+.. automodule:: pyPPG
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyPPG.datahandling
+-------------------------
+
+.. automodule:: pyPPG.datahandling
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyPPG.preproc
 --------------------------
 
-.. automodule:: pyPPG.Preprocessing
+.. automodule:: pyPPG.preproc
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyPPG.Statistics module
+pyPPG.fiducials
+-----------------
+
+.. automodule:: pyPPG.fiducials
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyPPG.biomarkers
+-----------------------
+
+.. automodule:: pyPPG.biomarkers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+pyPPG.Statistics
 -----------------------
 
 .. automodule:: pyPPG.Statistics
@@ -60,18 +65,10 @@ pyPPG.Statistics module
    :undoc-members:
    :show-inheritance:
 
-pyPPG.ppgSQI module
+pyPPG.ppg_sqi
 -------------------
 
-.. automodule:: pyPPG.ppgSQI
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pyPPG
+.. automodule:: pyPPG.ppg_sqi
    :members:
    :undoc-members:
    :show-inheritance:

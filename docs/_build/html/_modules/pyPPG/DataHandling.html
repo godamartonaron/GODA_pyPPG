@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyPPG.DataHandling &mdash; pyPPG 1.0.0 documentation</title>
+  <title>pyPPG.datahandling &mdash; pyPPG 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -65,7 +65,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">pyPPG.DataHandling</li>
+          <li class="breadcrumb-item"><a href="../pyPPG.html">pyPPG</a></li>
+      <li class="breadcrumb-item active">pyPPG.datahandling</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -74,10 +75,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for pyPPG.DataHandling</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="kn">from</span> <span class="nn">Preprocessing</span> <span class="kn">import</span><span class="o">*</span>
+  <h1>Source code for pyPPG.datahandling</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pyPPG</span>
+<span class="kn">from</span> <span class="nn">preproc</span> <span class="kn">import</span><span class="o">*</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">scipy.io</span>
@@ -91,7 +91,7 @@
 <span class="c1">###########################################################################</span>
 <span class="c1">####################### Data Acquisition from Files #######################</span>
 <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="load_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.DataHandling.load_data">[docs]</a><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="n">filtering</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<div class="viewcode-block" id="load_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.load_data">[docs]</a><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filtering</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load PPG data function load the raw PPG data.</span>
 
@@ -101,15 +101,16 @@
 <span class="sd">    :type filtering: bool</span>
 
 <span class="sd">    :return s: a struct of PPG signal:</span>
-<span class="sd">        - s.v: a vector of PPG values</span>
-<span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
-<span class="sd">        - s.name: name of the record</span>
-<span class="sd">        - s.v: 1-d array, a vector of PPG values</span>
-<span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
-<span class="sd">        - s.filt_sig: 1-d array, a vector of the filtered PPG values</span>
-<span class="sd">        - s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
-<span class="sd">        - s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
-<span class="sd">        - s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
+
+<span class="sd">        * s.v: a vector of PPG values</span>
+<span class="sd">        * s.fs: the sampling frequency of the PPG in Hz</span>
+<span class="sd">        * s.name: name of the record</span>
+<span class="sd">        * s.v: 1-d array, a vector of PPG values</span>
+<span class="sd">        * s.fs: the sampling frequency of the PPG in Hz</span>
+<span class="sd">        * s.filt_sig: 1-d array, a vector of the filtered PPG values</span>
+<span class="sd">        * s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
+<span class="sd">        * s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
+<span class="sd">        * s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">data_path</span><span class="o">==</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
@@ -168,28 +169,19 @@
     <span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="o">=</span><span class="n">fs</span>
     <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">rec_name</span>
 
-    <span class="n">s</span><span class="o">.</span><span class="n">filt_sig</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">filt_d1</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">filt_d2</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">filt_d3</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">filt_sig</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">filt_d1</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">filt_d2</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">filt_d3</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">filtering</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">s</span></div>
 
 <span class="c1">###########################################################################</span>
 <span class="c1">########################### Plot Fiducial points ##########################</span>
 <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="plot_fiducials"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.DataHandling.plot_fiducials">[docs]</a><span class="k">def</span> <span class="nf">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_fiducials"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.plot_fiducials">[docs]</a><span class="k">def</span> <span class="nf">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot fiducial points of the filtered PPG signal.</span>
 
-<span class="sd">    :param s: a struct of PPG signal:</span>
-<span class="sd">        - s.v: a vector of PPG values</span>
-<span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
-<span class="sd">        - s.name: name of the record</span>
-<span class="sd">        - s.v: 1-d array, a vector of PPG values</span>
-<span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
-<span class="sd">        - s.filt_sig: 1-d array, a vector of the filtered PPG values</span>
-<span class="sd">        - s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
-<span class="sd">        - s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
-<span class="sd">        - s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
-<span class="sd">    :type s: DotMap</span>
+<span class="sd">    :param s: a struct of PPG signal</span>
+<span class="sd">    :type s: pyPPG.PPG object</span>
 <span class="sd">    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.</span>
 <span class="sd">    :type fiducials: DataFrame</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -271,34 +263,28 @@
 <span class="c1">################################# Save Data ###############################</span>
 <span class="c1">###########################################################################</span>
 
-<div class="viewcode-block" id="save_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.DataHandling.save_data">[docs]</a><span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">biomarkers_vals</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">biomarkers_defs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ppg_statistics</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">savingformat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span><span class="n">savingfolder</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="save_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.save_data">[docs]</a><span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">biomarkers_vals</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">biomarkers_defs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ppg_statistics</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">savingformat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span><span class="n">savingfolder</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save the results of the filtered PPG analysis.</span>
 
-<span class="sd">    :param s: a struct of PPG signal:</span>
-<span class="sd">        - s.v: a vector of PPG values</span>
-<span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
-<span class="sd">        - s.name: name of the record</span>
-<span class="sd">        - s.v: 1-d array, a vector of PPG values</span>
-<span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
-<span class="sd">        - s.filt_sig: 1-d array, a vector of the filtered PPG values</span>
-<span class="sd">        - s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
-<span class="sd">        - s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
-<span class="sd">        - s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
+<span class="sd">    :param s: a struct of PPG signal</span>
+<span class="sd">    :type s: pyPPG.PPG object</span>
 <span class="sd">    :type s: DotMap</span>
 <span class="sd">    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points</span>
 <span class="sd">    :type fiducials: DataFrame</span>
-<span class="sd">    :param biomarkers_vals: dictionary of biomarkers in different categories:</span>
-<span class="sd">        - PPG signal</span>
-<span class="sd">        - Signal ratios</span>
-<span class="sd">        - PPG derivatives</span>
-<span class="sd">        - Derivatives ratios</span>
+<span class="sd">    :param biomarkers_vals: dictionary with values of biomarkers in different categories:</span>
+
+<span class="sd">        * bm_ppg_sig: biomarkers of the PPG signal</span>
+<span class="sd">        * bm_sig_ratios: biomarkers of the Signal ratios</span>
+<span class="sd">        * bm_ppg_derivs: biomarkers of the PPG derivatives</span>
+<span class="sd">        * bm_derivs_ratios: biomarkers of the Derivatives ratios</span>
 <span class="sd">    :type biomarkers_vals: dict</span>
-<span class="sd">    :param biomarkers_defs: dictionary of biomarkers with name, definition and unit:</span>
-<span class="sd">        - PPG signal</span>
-<span class="sd">        - Signal ratios</span>
-<span class="sd">        - PPG derivatives</span>
-<span class="sd">        - Derivatives ratios</span>
+<span class="sd">    :param biomarkers_defs: dictionary with name, definition and unit of biomarkers in different categories:</span>
+
+<span class="sd">        * def_ppg_sig: description of the PPG signal</span>
+<span class="sd">        * def_sig_ratios: description of the Signal ratios</span>
+<span class="sd">        * def_ppg_derivs: description of the PPG derivatives</span>
+<span class="sd">        * def_derivs_ratios: description of the Derivatives ratios</span>
 <span class="sd">    :type biomarkers_defs: dict</span>
 <span class="sd">    :param Statistics: data frame with summary of PPG features</span>
 <span class="sd">    :type Statistics: dict</span>
@@ -311,11 +297,21 @@
     <span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">savingfolder</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">temp_dirs</span><span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Fiducials&#39;</span><span class="p">,</span><span class="s1">&#39;Biomarkers&#39;</span><span class="p">,</span><span class="s1">&#39;Statistics&#39;</span><span class="p">,</span><span class="s1">&#39;Biomarkers_defs&#39;</span><span class="p">]</span>
+    <span class="n">temp_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Fiducials&#39;</span><span class="p">,</span> <span class="s1">&#39;Biomarkers&#39;</span><span class="p">,</span> <span class="s1">&#39;Statistics&#39;</span><span class="p">,</span> <span class="s1">&#39;Biomarkers_defs&#39;</span><span class="p">,</span> <span class="s1">&#39;DATA&#39;</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">temp_dirs</span><span class="p">:</span>
-        <span class="n">temp_dir</span> <span class="o">=</span> <span class="n">tmp_dir</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span>
+        <span class="n">temp_dir</span> <span class="o">=</span> <span class="n">tmp_dir</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">)</span>
+
+
+    <span class="n">keys</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">keys_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+    <span class="n">sc</span><span class="o">=</span><span class="n">DotMap</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
+        <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;sc.&#39;</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="s1">&#39; = s.&#39;</span><span class="o">+</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="n">file_name</span> <span class="o">=</span> <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">tmp_dir</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">temp_dirs</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_data.mat&#39;</span><span class="p">)</span>
+    <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">sc</span><span class="p">)</span>
 
     <span class="n">BM_keys</span> <span class="o">=</span> <span class="n">biomarkers_vals</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 
@@ -336,17 +332,17 @@
         <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="n">matlab_struct</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">BM_keys</span><span class="p">:</span>
-            <span class="n">matlab_struct</span> <span class="o">=</span> <span class="n">biomarkers_defs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span>
-            <span class="n">file_name</span> <span class="o">=</span> <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="n">tmp_dir</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="n">temp_dirs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.mat&#39;</span><span class="p">)</span><span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">)</span>
-            <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="n">matlab_struct</span><span class="p">)</span>
 
             <span class="n">matlab_struct</span> <span class="o">=</span> <span class="n">biomarkers_vals</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span>
             <span class="n">file_name</span> <span class="o">=</span> <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="n">tmp_dir</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="n">temp_dirs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.mat&#39;</span><span class="p">)</span><span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">key</span><span class="p">)</span>
             <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="n">matlab_struct</span><span class="p">)</span>
 
             <span class="n">file_name</span> <span class="o">=</span> <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="n">tmp_dir</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="n">temp_dirs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.mat&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">key</span><span class="p">)</span>
-            <span class="n">ppg_statistics</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">matlab_struct</span><span class="p">)</span>
+            <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">ppg_statistics</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+
+            <span class="n">matlab_struct</span> <span class="o">=</span> <span class="n">biomarkers_defs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="n">tmp_dir</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="n">temp_dirs</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.mat&#39;</span><span class="p">)</span><span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="n">matlab_struct</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The file format is not suported for data saving! You can use &quot;mat&quot; or &quot;csv&quot; file formats.&#39;</span><span class="p">)</span>
 
