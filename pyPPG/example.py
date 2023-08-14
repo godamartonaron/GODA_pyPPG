@@ -49,7 +49,7 @@ def ppg_example(data_path="",start = 0, end = 0, filtering=True, correct=True, s
 
         .. code-block:: python
 
-            from pyPPG import ppg_example
+            from pyPPG.example import ppg_example
 
             # run example code
             ppg_example(savedata=True, savefig=True)

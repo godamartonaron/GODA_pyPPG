@@ -1,4 +1,4 @@
-from pack_ppg._ErrorHandler import _check_shape_, WrongParameter
+from pyPPG.pack_ppg._ErrorHandler import _check_shape_, WrongParameter
 import pandas as pd
 class PPG:
     '''
