@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.signal import detrend, find_peaks, correlate
-from numpy.fft import fft, ifft, fftshift
 
 def get_ppgSQI(ppg: list, fs: int, annotation: list):
     '''

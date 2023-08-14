@@ -1,5 +1,5 @@
 import pyPPG
-from preproc import*
+from pyPPG.preproc import Preprocessing
 
 import matplotlib.pyplot as plt
 import scipy.io
@@ -189,8 +189,8 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str):
 
     canvas = FigureCanvas(fig)
     tmp_dir=savingfolder+os.sep+'PPG_Figures'+os.sep
-    if not os.path.exists(tmp_dir):
-        os.mkdir(tmp_dir)
+
+    os.makedirs(tmp_dir, exist_ok=True)
 
     canvas.print_png((tmp_dir+'%s_btwn_%s-%s.png') % (s.name,s.start,s.end))
     print('Figure has been saved in the "'+savingfolder+'".')
@@ -222,9 +222,7 @@ def save_data(s: pyPPG.PPG, fp: pyPPG.Fiducials, bm: pyPPG.Biomarkers, savingfor
     temp_dirs = ['Fiducial_points', 'Biomarker_vals', 'Biomarker_stats', 'Biomarker_defs', 'PPG_struct']
     for i in temp_dirs:
         temp_dir = tmp_dir + os.sep + i + os.sep
-        if not os.path.exists(temp_dir):
-            os.mkdir(temp_dir)
-
+        os.makedirs(temp_dir, exist_ok=True)
 
     keys=s.__dict__.keys()
     keys_list = list(keys)

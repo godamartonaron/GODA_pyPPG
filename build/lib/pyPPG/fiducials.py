@@ -1,7 +1,7 @@
+import pyPPG
+
 import copy
 import pandas as pd
-
-import pyPPG
 import numpy as np
 from dotmap import DotMap
 from scipy.signal import kaiserord, firwin, filtfilt, detrend, periodogram, lfilter, find_peaks, firls, resample

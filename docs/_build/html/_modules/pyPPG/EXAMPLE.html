@@ -76,11 +76,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pyPPG.example</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pyPPG</span> <span class="kn">import</span><span class="o">*</span>
-<span class="kn">from</span> <span class="nn">datahandling</span> <span class="kn">import</span><span class="o">*</span>
+<span></span><span class="kn">from</span> <span class="nn">pyPPG</span> <span class="kn">import</span> <span class="n">PPG</span><span class="p">,</span> <span class="n">Fiducials</span><span class="p">,</span> <span class="n">Biomarkers</span>
+<span class="kn">from</span> <span class="nn">pyPPG.datahandling</span> <span class="kn">import</span> <span class="n">load_data</span><span class="p">,</span> <span class="n">plot_fiducials</span><span class="p">,</span> <span class="n">save_data</span>
 <span class="kn">import</span> <span class="nn">pyPPG.fiducials</span> <span class="k">as</span> <span class="nn">FP</span>
 <span class="kn">import</span> <span class="nn">pyPPG.biomarkers</span> <span class="k">as</span> <span class="nn">BM</span>
+<span class="kn">import</span> <span class="nn">pyPPG.ppg_sqi</span> <span class="k">as</span> <span class="nn">SQI</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
@@ -155,6 +157,10 @@
 
         <span class="c1">## Save data</span>
         <span class="n">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">bm</span><span class="p">,</span> <span class="n">savingformat</span><span class="p">,</span> <span class="n">savingfolder</span><span class="p">)</span>
+
+    <span class="c1"># PPG SQI</span>
+    <span class="n">ppgSQI</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SQI</span><span class="o">.</span><span class="n">get_ppgSQI</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">filt_sig</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">sp</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean PPG SQI: &#39;</span><span class="p">,</span> <span class="n">ppgSQI</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Program finished&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">fiducials</span></div>

@@ -1,9 +1,9 @@
+import pyPPG
+
 import numpy as np
 from dotmap import DotMap
 import pandas as pd
 from scipy.signal import find_peaks
-
-import pyPPG
 
 ###########################################################################
 ####################### PPG biomarkers extraction #########################

@@ -1,8 +1,10 @@
-from ppg_bm.ppg_sig import*
-from ppg_bm.sig_ratios import*
-from ppg_bm.ppg_derivs import*
-from ppg_bm.derivs_ratios import*
-from ppg_bm.statistics import*
+import pyPPG
+
+from pyPPG.ppg_bm.ppg_sig import get_ppg_sig
+from pyPPG.ppg_bm.sig_ratios import get_sig_ratios
+from pyPPG.ppg_bm.ppg_derivs import get_ppg_derivs
+from pyPPG.ppg_bm.derivs_ratios import get_derivs_ratios
+from pyPPG.ppg_bm.statistics import get_statistics
 
 class BmCollection:
 

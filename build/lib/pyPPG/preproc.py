@@ -1,12 +1,6 @@
-import copy
-import pandas as pd
-
-from pack_ppg._ErrorHandler import _check_shape_, WrongParameter
 import numpy as np
 from dotmap import DotMap
-from scipy.signal import kaiserord, firwin, filtfilt, detrend, periodogram, lfilter, find_peaks, firls, resample
-import matplotlib.pyplot as plt
-import time
+from scipy.signal import filtfilt
 from scipy import signal
 
 def Preprocessing(s: DotMap, filtering: bool):

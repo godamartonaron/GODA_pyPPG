@@ -9,7 +9,7 @@ Once you have installed the most recent version of Python on your computer, you 
 
 **Example pyPPG code**
 ------------------------
-The provided example code consists of six modules that effectively showcase the capabilities of the pyPPG toolbox.
+The provided example code consists of seven modules that effectively showcase the capabilities of the pyPPG toolbox.
 
 #. **Raw PPG Signal Loading**: This module facilitates the loading of raw PPG signals from various file formats, including .mat, .csv, .txt, or .edf.
 #. **Fiducial Point Extraction**: This module focuses on extracting fiducial points from PPG signals, encompassing PPG, PPG', PPG'', and PPG'''.
@@ -22,6 +22,7 @@ The provided example code consists of six modules that effectively showcase the 
     IV. Derivative ratios
 
 #. **Biomarker Statistics**: A concise summary of the 74 PPG biomarkers is provided within this module.
+#. **SQI calculation**: This module calculates PPG Signal Quality Index based on beat template correlation.
 #. **Save data**: This module allows for the saving of extracted Fiducial points, Biomarkers, and Statistics into a .csv file.
 
 The resulting figures and outcomes are stored within the *temp_dir* folder, which is automatically generated within the project directory.

@@ -1,8 +1,10 @@
-from pyPPG import*
-from datahandling import*
+from pyPPG import PPG, Fiducials, Biomarkers
+from pyPPG.datahandling import load_data, plot_fiducials, save_data
 import pyPPG.fiducials as FP
 import pyPPG.biomarkers as BM
+import pyPPG.ppg_sqi as SQI
 
+import numpy as np
 import sys
 import json
 
@@ -77,6 +79,10 @@ def ppg_example(data_path="",start = 0, end = 0, filtering=True, correct=True, s
 
         ## Save data
         save_data(s, fp, bm, savingformat, savingfolder)
+
+    # PPG SQI
+    ppgSQI=round(np.mean(SQI.get_ppgSQI(s.filt_sig, s.fs, fp.sp))*100,2)
+    print('Mean PPG SQI: ', ppgSQI, '%')
 
     print('Program finished')
     return fiducials

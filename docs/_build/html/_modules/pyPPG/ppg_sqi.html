@@ -78,7 +78,6 @@
   <h1>Source code for pyPPG.ppg_sqi</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">detrend</span><span class="p">,</span> <span class="n">find_peaks</span><span class="p">,</span> <span class="n">correlate</span>
-<span class="kn">from</span> <span class="nn">numpy.fft</span> <span class="kn">import</span> <span class="n">fft</span><span class="p">,</span> <span class="n">ifft</span><span class="p">,</span> <span class="n">fftshift</span>
 
 <div class="viewcode-block" id="get_ppgSQI"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.ppg_sqi.get_ppgSQI">[docs]</a><span class="k">def</span> <span class="nf">get_ppgSQI</span><span class="p">(</span><span class="n">ppg</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>

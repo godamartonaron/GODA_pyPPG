@@ -77,7 +77,7 @@
              
   <h1>Source code for pyPPG.datahandling</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">pyPPG</span>
-<span class="kn">from</span> <span class="nn">preproc</span> <span class="kn">import</span><span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pyPPG.preproc</span> <span class="kn">import</span> <span class="n">Preprocessing</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">scipy.io</span>
@@ -267,8 +267,8 @@
 
     <span class="n">canvas</span> <span class="o">=</span> <span class="n">FigureCanvas</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
     <span class="n">tmp_dir</span><span class="o">=</span><span class="n">savingfolder</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="s1">&#39;PPG_Figures&#39;</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">canvas</span><span class="o">.</span><span class="n">print_png</span><span class="p">((</span><span class="n">tmp_dir</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_btwn_</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">.png&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">,</span><span class="n">s</span><span class="o">.</span><span class="n">end</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Figure has been saved in the &quot;&#39;</span><span class="o">+</span><span class="n">savingfolder</span><span class="o">+</span><span class="s1">&#39;&quot;.&#39;</span><span class="p">)</span></div>
@@ -300,9 +300,7 @@
     <span class="n">temp_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Fiducial_points&#39;</span><span class="p">,</span> <span class="s1">&#39;Biomarker_vals&#39;</span><span class="p">,</span> <span class="s1">&#39;Biomarker_stats&#39;</span><span class="p">,</span> <span class="s1">&#39;Biomarker_defs&#39;</span><span class="p">,</span> <span class="s1">&#39;PPG_struct&#39;</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">temp_dirs</span><span class="p">:</span>
         <span class="n">temp_dir</span> <span class="o">=</span> <span class="n">tmp_dir</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">)</span>
-
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">keys</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
     <span class="n">keys_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
