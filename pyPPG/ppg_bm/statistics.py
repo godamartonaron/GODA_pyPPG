@@ -6,7 +6,7 @@ import scipy.stats
 ###################### Statistics of PPG Biomarkers #######################
 ###########################################################################
 
-def Statistics(peaks: pd.Series, onsets: pd.Series, ppg_biomarkers: dict):
+def get_statistics(peaks: pd.Series, onsets: pd.Series, ppg_biomarkers: dict):
     """
     The function compares the different biomedical features of PPG signal.
 

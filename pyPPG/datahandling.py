@@ -98,14 +98,16 @@ def load_data(data_path: str, filtering: bool):
 ###########################################################################
 ########################### Plot Fiducial points ##########################
 ###########################################################################
-def plot_fiducials(s: pyPPG.PPG, fiducials: pd.DataFrame):
+def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str):
     """
     Plot fiducial points of the filtered PPG signal.
 
     :param s: a struct of PPG signal
     :type s: pyPPG.PPG object
-    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
-    :type fiducials: DataFrame
+    :param fp: a struct of fiducial points
+    :type fp: pyPPG.Fiducials object
+    :param savingfolder: location of the saved figure
+    :type savingfolder: str
     """
 
     fig = plt.figure(figsize=(20, 12))
@@ -150,7 +152,7 @@ def plot_fiducials(s: pyPPG.PPG, fiducials: pd.DataFrame):
 
 
         ax = plt.subplot(4, 1, plt_num)
-        tmp_pnt=eval("fiducials['" + n + "'].values")
+        tmp_pnt=eval("fp." + n + ".values")
         tmp_pnt=tmp_pnt[~np.isnan(tmp_pnt)].astype(int)
         tmp_sig=eval("s." + s_type[ind])
         exec("plt.scatter(tmp_pnt, tmp_sig[tmp_pnt], s=60,linewidth=2, marker = marker[ind],facecolors='none', color=color[ind], label=n)")
@@ -175,41 +177,28 @@ def plot_fiducials(s: pyPPG.PPG, fiducials: pd.DataFrame):
     plt.show()
 
     canvas = FigureCanvas(fig)
-    tmp_dir='temp_dir'+os.sep+'PPG_Figures'+os.sep
-    os.makedirs(tmp_dir, exist_ok=True)
+    tmp_dir=savingfolder+os.sep+'PPG_Figures'+os.sep
+    if not os.path.exists(tmp_dir):
+        os.mkdir(tmp_dir)
 
     canvas.print_png((tmp_dir+'%s.png') % (s.name))
-    print('Figure has been saved in the "temp_dir".')
+    print('Figure has been saved in the "'+savingfolder+'".')
 
 ###########################################################################
 ################################# Save Data ###############################
 ###########################################################################
 
-def save_data(s: pyPPG.PPG, fiducials: pd.DataFrame, biomarkers_vals: dict, biomarkers_defs: dict, ppg_statistics: dict, savingformat: str,savingfolder: str):
+def save_data(s: pyPPG.PPG, fp: pyPPG.Fiducials, bm: pyPPG.Biomarkers, savingformat: str, savingfolder: str):
     """
     Save the results of the filtered PPG analysis.
 
     :param s: a struct of PPG signal
     :type s: pyPPG.PPG object
     :type s: DotMap
-    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
-    :type fiducials: DataFrame
-    :param biomarkers_vals: dictionary with values of biomarkers in different categories:
-
-        * bm_ppg_sig: biomarkers of the PPG signal
-        * bm_sig_ratios: biomarkers of the Signal ratios
-        * bm_ppg_derivs: biomarkers of the PPG derivatives
-        * bm_derivs_ratios: biomarkers of the Derivatives ratios
-    :type biomarkers_vals: dict
-    :param biomarkers_defs: dictionary with name, definition and unit of biomarkers in different categories:
-
-        * def_ppg_sig: description of the PPG signal
-        * def_sig_ratios: description of the Signal ratios
-        * def_ppg_derivs: description of the PPG derivatives
-        * def_derivs_ratios: description of the Derivatives ratios
-    :type biomarkers_defs: dict
-    :param Statistics: data frame with summary of PPG features
-    :type Statistics: dict
+    :param fp: a struct of fiducial points
+    :type fp: pyPPG.Fiducial object
+    :param bm: a dictionary of biomarkers
+    :type bm: pyPPG.Biomarkers object
     :param savingformat: file format of the saved date, the provided file formats .mat and .csv
     :type savingformat: str
     :param savingfolder: location of the saved data
@@ -219,7 +208,7 @@ def save_data(s: pyPPG.PPG, fiducials: pd.DataFrame, biomarkers_vals: dict, biom
     tmp_dir = savingfolder
     os.makedirs(tmp_dir, exist_ok=True)
 
-    temp_dirs = ['Fiducials', 'Biomarkers', 'Statistics', 'Biomarkers_defs', 'DATA']
+    temp_dirs = ['Fiducial_points', 'Biomarker_vals', 'Biomarker_stats', 'Biomarker_defs', 'PPG_struct']
     for i in temp_dirs:
         temp_dir = tmp_dir + os.sep + i + os.sep
         if not os.path.exists(temp_dir):
@@ -235,34 +224,37 @@ def save_data(s: pyPPG.PPG, fiducials: pd.DataFrame, biomarkers_vals: dict, biom
     file_name = (r'.' + os.sep + tmp_dir + os.sep + temp_dirs[4] + os.sep + s.name + '_data.mat')
     scipy.io.savemat(file_name, sc)
 
-    BM_keys = biomarkers_vals.keys()
+    BM_keys = bm.bm_vals.keys()
 
     if savingformat=="csv":
-        file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducial.csv')
-        fiducials.to_csv(file_name)
+        file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducials.csv')
+        fp.get_fp().to_csv(file_name)
 
         for key in BM_keys:
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s.csv')% (s.name+'_'+key)
-            biomarkers_vals[key].to_csv(file_name,index=True,header=True)
+            bm.bm_vals[key].to_csv(file_name,index=True,header=True)
 
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s.csv') % (s.name+'_'+key)
-            ppg_statistics[key].to_csv(file_name, index=True, header=True)
+            bm.bm_stats[key].to_csv(file_name, index=True, header=True)
+
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s.csv') % (key)
+            bm.bm_defs[key].to_csv(file_name, index=True, header=True)
 
     elif savingformat=="mat":
-        matlab_struct = fiducials.to_dict(orient='list')
-        file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducial.mat')
+        matlab_struct = fp.get_fp().to_dict(orient='list')
+        file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducials.mat')
         scipy.io.savemat(file_name,matlab_struct)
 
         for key in BM_keys:
 
-            matlab_struct = biomarkers_vals[key].to_dict(orient='list')
+            matlab_struct = bm.bm_vals[key].to_dict(orient='list')
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s.mat')% (s.name+'_'+key)
             scipy.io.savemat(file_name,matlab_struct)
 
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s.mat') % (s.name+'_'+key)
-            scipy.io.savemat(file_name, ppg_statistics[key])
+            scipy.io.savemat(file_name, bm.bm_stats[key])
 
-            matlab_struct = biomarkers_defs[key].to_dict(orient='list')
+            matlab_struct = bm.bm_defs[key].to_dict(orient='list')
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s.mat')% (key)
             scipy.io.savemat(file_name,matlab_struct)
     else:

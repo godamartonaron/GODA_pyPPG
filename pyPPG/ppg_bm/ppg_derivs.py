@@ -1,24 +1,20 @@
-from pyPPG.ppg_bm.biomarker_extractor import*
+from pyPPG.ppg_bm.bm_extractor import*
 
 ###########################################################################
 ##################### Get Biomarkers of PPG Derivatives ###################
 ###########################################################################
-def get_bm_ppg_derivs(s: pyPPG.PPG, fiducials: pd.DataFrame):
+def get_ppg_derivs(s: pyPPG.PPG, fp: pyPPG.Fiducials):
     """
     This function returns the biomarkers of PPG derivatives.
 
     :param s: a struct of PPG signal
     :type s: pyPPG.PPG object
-    :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.
+    :param fp: a struct of fiducial points
+    :type fp: pyPPG.Fiducials object
 
-        * PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak
-        * 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
-        * 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
-        * 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)
-    :type fiducials: DataFrame
-
-    :return biomarkers: dictionary of biomarkers of PPG derivatives
-    :return biomarkers_lst: list a biomarkers with name, definition and unit
+    :return:
+        - biomarkers: dictionary of biomarkers of PPG derivatives
+        - biomarkers_lst: list a biomarkers with name, definition and unit
     """
 
     biomarkers_lst = [
@@ -42,6 +38,6 @@ def get_bm_ppg_derivs(s: pyPPG.PPG, fiducials: pd.DataFrame):
     header = ['name', 'definition', 'unit']
     biomarkers_lst = pd.DataFrame(biomarkers_lst, columns=header)
 
-    df, df_biomarkers = get_biomarkers(s, fiducials, biomarkers_lst.name)
+    df, df_biomarkers = get_biomarkers(s, fp, biomarkers_lst.name)
     
     return df_biomarkers, biomarkers_lst

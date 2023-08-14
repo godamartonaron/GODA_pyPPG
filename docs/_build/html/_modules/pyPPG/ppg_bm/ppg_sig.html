@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyPPG.ppg_bm.get_bm_ppg_sig &mdash; pyPPG 1.0.0 documentation</title>
+  <title>pyPPG.ppg_bm.ppg_sig &mdash; pyPPG 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -66,7 +66,7 @@
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
           <li class="breadcrumb-item"><a href="../../pyPPG.html">pyPPG</a></li>
-      <li class="breadcrumb-item active">pyPPG.ppg_bm.get_bm_ppg_sig</li>
+      <li class="breadcrumb-item active">pyPPG.ppg_bm.ppg_sig</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -75,13 +75,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for pyPPG.ppg_bm.get_bm_ppg_sig</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pyPPG.ppg_bm.biomarker_extractor</span> <span class="kn">import</span><span class="o">*</span>
+  <h1>Source code for pyPPG.ppg_bm.ppg_sig</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pyPPG.ppg_bm.bm_extractor</span> <span class="kn">import</span><span class="o">*</span>
 
 <span class="c1">###########################################################################</span>
 <span class="c1">####################### Get Biomarkers of PPG Signal ######################</span>
 <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="get_bm_ppg_sig"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.get_bm_ppg_sig.get_bm_ppg_sig">[docs]</a><span class="k">def</span> <span class="nf">get_bm_ppg_sig</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<div class="viewcode-block" id="get_ppg_sig"><a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.ppg_sig.get_ppg_sig">[docs]</a><span class="k">def</span> <span class="nf">get_ppg_sig</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function returns the biomarkers of PPG signal.</span>
 
@@ -95,8 +95,9 @@
 <span class="sd">        * 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</span>
 <span class="sd">    :type fiducials: DataFrame</span>
 
-<span class="sd">    :return biomarkers: dictionary of biomarkers of PPG signal</span>
-<span class="sd">    :return biomarkers_lst: list a biomarkers with name, definition and unit</span>
+<span class="sd">    :return:</span>
+<span class="sd">        - biomarkers: dictionary of biomarkers of PPG signal</span>
+<span class="sd">        - biomarkers_lst: list a biomarkers with name, definition and unit</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">biomarkers_lst</span> <span class="o">=</span> <span class="p">[</span>

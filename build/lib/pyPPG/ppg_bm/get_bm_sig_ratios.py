@@ -1,4 +1,4 @@
-from pyPPG.ppg_bm.biomarker_extractor import*
+from pyPPG.ppg_bm.bm_extractor import*
 
 ###########################################################################
 ######################### Get Ratios of PPG Signal ########################

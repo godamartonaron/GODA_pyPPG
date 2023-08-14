@@ -9,7 +9,7 @@ import pyPPG
 ####################### PPG biomarkers extraction #########################
 ###########################################################################
 
-class BmExtractor:
+class Biomarkers:
     """
     Class that extracts the PPG biomarkers.
     """
@@ -19,6 +19,7 @@ class BmExtractor:
         """
 
         :param data: struct of PPG,PPG', PPG", PPG'":
+
             - data.sig: segment of PPG timeseries to analyse and extract biomarkers as a np array
             - data.d1: segment of PPG'
             - data.d2: segment of PPG"
@@ -1193,14 +1194,14 @@ class BmExtractor:
 ###########################################################################
 ############################# Get PPG biomarkers ############################
 ###########################################################################
-def get_biomarkers(s: pyPPG.PPG, fiducials, biomarkers_lst):
+def get_biomarkers(s: pyPPG.PPG, fp: pyPPG.Fiducials, biomarkers_lst):
     """
     The function calculates the biomedical biomarkers of PPG signal.
 
     :param s: a struct of PPG signal
     :type s: pyPPG.PPG object
-    :param fiducials: M-d Dateframe, where M is the number of fiducial points
-    :param biomarkers_lst: list of biomarkers
+    :param fp: a struct of fiducial points
+    :type fp: pyPPG.Fiducials object
 
     :return:
         - df: data frame with onsets, offset and peaks
@@ -1213,12 +1214,10 @@ def get_biomarkers(s: pyPPG.PPG, fiducials, biomarkers_lst):
 
     df = pd.DataFrame()
     df_biomarkers = pd.DataFrame(columns=biomarkers_lst)
-    peaks = fiducials.sp.values
-    onsets = fiducials.on.values
+    peaks = fp.sp.values
+    onsets = fp.on.values
 
-    # display(df_biomarkers)
     for i in range(len(onsets) - 1):
-        #   print(f'i is {i}')
         onset = onsets[i]
         offset = onsets[i + 1]
         data.sig = ppg[int(onset):int(offset)]
@@ -1230,7 +1229,7 @@ def get_biomarkers(s: pyPPG.PPG, fiducials, biomarkers_lst):
             continue
         peak = peak[0]
 
-        temp_fiducials = fiducials.iloc[[i]]
+        temp_fiducials = fp.get_row(i)
 
         peak_value = ppg[peak]
         peak_time = peak / fs
@@ -1239,29 +1238,23 @@ def get_biomarkers(s: pyPPG.PPG, fiducials, biomarkers_lst):
 
         if (peak_value - onset_value) == 0:
             continue
-        #     print(onset_time)
+
         offset_value = ppg[offset]
         offset_time = offset / fs
-        #     print(offset_time)
+
         idx_array = np.where(peaks == peak)
         idx = idx_array[0]
         onsets_values = np.array([onset_value, offset_value])
         onsets_times = np.array([onset_time, offset_time])
-        #     print(onset,peak, offset)
         if (idx + 1) < len(peaks):
             next_peak_value = ppg[peaks[idx + 1].astype('int64')][0]
             next_peak_time = peaks[idx + 1] / fs
             next_peak_time = next_peak_time[0]
-            #         plt.plot(data.sig)
-            #         plt.show()
-            #         print(peak_value,peak_time,next_peak_value,next_peak_time,onsets_values,onsets_times)
             try:
-                biomarkers_extractor = BmExtractor(data, peak_value, peak_time, next_peak_value, next_peak_time,
-                                                          onsets_values, onsets_times, fs, biomarkers_lst,temp_fiducials)
+                biomarkers_extractor = Biomarkers(data, peak_value, peak_time, next_peak_value, next_peak_time, onsets_values, onsets_times, fs, biomarkers_lst,temp_fiducials)
                 biomarkers_vec = biomarkers_extractor.get_feature_extract_func()
                 lst = list(biomarkers_vec)
                 df_biomarkers.loc[len(df_biomarkers.index)] = lst
-                #         display(df_biomarkers)
                 df = pd.concat({'onset': onset, 'offset': offset, 'peak': peak}, ignore_index=True)
             except:
                 pass

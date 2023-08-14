@@ -17,17 +17,9 @@ pyPPG.example
    :undoc-members:
    :show-inheritance:
 
-pyPPG
-------
+pyPPG.PPG class
+----------------
 .. automodule:: pyPPG
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyPPG.datahandling
--------------------------
-
-.. automodule:: pyPPG.datahandling
    :members:
    :undoc-members:
    :show-inheritance:
@@ -43,10 +35,8 @@ pyPPG.preproc
 pyPPG.fiducials
 -----------------
 
-.. automodule:: pyPPG.fiducials
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. autoclass:: pyPPG.fiducials.FiducialPoints
+   :members: getFiducialPoints
 
 pyPPG.biomarkers
 -----------------------
@@ -57,18 +47,18 @@ pyPPG.biomarkers
    :show-inheritance:
 
 
-pyPPG.Statistics
------------------------
-
-.. automodule:: pyPPG.Statistics
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pyPPG.ppg_sqi
 -------------------
 
 .. automodule:: pyPPG.ppg_sqi
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyPPG.datahandling
+-------------------------
+
+.. automodule:: pyPPG.datahandling
    :members:
    :undoc-members:
    :show-inheritance:

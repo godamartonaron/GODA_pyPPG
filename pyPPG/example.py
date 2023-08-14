@@ -1,8 +1,7 @@
+from pyPPG import*
 from datahandling import*
-import fiducials as Fp
-import biomarkers as Bm
-from Statistics import*
-from pyPPG import PPG
+import pyPPG.fiducials as FP
+import pyPPG.biomarkers as BM
 
 import sys
 import json
@@ -10,7 +9,7 @@ import json
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="",filtering=True,correct=True, savefig=True, savedata=True, savingformat="mat",savingfolder="temp_dir"):
+def ppg_example(data_path="",filtering=True,correct=True, savefig=True, savedata=True, savingformat="csv",savingfolder="temp_dir"):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -58,23 +57,22 @@ def ppg_example(data_path="",filtering=True,correct=True, savefig=True, savedata
     s = PPG(ppg_data)
 
     ## Get Fiducial points
-    fp = Fp.FiducialPoints(s)
-    fiducials=fp.getFiducialPoints(correct)
+    fpex = FP.FpExctator(s)
+    fiducials=fpex.get_fiducials(s,correct)
+    fp = Fiducials(fiducials)
 
     if savefig:
         ## Plot Fiducials Points
-        plot_fiducials(s, fiducials)
+        plot_fiducials(s, fp, savingfolder)
 
     if savedata:
-        ## Get Biomarkers
-        bm = Bm.Biomarkers(s, fiducials)
-        biomarkers_vals, biomarkers_defs = bm.getBiomarkers()
-
-        ## Get Statistics
-        statistics = Statistics(fiducials['sp'], fiducials['on'], biomarkers_vals)
+        ## Get Biomarkers and Statistics
+        bmex = BM.BmExctator(s, fp)
+        bm_defs, bm_vals, bm_stats = bmex.get_biomarkers()
+        bm = Biomarkers(bm_defs, bm_vals , bm_stats)
 
         ## Save data
-        save_data(s,fiducials,biomarkers_vals,biomarkers_defs,statistics,savingformat,savingfolder)
+        save_data(s, fp, bm, savingformat, savingfolder)
 
     print('Program finished')
     return fiducials

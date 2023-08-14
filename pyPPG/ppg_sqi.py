@@ -2,45 +2,45 @@ import numpy as np
 from scipy.signal import detrend, find_peaks, correlate
 from numpy.fft import fft, ifft, fftshift
 
-def ppgSQI(ppg: list, fs: int, ann_ppg: list):
+def get_ppgSQI(ppg: list, fs: int, annotation: list):
     '''
     PPG Signal Quality Index based on beat template correlation.
 
     :param ppg: a vector of PPG values
+    :type ppg: int
     :param fs: Samples frequency
     :type fs: int
-    :param ann_ppg: PPG annotation time(samples)
-    :type ann_ppg: list
+    :param annotation: PPG annotation time(samples)
+    :type annotation: list
 
     :return: psqi: PPG Signal Quality Index
 
-    Reference
-    ---------
-    Li, Qiao, and Gari D. Clifford. "Dynamic time warping and machine learning for signal quality assessment of pulsatile signals."
-    Physiological measurement 33.9 (2012): 1491.
 
-    Author:
-    Marton A. Goda – Faculty of Biomedical Engineering,
-    Technion – Israel Institute of Technology, Haifa, Israel (August 2022)
+    Reference:
+    ----------
 
     Original Matlab implementation:
     Qiao Li, November 10, 2014.
     https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m
+
+    Author:
+    Marton A. Goda – Faculty of Biomedical Engineering,
+    Technion – Israel Institute of Technology, Haifa, Israel (August 2022)
     '''
 
     Fs = fs
     # Create PPG template
-    t,v = template(ppg, ann_ppg-1, fs)
+    t,v = use_template(ppg, annotation-1, fs)
 
-    c1 = np.empty(len(ann_ppg)-1)
+    c1 = np.empty(len(annotation)-1)
     c1[:] = np.NaN
-    psqi = np.empty(len(ann_ppg)-1)
+    psqi = np.empty(len(annotation)-1)
     psqi[:] = np.NaN
 
-    for j in range (0,len(ann_ppg) - 1):
+    for j in range (0,len(annotation) - 1):
         # Calculate correlation coefficients based on the template length
-        beatbegin = ann_ppg[j]-1
-        beatend = ann_ppg[j + 1]-1
+        beatbegin = annotation[j]-1
+        beatend = annotation[j + 1]-1
         if beatend - beatbegin > 3 * Fs:
             beatend = beatbegin + 3 * Fs
 
@@ -58,27 +58,31 @@ def ppgSQI(ppg: list, fs: int, ann_ppg: list):
 
     return psqi
 
-def template(wave, anntime, samp_freq):
-    # PPG waveform template creation.
-    # Written by Qiao Li, February 21, 2011.
-    #
-    # input:
-    #   wave: PPG data
-    #   anntime: PPG annotation time(sample)
-    #   samp_freq: sampling frequency, default is 125 Hz
-    # output:
-    #   t: PPG waveform template based on normal - length beats
-    #   valid:  1 for valid template
-    #           0 for invalid template
+def use_template(wave, annotation: list, fs: int):
+    '''
+    PPG waveform template creation.
+    Written by Qiao Li, February 21, 2011
 
-    t = []
+    :param wave: a vector of PPG wave
+    :type ppg: int
+    :param fs: Samples frequency
+    :type fs: int
+    :param annotation: PPG annotation time(sample)
+    :type ann_ppg: list
+
+    :return:
+        - template: PPG waveform template based on normal - length beats
+        - valid: 1 for valid template, 0 for invalid template
+    '''
+
+    template = []
     valid = 0
 
     # according to heart rate max(300 bpm) and min(20 bpm) to get max and min beat - by - beat interval
     hr_max = 300
-    bb_interval_min = samp_freq * 60 / hr_max
+    bb_interval_min = fs * 60 / hr_max
     hr_min = 20
-    bb_interval_max = samp_freq * 60 / hr_min
+    bb_interval_max = fs * 60 / hr_min
 
     # Normal beat thresholds
     normal_beat_length_min = 0.7
@@ -90,7 +94,7 @@ def template(wave, anntime, samp_freq):
 
     y = correlate(data, data, 'full', method='fft')
     lenw = len(wave)
-    lena = len(anntime)
+    lena = len(annotation)
     i = lenw
 
     locs = find_peaks(y[i:])[0]
@@ -102,7 +106,7 @@ def template(wave, anntime, samp_freq):
     max_i=np.where(pks==max_v)[0][0]
     i = locs[max_i]
 
-    cycle = samp_freq
+    cycle = fs
     if i < lenw - 1:
         cycle = i
 
@@ -111,22 +115,22 @@ def template(wave, anntime, samp_freq):
         return
 
     p0 = 1
-    i = anntime[p0]
+    i = annotation[p0]
 
     temp_ahead=0
     while i - temp_ahead < 1:
         p0 = p0 + 1
         if (p0 > lena):
-            t = wave
+            template = wave
             valid = 0
             return
 
-        i = anntime[p0]
+        i = annotation[p0]
 
     if p0 + 1 >= lena:
         return
 
-    beat_interval = np.diff(anntime[p0:len(anntime)])
+    beat_interval = np.diff(annotation[p0:len(annotation)])
     median_bi = np.median(beat_interval)
 
     if median_bi!='NaN':
@@ -141,13 +145,13 @@ def template(wave, anntime, samp_freq):
     valid = 1
     if (cycle > bb_interval_max) or (cycle < bb_interval_min):
         valid = 0
-        t = np.zeros(cycle)
+        template = np.zeros(cycle)
         return
 
     n = 0
     d1 = 0
     invalidn = 0
-    currentbeatlength = anntime[p0 + 1] - anntime[p0]
+    currentbeatlength = annotation[p0 + 1] - annotation[p0]
     if currentbeatlength > 0:
         d1 = wave[i - temp_ahead:i + cycle]
         n = 1
@@ -157,11 +161,11 @@ def template(wave, anntime, samp_freq):
 
     p0 = p0
     if p0 < lena - 1:
-        i = anntime[p0]
+        i = annotation[p0]
         n = 1
         invalidn = 0
         while (i < lenw - cycle) and (p0 < lena - 1):
-            currentbeatlength = anntime[p0 + 1] - anntime[p0]
+            currentbeatlength = annotation[p0 + 1] - annotation[p0]
             if currentbeatlength > 0:
                 d1 = d1 + wave[i - temp_ahead:i + cycle]
                 n = n + 1
@@ -169,7 +173,7 @@ def template(wave, anntime, samp_freq):
                 invalidn = invalidn + 1
 
             p0 = p0 + 1
-            i = anntime[p0]
+            i = annotation[p0]
 
         d1 = d1/n
         # normal beat is less than the reasonable percentage of all beats
@@ -180,6 +184,6 @@ def template(wave, anntime, samp_freq):
     else:
         valid=0
 
-    t = d1
+    template = d1
 
-    return t,valid
+    return template,valid

@@ -21,7 +21,7 @@ The provided example code consists of six modules that effectively showcase the 
     III. PPG derivatives
     IV. Derivative ratios
 
-#. **Statistical Summary**: A concise summary of the 74 PPG biomarkers is provided within this module.
+#. **Biomarker Statistics**: A concise summary of the 74 PPG biomarkers is provided within this module.
 #. **Save data**: This module allows for the saving of extracted Fiducial points, Biomarkers, and Statistics into a .csv file.
 
 The resulting figures and outcomes are stored within the *temp_dir* folder, which is automatically generated within the project directory.
