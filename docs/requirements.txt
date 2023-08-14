@@ -65,4 +65,3 @@ wheel==0.37.1
 whichcraft==0.6.1
 zope.event==4.5.0
 zope.interface==5.4.0
-pyPPG==1.0.14
