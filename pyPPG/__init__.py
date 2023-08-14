@@ -86,6 +86,7 @@ class Fiducials:
         def get_row(self, row_index):
             """
             This function retrieves the specified row from the DataFrame of fiducial points.
+
             :param row_index: the index corresponding to the row in the fiducial points DataFrame
 
             :return: the corresponding row in the fiducial points DataFrame
