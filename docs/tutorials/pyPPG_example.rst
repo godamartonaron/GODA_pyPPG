@@ -22,7 +22,7 @@ The provided example code consists of seven modules that effectively showcase th
     IV. Derivative ratios
 
 #. **Biomarker Statistics**: A concise summary of the 74 PPG biomarkers is provided within this module.
-#. **SQI calculation**: This module calculates PPG Signal Quality Index based on beat template correlation.
+#. **SQI calculation**: This module calculates the PPG Signal Quality Index based on beat template correlation.
 #. **Save data**: This module allows for the saving of extracted Fiducial points, Biomarkers, and Statistics into a .csv file.
 
 The resulting figures and outcomes are stored within the *temp_dir* folder, which is automatically generated within the project directory.

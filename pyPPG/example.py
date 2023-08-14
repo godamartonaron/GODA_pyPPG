@@ -23,7 +23,8 @@ def ppg_example(data_path="",start = 0, end = 0, filtering=True, correct=True, s
             - PPG derivatives
             - Derivatives ratios
         5) Get Statistics: summary of the 74 PPG biomarkers
-        6) Save data: save the extracted Fiducial points, Biomarkers, and Statistics into .csv file
+        6) SQI calculation: calculates the PPG Signal Quality Index
+        7) Save data: save the extracted Fiducial points, Biomarkers, and Statistics into .csv file
 
     :param data_path: path of the PPG signal
     :type data_path: str
