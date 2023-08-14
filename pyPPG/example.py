@@ -9,7 +9,7 @@ import json
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="",filtering=True,correct=True, savefig=True, savedata=True, savingformat="csv",savingfolder="temp_dir"):
+def ppg_example(data_path="",start = 0, end = 0, filtering=True, correct=True, savingfolder="temp_dir", savefig=True, savedata=True, savingformat="csv"):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -25,18 +25,22 @@ def ppg_example(data_path="",filtering=True,correct=True, savefig=True, savedata
 
     :param data_path: path of the PPG signal
     :type data_path: str
+    :param start: beginning the of signal in sample
+    :type start: int
+    :param end: end of the signal in sample
+    :type end: int
     :param filtering: a bool for filtering
     :type filtering: bool
-    :param savefig: a bool for current figure saving
-    :type savefig: bool
     :param correct: a bool for fiducials points corretion
     :type correct: bool
+    :param savingfolder: location of the saved data
+    :type savingfolder: str
+    :param savefig: a bool for current figure saving
+    :type savefig: bool
     :param savedata: a bool for saving fiducial points, biomarkers, and statistics
     :type savedata: bool
     :param savingformat: file format of the saved date, the provided file formats .mat and .csv
     :type savingformat: str
-    :param savingfolder: location of the saved data
-    :type savingfolder: str
 
     :return: fiducial points, a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
 
@@ -53,12 +57,12 @@ def ppg_example(data_path="",filtering=True,correct=True, savefig=True, savedata
     '''
 
     ## Loading a raw PPG signal
-    ppg_data = load_data(data_path,filtering)
+    ppg_data = load_data(data_path,start,end,filtering)
     s = PPG(ppg_data)
 
     ## Get Fiducial points
-    fpex = FP.FpExctator(s)
-    fiducials=fpex.get_fiducials(s,correct)
+    fpex = FP.FpCollection(s)
+    fiducials=fpex.get_fiducials(s,correct)+s.start
     fp = Fiducials(fiducials)
 
     if savefig:
@@ -67,7 +71,7 @@ def ppg_example(data_path="",filtering=True,correct=True, savefig=True, savedata
 
     if savedata:
         ## Get Biomarkers and Statistics
-        bmex = BM.BmExctator(s, fp)
+        bmex = BM.BmCollection(s, fp)
         bm_defs, bm_vals, bm_stats = bmex.get_biomarkers()
         bm = Biomarkers(bm_defs, bm_vals , bm_stats)
 

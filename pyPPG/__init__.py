@@ -8,6 +8,8 @@ class PPG:
         """
         :param s: a struct of PPG signal:
 
+            * s.start: beginning of the signal in sample
+            * s.end: end of the signal in sample
             * s.v: a vector of PPG values
             * s.fs: the sampling frequency of the PPG in Hz
             * s.name: name of the record
@@ -31,6 +33,11 @@ class PPG:
             exec('self.'+i+' = s[i]')
 
     def get_s(self):
+        """
+        This function retrieves the struct of the PPG signal.
+
+        :return: s: DataFrame of the PPG signal
+        """
         keys = self.__dict__.keys()
         keys_list = list(keys)
         s = {}
@@ -46,7 +53,7 @@ class Fiducials:
         '''
         def __init__(self, fp):
             """
-            :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.
+            :param fiducials: a DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.
 
                 * PPG signal (fp.on, fp.sp, fp.dn, fp.dp): List of pulse onset, systolic peak, dicrotic notch, diastolic peak
                 * 1st derivative (fp.u, fp.v, fp.w): List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals
@@ -62,6 +69,12 @@ class Fiducials:
                 exec('self.' + i + ' = fp[i]')
 
         def get_fp(self):
+            """
+            This function retrieves the struct of the fiducial points.
+
+            :return: fp: DataFrame of the fiducial points
+            """
+
             keys = self.__dict__.keys()
             keys_list = list(keys)
             fp={}
@@ -71,6 +84,12 @@ class Fiducials:
             return pd.DataFrame(fp)
 
         def get_row(self, row_index):
+            """
+            This function retrieves the specified row from the DataFrame of fiducial points.
+            :param row_index: the index corresponding to the row in the fiducial points DataFrame
+
+            :return: the corresponding row in the fiducial points DataFrame
+            """
             keys = self.__dict__.keys()
             keys_list = list(keys)
             fp_row={}
@@ -85,13 +104,6 @@ class Biomarkers:
         '''
         def __init__(self, bm_defs, bm_vals, bm_stats):
             """
-                :param bm_vals: dictionary with values of biomarkers in different categories:
-
-                    * bm_ppg_sig: biomarkers of the PPG signal
-                    * bm_sig_ratios: biomarkers of the Signal ratios
-                    * bm_ppg_derivs: biomarkers of the PPG derivatives
-                    * bm_derivs_ratios: biomarkers of the Derivatives ratios
-                :type bm_vals: dict
                 :param bm_defs: dictionary with name, definition and unit of biomarkers in different categories:
 
                     * def_ppg_sig: description of the PPG signal
@@ -99,6 +111,13 @@ class Biomarkers:
                     * def_ppg_derivs: description of the PPG derivatives
                     * def_derivs_ratios: description of the Derivatives ratios
                 :type bm_defs: dict
+                :param bm_vals: dictionary with values of biomarkers in different categories:
+
+                    * bm_ppg_sig: biomarkers of the PPG signal
+                    * bm_sig_ratios: biomarkers of the Signal ratios
+                    * bm_ppg_derivs: biomarkers of the PPG derivatives
+                    * bm_derivs_ratios: biomarkers of the Derivatives ratios
+                :type bm_vals: dict
                 :param bm_stats: data frame with summary of PPG features
 
                     * def_ppg_sig: description of the PPG signal
@@ -113,6 +132,12 @@ class Biomarkers:
                 exec('self.' + i + ' = ' +i)
 
         def get_bm(self):
+            """
+            This function retrieves the dictionary of the biomarkers.
+
+            :return: bm: dictionary of the biomarkers
+            """
+
             keys = self.__dict__.keys()
             keys_list = list(keys)
             bm={}

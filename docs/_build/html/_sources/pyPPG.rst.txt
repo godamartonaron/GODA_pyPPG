@@ -1,14 +1,6 @@
 pyPPG package
 =============
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 1
-
-   pyPPG.ppg_bm
-
 pyPPG.example
 --------------------
 
@@ -17,7 +9,7 @@ pyPPG.example
    :undoc-members:
    :show-inheritance:
 
-pyPPG.PPG class
+pyPPG.PPG
 ----------------
 .. automodule:: pyPPG
    :members:
@@ -35,8 +27,8 @@ pyPPG.preproc
 pyPPG.fiducials
 -----------------
 
-.. autoclass:: pyPPG.fiducials.FiducialPoints
-   :members: getFiducialPoints
+.. autoclass:: pyPPG.fiducials.FpCollection
+   :members: get_fiducials
 
 pyPPG.biomarkers
 -----------------------
@@ -62,3 +54,11 @@ pyPPG.datahandling
    :members:
    :undoc-members:
    :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 1
+
+   pyPPG.ppg_bm

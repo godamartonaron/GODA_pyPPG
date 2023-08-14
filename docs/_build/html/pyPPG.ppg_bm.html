@@ -52,7 +52,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pyPPG.html#module-pyPPG.example">pyPPG.example</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pyPPG.html#module-pyPPG">pyPPG.PPG class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyPPG.html#module-pyPPG">pyPPG.PPG</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyPPG.html#module-pyPPG.preproc">pyPPG.preproc</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyPPG.html#pyppg-fiducials">pyPPG.fiducials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pyPPG.html#module-pyPPG.biomarkers">pyPPG.biomarkers</a></li>
@@ -61,9 +61,9 @@
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">pyPPG.ppg_bm package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#pyppg-ppg-bm-bm-extractor">pyPPG.ppg_bm.bm_extractor</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#pyPPG.ppg_bm.bm_extractor.Biomarkers"><code class="docutils literal notranslate"><span class="pre">Biomarkers</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#pyPPG.ppg_bm.bm_extractor.get_biomarkers"><code class="docutils literal notranslate"><span class="pre">get_biomarkers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyppg-ppg-bm-bm-extraction">pyPPG.ppg_bm.bm_extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.ppg_bm.bm_extraction.BmExctator"><code class="docutils literal notranslate"><span class="pre">BmExctator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.ppg_bm.bm_extraction.get_biomarkers"><code class="docutils literal notranslate"><span class="pre">get_biomarkers()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pyPPG.ppg_bm.ppg_sig">pyPPG.ppg_bm.ppg_sig</a><ul>
@@ -125,20 +125,23 @@
              
   <section id="pyppg-ppg-bm-package">
 <h1>pyPPG.ppg_bm package<a class="headerlink" href="#pyppg-ppg-bm-package" title="Permalink to this heading"></a></h1>
-<section id="pyppg-ppg-bm-bm-extractor">
-<h2>pyPPG.ppg_bm.bm_extractor<a class="headerlink" href="#pyppg-ppg-bm-bm-extractor" title="Permalink to this heading"></a></h2>
+<section id="pyppg-ppg-bm-bm-extraction">
+<h2>pyPPG.ppg_bm.bm_extraction<a class="headerlink" href="#pyppg-ppg-bm-bm-extraction" title="Permalink to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.bm_extractor.Biomarkers">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.bm_extractor.</span></span><span class="sig-name descname"><span class="pre">Biomarkers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DotMap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_peak_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_peak_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onsets_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onsets_times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_biomarkers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/bm_extractor.html#Biomarkers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.bm_extractor.Biomarkers" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.bm_extraction.BmExctator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.bm_extraction.</span></span><span class="sig-name descname"><span class="pre">BmExctator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DotMap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_peak_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_peak_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onsets_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onsets_times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_biomarkers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/bm_extraction.html#BmExctator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.bm_extraction.BmExctator" title="Permalink to this definition"></a></dt>
 <dd><p>Class that extracts the PPG biomarkers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>DotMap</em>) – struct of PPG,PPG’, PPG”, PPG’”:
-- data.sig: segment of PPG timeseries to analyse and extract biomarkers as a np array
-- data.d1: segment of PPG’
-- data.d2: segment of PPG”
-- data.d3: segment of PPG’”</p></li>
+<li><p><strong>data</strong> (<em>DotMap</em>) – <p>struct of PPG,PPG’, PPG”, PPG’”:</p>
+<ul>
+<li><p>data.sig: segment of PPG timeseries to analyse and extract biomarkers as a np array</p></li>
+<li><p>data.d1: segment of PPG’</p></li>
+<li><p>data.d2: segment of PPG”</p></li>
+<li><p>data.d3: segment of PPG’”</p></li>
+</ul>
+</p></li>
 <li><p><strong>peak_value</strong> (<em>float</em>) – PPG peak value</p></li>
 <li><p><strong>peak_time</strong> (<em>float</em>) – the time corresponding to the peak detected</p></li>
 <li><p><strong>next_peak_value</strong> (<em>float</em>) – PPG next peak value</p></li>
@@ -153,16 +156,15 @@
 </dl>
 </dd></dl>
 
-<span class="target" id="module-pyPPG.ppg_bm.bm_extractor"></span><dl class="py function">
-<dt class="sig sig-object py" id="pyPPG.ppg_bm.bm_extractor.get_biomarkers">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.bm_extractor.</span></span><span class="sig-name descname"><span class="pre">get_biomarkers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">biomarkers_lst</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/bm_extractor.html#get_biomarkers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.bm_extractor.get_biomarkers" title="Permalink to this definition"></a></dt>
+<span class="target" id="module-pyPPG.ppg_bm.bm_extraction"></span><dl class="py function">
+<dt class="sig sig-object py" id="pyPPG.ppg_bm.bm_extraction.get_biomarkers">
+<span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.bm_extraction.</span></span><span class="sig-name descname"><span class="pre">get_biomarkers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.Fiducials" title="pyPPG.Fiducials"><span class="pre">Fiducials</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">biomarkers_lst</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/bm_extraction.html#get_biomarkers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.bm_extraction.get_biomarkers" title="Permalink to this definition"></a></dt>
 <dd><p>The function calculates the biomedical biomarkers of PPG signal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – a struct of PPG signal</p></li>
-<li><p><strong>fiducials</strong> – M-d Dateframe, where M is the number of fiducial points</p></li>
-<li><p><strong>biomarkers_lst</strong> – list of biomarkers</p></li>
+<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – object of PPG signal</p></li>
+<li><p><strong>fp</strong> (<em>pyPPG.Fiducials object</em>) – object of fiducial points</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -180,20 +182,13 @@
 <span id="pyppg-ppg-bm-ppg-sig"></span><h2>pyPPG.ppg_bm.ppg_sig<a class="headerlink" href="#module-pyPPG.ppg_bm.ppg_sig" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyPPG.ppg_bm.ppg_sig.get_ppg_sig">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.ppg_sig.</span></span><span class="sig-name descname"><span class="pre">get_ppg_sig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/ppg_sig.html#get_ppg_sig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.ppg_sig.get_ppg_sig" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.ppg_sig.</span></span><span class="sig-name descname"><span class="pre">get_ppg_sig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.Fiducials" title="pyPPG.Fiducials"><span class="pre">Fiducials</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/ppg_sig.html#get_ppg_sig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.ppg_sig.get_ppg_sig" title="Permalink to this definition"></a></dt>
 <dd><p>This function returns the biomarkers of PPG signal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – a struct of PPG signal</p></li>
-<li><p><strong>fiducials</strong> (<em>DataFrame</em>) – <p>a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</p>
-<ul>
-<li><p>PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak</p></li>
-<li><p>1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</p></li>
-<li><p>2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</p></li>
-<li><p>3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</p></li>
-</ul>
-</p></li>
+<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – object of PPG signal</p></li>
+<li><p><strong>fp</strong> (<em>pyPPG.Fiducials object</em>) – object of fiducial points</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -211,20 +206,13 @@
 <span id="pyppg-ppg-bm-sig-ratios"></span><h2>pyPPG.ppg_bm.sig_ratios<a class="headerlink" href="#module-pyPPG.ppg_bm.sig_ratios" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyPPG.ppg_bm.sig_ratios.get_sig_ratios">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.sig_ratios.</span></span><span class="sig-name descname"><span class="pre">get_sig_ratios</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/sig_ratios.html#get_sig_ratios"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.sig_ratios.get_sig_ratios" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.sig_ratios.</span></span><span class="sig-name descname"><span class="pre">get_sig_ratios</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.Fiducials" title="pyPPG.Fiducials"><span class="pre">Fiducials</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/sig_ratios.html#get_sig_ratios"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.sig_ratios.get_sig_ratios" title="Permalink to this definition"></a></dt>
 <dd><p>This function returns the biomarkers of Signal ratios.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – a struct of PPG signal</p></li>
-<li><p><strong>fiducials</strong> (<em>DataFrame</em>) – <p>a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</p>
-<ul>
-<li><p>PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak</p></li>
-<li><p>1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</p></li>
-<li><p>2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</p></li>
-<li><p>3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</p></li>
-</ul>
-</p></li>
+<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – object of PPG signal</p></li>
+<li><p><strong>fp</strong> (<em>pyPPG.Fiducials object</em>) – object of fiducial points</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -242,20 +230,13 @@
 <span id="pyppg-ppg-bm-ppg-derivs"></span><h2>pyPPG.ppg_bm.ppg_derivs<a class="headerlink" href="#module-pyPPG.ppg_bm.ppg_derivs" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyPPG.ppg_bm.ppg_derivs.get_ppg_derivs">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.ppg_derivs.</span></span><span class="sig-name descname"><span class="pre">get_ppg_derivs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/ppg_derivs.html#get_ppg_derivs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.ppg_derivs.get_ppg_derivs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.ppg_derivs.</span></span><span class="sig-name descname"><span class="pre">get_ppg_derivs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.Fiducials" title="pyPPG.Fiducials"><span class="pre">Fiducials</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/ppg_derivs.html#get_ppg_derivs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.ppg_derivs.get_ppg_derivs" title="Permalink to this definition"></a></dt>
 <dd><p>This function returns the biomarkers of PPG derivatives.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – a struct of PPG signal</p></li>
-<li><p><strong>fiducials</strong> (<em>DataFrame</em>) – <p>a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</p>
-<ul>
-<li><p>PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak</p></li>
-<li><p>1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</p></li>
-<li><p>2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</p></li>
-<li><p>3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</p></li>
-</ul>
-</p></li>
+<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – object of PPG signal</p></li>
+<li><p><strong>fp</strong> (<em>pyPPG.Fiducials object</em>) – object of fiducial points</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -273,20 +254,13 @@
 <span id="pyppg-ppg-bm-derivs-ratios"></span><h2>pyPPG.ppg_bm.derivs_ratios<a class="headerlink" href="#module-pyPPG.ppg_bm.derivs_ratios" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyPPG.ppg_bm.derivs_ratios.get_derivs_ratios">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.derivs_ratios.</span></span><span class="sig-name descname"><span class="pre">get_derivs_ratios</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/derivs_ratios.html#get_derivs_ratios"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.derivs_ratios.get_derivs_ratios" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyPPG.ppg_bm.derivs_ratios.</span></span><span class="sig-name descname"><span class="pre">get_derivs_ratios</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyPPG.html#pyPPG.Fiducials" title="pyPPG.Fiducials"><span class="pre">Fiducials</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/ppg_bm/derivs_ratios.html#get_derivs_ratios"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.ppg_bm.derivs_ratios.get_derivs_ratios" title="Permalink to this definition"></a></dt>
 <dd><p>This function returns the biomarkers of Derivatives ratios.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> (<em>DotMap</em>) – a struct of PPG signal</p></li>
-<li><p><strong>fiducials</strong> (<em>DataFrame</em>) – <p>a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</p>
-<ul>
-<li><p>PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak</p></li>
-<li><p>1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</p></li>
-<li><p>2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</p></li>
-<li><p>3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</p></li>
-</ul>
-</p></li>
+<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – object of PPG signal</p></li>
+<li><p><strong>fp</strong> (<em>pyPPG.Fiducials object</em>) – object of fiducial points</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

@@ -1,12 +1,12 @@
 pyPPG.ppg\_bm package
 =====================
 
-pyPPG.ppg\_bm.bm\_extractor
+pyPPG.ppg\_bm.bm\_extraction
 ------------------------------------
 
-.. autoclass:: pyPPG.ppg_bm.bm_extractor.Biomarkers
+.. autoclass:: pyPPG.ppg_bm.bm_extraction.BmExctator
 
-.. automodule:: pyPPG.ppg_bm.bm_extractor
+.. automodule:: pyPPG.ppg_bm.bm_extraction
    :members: get_biomarkers
 
 

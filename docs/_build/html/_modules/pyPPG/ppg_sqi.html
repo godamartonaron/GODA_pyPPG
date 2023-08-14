@@ -80,15 +80,16 @@
 <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">detrend</span><span class="p">,</span> <span class="n">find_peaks</span><span class="p">,</span> <span class="n">correlate</span>
 <span class="kn">from</span> <span class="nn">numpy.fft</span> <span class="kn">import</span> <span class="n">fft</span><span class="p">,</span> <span class="n">ifft</span><span class="p">,</span> <span class="n">fftshift</span>
 
-<div class="viewcode-block" id="ppgSQI"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.ppg_sqi.ppgSQI">[docs]</a><span class="k">def</span> <span class="nf">ppgSQI</span><span class="p">(</span><span class="n">ppg</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ann_ppg</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+<div class="viewcode-block" id="get_ppgSQI"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.ppg_sqi.get_ppgSQI">[docs]</a><span class="k">def</span> <span class="nf">get_ppgSQI</span><span class="p">(</span><span class="n">ppg</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    PPG Signal Quality Index based on beat template correlation.</span>
 
 <span class="sd">    :param ppg: a vector of PPG values</span>
+<span class="sd">    :type ppg: int</span>
 <span class="sd">    :param fs: Samples frequency</span>
 <span class="sd">    :type fs: int</span>
-<span class="sd">    :param ann_ppg: PPG annotation time(samples)</span>
-<span class="sd">    :type ann_ppg: list</span>
+<span class="sd">    :param annotation: PPG annotation time(samples)</span>
+<span class="sd">    :type annotation: list</span>
 
 <span class="sd">    :return: psqi: PPG Signal Quality Index</span>
 
@@ -107,17 +108,17 @@
 
     <span class="n">Fs</span> <span class="o">=</span> <span class="n">fs</span>
     <span class="c1"># Create PPG template</span>
-    <span class="n">t</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">template</span><span class="p">(</span><span class="n">ppg</span><span class="p">,</span> <span class="n">ann_ppg</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+    <span class="n">t</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">use_template</span><span class="p">(</span><span class="n">ppg</span><span class="p">,</span> <span class="n">annotation</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
 
-    <span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ann_ppg</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">c1</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span>
-    <span class="n">psqi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ann_ppg</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">psqi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">psqi</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span>
 
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">ann_ppg</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="c1"># Calculate correlation coefficients based on the template length</span>
-        <span class="n">beatbegin</span> <span class="o">=</span> <span class="n">ann_ppg</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
-        <span class="n">beatend</span> <span class="o">=</span> <span class="n">ann_ppg</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">beatbegin</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">beatend</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
         <span class="k">if</span> <span class="n">beatend</span> <span class="o">-</span> <span class="n">beatbegin</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">Fs</span><span class="p">:</span>
             <span class="n">beatend</span> <span class="o">=</span> <span class="n">beatbegin</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">Fs</span>
 
@@ -135,27 +136,31 @@
 
     <span class="k">return</span> <span class="n">psqi</span></div>
 
-<div class="viewcode-block" id="template"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.ppg_sqi.template">[docs]</a><span class="k">def</span> <span class="nf">template</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="n">anntime</span><span class="p">,</span> <span class="n">samp_freq</span><span class="p">):</span>
-    <span class="c1"># PPG waveform template creation.</span>
-    <span class="c1"># Written by Qiao Li, February 21, 2011.</span>
-    <span class="c1">#</span>
-    <span class="c1"># input:</span>
-    <span class="c1">#   wave: PPG data</span>
-    <span class="c1">#   anntime: PPG annotation time(sample)</span>
-    <span class="c1">#   samp_freq: sampling frequency, default is 125 Hz</span>
-    <span class="c1"># output:</span>
-    <span class="c1">#   t: PPG waveform template based on normal - length beats</span>
-    <span class="c1">#   valid:  1 for valid template</span>
-    <span class="c1">#           0 for invalid template</span>
+<div class="viewcode-block" id="use_template"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.ppg_sqi.use_template">[docs]</a><span class="k">def</span> <span class="nf">use_template</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    PPG waveform template creation.</span>
+<span class="sd">    Written by Qiao Li, February 21, 2011</span>
 
-    <span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="sd">    :param wave: a vector of PPG wave</span>
+<span class="sd">    :type ppg: int</span>
+<span class="sd">    :param fs: Samples frequency</span>
+<span class="sd">    :type fs: int</span>
+<span class="sd">    :param annotation: PPG annotation time(sample)</span>
+<span class="sd">    :type ann_ppg: list</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        - template: PPG waveform template based on normal - length beats</span>
+<span class="sd">        - valid: 1 for valid template, 0 for invalid template</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">valid</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="c1"># according to heart rate max(300 bpm) and min(20 bpm) to get max and min beat - by - beat interval</span>
     <span class="n">hr_max</span> <span class="o">=</span> <span class="mi">300</span>
-    <span class="n">bb_interval_min</span> <span class="o">=</span> <span class="n">samp_freq</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">/</span> <span class="n">hr_max</span>
+    <span class="n">bb_interval_min</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">/</span> <span class="n">hr_max</span>
     <span class="n">hr_min</span> <span class="o">=</span> <span class="mi">20</span>
-    <span class="n">bb_interval_max</span> <span class="o">=</span> <span class="n">samp_freq</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">/</span> <span class="n">hr_min</span>
+    <span class="n">bb_interval_max</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">/</span> <span class="n">hr_min</span>
 
     <span class="c1"># Normal beat thresholds</span>
     <span class="n">normal_beat_length_min</span> <span class="o">=</span> <span class="mf">0.7</span>
@@ -167,7 +172,7 @@
 
     <span class="n">y</span> <span class="o">=</span> <span class="n">correlate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="s1">&#39;full&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;fft&#39;</span><span class="p">)</span>
     <span class="n">lenw</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">wave</span><span class="p">)</span>
-    <span class="n">lena</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">anntime</span><span class="p">)</span>
+    <span class="n">lena</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span>
     <span class="n">i</span> <span class="o">=</span> <span class="n">lenw</span>
 
     <span class="n">locs</span> <span class="o">=</span> <span class="n">find_peaks</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">:])[</span><span class="mi">0</span><span class="p">]</span>
@@ -179,7 +184,7 @@
     <span class="n">max_i</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pks</span><span class="o">==</span><span class="n">max_v</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">i</span> <span class="o">=</span> <span class="n">locs</span><span class="p">[</span><span class="n">max_i</span><span class="p">]</span>
 
-    <span class="n">cycle</span> <span class="o">=</span> <span class="n">samp_freq</span>
+    <span class="n">cycle</span> <span class="o">=</span> <span class="n">fs</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">lenw</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">cycle</span> <span class="o">=</span> <span class="n">i</span>
 
@@ -188,22 +193,22 @@
         <span class="k">return</span>
 
     <span class="n">p0</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">anntime</span><span class="p">[</span><span class="n">p0</span><span class="p">]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[</span><span class="n">p0</span><span class="p">]</span>
 
     <span class="n">temp_ahead</span><span class="o">=</span><span class="mi">0</span>
     <span class="k">while</span> <span class="n">i</span> <span class="o">-</span> <span class="n">temp_ahead</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">p0</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">p0</span> <span class="o">&gt;</span> <span class="n">lena</span><span class="p">):</span>
-            <span class="n">t</span> <span class="o">=</span> <span class="n">wave</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="n">wave</span>
             <span class="n">valid</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">return</span>
 
-        <span class="n">i</span> <span class="o">=</span> <span class="n">anntime</span><span class="p">[</span><span class="n">p0</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[</span><span class="n">p0</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">p0</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="n">lena</span><span class="p">:</span>
         <span class="k">return</span>
 
-    <span class="n">beat_interval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">anntime</span><span class="p">[</span><span class="n">p0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">anntime</span><span class="p">)])</span>
+    <span class="n">beat_interval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">annotation</span><span class="p">[</span><span class="n">p0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">annotation</span><span class="p">)])</span>
     <span class="n">median_bi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">beat_interval</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">median_bi</span><span class="o">!=</span><span class="s1">&#39;NaN&#39;</span><span class="p">:</span>
@@ -218,13 +223,13 @@
     <span class="n">valid</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">cycle</span> <span class="o">&gt;</span> <span class="n">bb_interval_max</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">cycle</span> <span class="o">&lt;</span> <span class="n">bb_interval_min</span><span class="p">):</span>
         <span class="n">valid</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">cycle</span><span class="p">)</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">cycle</span><span class="p">)</span>
         <span class="k">return</span>
 
     <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">d1</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">invalidn</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">currentbeatlength</span> <span class="o">=</span> <span class="n">anntime</span><span class="p">[</span><span class="n">p0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">anntime</span><span class="p">[</span><span class="n">p0</span><span class="p">]</span>
+    <span class="n">currentbeatlength</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[</span><span class="n">p0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">annotation</span><span class="p">[</span><span class="n">p0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">currentbeatlength</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">d1</span> <span class="o">=</span> <span class="n">wave</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">temp_ahead</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">cycle</span><span class="p">]</span>
         <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
@@ -234,11 +239,11 @@
 
     <span class="n">p0</span> <span class="o">=</span> <span class="n">p0</span>
     <span class="k">if</span> <span class="n">p0</span> <span class="o">&lt;</span> <span class="n">lena</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">anntime</span><span class="p">[</span><span class="n">p0</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[</span><span class="n">p0</span><span class="p">]</span>
         <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">invalidn</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">lenw</span> <span class="o">-</span> <span class="n">cycle</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">p0</span> <span class="o">&lt;</span> <span class="n">lena</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">currentbeatlength</span> <span class="o">=</span> <span class="n">anntime</span><span class="p">[</span><span class="n">p0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">anntime</span><span class="p">[</span><span class="n">p0</span><span class="p">]</span>
+            <span class="n">currentbeatlength</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[</span><span class="n">p0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">annotation</span><span class="p">[</span><span class="n">p0</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">currentbeatlength</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">d1</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">+</span> <span class="n">wave</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">temp_ahead</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">cycle</span><span class="p">]</span>
                 <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
@@ -246,7 +251,7 @@
                 <span class="n">invalidn</span> <span class="o">=</span> <span class="n">invalidn</span> <span class="o">+</span> <span class="mi">1</span>
 
             <span class="n">p0</span> <span class="o">=</span> <span class="n">p0</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="n">anntime</span><span class="p">[</span><span class="n">p0</span><span class="p">]</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[</span><span class="n">p0</span><span class="p">]</span>
 
         <span class="n">d1</span> <span class="o">=</span> <span class="n">d1</span><span class="o">/</span><span class="n">n</span>
         <span class="c1"># normal beat is less than the reasonable percentage of all beats</span>
@@ -257,9 +262,9 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">valid</span><span class="o">=</span><span class="mi">0</span>
 
-    <span class="n">t</span> <span class="o">=</span> <span class="n">d1</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="n">d1</span>
 
-    <span class="k">return</span> <span class="n">t</span><span class="p">,</span><span class="n">valid</span></div>
+    <span class="k">return</span> <span class="n">template</span><span class="p">,</span><span class="n">valid</span></div>
 </pre></div>
 
            </div>

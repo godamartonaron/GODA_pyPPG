@@ -7,7 +7,7 @@ from dotmap import DotMap
 from scipy.signal import kaiserord, firwin, filtfilt, detrend, periodogram, lfilter, find_peaks, firls, resample
 from scipy import signal
 
-class FpExctator:
+class FpCollection:
 
     ###########################################################################
     ###################### Initialization of Fiducial Points ##################
@@ -16,7 +16,7 @@ class FpExctator:
         """
         The purpose of the FiducialPoints class is to calculate the fiducial points.
 
-        :param s: a struct of PPG signal
+        :param s: object of PPG signal
         :type s: pyPPG.PPG object
 
         """
@@ -35,12 +35,13 @@ class FpExctator:
             - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
             - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
 
-        :param s: a struct of PPG signal
+        :param s: object of PPG signal
         :type s: pyPPG.PPG object
         :param correct: a bool for fiducials points corretion
         :type correct: bool
 
-        :return: fiducial points, a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
+        :param fiducials: a DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.
+        :type fiducials: DataFrame
         '''
 
         # 'ABD' refers the original Aboy peak detectorm and 'PPGdet' refers the improved version.

@@ -1,12 +1,7 @@
-from DataHandling import*
-import FiducialPoints as Fp
-import Biomarkers as Bm
-from Statistics import*
-
-import matplotlib.pyplot as plt
-import numpy as np
-from dotmap import DotMap
-import time
+from pyPPG import*
+from datahandling import*
+import pyPPG.fiducials as FP
+import pyPPG.biomarkers as BM
 
 import sys
 import json
@@ -14,7 +9,7 @@ import json
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="",filtering=True,correct=True, savefig=True, savedata=True, savingformat="mat",savingfolder="temp_dir"):
+def ppg_example(data_path="",start = 0, end = 0, filtering=True, correct=True, savingfolder="temp_dir", savefig=True, savedata=True, savingformat="csv"):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -30,44 +25,58 @@ def ppg_example(data_path="",filtering=True,correct=True, savefig=True, savedata
 
     :param data_path: path of the PPG signal
     :type data_path: str
+    :param start: beginning the of signal in sample
+    :type start: int
+    :param end: end of the signal in sample
+    :type end: int
     :param filtering: a bool for filtering
     :type filtering: bool
-    :param savefig: a bool for current figure saving
-    :type savefig: bool
     :param correct: a bool for fiducials points corretion
     :type correct: bool
+    :param savingfolder: location of the saved data
+    :type savingfolder: str
+    :param savefig: a bool for current figure saving
+    :type savefig: bool
     :param savedata: a bool for saving fiducial points, biomarkers, and statistics
     :type savedata: bool
     :param savingformat: file format of the saved date, the provided file formats .mat and .csv
     :type savingformat: str
-    :param savingfolder: location of the saved data
-    :type savingfolder: str
 
     :return: fiducial points, a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
+
+
+    Example:
+
+        .. code-block:: python
+
+            from pyPPG import ppg_example
+
+            # run example code
+            ppg_example(savedata=True, savefig=True)
+
     '''
 
-
     ## Loading a raw PPG signal
-    s=load_data(data_path,filtering)
+    ppg_data = load_data(data_path,start,end,filtering)
+    s = PPG(ppg_data)
 
     ## Get Fiducial points
-    fp = Fp.FiducialPoints(s)
-    fiducials=fp.getFiducialPoints(correct)
+    fpex = FP.FpCollection(s)
+    fiducials=fpex.get_fiducials(s,correct)+s.start
+    fp = Fiducials(fiducials)
 
     if savefig:
         ## Plot Fiducials Points
-        plot_fiducials(s, fiducials)
+        plot_fiducials(s, fp, savingfolder)
 
     if savedata:
-        ## Get Biomarkers
-        bm = Bm.Biomarkers(s, fiducials)
-        biomarkers_vals, biomarkers_defs = bm.getBiomarkers()
-
-        ## Get Statistics
-        statistics = Statistics(fiducials['sp'], fiducials['on'], biomarkers_vals)
+        ## Get Biomarkers and Statistics
+        bmex = BM.BmCollection(s, fp)
+        bm_defs, bm_vals, bm_stats = bmex.get_biomarkers()
+        bm = Biomarkers(bm_defs, bm_vals , bm_stats)
 
         ## Save data
-        save_data(s,fiducials,biomarkers_vals,biomarkers_defs,statistics,savingformat,savingfolder)
+        save_data(s, fp, bm, savingformat, savingfolder)
 
     print('Program finished')
     return fiducials

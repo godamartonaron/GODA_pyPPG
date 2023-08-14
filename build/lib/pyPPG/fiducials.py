@@ -1,73 +1,62 @@
 import copy
 import pandas as pd
 
-from pack_ppg._ErrorHandler import _check_shape_, WrongParameter
+import pyPPG
 import numpy as np
 from dotmap import DotMap
 from scipy.signal import kaiserord, firwin, filtfilt, detrend, periodogram, lfilter, find_peaks, firls, resample
-import matplotlib.pyplot as plt
-import time
 from scipy import signal
 
-class FiducialPoints:
+class FpCollection:
 
     ###########################################################################
     ###################### Initialization of Fiducial Points ##################
     ###########################################################################
-    def __init__(self, s: DotMap):
+    def __init__(self, s: pyPPG.PPG):
         """
         The purpose of the FiducialPoints class is to calculate the fiducial points.
 
-        :param s: a struct of PPG signal:
-            - s.v: a vector of PPG values
-            - s.fs: the sampling frequency of the PPG in Hz
-            - s.name: name of the record
-            - s.v: 1-d array, a vector of PPG values
-            - s.fs: the sampling frequency of the PPG in Hz
-            - s.filt_sig: 1-d array, a vector of the filtered PPG values
-            - s.filt_d1: 1-d array, a vector of the filtered PPG' values
-            - s.filt_d2: 1-d array, a vector of the filtered PPG" values
-            - s.filt_d3: 1-d array, a vector of the filtered PPG'" values
-        :type s: DotMap
+        :param s: object of PPG signal
+        :type s: pyPPG.PPG object
 
         """
-        if s.fs <= 0:
-            raise WrongParameter("Sampling frequency should be strictly positive")
-        _check_shape_(s.v, s.fs)
 
-        keys=s.keys()
+        keys=s.__dict__.keys()
         keys_list = list(keys)
         for i in keys_list:
-            exec('self.'+i+' = s[i]')
+            exec('self.'+i+' = s.'+i)
 
     ###########################################################################
     ############################ Get Fiducial Points ##########################
     ###########################################################################
-    def getFiducialPoints(self,correct: bool):
+    def get_fiducials(self, s: pyPPG.PPG, correct=True):
         '''The function calculates the PPG Fiducial Points.
-            - Original signal: List of pulse onset, pea and dicrotic notch
+            - Original signal: List of systolic peak, pulse onset, dicrotic notch, and diastolic peak
             - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
             - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
 
+        :param s: object of PPG signal
+        :type s: pyPPG.PPG object
         :param correct: a bool for fiducials points corretion
         :type correct: bool
 
-        :return: fiducial points, a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
+        :param fiducials: a DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.
+        :type fiducials: DataFrame
         '''
 
-        # 'abp' refers the improved Aboy++, and 'aby' refers the original Aboy peak detector
-        peak_detector='abp'
+        # 'ABD' refers the original Aboy peak detectorm and 'PPGdet' refers the improved version.
+        peak_detector='PPGdet'
 
         # Extract Fiducial Points
         drt0_fp=pd.DataFrame()
-        peaks, onsets = self.abdp_beat_detector(peak_detector)
-        dicroticnotch = self.getDicroticNotch(peaks, onsets)
+        peaks, onsets = self.get_peak_onset(peak_detector)
+        dicroticnotch = self.get_dicrotic_notch(peaks, onsets)
 
-        drt1_fp = self.getFirstDerivitivePoints(onsets)
-        drt2_fp = self.getSecondDerivitivePoints(onsets, peaks)
-        drt3_fp = self.getThirdDerivitivePoints(onsets, drt2_fp)
+        drt1_fp = self.get_1st_drt_fiducials(onsets)
+        drt2_fp = self.get_2nd_drt_fiducials(onsets, peaks)
+        drt3_fp = self.get_3rd_drt_fiducials(onsets, drt2_fp)
 
-        diastolicpeak = self.getDiastolicPeak(onsets, dicroticnotch, drt2_fp.e)
+        diastolicpeak = self.get_diastolic_peak(onsets, dicroticnotch, drt2_fp.e)
 
         # Merge Fiducial Points
         keys=('on', 'sp', 'dn','dp')
@@ -88,7 +77,7 @@ class FiducialPoints:
 
         # Correct Fiducial Points
         if correct:
-            fiducials=self.CorrectFiducialPoints(fiducials)
+            fiducials=self.correct_fiducials(fiducials)
 
         fiducials=fiducials.astype('Int64')
         return fiducials
@@ -97,8 +86,8 @@ class FiducialPoints:
     ###########################################################################
     ############################ PPG beat detector ############################
     ###########################################################################
-    def abdp_beat_detector(self, peak_detector: str):
-        '''ABDP_BEAT_DETECTOR detects beats in a photoplethysmogram (PPG) signal
+    def get_peak_onset(self, peak_detector: str):
+        '''PPGdet detects beats in a photoplethysmogram (PPG) signal
         using the improved 'Automatic Beat Detection' of Aboy M et al.
 
         :param peak_detector: type of peak detector
@@ -141,7 +130,7 @@ class FiducialPoints:
         fso=self.fs
         fs = 75
         x = resample(x, int(len(self.filt_sig)*(fs/fso)))
-        up = self.setup_up_abdp_algorithm()                 #settings
+        up = self.set_beat_detection()                 #settings
         win_sec=10
         w = fs * win_sec                                    #window length(number of samples)
         win_starts = np.array(list(range(0,len(x),round(0.8*w))))
@@ -151,7 +140,7 @@ class FiducialPoints:
         # before pre-processing
         hr_win=0  #the estimated systolic peak-to-peak distance, initially it is 0
         hr_win_v=[]
-        px = self.DetectMaxima(x, 0, hr_win, peak_detector) # detect all maxima
+        px = self.detect_maxima(x, 0, hr_win, peak_detector) # detect all maxima
         if len(px)==0:
             peaks = []
             onsets = []
@@ -168,14 +157,14 @@ class FiducialPoints:
             curr_els = range(win_starts[win_no],win_starts[win_no] + w)
             curr_x = x[curr_els]
 
-            y1 = self.Bandpass(curr_x, fs, 0.9 * up.fl_hz, 3 * up.fh_hz)   # Filter no.1
-            hr = self.EstimateHeartRate(y1, fs, up, hr_past)               # Estimate HR from weakly filtered signal
+            y1 = self.def_bandpass(curr_x, fs, 0.9 * up.fl_hz, 3 * up.fh_hz)   # Filter no.1
+            hr = self.estimate_HR(y1, fs, up, hr_past)               # Estimate HR from weakly filtered signal
             hr_past=hr
             all_hr[win_no] = hr
 
-            if (peak_detector=='abp') and (hr>40):
+            if (peak_detector=='PPGdet') and (hr>40):
                 if win_no==0:
-                    p1 = self.DetectMaxima(y1, 0, hr_win, peak_detector)
+                    p1 = self.detect_maxima(y1, 0, hr_win, peak_detector)
                     tr = np.percentile(np.diff(p1), 50)
                     pks_diff = np.diff(p1)
                     pks_diff = pks_diff[pks_diff>=tr]
@@ -186,15 +175,15 @@ class FiducialPoints:
             else:
                 hr_win=0
 
-            y2 = self.Bandpass(curr_x, fs, 0.9 * up.fl_hz, 2.5 * hr / 60)              # Filter no.2
-            y2_deriv = self.EstimateDeriv(y2)                                          # Estimate derivative from highly filtered signal
-            p2 = self.DetectMaxima(y2_deriv, up.deriv_threshold,hr_win, peak_detector) # Detect maxima in derivative
-            y3 = self.Bandpass(curr_x, fs, 0.9 * up.fl_hz, 10 * hr / 60)
-            p3 = self.DetectMaxima(y3, 50, hr_win, peak_detector)                      # Detect maxima in moderately filtered signal
+            y2 = self.def_bandpass(curr_x, fs, 0.9 * up.fl_hz, 2.5 * hr / 60)           # Filter no. 2
+            y2_deriv = self.estimate_deriv(y2)                                          # Estimate derivative from highly filtered signal
+            p2 = self.detect_maxima(y2_deriv, up.deriv_threshold,hr_win, peak_detector) # Detect maxima in derivative
+            y3 = self.def_bandpass(curr_x, fs, 0.9 * up.fl_hz, 10 * hr / 60)
+            p3 = self.detect_maxima(y3, 50, hr_win, peak_detector)                      # Detect maxima in moderately filtered signal
             p4 = self.find_pulse_peaks(p2, p3)
             p4 = np.unique(p4)
 
-            if peak_detector=='abp':
+            if peak_detector=='PPGdet':
                 if len(p4)>round(win_sec/2):
                     pks_diff = np.diff(p4)
                     tr = np.percentile(pks_diff, 30)
@@ -209,7 +198,7 @@ class FiducialPoints:
         all_p4=all_p4.astype(int)
         all_p4 = np.unique(all_p4)
 
-        peaks, fn = self.IBICorrect(all_p4, px, np.median(all_hr), fs, up)
+        peaks, fn = self.correct_IBI(all_p4, px, np.median(all_hr), fs, up)
 
         peaks = (all_p4/fs*fso).astype(int)
         onsets, peaks = self.find_onsets(self.filt_sig, fso, up, peaks,60/np.median(all_hr)*fs)
@@ -238,7 +227,7 @@ class FiducialPoints:
     ###########################################################################
     ############################# Maximum detector ############################
     ###########################################################################
-    def DetectMaxima(self, sig: np.array, percentile: int ,hr_win: int, peak_detector: str):
+    def detect_maxima(self, sig: np.array, percentile: int ,hr_win: int, peak_detector: str):
         #Table VI pseudocode
         """
         Detect Maxima function detects all peaks in the raw and also in the filtered signal to find.
@@ -258,13 +247,13 @@ class FiducialPoints:
 
         tr = np.percentile(sig, percentile)
 
-        if peak_detector=='aby':
+        if peak_detector=='ABD':
 
             s1,s2,s3 = sig[2:], sig[1:-1],sig[0:-2]
             m = 1 + np.array(np.where((s1 < s2) & (s3 < s2)))
             max_pks = m[sig[m] > tr]
 
-        if peak_detector=='abp':
+        if peak_detector=='PPGdet':
             s1,s2,s3 = sig[2:], sig[1:-1],sig[0:-2]
 
             max_loc = []
@@ -284,9 +273,9 @@ class FiducialPoints:
                     min_i = np.where(min_v==values)[0][0]
                     intensity_v.append(sig[max_loc[i]] - sig[min_loc[min_i]])
 
-                # improvements:
-                #   - adaptive threshold
-                #   - probability density of maximum
+                # possible improvements:
+                #   - using adaptive thresholding for the maximum
+                #   - estimate probability density of the maximum
 
                 tr2 = np.mean(intensity_v)*0.25
                 max_pks = find_peaks(sig+min(sig),prominence=tr2,distance=hr_win)[0]
@@ -296,9 +285,9 @@ class FiducialPoints:
     ###########################################################################
     ############################ Bandpass filtering ###########################
     ###########################################################################
-    def Bandpass(self, sig: np.array, fs: int, lower_cutoff: float, upper_cutoff: float):
+    def def_bandpass(self, sig: np.array, fs: int, lower_cutoff: float, upper_cutoff: float):
         """
-        Bandpass filter function detects all peaks in the raw and also in the filtered signal to find.
+        def_bandpass filter function detects all peaks in the raw and also in the filtered signal to find.
 
         :param sig: array of signal with shape (N,) where N is the length of the signal
         :type sig: 1-d array
@@ -341,7 +330,7 @@ class FiducialPoints:
     ###########################################################################
     ################### Filter the high frequency components  #################
     ###########################################################################
-    def elim_vlfs_abd(self, s: np.array, up: DotMap, lower_cutoff: float):
+    def elim_vlfs(self, s: np.array, up: DotMap, lower_cutoff: float):
         """
         This function filter the high frequency components.
 
@@ -432,7 +421,7 @@ class FiducialPoints:
     ###########################################################################
     ########################### Heart Rate estimation #########################
     ###########################################################################
-    def EstimateHeartRate(self, sig: np.array, fs: int, up: DotMap, hr_past: int):
+    def estimate_HR(self, sig: np.array, fs: int, up: DotMap, hr_past: int):
         """
         Heart Rate Estimation function estimate the heart rate according to the previous heart rate in given time window
 
@@ -471,7 +460,7 @@ class FiducialPoints:
     ###########################################################################
     ############# Estimate derivative from highly filtered signal #############
     ###########################################################################
-    def EstimateDeriv(self, sig: np.array):
+    def estimate_deriv(self, sig: np.array):
         """
         Derivative Estimation function estimate derivative from highly filtered signal based on the
         General least-squares smoothing and differentiation by the convolution (Savitzky Golay) method
@@ -486,12 +475,12 @@ class FiducialPoints:
         #Savitzky Golay
         deriv_no = 1
         win_size = 5
-        deriv = self.savitzky_golay_abd(sig, deriv_no, win_size)
+        deriv = self.savitzky_golay(sig, deriv_no, win_size)
 
         return deriv
 
 
-    def savitzky_golay_abd(self, sig: np.array, deriv_no: int, win_size: int):
+    def savitzky_golay(self, sig: np.array, deriv_no: int, win_size: int):
         """
         This function estimate the Savitzky Golay derivative from highly filtered signal
 
@@ -623,9 +612,9 @@ class FiducialPoints:
     ###########################################################################
     ####################### Correct peaks' location error #####################
     ###########################################################################
-    def  IBICorrect(self, p: np.array, m: np.array, hr: float, fs: int, up: DotMap):
+    def  correct_IBI(self, p: np.array, m: np.array, hr: float, fs: int, up: DotMap):
         """
-        This function corrects the peaks' location error
+        This function corrects the peaks' location (interbeat intervals) error
 
         :param p: systolic peaks of the PPG signal
         :type p: 1-d array
@@ -709,7 +698,7 @@ class FiducialPoints:
     ###########################################################################
     ####################### Setup up the beat detector ########################
     ###########################################################################
-    def setup_up_abdp_algorithm(self):
+    def set_beat_detection(self):
         """
         This function setups the filter parameters of the algorithm
 
@@ -755,7 +744,7 @@ class FiducialPoints:
 
         """
 
-        Y1=self.Bandpass(sig, fs, 0.9*up.fl_hz, 3*up.fh_hz)
+        Y1=self.def_bandpass(sig, fs, 0.9*up.fl_hz, 3*up.fh_hz)
         temp_oi0=find_peaks(-Y1,distance=med_hr*0.3)[0]
 
         null_indexes = np.where(temp_oi0<peaks[0])
@@ -791,7 +780,7 @@ class FiducialPoints:
     ###########################################################################
     ########################## Detect dicrotic notch ##########################
     ###########################################################################
-    def getDicroticNotch (self, peaks: np.array, onsets: list):
+    def get_dicrotic_notch (self, peaks: np.array, onsets: list):
         """
         Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak
 
@@ -817,7 +806,7 @@ class FiducialPoints:
         a = [1, 1, 0, 0]                            # Amplitudes
         b = firls(n, f, a)
 
-        lp_filt_sig = filtfilt(b, 1,  dxx)    # Low pass filtered signal with 20 cut off Frequency and 5 Hz Transition width
+        lp_filt_sig = filtfilt(b, 1,  dxx)          # Low pass filtered signal with 20 cut off Frequency and 5 Hz Transition width
 
         ## The weighting is calculated and applied to each beat individually
         def t_wmax(i, peaks,onsets):
@@ -876,7 +865,7 @@ class FiducialPoints:
     ###########################################################################
     ########################## Detect diastolic peak ##########################
     ###########################################################################
-    def getDiastolicPeak(self, onsets: list, dicroticnotch: list, e_point: pd.Series):
+    def get_diastolic_peak(self, onsets: list, dicroticnotch: list, e_point: pd.Series):
         """
         Dicrotic Notch function estimate the location of dicrotic notch in between the systolic and diastolic peak
 
@@ -921,7 +910,7 @@ class FiducialPoints:
     ###########################################################################
     ####################### Get First Derivitive Points #######################
     ###########################################################################
-    def getFirstDerivitivePoints(self, onsets: list):
+    def get_1st_drt_fiducials(self, onsets: list):
         """Calculate first derivitive points u and v from the PPG' signal
 
         :param onsets: onsets of the signal
@@ -969,7 +958,7 @@ class FiducialPoints:
     ###########################################################################
     ####################### Get Second Derivitive Points ######################
     ###########################################################################
-    def getSecondDerivitivePoints(self, onsets: list, peaks: np.array):
+    def get_2nd_drt_fiducials(self, onsets: list, peaks: np.array):
         """Calculate Second derivitive points a, b, c, d, e, and f from the PPG" signal
 
         :param onsets: onsets of the signal
@@ -1081,7 +1070,7 @@ class FiducialPoints:
         drt2_fp.a, drt2_fp.b, drt2_fp.c, drt2_fp.d, drt2_fp.e, drt2_fp.f = a, b, c, d, e, f
         return drt2_fp
 
-    def getThirdDerivitivePoints(self, onsets: list, drt2_fp: pd.DataFrame):
+    def get_3rd_drt_fiducials(self, onsets: list, drt2_fp: pd.DataFrame):
         """Calculate third derivitive points p1 and p2 from the PPG'" signal
 
             :param onsets: onsets of the signal
@@ -1150,7 +1139,7 @@ class FiducialPoints:
 
         return drt3_fp
 
-    def CorrectFiducialPoints(self,fiducials: pd.DataFrame):
+    def correct_fiducials(self,fiducials: pd.DataFrame):
         """Correct the Fiducial Points
 
             :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
@@ -1245,7 +1234,7 @@ class FiducialPoints:
 
         # Correct diastolic peak
         try:
-            fiducials.dp = self.getDiastolicPeak(fiducials.on, fiducials.dn, fiducials.e)
+            fiducials.dp = self.get_diastolic_peak(fiducials.on, fiducials.dn, fiducials.e)
         except:
             pass
 

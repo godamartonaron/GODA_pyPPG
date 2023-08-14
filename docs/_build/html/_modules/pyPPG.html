@@ -76,7 +76,7 @@
              
   <h1>Source code for pyPPG</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pack_ppg._ErrorHandler</span> <span class="kn">import</span> <span class="n">_check_shape_</span><span class="p">,</span> <span class="n">WrongParameter</span>
-
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <div class="viewcode-block" id="PPG"><a class="viewcode-back" href="../pyPPG.html#pyPPG.PPG">[docs]</a><span class="k">class</span> <span class="nc">PPG</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This is class for the input PPG parameters.</span>
@@ -85,6 +85,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param s: a struct of PPG signal:</span>
 
+<span class="sd">            * s.start: beginning of the signal in sample</span>
+<span class="sd">            * s.end: end of the signal in sample</span>
 <span class="sd">            * s.v: a vector of PPG values</span>
 <span class="sd">            * s.fs: the sampling frequency of the PPG in Hz</span>
 <span class="sd">            * s.name: name of the record</span>
@@ -105,7 +107,121 @@
         <span class="n">keys</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="n">keys_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
-            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="s1">&#39; = s[i]&#39;</span><span class="p">)</span></div>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="s1">&#39; = s[i]&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PPG.get_s"><a class="viewcode-back" href="../pyPPG.html#pyPPG.PPG.get_s">[docs]</a>    <span class="k">def</span> <span class="nf">get_s</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function retrieves the struct of the PPG signal.</span>
+
+<span class="sd">        :return: s: DataFrame of the PPG signal</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">keys_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
+            <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Fiducials"><a class="viewcode-back" href="../pyPPG.html#pyPPG.Fiducials">[docs]</a><span class="k">class</span> <span class="nc">Fiducials</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This is class for the PPG fiducial points.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            :param fiducials: a DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</span>
+
+<span class="sd">                * PPG signal (fp.on, fp.sp, fp.dn, fp.dp): List of pulse onset, systolic peak, dicrotic notch, diastolic peak</span>
+<span class="sd">                * 1st derivative (fp.u, fp.v, fp.w): List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals</span>
+<span class="sd">                * 2nd derivative (fp.a, fp.b, fp.c, fp.d, fp.e, fp.f): List of maximum and minimum points in 2nd derivitive between the onset to onset intervals</span>
+<span class="sd">                * 3rd derivative (fp.p1, fp.p2): List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals</span>
+<span class="sd">            :type fiducials: DataFrame</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="n">keys</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="n">keys_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
+                <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39; = fp[i]&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Fiducials.get_fp"><a class="viewcode-back" href="../pyPPG.html#pyPPG.Fiducials.get_fp">[docs]</a>        <span class="k">def</span> <span class="nf">get_fp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            This function retrieves the struct of the fiducial points.</span>
+
+<span class="sd">            :return: fp: DataFrame of the fiducial points</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="n">keys_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+            <span class="n">fp</span><span class="o">=</span><span class="p">{}</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
+                <span class="n">fp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Fiducials.get_row"><a class="viewcode-back" href="../pyPPG.html#pyPPG.Fiducials.get_row">[docs]</a>        <span class="k">def</span> <span class="nf">get_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_index</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            This function retrieves the specified row from the DataFrame of fiducial points.</span>
+<span class="sd">            :param row_index: the index corresponding to the row in the fiducial points DataFrame</span>
+
+<span class="sd">            :return: the corresponding row in the fiducial points DataFrame</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="n">keys_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+            <span class="n">fp_row</span><span class="o">=</span><span class="p">{}</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
+                <span class="n">fp_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="kc">None</span><span class="p">)[</span><span class="n">row_index</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fp_row</span><span class="p">,[</span><span class="n">row_index</span><span class="p">])</span></div></div>
+
+<div class="viewcode-block" id="Biomarkers"><a class="viewcode-back" href="../pyPPG.html#pyPPG.Biomarkers">[docs]</a><span class="k">class</span> <span class="nc">Biomarkers</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This is class for the PPG biomarkers.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span><span class="p">,</span> <span class="n">bm_stats</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                :param bm_defs: dictionary with name, definition and unit of biomarkers in different categories:</span>
+
+<span class="sd">                    * def_ppg_sig: description of the PPG signal</span>
+<span class="sd">                    * def_sig_ratios: description of the Signal ratios</span>
+<span class="sd">                    * def_ppg_derivs: description of the PPG derivatives</span>
+<span class="sd">                    * def_derivs_ratios: description of the Derivatives ratios</span>
+<span class="sd">                :type bm_defs: dict</span>
+<span class="sd">                :param bm_vals: dictionary with values of biomarkers in different categories:</span>
+
+<span class="sd">                    * bm_ppg_sig: biomarkers of the PPG signal</span>
+<span class="sd">                    * bm_sig_ratios: biomarkers of the Signal ratios</span>
+<span class="sd">                    * bm_ppg_derivs: biomarkers of the PPG derivatives</span>
+<span class="sd">                    * bm_derivs_ratios: biomarkers of the Derivatives ratios</span>
+<span class="sd">                :type bm_vals: dict</span>
+<span class="sd">                :param bm_stats: data frame with summary of PPG features</span>
+
+<span class="sd">                    * def_ppg_sig: description of the PPG signal</span>
+<span class="sd">                    * def_sig_ratios: description of the Signal ratios</span>
+<span class="sd">                    * def_ppg_derivs: description of the PPG derivatives</span>
+<span class="sd">                    * def_derivs_ratios: description of the Derivatives ratios</span>
+<span class="sd">                :type bm_stats: dict</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;bm_defs&#39;</span><span class="p">,</span> <span class="s1">&#39;bm_vals&#39;</span><span class="p">,</span> <span class="s1">&#39;bm_stats&#39;</span><span class="p">]:</span>
+                <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39; = &#39;</span> <span class="o">+</span><span class="n">i</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Biomarkers.get_bm"><a class="viewcode-back" href="../pyPPG.html#pyPPG.Biomarkers.get_bm">[docs]</a>        <span class="k">def</span> <span class="nf">get_bm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            This function retrieves the dictionary of the biomarkers.</span>
+
+<span class="sd">            :return: bm: dictionary of the biomarkers</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="n">keys_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+            <span class="n">bm</span><span class="o">=</span><span class="p">{}</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
+                <span class="n">bm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">bm</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

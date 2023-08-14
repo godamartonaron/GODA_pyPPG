@@ -1,4 +1,4 @@
-from pyPPG.ppg_bm.bm_extractor import*
+from pyPPG.ppg_bm.bm_extraction import*
 
 ###########################################################################
 ##################### Get Biomarkers of PPG Derivatives ###################
@@ -7,9 +7,9 @@ def get_ppg_derivs(s: pyPPG.PPG, fp: pyPPG.Fiducials):
     """
     This function returns the biomarkers of PPG derivatives.
 
-    :param s: a struct of PPG signal
+    :param s: object of PPG signal
     :type s: pyPPG.PPG object
-    :param fp: a struct of fiducial points
+    :param fp: object of fiducial points
     :type fp: pyPPG.Fiducials object
 
     :return:

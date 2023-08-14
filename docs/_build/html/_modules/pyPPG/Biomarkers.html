@@ -82,68 +82,54 @@
 <span class="kn">from</span> <span class="nn">ppg_bm.derivs_ratios</span> <span class="kn">import</span><span class="o">*</span>
 <span class="kn">from</span> <span class="nn">ppg_bm.statistics</span> <span class="kn">import</span><span class="o">*</span>
 
-<div class="viewcode-block" id="Biomarkers"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.biomarkers.Biomarkers">[docs]</a><span class="k">class</span> <span class="nc">Biomarkers</span><span class="p">:</span>
+<div class="viewcode-block" id="BmCollection"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.biomarkers.BmCollection">[docs]</a><span class="k">class</span> <span class="nc">BmCollection</span><span class="p">:</span>
 
     <span class="c1">###########################################################################</span>
     <span class="c1">######################## Initialization of Biomarkers #####################</span>
     <span class="c1">###########################################################################</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fp</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">Fiducials</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The purpose of the Biomarkers class is to calculate the ppg biomarkers.</span>
 
 <span class="sd">        :param s: a struct of PPG signal</span>
 <span class="sd">        :type s: pyPPG.PPG object</span>
-<span class="sd">        :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</span>
-
-<span class="sd">            * PPG signal: List of pulse onset, systolic peak, dicrotic notch, diastolic peak</span>
-<span class="sd">            * 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</span>
-<span class="sd">            * 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)</span>
-<span class="sd">            * 3rd derivative: List of points of 1st maximum and minimum in 3rd derivitive between the onset to onset intervals (p1, p2)</span>
-<span class="sd">        :type fiducials: DataFrame</span>
+<span class="sd">        :param fp: a struct of fiducial points</span>
+<span class="sd">        :type fp: pyPPG.Fiducials object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fiducials</span> <span class="o">=</span> <span class="n">fiducials</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fp</span> <span class="o">=</span> <span class="n">fp</span>
 
     <span class="c1">###########################################################################</span>
     <span class="c1">############################ Get PPG Biomarkers ###########################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="Biomarkers.get_biomarkers"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.biomarkers.Biomarkers.get_biomarkers">[docs]</a>    <span class="k">def</span> <span class="nf">get_biomarkers</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BmCollection.get_biomarkers"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.biomarkers.BmCollection.get_biomarkers">[docs]</a>    <span class="k">def</span> <span class="nf">get_biomarkers</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This function returns the PPG biomarkers.</span>
+<span class="sd">        This function retrieves the list of biomarkers, computes their values, and calculates associated statistics.</span>
 
-<span class="sd">        :return: bm_vals: dictionary with values of biomarkers in different categories:</span>
-
-<span class="sd">                    * bm_ppg_sig: biomarkers of the PPG signal</span>
-<span class="sd">                    * bm_sig_ratios: biomarkers of the Signal ratios</span>
-<span class="sd">                    * bm_ppg_derivs: biomarkers of the PPG derivatives</span>
-<span class="sd">                    * bm_derivs_ratios: biomarkers of the Derivatives ratios</span>
-
-<span class="sd">                bm_defs: dictionary with name, definition and unit of biomarkers in different categories:</span>
-
-<span class="sd">                    * def_ppg_sig: description of the PPG signal</span>
-<span class="sd">                    * def_sig_ratios: description of the Signal ratios</span>
-<span class="sd">                    * def_ppg_derivs: description of the PPG derivatives</span>
-<span class="sd">                    * def_derivs_ratios: description of the Derivatives ratios</span>
+<span class="sd">        :return:</span>
+<span class="sd">            - bm_defs: dictionary of biomarkers with name, definition and unit</span>
+<span class="sd">            - bm_vals: dictionary of biomarkers with values</span>
+<span class="sd">            - bm_stats: dictionary of biomarkers with statistics</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span>
-        <span class="n">fiducials</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiducials</span>
+        <span class="n">fp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fp</span>
 
         <span class="c1">## Get Biomarkers</span>
-        <span class="n">bm_ppg_sig</span><span class="p">,</span> <span class="n">def_ppg_sig</span> <span class="o">=</span> <span class="n">get_ppg_sig</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">fiducials</span><span class="p">)</span>
-        <span class="n">bm_sig_ratios</span><span class="p">,</span> <span class="n">def_sig_ratios</span> <span class="o">=</span> <span class="n">get_sig_ratios</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">)</span>
-        <span class="n">bm_ppg_derivs</span><span class="p">,</span> <span class="n">def_ppg_derivs</span> <span class="o">=</span> <span class="n">get_ppg_derivs</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">fiducials</span><span class="p">)</span>
-        <span class="n">bm_derivs_ratios</span><span class="p">,</span> <span class="n">def_derivs_ratios</span> <span class="o">=</span> <span class="n">get_derivs_ratios</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">fiducials</span><span class="p">)</span>
+        <span class="n">bm_ppg_sig</span><span class="p">,</span> <span class="n">def_ppg_sig</span> <span class="o">=</span> <span class="n">get_ppg_sig</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+        <span class="n">bm_sig_ratios</span><span class="p">,</span> <span class="n">def_sig_ratios</span> <span class="o">=</span> <span class="n">get_sig_ratios</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+        <span class="n">bm_ppg_derivs</span><span class="p">,</span> <span class="n">def_ppg_derivs</span> <span class="o">=</span> <span class="n">get_ppg_derivs</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+        <span class="n">bm_derivs_ratios</span><span class="p">,</span> <span class="n">def_derivs_ratios</span> <span class="o">=</span> <span class="n">get_derivs_ratios</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
 
         <span class="n">bm_vals</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ppg_sig&#39;</span><span class="p">:</span> <span class="n">bm_ppg_sig</span> <span class="p">,</span> <span class="s1">&#39;sig_ratios&#39;</span><span class="p">:</span> <span class="n">bm_sig_ratios</span><span class="p">,</span> <span class="s1">&#39;ppg_derivs&#39;</span><span class="p">:</span> <span class="n">bm_ppg_derivs</span><span class="p">,</span> <span class="s1">&#39;derivs_ratios&#39;</span><span class="p">:</span> <span class="n">bm_derivs_ratios</span><span class="p">}</span>
         <span class="n">bm_defs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ppg_sig&#39;</span><span class="p">:</span> <span class="n">def_ppg_sig</span><span class="p">,</span> <span class="s1">&#39;sig_ratios&#39;</span><span class="p">:</span> <span class="n">def_sig_ratios</span><span class="p">,</span> <span class="s1">&#39;ppg_derivs&#39;</span><span class="p">:</span> <span class="n">def_ppg_derivs</span><span class="p">,</span> <span class="s1">&#39;derivs_ratios&#39;</span><span class="p">:</span> <span class="n">def_derivs_ratios</span><span class="p">}</span>
 
         <span class="c1">## Get Statistics</span>
-        <span class="n">statistics</span> <span class="o">=</span> <span class="n">get_statistics</span><span class="p">(</span><span class="n">fiducials</span><span class="p">[</span><span class="s1">&#39;sp&#39;</span><span class="p">],</span> <span class="n">fiducials</span><span class="p">[</span><span class="s1">&#39;on&#39;</span><span class="p">],</span> <span class="n">bm_vals</span><span class="p">)</span>
+        <span class="n">bm_stats</span> <span class="o">=</span> <span class="n">get_statistics</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">sp</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">on</span><span class="p">,</span> <span class="n">bm_vals</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">bm_vals</span><span class="p">,</span> <span class="n">bm_defs</span><span class="p">,</span> <span class="n">statistics</span></div></div>
+        <span class="k">return</span> <span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span><span class="p">,</span> <span class="n">bm_stats</span></div></div>
 </pre></div>
 
            </div>
