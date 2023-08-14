@@ -9,7 +9,7 @@ pyPPG.example
    :undoc-members:
    :show-inheritance:
 
-pyPPG.PPG
+pyPPG
 ----------------
 .. automodule:: pyPPG
    :members:
