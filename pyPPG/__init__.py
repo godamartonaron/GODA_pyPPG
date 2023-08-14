@@ -1,12 +1,13 @@
 from pyPPG.pack_ppg._ErrorHandler import _check_shape_, WrongParameter
 import pandas as pd
+
 class PPG:
     '''
     This is class for the input PPG parameters.
     '''
     def __init__(self,s):
         """
-        :param s: a struct of PPG signal:
+        :param s: dictionary  of the PPG signal:
 
             * s.start: beginning of the signal in sample
             * s.end: end of the signal in sample
@@ -34,9 +35,9 @@ class PPG:
 
     def get_s(self):
         """
-        This function retrieves the struct of the PPG signal.
+        This function retrieves the dictionary of the PPG signal.
 
-        :return: s: DataFrame of the PPG signal
+        :return: s: dictionary of the PPG signal
         """
         keys = self.__dict__.keys()
         keys_list = list(keys)
@@ -53,7 +54,7 @@ class Fiducials:
         '''
         def __init__(self, fp):
             """
-            :param fiducials: a DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.
+            :param fiducials: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.
 
                 * PPG signal (fp.on, fp.sp, fp.dn, fp.dp): List of pulse onset, systolic peak, dicrotic notch, diastolic peak
                 * 1st derivative (fp.u, fp.v, fp.w): List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals

@@ -163,7 +163,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fiducial points, a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points</p>
+<dd class="field-even"><p>fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -187,7 +187,7 @@
 <p>This is class for the input PPG parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>s</strong> (<em>DotMap</em>) – <p>a struct of PPG signal:</p>
+<dd class="field-odd"><p><strong>s</strong> (<em>DotMap</em>) – <p>dictionary  of the PPG signal:</p>
 <ul class="simple">
 <li><p>s.start: beginning of the signal in sample</p></li>
 <li><p>s.end: end of the signal in sample</p></li>
@@ -207,10 +207,10 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="pyPPG.PPG.get_s">
 <span class="sig-name descname"><span class="pre">get_s</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG.html#PPG.get_s"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.PPG.get_s" title="Permalink to this definition"></a></dt>
-<dd><p>This function retrieves the struct of the PPG signal.</p>
+<dd><p>This function retrieves the dictionary of the PPG signal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>s: DataFrame of the PPG signal</p>
+<dd class="field-odd"><p>s: dictionary of the PPG signal</p>
 </dd>
 </dl>
 </dd></dl>
@@ -224,7 +224,7 @@
 <p>This is class for the PPG fiducial points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fiducials</strong> (<em>DataFrame</em>) – <p>a DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</p>
+<dd class="field-odd"><p><strong>fiducials</strong> (<em>DataFrame</em>) – <p>DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</p>
 <ul class="simple">
 <li><p>PPG signal (fp.on, fp.sp, fp.dn, fp.dp): List of pulse onset, systolic peak, dicrotic notch, diastolic peak</p></li>
 <li><p>1st derivative (fp.u, fp.v, fp.w): List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals</p></li>
@@ -356,8 +356,10 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – object of PPG signal</p></li>
 <li><p><strong>correct</strong> (<em>bool</em>) – a bool for fiducials points corretion</p></li>
-<li><p><strong>fiducials</strong> (<em>DataFrame</em>) – a DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points</p>
 </dd>
 </dl>
 </dd></dl>
@@ -375,8 +377,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – a struct of PPG signal</p></li>
-<li><p><strong>fp</strong> (<em>pyPPG.Fiducials object</em>) – a struct of fiducial points</p></li>
+<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – object of PPG signal</p></li>
+<li><p><strong>fp</strong> (<em>pyPPG.Fiducials object</em>) – object of fiducial points</p></li>
 </ul>
 </dd>
 </dl>
@@ -467,8 +469,8 @@ Written by Qiao Li, February 21, 2011</p>
 <li><p><strong>filtering</strong> (<em>bool</em>) – a bool for filtering</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return s<span class="colon">:</span></dt>
-<dd class="field-even"><p>a struct of PPG signal:</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>s: dictionary of the PPG signal:</p>
 <ul class="simple">
 <li><p>s.start: beginning of the signal in sample</p></li>
 <li><p>s.end: end of the signal in sample</p></li>
@@ -482,6 +484,7 @@ Written by Qiao Li, February 21, 2011</p>
 <li><p>s.filt_d2: 1-d array, a vector of the filtered PPG” values</p></li>
 <li><p>s.filt_d3: 1-d array, a vector of the filtered PPG’” values</p></li>
 </ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -493,8 +496,8 @@ Written by Qiao Li, February 21, 2011</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – a struct of PPG signal</p></li>
-<li><p><strong>fp</strong> (<em>pyPPG.Fiducials object</em>) – a struct of fiducial points</p></li>
+<li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – object of PPG signal</p></li>
+<li><p><strong>fp</strong> (<em>pyPPG.Fiducials object</em>) – object of fiducial points</p></li>
 <li><p><strong>savingfolder</strong> – location of the saved figure</p></li>
 </ul>
 </dd>

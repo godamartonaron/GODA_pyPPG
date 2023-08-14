@@ -15,9 +15,9 @@ class BmCollection:
         """
         The purpose of the Biomarkers class is to calculate the ppg biomarkers.
 
-        :param s: a struct of PPG signal
+        :param s: object of PPG signal
         :type s: pyPPG.PPG object
-        :param fp: a struct of fiducial points
+        :param fp: object of fiducial points
         :type fp: pyPPG.Fiducials object
 
         """

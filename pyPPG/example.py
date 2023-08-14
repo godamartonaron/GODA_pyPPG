@@ -44,7 +44,7 @@ def ppg_example(data_path="",start = 0, end = 0, filtering=True, correct=True, s
     :param savingformat: file format of the saved date, the provided file formats .mat and .csv
     :type savingformat: str
 
-    :return: fiducial points, a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
+    :return: fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points
 
 
     Example:
