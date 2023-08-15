@@ -183,26 +183,17 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span><span class="p">,</span> <span class="n">bm_stats</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">                :param bm_defs: dictionary with name, definition and unit of biomarkers in different categories:</span>
+<span class="sd">                This class constitutes a comprehensive dictionary encompassing biomarker definitions, values, and statistics. Each dictionary is organized into the subsequent subdirectories:</span>
+<span class="sd">                    * ppg_sig: description for the PPG signal</span>
+<span class="sd">                    * sig_ratios: description for the Signal ratios</span>
+<span class="sd">                    * ppg_derivs: description for the PPG derivatives</span>
+<span class="sd">                    * derivs_ratios: description for the Derivatives ratios</span>
 
-<span class="sd">                    * def_ppg_sig: description of the PPG signal</span>
-<span class="sd">                    * def_sig_ratios: description of the Signal ratios</span>
-<span class="sd">                    * def_ppg_derivs: description of the PPG derivatives</span>
-<span class="sd">                    * def_derivs_ratios: description of the Derivatives ratios</span>
+<span class="sd">                :param bm_defs: dictionary with name, definition and unit of biomarkers in different categories:</span>
 <span class="sd">                :type bm_defs: dict</span>
 <span class="sd">                :param bm_vals: dictionary with values of biomarkers in different categories:</span>
-
-<span class="sd">                    * bm_ppg_sig: biomarkers of the PPG signal</span>
-<span class="sd">                    * bm_sig_ratios: biomarkers of the Signal ratios</span>
-<span class="sd">                    * bm_ppg_derivs: biomarkers of the PPG derivatives</span>
-<span class="sd">                    * bm_derivs_ratios: biomarkers of the Derivatives ratios</span>
 <span class="sd">                :type bm_vals: dict</span>
 <span class="sd">                :param bm_stats: data frame with summary of PPG features</span>
-
-<span class="sd">                    * def_ppg_sig: description of the PPG signal</span>
-<span class="sd">                    * def_sig_ratios: description of the Signal ratios</span>
-<span class="sd">                    * def_ppg_derivs: description of the PPG derivatives</span>
-<span class="sd">                    * def_derivs_ratios: description of the Derivatives ratios</span>
 <span class="sd">                :type bm_stats: dict</span>
 
 <span class="sd">            &quot;&quot;&quot;</span>

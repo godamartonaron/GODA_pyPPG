@@ -106,26 +106,17 @@ class Biomarkers:
         '''
         def __init__(self, bm_defs, bm_vals, bm_stats):
             """
-                :param bm_defs: dictionary with name, definition and unit of biomarkers in different categories:
+                This class constitutes a comprehensive dictionary encompassing biomarker definitions, values, and statistics. Each dictionary is organized into the subsequent subdirectories:
+                    * ppg_sig: description for the PPG signal
+                    * sig_ratios: description for the Signal ratios
+                    * ppg_derivs: description for the PPG derivatives
+                    * derivs_ratios: description for the Derivatives ratios
 
-                    * def_ppg_sig: description of the PPG signal
-                    * def_sig_ratios: description of the Signal ratios
-                    * def_ppg_derivs: description of the PPG derivatives
-                    * def_derivs_ratios: description of the Derivatives ratios
+                :param bm_defs: dictionary with name, definition and unit of biomarkers in different categories:
                 :type bm_defs: dict
                 :param bm_vals: dictionary with values of biomarkers in different categories:
-
-                    * bm_ppg_sig: biomarkers of the PPG signal
-                    * bm_sig_ratios: biomarkers of the Signal ratios
-                    * bm_ppg_derivs: biomarkers of the PPG derivatives
-                    * bm_derivs_ratios: biomarkers of the Derivatives ratios
                 :type bm_vals: dict
                 :param bm_stats: data frame with summary of PPG features
-
-                    * def_ppg_sig: description of the PPG signal
-                    * def_sig_ratios: description of the Signal ratios
-                    * def_ppg_derivs: description of the PPG derivatives
-                    * def_derivs_ratios: description of the Derivatives ratios
                 :type bm_stats: dict
 
             """

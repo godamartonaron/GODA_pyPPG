@@ -267,33 +267,21 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyPPG.</span></span><span class="sig-name descname"><span class="pre">Biomarkers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bm_defs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bm_vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bm_stats</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG.html#Biomarkers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.Biomarkers" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This is class for the PPG biomarkers.</p>
+<dl class="simple">
+<dt>This class constitutes a comprehensive dictionary encompassing biomarker definitions, values, and statistics. Each dictionary is organized into the subsequent subdirectories:</dt><dd><ul class="simple">
+<li><p>ppg_sig: description for the PPG signal</p></li>
+<li><p>sig_ratios: description for the Signal ratios</p></li>
+<li><p>ppg_derivs: description for the PPG derivatives</p></li>
+<li><p>derivs_ratios: description for the Derivatives ratios</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bm_defs</strong> (<em>dict</em>) – <p>dictionary with name, definition and unit of biomarkers in different categories:</p>
-<ul>
-<li><p>def_ppg_sig: description of the PPG signal</p></li>
-<li><p>def_sig_ratios: description of the Signal ratios</p></li>
-<li><p>def_ppg_derivs: description of the PPG derivatives</p></li>
-<li><p>def_derivs_ratios: description of the Derivatives ratios</p></li>
-</ul>
-</p></li>
-<li><p><strong>bm_vals</strong> (<em>dict</em>) – <p>dictionary with values of biomarkers in different categories:</p>
-<ul>
-<li><p>bm_ppg_sig: biomarkers of the PPG signal</p></li>
-<li><p>bm_sig_ratios: biomarkers of the Signal ratios</p></li>
-<li><p>bm_ppg_derivs: biomarkers of the PPG derivatives</p></li>
-<li><p>bm_derivs_ratios: biomarkers of the Derivatives ratios</p></li>
-</ul>
-</p></li>
-<li><p><strong>bm_stats</strong> (<em>dict</em>) – <p>data frame with summary of PPG features</p>
-<ul>
-<li><p>def_ppg_sig: description of the PPG signal</p></li>
-<li><p>def_sig_ratios: description of the Signal ratios</p></li>
-<li><p>def_ppg_derivs: description of the PPG derivatives</p></li>
-<li><p>def_derivs_ratios: description of the Derivatives ratios</p></li>
-</ul>
-</p></li>
+<li><p><strong>bm_defs</strong> (<em>dict</em>) – dictionary with name, definition and unit of biomarkers in different categories:</p></li>
+<li><p><strong>bm_vals</strong> (<em>dict</em>) – dictionary with values of biomarkers in different categories:</p></li>
+<li><p><strong>bm_stats</strong> (<em>dict</em>) – data frame with summary of PPG features</p></li>
 </ul>
 </dd>
 </dl>
