@@ -1,16 +1,17 @@
 from setuptools import setup, find_packages
 import io
+import os
 
 with io.open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
 
-with open('requirements.txt') as f:
+with open('docs'+os.sep+'requirements.txt') as f:
     required = f.read().splitlines()
 
 setup(
     name='pyPPG',
-    version='1.0.15',
+    version='1.0.16',
     description='pyPPG: a python toolbox for PPG morphological analysis.',
     author='Marton A. Goda, PhD',
     author_email="marton.goda@campus.technion.ac.il",
@@ -23,11 +24,11 @@ setup(
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",
     ],
-    packages={"pyPPG", "pyPPG/ppg_bm", "pyPPG/pack_ppg"},
+    packages={"pyPPG", "pyPPG"+os.sep+"ppg_bm", "pyPPG"+os.sep+"pack_ppg"},
     package_data={
         "pyPPG": ["*"],
-        "pyPPG/ppg_bm": ["*"],
-        "pyPPG/pack_ppg": ["*"],
+        "pyPPG"+os.sep+"ppg_bm": ["*"],
+        "pyPPG"+os.sep+"pack_ppg": ["*"],
     },
 
     install_requires=[required],

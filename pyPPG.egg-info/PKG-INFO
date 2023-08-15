@@ -1,9 +1,23 @@
+Metadata-Version: 2.1
+Name: pyPPG
+Version: 1.0.16
+Summary: pyPPG: a python toolbox for PPG morphological analysis.
+Home-page: https://github.com/godamartonaron/GODA_pyPPG
+Author: Marton A. Goda, PhD
+Author-email: marton.goda@campus.technion.ac.il
+Project-URL: Bug Tracker, https://github.com/pypa/sampleproject/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+License-File: AUTHORS.rst
+
 
 # *pyPPG* toolbox documentation
 
 Photoplethysmogram (PPG) beat detection, fiducial points detection, and comprhessive assessment of standard biomarkers.
-
-If you use the pyPPG resource, please cite: "Under review"
 
 ## Introduction
 ***pyPPG*** is a standardised toolbox to analyze long-term finger PPG recordings in real-time. The toolbox extracts state-of-the-art PPG biomarkers (_i.e._ pulse wave features) from PPG signals. The algorithms implemented in the *pyPPG* toolbox have been validated on publicly available PPG databases.
@@ -23,7 +37,6 @@ The following steps are implemented in the ***pyPPG*** toolbox:
 The *pyPPG* toolbox also provides an optional PPG signal quality index based on the Matlab implementation of the work by [(*Li et al. 2015*)](https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m).
 
 ![](figs/pyPPG_pipeline.svg).
-
 
 The toolbox identifies individual pulse waves in a PPG signal by identifying ***systolic peaks (sp)***, and then
 identifying the ***pulse onset (on)*** and ***offset (off)*** on either side of each systolic peak which indicate the

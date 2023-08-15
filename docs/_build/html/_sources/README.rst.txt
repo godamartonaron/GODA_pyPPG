@@ -4,6 +4,8 @@
 Photoplethysmogram (PPG) beat detection, fiducial points detection, and
 comprhessive assessment of standard biomarkers.
 
+If you use the pyPPG resource, please cite: "Under review"
+
 Introduction
 ------------
 
@@ -24,6 +26,7 @@ The *pyPPG* toolbox also provides an optional PPG signal quality index based on 
 
 .. image:: ../figs/pyPPG_pipeline.svg
    :align: center
+
 
 
 The toolbox identifies individual pulse waves in a PPG signal by identifying **systolic peaks (sp)**, and then identifying the **pulse onset (on)** and **offset (off)** on either side of each systolic peak which indicate the start and end of the pulse wave, respectively.

@@ -7,7 +7,6 @@
   <title>pyPPG example code &mdash; pyPPG 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -17,8 +16,6 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
-        <script src="../_static/clipboard.min.js"></script>
-        <script src="../_static/copybutton.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -88,7 +85,7 @@
 <p>In this tutorial you will learn how to use <strong>pyPPG</strong> to engineer morphological PPG biomarkers and export their values.</p>
 <section id="introduction">
 <h2><strong>Introduction</strong><a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
-<p>This tutorial provides step-by-step instructions for installing pyPPG and running the example code. pyPPG is a Python package for non-contact heart rate monitoring using photoplethysmography (PPG) signals.</p>
+<p>This tutorial provides step-by-step instructions for installing pyPPG and running the example code.</p>
 <p><strong>Step 1</strong>: Install Python 3.10</p>
 <p>Download and install Python 3.10 on your computer or server by visiting the official Python website: <a class="reference external" href="https://www.python.org/downloads/">Python Downloads</a>.</p>
 <p><strong>Step 2</strong>: Upgrade pip</p>
@@ -115,11 +112,12 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python
 </pre></div>
 </div>
-<p>Run the example code and check the results:</p>
+<p>Run the example code, load the example files (<em>.mat</em>, <em>.csv</em>, <em>.txt</em>, or <em>.edf</em> formats) and check the results:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyPPG.example</span> <span class="kn">import</span> <span class="n">ppg_example</span>
 <span class="n">ppg_example</span><span class="p">(</span><span class="n">savedata</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>The resulting figures and outcomes are stored within the <em>temp_dir</em> folder, which is automatically generated within the project directory.</p>
 <p><strong>Step 6</strong>: Exit the Python Interpreter and Deactivate the Virtual Environment</p>
 <p>To exit the Python interpreter, type:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">exit</span><span class="p">()</span>
@@ -152,7 +150,6 @@
 <li><p><strong>SQI calculation</strong>: This module calculates the PPG Signal Quality Index based on beat template correlation.</p></li>
 <li><p><strong>Save data</strong>: This module allows for the saving of extracted Fiducial points, Biomarkers, and Statistics into a .csv file.</p></li>
 </ol>
-<p>The resulting figures and outcomes are stored within the <em>temp_dir</em> folder, which is automatically generated within the project directory.</p>
 <img alt="../_images/PPG_MAT_sample.png" class="align-center" src="../_images/PPG_MAT_sample.png" />
 </section>
 </section>

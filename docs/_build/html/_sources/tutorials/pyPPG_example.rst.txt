@@ -5,7 +5,7 @@ In this tutorial you will learn how to use **pyPPG** to engineer morphological P
 
 **Introduction**
 ----------------
-This tutorial provides step-by-step instructions for installing pyPPG and running the example code. pyPPG is a Python package for non-contact heart rate monitoring using photoplethysmography (PPG) signals.
+This tutorial provides step-by-step instructions for installing pyPPG and running the example code.
 
 **Step 1**: Install Python 3.10
 
@@ -49,12 +49,14 @@ Open the Python interpreter:
 
    python
 
-Run the example code and check the results:
+Run the example code, load the example files (*.mat*, *.csv*, *.txt*, or *.edf* formats) and check the results:
 
 .. code-block:: python
 
    from pyPPG.example import ppg_example
    ppg_example(savedata=True, savefig=True)
+
+The resulting figures and outcomes are stored within the *temp_dir* folder, which is automatically generated within the project directory.
 
 **Step 6**: Exit the Python Interpreter and Deactivate the Virtual Environment
 
@@ -91,8 +93,6 @@ The provided example code consists of seven modules that effectively showcase th
 #. **Biomarker Statistics**: A concise summary of the 74 PPG biomarkers is provided within this module.
 #. **SQI calculation**: This module calculates the PPG Signal Quality Index based on beat template correlation.
 #. **Save data**: This module allows for the saving of extracted Fiducial points, Biomarkers, and Statistics into a .csv file.
-
-The resulting figures and outcomes are stored within the *temp_dir* folder, which is automatically generated within the project directory.
 
 .. image:: PPG_MAT_sample.png
    :align: center
