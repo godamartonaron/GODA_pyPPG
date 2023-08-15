@@ -4,9 +4,13 @@ import io
 with io.open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
+
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
 setup(
     name='pyPPG',
-    version='1.0.14',
+    version='1.0.15',
     description='pyPPG: a python toolbox for PPG morphological analysis.',
     author='Marton A. Goda, PhD',
     author_email="marton.goda@campus.technion.ac.il",
@@ -26,7 +30,7 @@ setup(
         "pyPPG/pack_ppg": ["*"],
     },
 
-    install_requires=["numpy", "mne"],
+    install_requires=[required],
     python_requires=">=3.10",
     include_package_data=True,
 )

@@ -5,7 +5,74 @@ In this tutorial you will learn how to use **pyPPG** to engineer morphological P
 
 **Introduction**
 ----------------
-Once you have installed the most recent version of Python on your computer, you can proceed to install the pyPPG toolbox by executing the command **pip install pyPPG** in your command line interface. The installation of pyPPG grants access to all the packages within the toolbox. If you encounter any errors during the installation process, please refer to the 'requirements.txt' list and consider upgrading your Python Interpreter accordingly.
+This tutorial provides step-by-step instructions for installing pyPPG and running the example code. pyPPG is a Python package for non-contact heart rate monitoring using photoplethysmography (PPG) signals.
+
+**Step 1**: Install Python 3.10
+
+Download and install Python 3.10 on your computer or server by visiting the official Python website: `Python Downloads <https://www.python.org/downloads/>`__.
+
+**Step 2**: Upgrade pip
+
+Open the Command Prompt or terminal and execute the following command to ensure you have the latest version of pip installed:
+
+.. code-block:: bash
+
+   python -m pip install --upgrade pip
+
+**Step 3**: Create and Activate a Virtual Environment
+
+Create a virtual environment named "ppgenv" specifically for Python 3.10 using the py launcher:
+
+.. code-block:: bash
+
+    py -3.10 -m venv ppgenv
+
+Activate the virtual environment:
+
+.. code-block:: bash
+
+   ppgenv\Scripts\activate
+
+**Step 4**: Install pyPPG
+
+While the virtual environment is active, install pyPPG using pip:
+
+.. code-block:: bash
+
+   ppgenv\Scripts\python.exe -m pip install pyPPG
+
+**Step 5**: Run the Example Code
+
+Open the Python interpreter:
+
+.. code-block:: bash
+
+   python
+
+Run the example code and check the results:
+
+.. code-block:: python
+
+   from pyPPG.example import ppg_example
+   ppg_example(savedata=True, savefig=True)
+
+**Step 6**: Exit the Python Interpreter and Deactivate the Virtual Environment
+
+To exit the Python interpreter, type:
+
+.. code-block:: python
+
+   exit()
+
+Deactivate the virtual environment:
+
+.. code-block:: bash
+
+   deactivate
+
+
+You have successfully installed pyPPG, executed the example code, and explored the results. Feel free to customize and use pyPPG for your projects.
+
 
 **Example pyPPG code**
 ------------------------

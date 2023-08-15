@@ -40,8 +40,7 @@ class FpCollection:
         :param correct: a bool for fiducials points corretion
         :type correct: bool
 
-        :param fiducials: a DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.
-        :type fiducials: DataFrame
+        :return: fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points
         '''
 
         # 'ABD' refers the original Aboy peak detectorm and 'PPGdet' refers the improved version.

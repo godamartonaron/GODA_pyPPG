@@ -7,6 +7,7 @@
   <title>pyPPG example code &mdash; pyPPG 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -16,6 +17,8 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -85,7 +88,48 @@
 <p>In this tutorial you will learn how to use <strong>pyPPG</strong> to engineer morphological PPG biomarkers and export their values.</p>
 <section id="introduction">
 <h2><strong>Introduction</strong><a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
-<p>Once you have installed the most recent version of Python on your computer, you can proceed to install the pyPPG toolbox by executing the command <strong>pip install pyPPG</strong> in your command line interface. The installation of pyPPG grants access to all the packages within the toolbox. If you encounter any errors during the installation process, please refer to the ‘requirements.txt’ list and consider upgrading your Python Interpreter accordingly.</p>
+<p>This tutorial provides step-by-step instructions for installing pyPPG and running the example code. pyPPG is a Python package for non-contact heart rate monitoring using photoplethysmography (PPG) signals.</p>
+<p><strong>Step 1</strong>: Install Python 3.10</p>
+<p>Download and install Python 3.10 on your computer or server by visiting the official Python website: <a class="reference external" href="https://www.python.org/downloads/">Python Downloads</a>.</p>
+<p><strong>Step 2</strong>: Upgrade pip</p>
+<p>Open the Command Prompt or terminal and execute the following command to ensure you have the latest version of pip installed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+</pre></div>
+</div>
+<p><strong>Step 3</strong>: Create and Activate a Virtual Environment</p>
+<p>Create a virtual environment named “ppgenv” specifically for Python 3.10 using the py launcher:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>py<span class="w"> </span>-3.10<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>ppgenv
+</pre></div>
+</div>
+<p>Activate the virtual environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ppgenv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
+</pre></div>
+</div>
+<p><strong>Step 4</strong>: Install pyPPG</p>
+<p>While the virtual environment is active, install pyPPG using pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ppgenv<span class="se">\S</span>cripts<span class="se">\p</span>ython.exe<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>pyPPG
+</pre></div>
+</div>
+<p><strong>Step 5</strong>: Run the Example Code</p>
+<p>Open the Python interpreter:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python
+</pre></div>
+</div>
+<p>Run the example code and check the results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyPPG.example</span> <span class="kn">import</span> <span class="n">ppg_example</span>
+<span class="n">ppg_example</span><span class="p">(</span><span class="n">savedata</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Step 6</strong>: Exit the Python Interpreter and Deactivate the Virtual Environment</p>
+<p>To exit the Python interpreter, type:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">exit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Deactivate the virtual environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>deactivate
+</pre></div>
+</div>
+<p>You have successfully installed pyPPG, executed the example code, and explored the results. Feel free to customize and use pyPPG for your projects.</p>
 </section>
 <section id="example-pyppg-code">
 <h2><strong>Example pyPPG code</strong><a class="headerlink" href="#example-pyppg-code" title="Permalink to this heading"></a></h2>

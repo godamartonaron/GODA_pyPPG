@@ -26,7 +26,7 @@ def load_data(data_path: str, start = 0, end = 0, filtering = True):
     :param filtering: a bool for filtering
     :type filtering: bool
 
-    :return s: a struct of PPG signal:
+    :return: s: dictionary of the PPG signal:
 
         * s.start: beginning of the signal in sample
         * s.end: end of the signal in sample
@@ -114,9 +114,9 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str):
     """
     Plot fiducial points of the filtered PPG signal.
 
-    :param s: a struct of PPG signal
+    :param s: object of PPG signal
     :type s: pyPPG.PPG object
-    :param fp: a struct of fiducial points
+    :param fp: object of fiducial points
     :type fp: pyPPG.Fiducials object
     :param savingfolder: location of the saved figure
     """
