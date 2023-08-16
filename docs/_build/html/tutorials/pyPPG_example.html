@@ -87,13 +87,10 @@
 <h2><strong>Introduction</strong><a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
 <p>This tutorial provides step-by-step instructions for installing pyPPG and running the example code.</p>
 <p><strong>Step 1</strong>: Install Python 3.10</p>
-<p>Download and install Python 3.10 on your computer or server by visiting the official Python website: <a class="reference external" href="https://www.python.org/downloads/">Python Downloads</a>.</p>
-<p><strong>Step 2</strong>: Upgrade pip</p>
-<p>Open the Command Prompt or terminal and execute the following command to ensure you have the latest version of pip installed:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
-</pre></div>
-</div>
-<p><strong>Step 3</strong>: Create and Activate a Virtual Environment</p>
+<p>Download and install Python 3.10 on your computer or server by visiting the official Python website: <a class="reference external" href="https://www.python.org/downloads/release/python-3100/">Python 3.10</a>.</p>
+<p><strong>Step 2</strong>: Download the Sample PPG Data</p>
+<p>You can use the sample PPG data by downloading it from the following link: <a class="reference external" href="https://github.com/godamartonaron/GODA_pyPPG/tree/main/sample_data">Sample PPG data</a>.</p>
+<p><strong>Step 2</strong>: Create and Activate a Virtual Environment</p>
 <p>Create a virtual environment named “ppgenv” specifically for Python 3.10 using the py launcher:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>py<span class="w"> </span>-3.10<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>ppgenv
 </pre></div>
@@ -102,12 +99,12 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ppgenv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
 </pre></div>
 </div>
-<p><strong>Step 4</strong>: Install pyPPG</p>
+<p><strong>Step 3</strong>: Install pyPPG</p>
 <p>While the virtual environment is active, install pyPPG using pip:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ppgenv<span class="se">\S</span>cripts<span class="se">\p</span>ython.exe<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>pyPPG
 </pre></div>
 </div>
-<p><strong>Step 5</strong>: Run the Example Code</p>
+<p><strong>Step 4</strong>: Run the Example Code</p>
 <p>Open the Python interpreter:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python
 </pre></div>
@@ -118,7 +115,7 @@
 </pre></div>
 </div>
 <p>The resulting figures and outcomes are stored within the <em>temp_dir</em> folder, which is automatically generated within the project directory.</p>
-<p><strong>Step 6</strong>: Exit the Python Interpreter and Deactivate the Virtual Environment</p>
+<p><strong>Step 5</strong>: Exit the Python Interpreter and Deactivate the Virtual Environment</p>
 <p>To exit the Python interpreter, type:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">exit</span><span class="p">()</span>
 </pre></div>

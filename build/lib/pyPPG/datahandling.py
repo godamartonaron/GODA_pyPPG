@@ -121,7 +121,7 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str):
     :param savingfolder: location of the saved figure
     """
 
-    fig = plt.figure(figsize=(20, 12))
+    fig = plt.figure(figsize=(15, 8))
     ax1 = plt.subplot(411)
     plt.plot(s.filt_sig, 'k', label=None)
     ax2 = plt.subplot(412, sharex=ax1)

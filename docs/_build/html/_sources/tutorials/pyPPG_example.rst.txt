@@ -9,17 +9,13 @@ This tutorial provides step-by-step instructions for installing pyPPG and runnin
 
 **Step 1**: Install Python 3.10
 
-Download and install Python 3.10 on your computer or server by visiting the official Python website: `Python Downloads <https://www.python.org/downloads/>`__.
+Download and install Python 3.10 on your computer or server by visiting the official Python website: `Python 3.10 <https://www.python.org/downloads/release/python-3100/>`__.
 
-**Step 2**: Upgrade pip
+**Step 2**: Download the Sample PPG Data
 
-Open the Command Prompt or terminal and execute the following command to ensure you have the latest version of pip installed:
+You can use the sample PPG data by downloading it from the following link: `Sample PPG data <https://github.com/godamartonaron/GODA_pyPPG/tree/main/sample_data>`__.
 
-.. code-block:: bash
-
-   python -m pip install --upgrade pip
-
-**Step 3**: Create and Activate a Virtual Environment
+**Step 2**: Create and Activate a Virtual Environment
 
 Create a virtual environment named "ppgenv" specifically for Python 3.10 using the py launcher:
 
@@ -33,7 +29,7 @@ Activate the virtual environment:
 
    ppgenv\Scripts\activate
 
-**Step 4**: Install pyPPG
+**Step 3**: Install pyPPG
 
 While the virtual environment is active, install pyPPG using pip:
 
@@ -41,7 +37,7 @@ While the virtual environment is active, install pyPPG using pip:
 
    ppgenv\Scripts\python.exe -m pip install pyPPG
 
-**Step 5**: Run the Example Code
+**Step 4**: Run the Example Code
 
 Open the Python interpreter:
 
@@ -58,7 +54,7 @@ Run the example code, load the example files (*.mat*, *.csv*, *.txt*, or *.edf* 
 
 The resulting figures and outcomes are stored within the *temp_dir* folder, which is automatically generated within the project directory.
 
-**Step 6**: Exit the Python Interpreter and Deactivate the Virtual Environment
+**Step 5**: Exit the Python Interpreter and Deactivate the Virtual Environment
 
 To exit the Python interpreter, type:
 
