@@ -92,8 +92,17 @@ Consequently, <strong>pyPPG</strong> offers robust and comprhessive assessment o
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>The following steps are implemented in the <strong>pyPPG</strong> toolbox:</p>
-<ol class="arabic simple">
-<li><p><strong>Loading a raw PPG signal</strong>: The toolbox can accept PPG signals in various file formats such as <em>.mat</em>, <em>.csv</em>, <em>.txt</em>, or <em>.edf</em>. These files should contain raw PPG data along with the corresponding sampling rate.</p></li>
+<ol class="arabic">
+<li><p><strong>Loading a raw PPG signal</strong>: The toolbox can accept PPG signals in various file formats such as <em>.mat</em>, <em>.csv</em>, <em>.txt</em>, or <em>.edf</em>. These files should contain raw PPG data along with the corresponding sampling rate.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>.mat</em>: Data should be stored in a structure containing two fields: (i) ‘Fs’ representing the sampling frequency, and (ii) ‘Data’, a vector containing the raw PPG signal.</p></li>
+<li><p><em>.txt</em>: It contains tabular data of the raw PPG signal (single tab or space-delimited), and you need to provide the sampling frequency as an input parameter to the script using ‘fs’.</p></li>
+<li><p><em>.csv</em>: This format stores raw PPG signal data with comma separation. Similar to .txt, the sampling frequency must be provided as an input parameter to the script using ‘fs’.</p></li>
+<li><p><em>.edf</em>: The <a class="reference external" href="https://www.edfplus.info/">European Data Format</a> is supported, and it applies ‘Pleth’ or ‘PPG’ channels by default. However, if using different channel name, the user needs to define it themselves.</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p><strong>Preprocessing</strong>: The raw signal is filtered to remove unwanted noise and artifacts. Subsequently, the signal is resampled to 75 Hz.</p></li>
 <li><p><strong>Pulse wave segmentation</strong>: The toolbox employs a peak detector to identify the systolic peaks. It uses an <a class="reference external" href="https://arxiv.org/abs/2307.10398">improved version</a> of a beat detection algorithm originally proposed in <a class="reference external" href="https://doi.org/10.1109/TBME.2005.855725">(Aboy et al. 2005)</a>. Based on the peak locations, the toolbox also detects the pulse onsets and offsets, which indicate the start and end of the PPG pulse waves.</p></li>
 <li><p><strong>Fiducial points identification</strong>: For each pulse wave, the toolbox detects a set of fiducial points.</p></li>
@@ -106,6 +115,7 @@ Consequently, <strong>pyPPG</strong> offers robust and comprhessive assessment o
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
 <p>Available on pip, with the command: <strong>pip install pyPPG</strong></p>
 <p>pip project: <a class="reference external" href="https://pypi.org/project/pyPPG/">https://pypi.org/project/pyPPG/</a></p>
+<p>For more details see the <a class="reference external" href="https://pyppg.readthedocs.io/en/latest/tutorials/pyPPG_example.html">pyPPG example code</a></p>
 </section>
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>

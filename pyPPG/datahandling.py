@@ -10,11 +10,13 @@ from tkinter import filedialog
 import mne
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import os
+import tkinter as tk
+from tkinter import simpledialog
 
 ###########################################################################
 ####################### Data Acquisition from Files #######################
 ###########################################################################
-def load_data(data_path: str, start_sig = 0, end_sig = 0, filtering = True):
+def load_data(data_path: str, fs: int, start_sig = 0, end_sig = 0, filtering = True, correct=True):
     """
     Load PPG data function load the raw PPG data.
 
@@ -22,10 +24,14 @@ def load_data(data_path: str, start_sig = 0, end_sig = 0, filtering = True):
     :type data_path: str
     :param start_sig: beginning the of signal in sample
     :type start_sig: int
+    :param fs: the sampling frequency of the PPG in Hz
+    :type fs: int
     :param end_sig: end of the signal in sample
     :type end_sig: int
     :param filtering: a bool for filtering
     :type filtering: bool
+    :param correct: a bool for filtering
+    :type correct: bool
 
     :return: s: dictionary of the PPG signal:
 
@@ -40,6 +46,8 @@ def load_data(data_path: str, start_sig = 0, end_sig = 0, filtering = True):
         * s.filt_d1: 1-d array, a vector of the filtered PPG' values
         * s.filt_d2: 1-d array, a vector of the filtered PPG" values
         * s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+        * s.filtering: a bool for filtering
+        * s.correct: a bool for filtering
     """
 
     if data_path=="":
@@ -72,8 +80,12 @@ def load_data(data_path: str, start_sig = 0, end_sig = 0, filtering = True):
         input_sig = pd.read_csv(sig_path, encoding='utf-8')
         sig = input_sig
         sig = np.squeeze(sig.values)
-        fs = 75
-        print('The default sampling frequency is 75 Hz for .csv.')
+        try:
+            fs > 0
+        except:
+            fs = 75
+            print('The default sampling frequency is 75 Hz for .csv.')
+
     elif sig_format=='txt':
         try:
             input_sig = np.loadtxt(sig_path, delimiter='\t').astype(int)
@@ -83,11 +95,27 @@ def load_data(data_path: str, start_sig = 0, end_sig = 0, filtering = True):
             except:
                 print('ERROR! The data separator is not supported for .txt.')
         sig = input_sig
-        fs = 1000
-        print('The default sampling frequency is 1 kHz for .txt.')
+
+        try:
+            fs > 0
+        except:
+            fs = 1000
+            print('The default sampling frequency is 1 kHz for .txt.')
+
     elif sig_format == 'edf':
         input_sig = mne.io.read_raw_edf(sig_path)
-        sig = -input_sig['Pleth'][0][0]
+        try:
+            sig = -input_sig['Pleth'][0][0]
+        except:
+            try:
+                sig = -input_sig['PPG'][0][0]
+            except:
+                try:
+                    input_name = simpledialog.askstring("Input", "Define the PPG channel name:")
+                    sig = -input_sig[input_name][0][0]
+                except:
+                    print('There is no valid channel for PPG in the .edf file!')
+
         try:
             fs = int(np.round(input_sig.info['sfreq']))
         except:
@@ -106,6 +134,8 @@ def load_data(data_path: str, start_sig = 0, end_sig = 0, filtering = True):
     s.fs=fs
     s.name=rec_name
     s.filt_sig, s.filt_d1, s.filt_d2, s.filt_d3 = Preprocessing(s, filtering = True)
+    s.filtering = filtering
+    s.correct = correct
 
     return s
 
@@ -123,7 +153,20 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str):
     :param savingfolder: location of the saved figure
     """
 
-    fig = plt.figure(figsize=(15, 8))
+    # Create a hidden root window to get screen dimensions
+    root = tk.Tk()
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    root.destroy()
+
+    # Define a scaling factor for the figure size (e.g., 0.8 for 80% of the screen size)
+    scaling_factor = 0.8
+
+    # Calculate the figure size based on the screen dimensions and scaling factor
+    figure_width = screen_width * scaling_factor
+    figure_height = screen_height * scaling_factor
+
+    fig = plt.figure(figsize=(figure_width/100, figure_height/100))
     ax1 = plt.subplot(411)
     plt.plot(s.filt_sig, 'k', label=None)
     ax2 = plt.subplot(412, sharex=ax1)

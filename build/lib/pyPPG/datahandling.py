@@ -4,32 +4,39 @@ from pyPPG.preproc import Preprocessing
 import matplotlib.pyplot as plt
 import scipy.io
 import numpy as np
+import pandas as pd
 from dotmap import DotMap
 from tkinter import filedialog
 import mne
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import os
+import tkinter as tk
+from tkinter import simpledialog
 
 ###########################################################################
 ####################### Data Acquisition from Files #######################
 ###########################################################################
-def load_data(data_path: str, start = 0, end = 0, filtering = True):
+def load_data(data_path: str, fs: int, start_sig = 0, end_sig = 0, filtering = True, correct=True):
     """
     Load PPG data function load the raw PPG data.
 
     :param data_path: path of the PPG signal
     :type data_path: str
-    :param start: beginning the of signal in sample
-    :type start: int
-    :param end: end of the signal in sample
-    :type end: int
+    :param start_sig: beginning the of signal in sample
+    :type start_sig: int
+    :param fs: the sampling frequency of the PPG in Hz
+    :type fs: int
+    :param end_sig: end of the signal in sample
+    :type end_sig: int
     :param filtering: a bool for filtering
     :type filtering: bool
+    :param correct: a bool for filtering
+    :type correct: bool
 
     :return: s: dictionary of the PPG signal:
 
-        * s.start: beginning of the signal in sample
-        * s.end: end of the signal in sample
+        * s.start_sig: beginning of the signal in sample
+        * s.end_sig: end of the signal in sample
         * s.v: a vector of PPG values
         * s.fs: the sampling frequency of the PPG in Hz
         * s.name: name of the record
@@ -39,6 +46,8 @@ def load_data(data_path: str, start = 0, end = 0, filtering = True):
         * s.filt_d1: 1-d array, a vector of the filtered PPG' values
         * s.filt_d2: 1-d array, a vector of the filtered PPG" values
         * s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+        * s.filtering: a bool for filtering
+        * s.correct: a bool for filtering
     """
 
     if data_path=="":
@@ -68,10 +77,15 @@ def load_data(data_path: str, start = 0, end = 0, filtering = True):
             fs = 100
             print('The default sampling frequency is 100 Hz for .mat.')
     elif sig_format=='csv':
-        input_sig = np.loadtxt(sig_path, delimiter=',').astype(int)
+        input_sig = pd.read_csv(sig_path, encoding='utf-8')
         sig = input_sig
-        fs = 75
-        print('The default sampling frequency is 75 Hz for .csv.')
+        sig = np.squeeze(sig.values)
+        try:
+            fs > 0
+        except:
+            fs = 75
+            print('The default sampling frequency is 75 Hz for .csv.')
+
     elif sig_format=='txt':
         try:
             input_sig = np.loadtxt(sig_path, delimiter='\t').astype(int)
@@ -81,11 +95,27 @@ def load_data(data_path: str, start = 0, end = 0, filtering = True):
             except:
                 print('ERROR! The data separator is not supported for .txt.')
         sig = input_sig
-        fs = 1000
-        print('The default sampling frequency is 1 kHz for .txt.')
+
+        try:
+            fs > 0
+        except:
+            fs = 1000
+            print('The default sampling frequency is 1 kHz for .txt.')
+
     elif sig_format == 'edf':
         input_sig = mne.io.read_raw_edf(sig_path)
-        sig = -input_sig['Pleth'][0][0]
+        try:
+            sig = -input_sig['Pleth'][0][0]
+        except:
+            try:
+                sig = -input_sig['PPG'][0][0]
+            except:
+                try:
+                    input_name = simpledialog.askstring("Input", "Define the PPG channel name:")
+                    sig = -input_sig[input_name][0][0]
+                except:
+                    print('There is no valid channel for PPG in the .edf file!')
+
         try:
             fs = int(np.round(input_sig.info['sfreq']))
         except:
@@ -94,16 +124,18 @@ def load_data(data_path: str, start = 0, end = 0, filtering = True):
 
     s = DotMap()
 
-    s.start = start
-    if start<end:
-        s.end = end
+    s.start_sig = start_sig
+    if start_sig<end_sig:
+        s.end_sig = end_sig
     else:
-        s.end = len(sig)
+        s.end_sig = len(sig)
 
-    s.v=sig[s.start:s.end]
+    s.v=sig[s.start_sig:s.end_sig]
     s.fs=fs
     s.name=rec_name
     s.filt_sig, s.filt_d1, s.filt_d2, s.filt_d3 = Preprocessing(s, filtering = True)
+    s.filtering = filtering
+    s.correct = correct
 
     return s
 
@@ -121,7 +153,20 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str):
     :param savingfolder: location of the saved figure
     """
 
-    fig = plt.figure(figsize=(15, 8))
+    # Create a hidden root window to get screen dimensions
+    root = tk.Tk()
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    root.destroy()
+
+    # Define a scaling factor for the figure size (e.g., 0.8 for 80% of the screen size)
+    scaling_factor = 0.8
+
+    # Calculate the figure size based on the screen dimensions and scaling factor
+    figure_width = screen_width * scaling_factor
+    figure_height = screen_height * scaling_factor
+
+    fig = plt.figure(figsize=(figure_width/100, figure_height/100))
     ax1 = plt.subplot(411)
     plt.plot(s.filt_sig, 'k', label=None)
     ax2 = plt.subplot(412, sharex=ax1)
@@ -192,7 +237,7 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str):
 
     os.makedirs(tmp_dir, exist_ok=True)
 
-    canvas.print_png((tmp_dir+'%s_btwn_%s-%s.png') % (s.name,s.start,s.end))
+    canvas.print_png((tmp_dir+'%s_btwn_%s-%s.png') % (s.name,s.start_sig,s.end_sig))
     print('Figure has been saved in the "'+savingfolder+'".')
 
 ###########################################################################
@@ -230,41 +275,41 @@ def save_data(s: pyPPG.PPG, fp: pyPPG.Fiducials, bm: pyPPG.Biomarkers, savingfor
     for i in keys_list:
         exec('sc.'+i+' = s.'+i)
 
-    file_name = (r'.' + os.sep + tmp_dir + os.sep + temp_dirs[4] + os.sep + s.name + '_data_btwn_%s-%s.mat')%(s.start,s.end)
+    file_name = (r'.' + os.sep + tmp_dir + os.sep + temp_dirs[4] + os.sep + s.name + '_data_btwn_%s-%s.mat')%(s.start_sig,s.end_sig)
     scipy.io.savemat(file_name, sc)
 
     BM_keys = bm.bm_vals.keys()
 
     if savingformat=="csv":
-        file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducials_btwn_%s-%s.csv')%(s.start,s.end)
+        file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducials_btwn_%s-%s.csv')%(s.start_sig,s.end_sig)
         fp.get_fp().to_csv(file_name)
 
         for key in BM_keys:
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start,s.end)
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start_sig,s.end_sig)
             bm.bm_vals[key].to_csv(file_name,index=True,header=True)
 
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start,s.end)
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start_sig,s.end_sig)
             bm.bm_stats[key].to_csv(file_name, index=True, header=True)
 
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start,s.end)
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start_sig,s.end_sig)
             bm.bm_defs[key].to_csv(file_name, index=True, header=True)
 
     elif savingformat=="mat":
         matlab_struct = fp.get_fp().to_dict(orient='list')
-        file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducials_btwn_%s-%s.mat')%(s.start,s.end)
+        file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducials_btwn_%s-%s.mat')%(s.start_sig,s.end_sig)
         scipy.io.savemat(file_name,matlab_struct)
 
         for key in BM_keys:
 
             matlab_struct = bm.bm_vals[key].to_dict(orient='list')
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start,s.end)
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
             scipy.io.savemat(file_name,matlab_struct)
 
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start,s.end)
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
             scipy.io.savemat(file_name, bm.bm_stats[key])
 
             matlab_struct = bm.bm_defs[key].to_dict(orient='list')
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start,s.end)
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
             scipy.io.savemat(file_name,matlab_struct)
     else:
         print('The file format is not suported for data saving! You can use "mat" or "csv" file formats.')

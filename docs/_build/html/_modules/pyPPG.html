@@ -86,8 +86,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param s: dictionary  of the PPG signal:</span>
 
-<span class="sd">            * s.start: beginning of the signal in sample</span>
-<span class="sd">            * s.end: end of the signal in sample</span>
+<span class="sd">            * s.start_sig: beginning of the signal in sample</span>
+<span class="sd">            * s.end_sig: end of the signal in sample</span>
 <span class="sd">            * s.v: a vector of PPG values</span>
 <span class="sd">            * s.fs: the sampling frequency of the PPG in Hz</span>
 <span class="sd">            * s.name: name of the record</span>
@@ -97,6 +97,8 @@
 <span class="sd">            * s.filt_d1: 1-d array, a vector of the filtered PPG&#39; values</span>
 <span class="sd">            * s.filt_d2: 1-d array, a vector of the filtered PPG&quot; values</span>
 <span class="sd">            * s.filt_d3: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
+<span class="sd">            * s.filtering: a bool for filtering</span>
+<span class="sd">            * s.correct: a bool for filtering</span>
 <span class="sd">        :type s: DotMap</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>

@@ -20,6 +20,8 @@ class PPG:
             * s.filt_d1: 1-d array, a vector of the filtered PPG' values
             * s.filt_d2: 1-d array, a vector of the filtered PPG" values
             * s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+            * s.filtering: a bool for filtering
+            * s.correct: a bool for filtering
         :type s: DotMap
 
         """

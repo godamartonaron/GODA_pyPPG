@@ -13,8 +13,8 @@ import pandas as pd
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="", start_sig=0, end_sig=0, filtering=True, correct=True, process_type="both",
-                savingfolder="temp_dir", savefig=True, savingformat="csv", fiducials=[]):
+def ppg_example(data_path="", start_sig=0, fs=[], end_sig=0, filtering=True, correct=True,
+                process_type="both",savingfolder="temp_dir", savefig=True, savingformat="csv", fiducials=[]):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -33,6 +33,8 @@ def ppg_example(data_path="", start_sig=0, end_sig=0, filtering=True, correct=Tr
     :type data_path: str
     :param start_sig: beginning the of signal in sample
     :type start_sig: int
+    :param fs: sampling_frequency
+    :type fs: int
     :param end_sig: end of the signal in sample
     :type end_sig: int
     :param filtering: a bool for filtering
@@ -62,7 +64,7 @@ def ppg_example(data_path="", start_sig=0, end_sig=0, filtering=True, correct=Tr
     '''
 
     ## Loading a raw PPG signal
-    ppg_data = load_data(data_path, start_sig, end_sig, filtering)
+    ppg_data = load_data(data_path, fs, start_sig, end_sig, filtering, correct)
     s = PPG(ppg_data)
 
     if process_type == 'fiducials' or process_type == 'both':

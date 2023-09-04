@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pyPPG
-Version: 1.0.18
+Version: 1.0.19
 Summary: pyPPG: a python toolbox for PPG morphological analysis.
 Home-page: https://github.com/godamartonaron/GODA_pyPPG
 Author: Marton A. Goda, PhD
@@ -28,10 +28,12 @@ Consequently, *pyPPG* offers robust and comprhessive assessment of clinically re
 ## Description
 The following steps are implemented in the ***pyPPG*** toolbox:
 
-![](figs/pyPPG_pipeline.svg).
-
-1. **Loading a raw PPG signal**: The toolbox can accept PPG signals in various file formats such as *.mat*, *.csv*, *.txt*, or *.edf*. These files should contain raw PPG data along with the corresponding sampling rate.
-2. **Preprocessing**: The raw signal is filtered to remove unwanted noise and artifacts. Subsequently, the signal is resampled to 75 Hz.
+1. **Loading a raw PPG signal**: The toolbox can accept PPG signals in various file formats such as *.mat*, *.txt*, *.csv*, or *.edf*. These files should contain raw PPG data along with the corresponding sampling rate. 
+   * *.mat*: Data should be stored in a structure containing two fields: (i) 'Fs' representing the sampling frequency, and (ii) 'Data', a vector containing the raw PPG signal.
+   * *.txt*: It contains tabular data of the raw PPG signal (single tab or space-delimited), and you need to provide the sampling frequency as an input parameter to the script using 'fs'.
+   * *.csv*: This format stores raw PPG signal data with comma separation. Similar to .txt, the sampling frequency must be provided as an input parameter to the script using 'fs'.
+   * *.edf*: The [European Data Format](https://www.edfplus.info/) is supported, and it applies 'Pleth' or 'PPG' channels by default. However, if using different channel name, the user needs to define it themselves.
+3. **Preprocessing**: The raw signal is filtered to remove unwanted noise and artifacts. Subsequently, the signal is resampled to 75 Hz.
 3. **Pulse wave segmentation**: The toolbox employs a peak detector to identify the systolic peaks. It uses an [improved version](https://arxiv.org/abs/2307.10398) of a beat detection algorithm originally proposed in [(*Aboy et al. 2005*)](https://doi.org/10.1109/TBME.2005.855725). Based on the peak locations, the toolbox also detects the pulse onsets and offsets, which indicate the start and end of the PPG pulse waves.
 4. **Fiducial points identification**: For each pulse wave, the toolbox detects a set of fiducial points.
 5. **Biomarker engineering**: Based on the fiducial points, a set of 74 PPG digital biomarkers (_i.e._ pulse wave features) are calculated.
@@ -39,7 +41,6 @@ The following steps are implemented in the ***pyPPG*** toolbox:
 The *pyPPG* toolbox also provides an optional PPG signal quality index based on the Matlab implementation of the work by [(*Li et al. 2015*)](https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m).
 
 ![](figs/pyPPG_pipeline.svg).
-
 
 The toolbox identifies individual pulse waves in a PPG signal by identifying ***systolic peaks (sp)***, and then
 identifying the ***pulse onset (on)*** and ***offset (off)*** on either side of each systolic peak which indicate the
@@ -52,6 +53,8 @@ Available on pip, with the command:
 ***pip install pyPPG***
 
 pip project: https://pypi.org/project/pyPPG/
+
+For more details see the [pyPPG example code](https://pyppg.readthedocs.io/en/latest/tutorials/pyPPG_example.html)
 
 ## Requirements
 ### Python Requirements:

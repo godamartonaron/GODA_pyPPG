@@ -127,7 +127,7 @@
 <span id="pyppg-example"></span><h2>pyPPG.example<a class="headerlink" href="#module-pyPPG.example" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyPPG.example.ppg_example">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.example.</span></span><span class="sig-name descname"><span class="pre">ppg_example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtering</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingfolder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'temp_dir'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savedata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingformat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/example.html#ppg_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.example.ppg_example" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyPPG.example.</span></span><span class="sig-name descname"><span class="pre">ppg_example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtering</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingfolder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'temp_dir'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingformat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/example.html#ppg_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.example.ppg_example" title="Permalink to this definition"></a></dt>
 <dd><dl class="simple">
 <dt>This is an example code for PPG analysis. The main parts:</dt><dd><ol class="arabic simple">
 <li><p>Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.</p></li>
@@ -153,13 +153,14 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_path</strong> (<em>str</em>) – path of the PPG signal</p></li>
-<li><p><strong>start</strong> (<em>int</em>) – beginning the of signal in sample</p></li>
-<li><p><strong>end</strong> (<em>int</em>) – end of the signal in sample</p></li>
+<li><p><strong>start_sig</strong> (<em>int</em>) – beginning the of signal in sample</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – sampling_frequency</p></li>
+<li><p><strong>end_sig</strong> (<em>int</em>) – end of the signal in sample</p></li>
 <li><p><strong>filtering</strong> (<em>bool</em>) – a bool for filtering</p></li>
 <li><p><strong>correct</strong> (<em>bool</em>) – a bool for fiducials points corretion</p></li>
+<li><p><strong>process_type</strong> (<em>str</em>) – the type of the process, which can be “fiducials”, “biomarkers”, or “both”</p></li>
 <li><p><strong>savingfolder</strong> (<em>str</em>) – location of the saved data</p></li>
 <li><p><strong>savefig</strong> (<em>bool</em>) – a bool for current figure saving</p></li>
-<li><p><strong>savedata</strong> (<em>bool</em>) – a bool for saving fiducial points, biomarkers, and statistics</p></li>
 <li><p><strong>savingformat</strong> (<em>str</em>) – file format of the saved date, the provided file formats .mat and .csv</p></li>
 </ul>
 </dd>
@@ -190,8 +191,8 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>s</strong> (<em>DotMap</em>) – <p>dictionary  of the PPG signal:</p>
 <ul class="simple">
-<li><p>s.start: beginning of the signal in sample</p></li>
-<li><p>s.end: end of the signal in sample</p></li>
+<li><p>s.start_sig: beginning of the signal in sample</p></li>
+<li><p>s.end_sig: end of the signal in sample</p></li>
 <li><p>s.v: a vector of PPG values</p></li>
 <li><p>s.fs: the sampling frequency of the PPG in Hz</p></li>
 <li><p>s.name: name of the record</p></li>
@@ -201,6 +202,8 @@
 <li><p>s.filt_d1: 1-d array, a vector of the filtered PPG’ values</p></li>
 <li><p>s.filt_d2: 1-d array, a vector of the filtered PPG” values</p></li>
 <li><p>s.filt_d3: 1-d array, a vector of the filtered PPG’” values</p></li>
+<li><p>s.filtering: a bool for filtering</p></li>
+<li><p>s.correct: a bool for filtering</p></li>
 </ul>
 </p>
 </dd>
@@ -443,22 +446,24 @@ Written by Qiao Li, February 21, 2011</p>
 <span id="pyppg-datahandling"></span><h2>pyPPG.datahandling<a class="headerlink" href="#module-pyPPG.datahandling" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyPPG.datahandling.load_data">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.datahandling.</span></span><span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtering</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/datahandling.html#load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.datahandling.load_data" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyPPG.datahandling.</span></span><span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtering</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/datahandling.html#load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.datahandling.load_data" title="Permalink to this definition"></a></dt>
 <dd><p>Load PPG data function load the raw PPG data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_path</strong> (<em>str</em>) – path of the PPG signal</p></li>
-<li><p><strong>start</strong> (<em>int</em>) – beginning the of signal in sample</p></li>
-<li><p><strong>end</strong> (<em>int</em>) – end of the signal in sample</p></li>
+<li><p><strong>start_sig</strong> (<em>int</em>) – beginning the of signal in sample</p></li>
+<li><p><strong>fs</strong> (<em>int</em>) – the sampling frequency of the PPG in Hz</p></li>
+<li><p><strong>end_sig</strong> (<em>int</em>) – end of the signal in sample</p></li>
 <li><p><strong>filtering</strong> (<em>bool</em>) – a bool for filtering</p></li>
+<li><p><strong>correct</strong> (<em>bool</em>) – a bool for filtering</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>s: dictionary of the PPG signal:</p>
 <ul class="simple">
-<li><p>s.start: beginning of the signal in sample</p></li>
-<li><p>s.end: end of the signal in sample</p></li>
+<li><p>s.start_sig: beginning of the signal in sample</p></li>
+<li><p>s.end_sig: end of the signal in sample</p></li>
 <li><p>s.v: a vector of PPG values</p></li>
 <li><p>s.fs: the sampling frequency of the PPG in Hz</p></li>
 <li><p>s.name: name of the record</p></li>
@@ -468,6 +473,8 @@ Written by Qiao Li, February 21, 2011</p>
 <li><p>s.filt_d1: 1-d array, a vector of the filtered PPG’ values</p></li>
 <li><p>s.filt_d2: 1-d array, a vector of the filtered PPG” values</p></li>
 <li><p>s.filt_d3: 1-d array, a vector of the filtered PPG’” values</p></li>
+<li><p>s.filtering: a bool for filtering</p></li>
+<li><p>s.correct: a bool for filtering</p></li>
 </ul>
 </p>
 </dd>
