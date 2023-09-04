@@ -9,8 +9,8 @@ class PPG:
         """
         :param s: dictionary  of the PPG signal:
 
-            * s.start: beginning of the signal in sample
-            * s.end: end of the signal in sample
+            * s.start_sig: beginning of the signal in sample
+            * s.end_sig: end of the signal in sample
             * s.v: a vector of PPG values
             * s.fs: the sampling frequency of the PPG in Hz
             * s.name: name of the record

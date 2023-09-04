@@ -4,6 +4,7 @@ from pyPPG.preproc import Preprocessing
 import matplotlib.pyplot as plt
 import scipy.io
 import numpy as np
+import pandas as pd
 from dotmap import DotMap
 from tkinter import filedialog
 import mne
@@ -13,23 +14,23 @@ import os
 ###########################################################################
 ####################### Data Acquisition from Files #######################
 ###########################################################################
-def load_data(data_path: str, start = 0, end = 0, filtering = True):
+def load_data(data_path: str, start_sig = 0, end_sig = 0, filtering = True):
     """
     Load PPG data function load the raw PPG data.
 
     :param data_path: path of the PPG signal
     :type data_path: str
-    :param start: beginning the of signal in sample
-    :type start: int
-    :param end: end of the signal in sample
-    :type end: int
+    :param start_sig: beginning the of signal in sample
+    :type start_sig: int
+    :param end_sig: end of the signal in sample
+    :type end_sig: int
     :param filtering: a bool for filtering
     :type filtering: bool
 
     :return: s: dictionary of the PPG signal:
 
-        * s.start: beginning of the signal in sample
-        * s.end: end of the signal in sample
+        * s.start_sig: beginning of the signal in sample
+        * s.end_sig: end of the signal in sample
         * s.v: a vector of PPG values
         * s.fs: the sampling frequency of the PPG in Hz
         * s.name: name of the record
@@ -68,8 +69,9 @@ def load_data(data_path: str, start = 0, end = 0, filtering = True):
             fs = 100
             print('The default sampling frequency is 100 Hz for .mat.')
     elif sig_format=='csv':
-        input_sig = np.loadtxt(sig_path, delimiter=',').astype(int)
+        input_sig = pd.read_csv(sig_path, encoding='utf-8')
         sig = input_sig
+        sig = np.squeeze(sig.values)
         fs = 75
         print('The default sampling frequency is 75 Hz for .csv.')
     elif sig_format=='txt':
@@ -94,13 +96,13 @@ def load_data(data_path: str, start = 0, end = 0, filtering = True):
 
     s = DotMap()
 
-    s.start = start
-    if start<end:
-        s.end = end
+    s.start_sig = start_sig
+    if start_sig<end_sig:
+        s.end_sig = end_sig
     else:
-        s.end = len(sig)
+        s.end_sig = len(sig)
 
-    s.v=sig[s.start:s.end]
+    s.v=sig[s.start_sig:s.end_sig]
     s.fs=fs
     s.name=rec_name
     s.filt_sig, s.filt_d1, s.filt_d2, s.filt_d3 = Preprocessing(s, filtering = True)
@@ -192,7 +194,7 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str):
 
     os.makedirs(tmp_dir, exist_ok=True)
 
-    canvas.print_png((tmp_dir+'%s_btwn_%s-%s.png') % (s.name,s.start,s.end))
+    canvas.print_png((tmp_dir+'%s_btwn_%s-%s.png') % (s.name,s.start_sig,s.end_sig))
     print('Figure has been saved in the "'+savingfolder+'".')
 
 ###########################################################################
@@ -230,41 +232,41 @@ def save_data(s: pyPPG.PPG, fp: pyPPG.Fiducials, bm: pyPPG.Biomarkers, savingfor
     for i in keys_list:
         exec('sc.'+i+' = s.'+i)
 
-    file_name = (r'.' + os.sep + tmp_dir + os.sep + temp_dirs[4] + os.sep + s.name + '_data_btwn_%s-%s.mat')%(s.start,s.end)
+    file_name = (r'.' + os.sep + tmp_dir + os.sep + temp_dirs[4] + os.sep + s.name + '_data_btwn_%s-%s.mat')%(s.start_sig,s.end_sig)
     scipy.io.savemat(file_name, sc)
 
     BM_keys = bm.bm_vals.keys()
 
     if savingformat=="csv":
-        file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducials_btwn_%s-%s.csv')%(s.start,s.end)
+        file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducials_btwn_%s-%s.csv')%(s.start_sig,s.end_sig)
         fp.get_fp().to_csv(file_name)
 
         for key in BM_keys:
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start,s.end)
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start_sig,s.end_sig)
             bm.bm_vals[key].to_csv(file_name,index=True,header=True)
 
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start,s.end)
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start_sig,s.end_sig)
             bm.bm_stats[key].to_csv(file_name, index=True, header=True)
 
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start,s.end)
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start_sig,s.end_sig)
             bm.bm_defs[key].to_csv(file_name, index=True, header=True)
 
     elif savingformat=="mat":
         matlab_struct = fp.get_fp().to_dict(orient='list')
-        file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducials_btwn_%s-%s.mat')%(s.start,s.end)
+        file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducials_btwn_%s-%s.mat')%(s.start_sig,s.end_sig)
         scipy.io.savemat(file_name,matlab_struct)
 
         for key in BM_keys:
 
             matlab_struct = bm.bm_vals[key].to_dict(orient='list')
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start,s.end)
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
             scipy.io.savemat(file_name,matlab_struct)
 
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start,s.end)
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
             scipy.io.savemat(file_name, bm.bm_stats[key])
 
             matlab_struct = bm.bm_defs[key].to_dict(orient='list')
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start,s.end)
+            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
             scipy.io.savemat(file_name,matlab_struct)
     else:
         print('The file format is not suported for data saving! You can use "mat" or "csv" file formats.')

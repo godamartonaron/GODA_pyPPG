@@ -7,11 +7,14 @@ import pyPPG.ppg_sqi as SQI
 import numpy as np
 import sys
 import json
+import pandas as pd
+
 
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="",start = 0, end = 0, filtering=True, correct=True, savingfolder="temp_dir", savefig=True, savedata=True, savingformat="csv"):
+def ppg_example(data_path="", start_sig=0, end_sig=0, filtering=True, correct=True, process_type="both",
+                savingfolder="temp_dir", savefig=True, savingformat="csv", fiducials=[]):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -28,25 +31,24 @@ def ppg_example(data_path="",start = 0, end = 0, filtering=True, correct=True, s
 
     :param data_path: path of the PPG signal
     :type data_path: str
-    :param start: beginning the of signal in sample
-    :type start: int
-    :param end: end of the signal in sample
-    :type end: int
+    :param start_sig: beginning the of signal in sample
+    :type start_sig: int
+    :param end_sig: end of the signal in sample
+    :type end_sig: int
     :param filtering: a bool for filtering
     :type filtering: bool
     :param correct: a bool for fiducials points corretion
     :type correct: bool
+    :param process_type: the type of the process, which can be "fiducials", "biomarkers", or "both"
+    :type process_type: str
     :param savingfolder: location of the saved data
     :type savingfolder: str
     :param savefig: a bool for current figure saving
     :type savefig: bool
-    :param savedata: a bool for saving fiducial points, biomarkers, and statistics
-    :type savedata: bool
     :param savingformat: file format of the saved date, the provided file formats .mat and .csv
     :type savingformat: str
 
     :return: fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points
-
 
     Example:
 
@@ -60,32 +62,35 @@ def ppg_example(data_path="",start = 0, end = 0, filtering=True, correct=True, s
     '''
 
     ## Loading a raw PPG signal
-    ppg_data = load_data(data_path,start,end,filtering)
+    ppg_data = load_data(data_path, start_sig, end_sig, filtering)
     s = PPG(ppg_data)
 
-    ## Get Fiducial points
-    fpex = FP.FpCollection(s)
-    fiducials=fpex.get_fiducials(s,correct)+s.start
-    fp = Fiducials(fiducials)
+    if process_type == 'fiducials' or process_type == 'both':
+        ## Get Fiducial points
+        fpex = FP.FpCollection(s)
+        fiducials = fpex.get_fiducials(s, correct) + s.start_sig
 
     if savefig:
         ## Plot Fiducials Points
+        fp = Fiducials(fiducials)
         plot_fiducials(s, fp, savingfolder)
 
-    if savedata:
+    if process_type == 'biomarkers' or process_type == 'both':
         ## Get Biomarkers and Statistics
+        fp = Fiducials(fiducials)
         bmex = BM.BmCollection(s, fp)
         bm_defs, bm_vals, bm_stats = bmex.get_biomarkers()
-        bm = Biomarkers(bm_defs, bm_vals , bm_stats)
+        bm = Biomarkers(bm_defs, bm_vals, bm_stats)
 
         ## Save data
         save_data(s, fp, bm, savingformat, savingfolder)
 
     # PPG SQI
-    ppgSQI=round(np.mean(SQI.get_ppgSQI(s.filt_sig, s.fs, fp.sp))*100,2)
+    fp = Fiducials(fiducials)
+    ppgSQI = round(np.mean(SQI.get_ppgSQI(s.filt_sig, s.fs, fp.sp)) * 100, 2)
     print('Mean PPG SQI: ', ppgSQI, '%')
 
-    print('Program finished')
+    # print('Program finished')
     return fiducials
 
 
@@ -100,11 +105,30 @@ if __name__ == "__main__":
         function_args = input_data['args']
 
         if function_name == 'ppg_example':
-            fiducials = ppg_example(**function_args)
+            if input_data['args']['process_type'] == 'fiducials':
+                fiducials = ppg_example(**function_args)
+            if input_data['args']['process_type'] == 'biomarkers':
+                fiducials = input_data['args']['fiducials']
+                fiducials = fiducials.replace("'", '"')
+                fiducials = json.loads(fiducials)
+                fiducials = pd.DataFrame(fiducials['data'], columns=fiducials['columns'], index=fiducials['index'])
+
+                def subtract_if_numeric(x):
+                    if isinstance(x, (int, float)):
+                        tmp_diff = x - input_data['args']['start_sig']
+                        return tmp_diff
+                    else:
+                        return x
+
+                input_data['args']['fiducials'] = fiducials.applymap(subtract_if_numeric)
+                function_args = input_data['args']
+                ppg_example(**function_args)
+
             json_data = fiducials.to_json(orient="split")
             print(json.dumps(json_data))
+
         else:
             print("Invalid function name")
     else:
         print("Please provide function name and arguments as JSON string")
-        ppg_example(savedata=True, savefig=True)
+        ppg_example(savefig=True)
