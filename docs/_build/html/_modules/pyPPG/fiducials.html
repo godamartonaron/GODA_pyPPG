@@ -157,6 +157,18 @@
             <span class="n">fiducials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">correct_fiducials</span><span class="p">(</span><span class="n">fiducials</span><span class="p">)</span>
 
         <span class="n">fiducials</span><span class="o">=</span><span class="n">fiducials</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;Int64&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Extract pulse offsets</span>
+        <span class="n">offsets</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fiducials</span><span class="o">.</span><span class="n">on</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="n">offsets</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">offsets</span><span class="o">.</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Update index name</span>
+        <span class="n">fiducials</span> <span class="o">=</span> <span class="n">fiducials</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fiducials</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">fiducials</span><span class="o">=</span><span class="n">fiducials</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">(</span><span class="s1">&#39;Index of pulse&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Add pulse offsets</span>
+        <span class="n">fiducials</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;off&#39;</span><span class="p">,</span> <span class="n">offsets</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">fiducials</span></div>
 
 

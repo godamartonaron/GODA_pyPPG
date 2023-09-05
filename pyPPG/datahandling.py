@@ -16,7 +16,7 @@ from tkinter import simpledialog
 ###########################################################################
 ####################### Data Acquisition from Files #######################
 ###########################################################################
-def load_data(data_path: str, fs: int, start_sig = 0, end_sig = 0, filtering = True, correct=True):
+def load_data(data_path: str, fs: int, start_sig = 0, end_sig = -1, filtering = True, correct=True):
     """
     Load PPG data function load the raw PPG data.
 
@@ -282,16 +282,20 @@ def save_data(s: pyPPG.PPG, fp: pyPPG.Fiducials, bm: pyPPG.Biomarkers, savingfor
 
     if savingformat=="csv":
         file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducials_btwn_%s-%s.csv')%(s.start_sig,s.end_sig)
-        fp.get_fp().to_csv(file_name)
+        tmp_fp = fp.get_fp()
+        tmp_fp.index = tmp_fp.index + 1
+        tmp_fp.to_csv(file_name)
 
         for key in BM_keys:
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start_sig,s.end_sig)
+            bm.bm_vals[key].index = bm.bm_vals[key].index + 1
             bm.bm_vals[key].to_csv(file_name,index=True,header=True)
 
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start_sig,s.end_sig)
             bm.bm_stats[key].to_csv(file_name, index=True, header=True)
 
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s_btwn_%s-%s.csv')%(s.name+'_'+key,s.start_sig,s.end_sig)
+            bm.bm_defs[key].index = bm.bm_defs[key].index + 1
             bm.bm_defs[key].to_csv(file_name, index=True, header=True)
 
     elif savingformat=="mat":
@@ -301,15 +305,21 @@ def save_data(s: pyPPG.PPG, fp: pyPPG.Fiducials, bm: pyPPG.Biomarkers, savingfor
 
         for key in BM_keys:
 
-            matlab_struct = bm.bm_vals[key].to_dict(orient='list')
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[1]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
+            tmp_df=bm.bm_vals[key]
+            tmp_df.columns = [s.replace('-', '_') for s in tmp_df.columns]
+            matlab_struct = tmp_df.to_dict(orient='list')
             scipy.io.savemat(file_name,matlab_struct)
 
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
-            scipy.io.savemat(file_name, bm.bm_stats[key])
+            tmp_df=bm.bm_stats[key]
+            tmp_df.columns = [s.replace('-', '_') for s in tmp_df.columns]
+            scipy.io.savemat(file_name, tmp_df)
 
-            matlab_struct = bm.bm_defs[key].to_dict(orient='list')
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
+            tmp_df=bm.bm_defs[key]
+            tmp_df.columns = [s.replace('-', '_') for s in tmp_df.columns]
+            matlab_struct = tmp_df.to_dict(orient='list')
             scipy.io.savemat(file_name,matlab_struct)
     else:
         print('The file format is not suported for data saving! You can use "mat" or "csv" file formats.')

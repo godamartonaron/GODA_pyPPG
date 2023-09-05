@@ -79,6 +79,18 @@ class FpCollection:
             fiducials=self.correct_fiducials(fiducials)
 
         fiducials=fiducials.astype('Int64')
+
+        # Extract pulse offsets
+        offsets = copy.deepcopy(fiducials.on[1:])
+        offsets.index = offsets.index - 1
+
+        # Update index name
+        fiducials = fiducials.drop(len(fiducials)-1)
+        fiducials=fiducials.rename_axis('Index of pulse')
+
+        # Add pulse offsets
+        fiducials.insert(4, 'off', offsets)
+
         return fiducials
 
 

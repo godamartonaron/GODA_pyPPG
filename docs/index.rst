@@ -18,8 +18,9 @@ Welcome to pyPPG's documentation!
    :maxdepth: 1
    :caption: tutorials:
 
-   tutorials/PZ_PPG.rst
    tutorials/pyPPG_example.rst
+   tutorials/PPG_anal.rst
+   tutorials/PZ_PPG.rst
 
 Indices and tables
 ==================

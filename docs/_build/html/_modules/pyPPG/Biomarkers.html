@@ -131,6 +131,13 @@
         <span class="c1">## Get Statistics</span>
         <span class="n">bm_stats</span> <span class="o">=</span> <span class="n">get_statistics</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">sp</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">on</span><span class="p">,</span> <span class="n">bm_vals</span><span class="p">)</span>
 
+        <span class="c1">## Update index names</span>
+        <span class="n">BM_keys</span> <span class="o">=</span> <span class="n">bm_vals</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">BM_keys</span><span class="p">:</span>
+            <span class="n">bm_vals</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">bm_vals</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">(</span><span class="s1">&#39;Index of pulse&#39;</span><span class="p">)</span>
+            <span class="n">bm_defs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">bm_defs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">(</span><span class="s1">&#39;No. biomarkers&#39;</span><span class="p">)</span>
+            <span class="n">bm_stats</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">bm_stats</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">(</span><span class="s1">&#39;Statistics&#39;</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span><span class="p">,</span> <span class="n">bm_stats</span></div></div>
 </pre></div>
 
