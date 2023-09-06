@@ -16,7 +16,7 @@ from tkinter import simpledialog
 ###########################################################################
 ####################### Data Acquisition from Files #######################
 ###########################################################################
-def load_data(data_path: str, fs: int, start_sig = 0, end_sig = -1, filtering = True, correct=True):
+def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1, filtering = True, correct=True):
     """
     Load PPG data function load the raw PPG data.
 

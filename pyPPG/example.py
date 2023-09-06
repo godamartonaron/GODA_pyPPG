@@ -13,7 +13,7 @@ import pandas as pd
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="", start_sig=0, fs=[], end_sig=-1, filtering=True, correct=True,
+def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, correct=True,
                 process_type="both",savingfolder="temp_dir", savefig=True, savingformat="mat", fiducials=[]):
     '''
     This is an example code for PPG analysis. The main parts:

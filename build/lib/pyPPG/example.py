@@ -13,8 +13,8 @@ import pandas as pd
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="", start_sig=0, fs=[], end_sig=0, filtering=True, correct=True,
-                process_type="both",savingfolder="temp_dir", savefig=True, savingformat="csv", fiducials=[]):
+def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, correct=True,
+                process_type="both",savingfolder="temp_dir", savefig=True, savingformat="mat", fiducials=[]):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -87,7 +87,7 @@ def ppg_example(data_path="", start_sig=0, fs=[], end_sig=0, filtering=True, cor
         ## Save data
         save_data(s, fp, bm, savingformat, savingfolder)
 
-    # PPG SQI
+    ## PPG SQI
     fp = Fiducials(fiducials)
     ppgSQI = round(np.mean(SQI.get_ppgSQI(s.filt_sig, s.fs, fp.sp)) * 100, 2)
     print('Mean PPG SQI: ', ppgSQI, '%')

@@ -53,4 +53,11 @@ class BmCollection:
         ## Get Statistics
         bm_stats = get_statistics(fp.sp, fp.on, bm_vals)
 
+        ## Update index names
+        BM_keys = bm_vals.keys()
+        for key in BM_keys:
+            bm_vals[key] = bm_vals[key].rename_axis('Index of pulse')
+            bm_defs[key] = bm_defs[key].rename_axis('No. biomarkers')
+            bm_stats[key] = bm_stats[key].rename_axis('Statistics')
+
         return bm_defs, bm_vals, bm_stats

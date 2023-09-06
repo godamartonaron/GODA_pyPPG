@@ -37,7 +37,7 @@ While the virtual environment is active, install pyPPG using pip:
 
    ppgenv\Scripts\python.exe -m pip install pyPPG
 
-*WARNING*: Not creating a virtual environment may lead to conflicts between various Python packages.  To avoid this problem, please review the `list of package requirements <https://github.com/godamartonaron/GODA_pyPPG/blob/main/docs/requirements.txt>`__.
+*WARNING*: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead, or please review carefully the `list of package requirements <https://github.com/godamartonaron/GODA_pyPPG/blob/main/docs/requirements.txt>`__.
 
 **Step 5**: Run the Example Code
 
