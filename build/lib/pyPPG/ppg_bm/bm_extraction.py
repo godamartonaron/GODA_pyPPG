@@ -1216,10 +1216,11 @@ def get_biomarkers(s: pyPPG.PPG, fp: pyPPG.Fiducials, biomarkers_lst):
     df_biomarkers = pd.DataFrame(columns=biomarkers_lst)
     peaks = fp.sp.values
     onsets = fp.on.values
+    offsets = fp.off.values
 
-    for i in range(len(onsets) - 1):
+    for i in range(len(onsets)):
         onset = onsets[i]
-        offset = onsets[i + 1]
+        offset = offsets[i]
         data.sig = ppg[int(onset):int(offset)]
         data.d1 = s.filt_d1[int(onset):int(offset)]
         data.d2 = s.filt_d2[int(onset):int(offset)]

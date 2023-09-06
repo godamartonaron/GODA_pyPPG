@@ -54,6 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#import-python-packages">Import Python packages:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setup-input-parameters">Setup input parameters:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#loading-a-raw-ppg-signal">Loading a raw PPG signal:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prepare-the-ppg-data">Prepare the PPG data:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#identify-fiducial-points">Identify fiducial points:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#plot-fiducial-points">Plot fiducial points:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#calculate-ppg-biomarkers">Calculate PPG biomarkers:</a></li>
@@ -104,6 +105,7 @@ Our objectives are to:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pyPPG
 
 from pyPPG import PPG, Fiducials, Biomarkers
+from pyPPG.preproc import Preprocessing
 from pyPPG.datahandling import load_data, plot_fiducials, save_data
 import pyPPG.fiducials as FP
 import pyPPG.biomarkers as BM
@@ -132,9 +134,22 @@ import pandas as pd
 <section id="loading-a-raw-ppg-signal">
 <h2>Loading a raw PPG signal:<a class="headerlink" href="#loading-a-raw-ppg-signal" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the raw PPG signal</span>
-<span class="n">ppg_data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">start_sig</span><span class="p">,</span> <span class="n">end_sig</span><span class="p">,</span> <span class="n">filtering</span><span class="p">,</span> <span class="n">correct</span><span class="p">)</span>
+<span class="n">ppg_data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">start_sig</span><span class="p">,</span> <span class="n">end_sig</span><span class="p">)</span>
 
 <span class="c1"># Create a PPG class</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">PPG</span><span class="p">(</span><span class="n">ppg_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="prepare-the-ppg-data">
+<h2>Prepare the PPG data:<a class="headerlink" href="#prepare-the-ppg-data" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Preprocessing</span>
+<span class="k">if</span> <span class="n">filtering</span><span class="p">:</span>
+    <span class="n">ppg_data</span><span class="o">.</span><span class="n">filt_sig</span><span class="p">,</span> <span class="n">ppg_data</span><span class="o">.</span><span class="n">filt_d1</span><span class="p">,</span> <span class="n">ppg_data</span><span class="o">.</span><span class="n">filt_d2</span><span class="p">,</span> <span class="n">ppg_data</span><span class="o">.</span><span class="n">filt_d3</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="p">(</span><span class="n">ppg_data</span><span class="p">,</span> <span class="n">filtering</span><span class="o">=</span><span class="n">filtering</span><span class="p">)</span>
+
+<span class="c1"># Create a PPG class</span>
+<span class="n">ppg_data</span><span class="o">.</span><span class="n">filtering</span> <span class="o">=</span> <span class="n">filtering</span>
+<span class="n">ppg_data</span><span class="o">.</span><span class="n">correct</span> <span class="o">=</span> <span class="n">correct</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">PPG</span><span class="p">(</span><span class="n">ppg_data</span><span class="p">)</span>
 </pre></div>
 </div>

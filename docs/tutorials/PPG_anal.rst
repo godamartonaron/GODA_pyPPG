@@ -16,6 +16,7 @@ ________________________
     !pip install pyPPG
 
     from pyPPG import PPG, Fiducials, Biomarkers
+    from pyPPG.preproc import Preprocessing
     from pyPPG.datahandling import load_data, plot_fiducials, save_data
     import pyPPG.fiducials as FP
     import pyPPG.biomarkers as BM
@@ -47,9 +48,24 @@ __________________________
 .. code-block:: python
 
     # Load the raw PPG signal
-    ppg_data = load_data(data_path, fs, start_sig, end_sig, filtering, correct)
+    ppg_data = load_data(data_path, fs, start_sig, end_sig)
 
     # Create a PPG class
+    s = PPG(ppg_data)
+
+
+Prepare the PPG data:
+_____________________
+
+.. code-block:: python
+
+    # Preprocessing
+    if filtering:
+        ppg_data.filt_sig, ppg_data.filt_d1, ppg_data.filt_d2, ppg_data.filt_d3 = Preprocessing(ppg_data, filtering=filtering)
+
+    # Create a PPG class
+    ppg_data.filtering = filtering
+    ppg_data.correct = correct
     s = PPG(ppg_data)
 
 Identify fiducial points:

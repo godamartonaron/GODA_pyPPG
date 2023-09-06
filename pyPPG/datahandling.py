@@ -16,7 +16,7 @@ from tkinter import simpledialog
 ###########################################################################
 ####################### Data Acquisition from Files #######################
 ###########################################################################
-def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1, filtering = True, correct=True):
+def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
     """
     Load PPG data function load the raw PPG data.
 
@@ -28,10 +28,6 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1, filtering = 
     :type fs: int
     :param end_sig: end of the signal in sample
     :type end_sig: int
-    :param filtering: a bool for filtering
-    :type filtering: bool
-    :param correct: a bool for filtering
-    :type correct: bool
 
     :return: s: dictionary of the PPG signal:
 
@@ -105,9 +101,11 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1, filtering = 
     elif sig_format == 'edf':
         input_sig = mne.io.read_raw_edf(sig_path)
         try:
+            # sig = mne.io.read_raw_edf(sig_path, include='Pleth')
             sig = -input_sig['Pleth'][0][0]
         except:
             try:
+                #sig = mne.io.read_raw_edf(sig_path, include='data')
                 sig = -input_sig['PPG'][0][0]
             except:
                 try:
@@ -133,16 +131,13 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1, filtering = 
     s.v=sig[s.start_sig:s.end_sig]
     s.fs=fs
     s.name=rec_name
-    s.filt_sig, s.filt_d1, s.filt_d2, s.filt_d3 = Preprocessing(s, filtering = True)
-    s.filtering = filtering
-    s.correct = correct
 
     return s
 
 ###########################################################################
 ########################### Plot Fiducial points ##########################
 ###########################################################################
-def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str):
+def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, print_flag=True):
     """
     Plot fiducial points of the filtered PPG signal.
 
@@ -151,6 +146,8 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str):
     :param fp: object of fiducial points
     :type fp: pyPPG.Fiducials object
     :param savingfolder: location of the saved figure
+    :param print_flag: a bool for print message
+    :type print_flag: bool
     """
 
     # Create a hidden root window to get screen dimensions
@@ -238,13 +235,13 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str):
     os.makedirs(tmp_dir, exist_ok=True)
 
     canvas.print_png((tmp_dir+'%s_btwn_%s-%s.png') % (s.name,s.start_sig,s.end_sig))
-    print('Figure has been saved in the "'+savingfolder+'".')
+    if print_flag: print('Figure has been saved in the "'+savingfolder+'".')
 
 ###########################################################################
 ################################# Save Data ###############################
 ###########################################################################
 
-def save_data(s: pyPPG.PPG, fp: pyPPG.Fiducials, bm: pyPPG.Biomarkers, savingformat: str, savingfolder: str):
+def save_data(s: pyPPG.PPG, fp: pyPPG.Fiducials, bm: pyPPG.Biomarkers, savingformat: str, savingfolder: str, print_flag=True):
     """
     Save the results of the filtered PPG analysis.
 
@@ -259,6 +256,8 @@ def save_data(s: pyPPG.PPG, fp: pyPPG.Fiducials, bm: pyPPG.Biomarkers, savingfor
     :type savingformat: str
     :param savingfolder: location of the saved data
     :type savingfolder: str
+    :param print_flag: a bool for print message
+    :type print_flag: bool
     """
 
     tmp_dir = savingfolder
@@ -322,6 +321,6 @@ def save_data(s: pyPPG.PPG, fp: pyPPG.Fiducials, bm: pyPPG.Biomarkers, savingfor
             matlab_struct = tmp_df.to_dict(orient='list')
             scipy.io.savemat(file_name,matlab_struct)
     else:
-        print('The file format is not suported for data saving! You can use "mat" or "csv" file formats.')
+        if print_flag: print('The file format is not suported for data saving! You can use "mat" or "csv" file formats.')
 
-    print('Results have been saved into the "'+tmp_dir+'".')
+    if print_flag: print('Results have been saved into the "'+tmp_dir+'".')

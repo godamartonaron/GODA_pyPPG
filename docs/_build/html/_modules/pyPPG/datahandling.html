@@ -95,7 +95,7 @@
 <span class="c1">###########################################################################</span>
 <span class="c1">####################### Data Acquisition from Files #######################</span>
 <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="load_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.load_data">[docs]</a><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">start_sig</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end_sig</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">filtering</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">correct</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="load_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.load_data">[docs]</a><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">start_sig</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end_sig</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load PPG data function load the raw PPG data.</span>
 
@@ -107,10 +107,6 @@
 <span class="sd">    :type fs: int</span>
 <span class="sd">    :param end_sig: end of the signal in sample</span>
 <span class="sd">    :type end_sig: int</span>
-<span class="sd">    :param filtering: a bool for filtering</span>
-<span class="sd">    :type filtering: bool</span>
-<span class="sd">    :param correct: a bool for filtering</span>
-<span class="sd">    :type correct: bool</span>
 
 <span class="sd">    :return: s: dictionary of the PPG signal:</span>
 
@@ -184,9 +180,11 @@
     <span class="k">elif</span> <span class="n">sig_format</span> <span class="o">==</span> <span class="s1">&#39;edf&#39;</span><span class="p">:</span>
         <span class="n">input_sig</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">sig_path</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># sig = mne.io.read_raw_edf(sig_path, include=&#39;Pleth&#39;)</span>
             <span class="n">sig</span> <span class="o">=</span> <span class="o">-</span><span class="n">input_sig</span><span class="p">[</span><span class="s1">&#39;Pleth&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
+                <span class="c1">#sig = mne.io.read_raw_edf(sig_path, include=&#39;data&#39;)</span>
                 <span class="n">sig</span> <span class="o">=</span> <span class="o">-</span><span class="n">input_sig</span><span class="p">[</span><span class="s1">&#39;PPG&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -212,16 +210,13 @@
     <span class="n">s</span><span class="o">.</span><span class="n">v</span><span class="o">=</span><span class="n">sig</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">:</span><span class="n">s</span><span class="o">.</span><span class="n">end_sig</span><span class="p">]</span>
     <span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="o">=</span><span class="n">fs</span>
     <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">rec_name</span>
-    <span class="n">s</span><span class="o">.</span><span class="n">filt_sig</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">filt_d1</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">filt_d2</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">filt_d3</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">filtering</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="n">s</span><span class="o">.</span><span class="n">filtering</span> <span class="o">=</span> <span class="n">filtering</span>
-    <span class="n">s</span><span class="o">.</span><span class="n">correct</span> <span class="o">=</span> <span class="n">correct</span>
 
     <span class="k">return</span> <span class="n">s</span></div>
 
 <span class="c1">###########################################################################</span>
 <span class="c1">########################### Plot Fiducial points ##########################</span>
 <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="plot_fiducials"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.plot_fiducials">[docs]</a><span class="k">def</span> <span class="nf">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fp</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">Fiducials</span><span class="p">,</span> <span class="n">savingfolder</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_fiducials"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.plot_fiducials">[docs]</a><span class="k">def</span> <span class="nf">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fp</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">Fiducials</span><span class="p">,</span> <span class="n">savingfolder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">print_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot fiducial points of the filtered PPG signal.</span>
 
@@ -230,6 +225,8 @@
 <span class="sd">    :param fp: object of fiducial points</span>
 <span class="sd">    :type fp: pyPPG.Fiducials object</span>
 <span class="sd">    :param savingfolder: location of the saved figure</span>
+<span class="sd">    :param print_flag: a bool for print message</span>
+<span class="sd">    :type print_flag: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Create a hidden root window to get screen dimensions</span>
@@ -317,13 +314,13 @@
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">canvas</span><span class="o">.</span><span class="n">print_png</span><span class="p">((</span><span class="n">tmp_dir</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_btwn_</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">.png&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">,</span><span class="n">s</span><span class="o">.</span><span class="n">end_sig</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Figure has been saved in the &quot;&#39;</span><span class="o">+</span><span class="n">savingfolder</span><span class="o">+</span><span class="s1">&#39;&quot;.&#39;</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">print_flag</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Figure has been saved in the &quot;&#39;</span><span class="o">+</span><span class="n">savingfolder</span><span class="o">+</span><span class="s1">&#39;&quot;.&#39;</span><span class="p">)</span></div>
 
 <span class="c1">###########################################################################</span>
 <span class="c1">################################# Save Data ###############################</span>
 <span class="c1">###########################################################################</span>
 
-<div class="viewcode-block" id="save_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.save_data">[docs]</a><span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fp</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">Fiducials</span><span class="p">,</span> <span class="n">bm</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">Biomarkers</span><span class="p">,</span> <span class="n">savingformat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">savingfolder</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="save_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.save_data">[docs]</a><span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fp</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">Fiducials</span><span class="p">,</span> <span class="n">bm</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">Biomarkers</span><span class="p">,</span> <span class="n">savingformat</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">savingfolder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">print_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save the results of the filtered PPG analysis.</span>
 
@@ -338,6 +335,8 @@
 <span class="sd">    :type savingformat: str</span>
 <span class="sd">    :param savingfolder: location of the saved data</span>
 <span class="sd">    :type savingfolder: str</span>
+<span class="sd">    :param print_flag: a bool for print message</span>
+<span class="sd">    :type print_flag: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">savingfolder</span>
@@ -401,9 +400,9 @@
             <span class="n">matlab_struct</span> <span class="o">=</span> <span class="n">tmp_df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span>
             <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">savemat</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="n">matlab_struct</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The file format is not suported for data saving! You can use &quot;mat&quot; or &quot;csv&quot; file formats.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">print_flag</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The file format is not suported for data saving! You can use &quot;mat&quot; or &quot;csv&quot; file formats.&#39;</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Results have been saved into the &quot;&#39;</span><span class="o">+</span><span class="n">tmp_dir</span><span class="o">+</span><span class="s1">&#39;&quot;.&#39;</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">print_flag</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Results have been saved into the &quot;&#39;</span><span class="o">+</span><span class="n">tmp_dir</span><span class="o">+</span><span class="s1">&#39;&quot;.&#39;</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
