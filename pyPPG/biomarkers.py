@@ -13,7 +13,7 @@ class BmCollection:
     ###########################################################################
     def __init__(self, s: pyPPG.PPG, fp: pyPPG.Fiducials):
         """
-        The purpose of the Biomarkers class is to calculate the ppg biomarkers.
+        The purpose of the Biomarkers class is to calculate the PPG biomarkers.
 
         :param s: object of PPG signal
         :type s: pyPPG.PPG object

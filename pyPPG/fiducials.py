@@ -30,7 +30,7 @@ class FpCollection:
     ############################ Get Fiducial Points ##########################
     ###########################################################################
     def get_fiducials(self, s: pyPPG.PPG, correct=True):
-        '''The function calculates the PPG Fiducial Points.
+        '''This function calculates the PPG Fiducial Points.
             - Original signal: List of systolic peak, pulse onset, dicrotic notch, and diastolic peak
             - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
             - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)

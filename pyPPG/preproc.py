@@ -4,7 +4,7 @@ from scipy.signal import filtfilt
 from scipy import signal
 
 def Preprocessing(s: DotMap, filtering: bool):
-    '''The function calculates the preprocessed PPG, PPG', PPG", and PPG'".
+    '''This function calculates the preprocessed PPG, PPG', PPG", and PPG'" signals.
 
     :param s: a struct of PPG signal:
         - s.v: a vector of PPG values

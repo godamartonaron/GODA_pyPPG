@@ -19,7 +19,7 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
         2) Get Fiducial points: extract the fiducial points of PPG, PPG', PPG'' and PPG'" signals
-        3) Plot Fiducials Points
+        3) Plot Fiducial Points
         4) Get Biomarkers: extract 74 PPG biomarkers in four categories:
             - PPG signal
             - Signal ratios
@@ -39,7 +39,7 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
     :type end_sig: int
     :param filtering: a bool for filtering
     :type filtering: bool
-    :param correct: a bool for fiducials points corretion
+    :param correct: a bool for fiducial points correction
     :type correct: bool
     :param process_type: the type of the process, which can be "fiducials", "biomarkers", or "both"
     :type process_type: str
