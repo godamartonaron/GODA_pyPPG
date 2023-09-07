@@ -19,11 +19,7 @@ The following steps are implemented in the ***pyPPG*** toolbox:
    * *.mat*: Data should be stored in two variables within the file: (i) 'Fs' representing the sampling frequency, and (ii) 'Data', a vector containing the raw PPG signal.
    * *.txt*: The raw PPG signal should be stored in tabular form (single tab or space-delimited), and you need to provide the sampling frequency as an input parameter to the script using 'fs'.
    * *.csv*: This format stores raw PPG signal data with comma separation. Similar to .txt, the sampling frequency must be provided as an input parameter to the script using 'fs'.
-<<<<<<< HEAD
-   * *.edf*: The [European Data Format](https://www.edfplus.info/) is supported, and it applies 'Pleth' channel by default. However, if using different channel name, the user needs to define it themselves.
-=======
-   * *.edf*: The [European Data Format](https://www.edfplus.info/) is supported, and it applies 'Pleth' or 'PPG' channels by default. However, if using a different channel name, then the user needs to define it themselves.
->>>>>>> origin/peteedits2
+   * *.edf*: The [European Data Format](https://www.edfplus.info/) is supported, and it applies 'Pleth' channel by default. However, if using a different channel name, then the user needs to define it themselves.
 3. **Preprocessing**: The raw signal is filtered to remove unwanted noise and artifacts. Subsequently, the signal is resampled to 75 Hz.
 3. **Pulse wave segmentation**: The toolbox employs a peak detector to identify the systolic peaks. It uses an [improved version](https://arxiv.org/abs/2307.10398) of a beat detection algorithm originally proposed in [(*Aboy et al. 2005*)](https://doi.org/10.1109/TBME.2005.855725). Based on the peak locations, the toolbox also detects the pulse onsets and offsets, which indicate the start and end of the PPG pulse waves.
 4. **Fiducial points identification**: For each pulse wave, the toolbox detects a set of fiducial points.
