@@ -16,7 +16,7 @@ Consequently, *pyPPG* offers robust and comprehensive assessment of clinically r
 The following steps are implemented in the ***pyPPG*** toolbox:
 
 1. **Loading a raw PPG signal**: The toolbox can accept PPG signals in various file formats such as *.mat*, *.txt*, *.csv*, or *.edf*. These files should contain raw PPG data along with the corresponding sampling rate.
-   * *.mat*: Data should be stored in a structure containing two fields: (i) 'Fs' representing the sampling frequency, and (ii) 'Data', a vector containing the raw PPG signal.
+   * *.mat*: Data should be stored in two variables within the file: (i) 'Fs' representing the sampling frequency, and (ii) 'Data', a vector containing the raw PPG signal.
    * *.txt*: The raw PPG signal should be stored in tabular form (single tab or space-delimited), and you need to provide the sampling frequency as an input parameter to the script using 'fs'.
    * *.csv*: This format stores raw PPG signal data with comma separation. Similar to .txt, the sampling frequency must be provided as an input parameter to the script using 'fs'.
    * *.edf*: The [European Data Format](https://www.edfplus.info/) is supported, and it applies 'Pleth' or 'PPG' channels by default. However, if using a different channel name, then the user needs to define it themselves.
