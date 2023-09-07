@@ -18,21 +18,21 @@ from tkinter import simpledialog
 ###########################################################################
 def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
     """
-    Load PPG data function load the raw PPG data.
+    Load raw PPG data.
 
-    :param data_path: path of the PPG signal
+    :param data_path: path of the file containing the PPG signal
     :type data_path: str
-    :param start_sig: beginning the of signal in sample
+    :param start_sig: the first sample of the signal to be analysed
     :type start_sig: int
     :param fs: the sampling frequency of the PPG in Hz
     :type fs: int
-    :param end_sig: end of the signal in sample
+    :param end_sig: the last sample of the signal to be analysed
     :type end_sig: int
 
     :return: s: dictionary of the PPG signal:
 
-        * s.start_sig: beginning of the signal in sample
-        * s.end_sig: end of the signal in sample
+        * s.start_sig: the first sample of the signal to be analysed
+        * s.end_sig: the last sample of the signal to be analysed
         * s.v: a vector of PPG values
         * s.fs: the sampling frequency of the PPG in Hz
         * s.name: name of the record
@@ -43,7 +43,7 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
         * s.filt_d2: 1-d array, a vector of the filtered PPG" values
         * s.filt_d3: 1-d array, a vector of the filtered PPG'" values
         * s.filtering: a bool for filtering
-        * s.correct: a bool for filtering
+        * s.correct: a bool for correcting fiducial points
     """
 
     if data_path=="":
