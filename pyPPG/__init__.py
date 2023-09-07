@@ -14,12 +14,12 @@ class PPG:
             * s.v: a vector of PPG values
             * s.fs: the sampling frequency of the PPG in Hz
             * s.name: name of the record
-            * s.v: 1-d array, a vector of PPG values
+            * s.v: 1-d array, a vector of raw PPG values
             * s.fs: the sampling frequency of the PPG in Hz
-            * s.filt_sig: 1-d array, a vector of the filtered PPG values
-            * s.filt_d1: 1-d array, a vector of the filtered PPG' values
-            * s.filt_d2: 1-d array, a vector of the filtered PPG" values
-            * s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+            * s.ppg: 1-d array, a vector of the filtered PPG values
+            * s.vpg: 1-d array, a vector of the filtered PPG' values
+            * s.apg: 1-d array, a vector of the filtered PPG" values
+            * s.jpg: 1-d array, a vector of the filtered PPG'" values
             * s.filtering: a bool for filtering
             * s.correct: a bool for filtering
         :type s: DotMap

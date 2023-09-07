@@ -13,6 +13,11 @@ ________________________
 
 .. code-block:: python
 
+    import numpy as np
+    import sys
+    import json
+    import pandas as pd
+
     !pip install pyPPG
 
     from pyPPG import PPG, Fiducials, Biomarkers
@@ -21,11 +26,6 @@ ________________________
     import pyPPG.fiducials as FP
     import pyPPG.biomarkers as BM
     import pyPPG.ppg_sqi as SQI
-
-    import numpy as np
-    import sys
-    import json
-    import pandas as pd
 
 
 Setup input parameters:
@@ -48,10 +48,7 @@ __________________________
 .. code-block:: python
 
     # Load the raw PPG signal
-    ppg_data = load_data(data_path, fs, start_sig, end_sig)
-
-    # Create a PPG class
-    s = PPG(ppg_data)
+    signal = load_data(data_path, fs, start_sig, end_sig)
 
 
 Prepare the PPG data:
@@ -60,13 +57,12 @@ _____________________
 .. code-block:: python
 
     # Preprocessing
-    if filtering:
-        ppg_data.filt_sig, ppg_data.filt_d1, ppg_data.filt_d2, ppg_data.filt_d3 = Preprocessing(ppg_data, filtering=filtering)
+    signal.ppg, signal.vpg, signal.apg, signal.jpg = Preprocessing(signal, filtering=filtering)
 
     # Create a PPG class
-    ppg_data.filtering = filtering
-    ppg_data.correct = correct
-    s = PPG(ppg_data)
+    signal.filtering = filtering
+    signal.correct = correct
+    s = PPG(signal)
 
 Identify fiducial points:
 _________________________
@@ -119,7 +115,7 @@ _________________________
 .. code-block:: python
 
     # Get PPG SQI
-    ppgSQI = round(np.mean(SQI.get_ppgSQI(s.filt_sig, s.fs, fp.sp)) * 100, 2)
+    ppgSQI = round(np.mean(SQI.get_ppgSQI(s.ppg, s.fs, fp.sp)) * 100, 2)
     print('Mean PPG SQI: ', ppgSQI, '%')
 
 Save PPG data:

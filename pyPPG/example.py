@@ -10,12 +10,11 @@ import sys
 import json
 import pandas as pd
 
-
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, correct=True, process_type="both",
-                savingfolder="temp_dir", savefig=True, savingformat="csv", fiducials=[], print_flag = False):
+def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, correct=True,process_type="both",
+                savingfolder="temp_dir", savefig=True, savingformat="csv", fiducials=[], print_flag=False):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -67,16 +66,15 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
     '''
 
     ## Loading a raw PPG signal
-    ppg_data = load_data(data_path, fs, start_sig, end_sig)
+    signal = load_data(data_path, fs, start_sig, end_sig)
 
     ## Preprocessing
-    if filtering:
-        ppg_data.filt_sig, ppg_data.filt_d1, ppg_data.filt_d2, ppg_data.filt_d3 = Preprocessing(ppg_data, filtering=filtering)
+    signal.ppg, signal.vpg, signal.apg, signal.jpg = Preprocessing(signal, filtering=filtering)
 
     ## Create a PPG class
-    ppg_data.filtering = filtering
-    ppg_data.correct = correct
-    s = PPG(ppg_data)
+    signal.filtering = filtering
+    signal.correct = correct
+    s = PPG(signal)
 
     ## Get Fiducial points
     if process_type == 'fiducials' or process_type == 'both':
@@ -84,8 +82,13 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
         fpex = FP.FpCollection(s)
 
         # Extract fiducial points
-        fiducials = fpex.get_fiducials(s, correct) + s.start_sig
+        fiducials = fpex.get_fiducials(s, correct) #+ s.start_sig
         if print_flag: print("Fiducial points:\n", fiducials)
+
+    ## PPG SQI
+    fp = Fiducials(fiducials)
+    ppgSQI = round(np.mean(SQI.get_ppgSQI(s.ppg, s.fs, fp.sp)) * 100, 2)
+    if print_flag: print('Mean PPG SQI: ', ppgSQI, '%')
 
     if savefig:
         # Create a fiducials class
@@ -114,14 +117,9 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
         ## Save data
         save_data(s, fp, bm, savingformat, savingfolder, print_flag)
 
-    ## PPG SQI
-    fp = Fiducials(fiducials)
-    ppgSQI = round(np.mean(SQI.get_ppgSQI(s.filt_sig, s.fs, fp.sp)) * 100, 2)
-    if print_flag: print('Mean PPG SQI: ', ppgSQI, '%')
-
     if print_flag: print('Program finished')
+    
     return fiducials
-
 
 ###########################################################################
 ############################## RUN EXAMPLE CODE ###########################

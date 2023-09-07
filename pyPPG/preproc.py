@@ -11,7 +11,7 @@ def Preprocessing(s: DotMap, filtering: bool):
         - s.fs: the sampling frequency of the PPG in Hz
     :type s: DotMap
 
-    :return: filt_sig, filt_d1, filt_d2, filt_d3: preprocessed PPG, PPG', PPG", and PPG'"
+    :return: ppg, vpg, apg, jpg: preprocessed PPG, PPG', PPG", and PPG'"
     '''
 
     ## PPG filtering
@@ -20,23 +20,23 @@ def Preprocessing(s: DotMap, filtering: bool):
         fH = 12
         order = 4
         b,a = signal.cheby2(order, 20, [fL, fH], 'bandpass', fs=s.fs)
-        filt_sig_cb2 = filtfilt(b, a, s.v)
+        ppg_cb2 = filtfilt(b, a, s.v)
 
         if s.fs >= 75:
             win = round(s.fs * 0.02)
             B = 1 / win * np.ones(win)
-            filt_sig = filtfilt(B, 1, filt_sig_cb2)
+            ppg = filtfilt(B, 1, ppg_cb2)
         else:
-            filt_sig=filt_sig_cb2
+            ppg=ppg_cb2
     else:
-        filt_sig=s.v
+        ppg=s.v
 
     if s.fs >= 150:
         ## PPG' filtering
         win = round(s.fs * 0.01)
         B1 = 1 / win * np.ones(win)
-        dx = np.gradient(s.v)
-        filt_d1 = filtfilt(B1, 1, dx)
+        dx = np.gradient(ppg)
+        vpg = filtfilt(B1, 1, dx)
 
         ## PPG" filtering
         win = round(s.fs * 0.02)
@@ -44,13 +44,13 @@ def Preprocessing(s: DotMap, filtering: bool):
         dx = np.gradient(s.v)
         dx = filtfilt(B, 1, dx)
         ddx = np.gradient(dx)
-        filt_d2 = filtfilt(B2, 1, ddx)
+        apg = filtfilt(B2, 1, ddx)
 
         ## PPG'" filtering
-        filt_d3 = np.gradient(ddx)
+        jpg = np.gradient(ddx)
     else:
-        filt_d1 = np.gradient(filt_sig)
-        filt_d2 = np.gradient(filt_d1)
-        filt_d3 = np.gradient(filt_d2)
+        vpg = np.gradient(ppg)
+        apg = np.gradient(vpg)
+        jpg = np.gradient(apg)
 
-    return filt_sig, filt_d1, filt_d2, filt_d3
+    return ppg, vpg, apg, jpg

@@ -20,10 +20,10 @@ class BmExctator:
 
         :param data: struct of PPG,PPG', PPG", PPG'":
 
-            - data.sig: segment of PPG timeseries to analyse and extract biomarkers as a np array
-            - data.d1: segment of PPG'
-            - data.d2: segment of PPG"
-            - data.d3: segment of PPG'"
+            - data.ppg: segment of PPG timeseries to analyse and extract biomarkers as a np array
+            - data.vpg: segment of PPG'
+            - data.apg: segment of PPG"
+            - data.jpg: segment of PPG'"
         :type data: DotMap
         :param peak_value: PPG peak value
         :type peak_value: float
@@ -48,10 +48,10 @@ class BmExctator:
 
         self.fiducials=fiducials
         self.list_biomarkers=list_biomarkers
-        self.segment = data.sig
-        self.segment_d1 = data.d1
-        self.segment_d2 = data.d2
-        self.segment_d3 = data.d3
+        self.segment_ppg = data.ppg
+        self.segment_vpg = data.vpg
+        self.segment_apg = data.apg
+        self.segment_jpg = data.jpg
         self.peak_value = peak_value
         self.peak_time = peak_time
         self.next_peak_value = next_peak_value
@@ -325,7 +325,7 @@ class BmExctator:
         idx_ons = int(self.onsets_times[0]*self.sample_rate)
         idx_peak = int(self.peak_time*self.sample_rate)
         idx = idx_peak - idx_ons
-        vec_data = np.array(self.segment[0: idx])
+        vec_data = np.array(self.segment_ppg[0: idx])
         t_val = self._getTime(vec_data, val)
         t_data = t_val + idx_ons
         return t_data
@@ -342,7 +342,7 @@ class BmExctator:
         idx_peak = int(self.peak_time*self.sample_rate)
         idx = idx_peak - idx_ons_left
         idx2 = idx_ons_right - idx_ons_left
-        vec_data = np.array(self.segment[idx: idx2])
+        vec_data = np.array(self.segment_ppg[idx: idx2])
         t_val = self._getTime(vec_data, val)
         t_data = t_val + idx_peak
         return t_data
@@ -482,7 +482,7 @@ class BmExctator:
 
             :return: Dicrotic Notch Amplitude biomarker
         """
-        dn_value = self.segment[self.dn]
+        dn_value = self.segment_ppg[self.dn]
         dn_amp = dn_value - self.onsets_values[0]
         return dn_amp
 
@@ -492,7 +492,7 @@ class BmExctator:
             :return: Diastolic Peak Amplitude biomarker
         """
         ## temp solution 04/04/2023 --> if DN==DP
-        dp_value = self.segment[self.dp+20]
+        dp_value = self.segment_ppg[self.dp+20]
         dia_peak = dp_value - self.onsets_values[0]
         return dia_peak
 
@@ -515,7 +515,7 @@ class BmExctator:
         right_onset_time = self.onsets_times[1]*self.sample_rate
         baseline_shift_slope = self._getBaselineSlope()
         baseline_cst = self._getBaselineCst()
-        vec_value_between_ons = self.segment
+        vec_value_between_ons = self.segment_ppg
         num_t = len(vec_value_between_ons)
         baseline = baseline_shift_slope*self.peak_time*self.sample_rate + baseline_cst
         sum = 0
@@ -534,7 +534,7 @@ class BmExctator:
         right_onset_time = self.onsets_times[1]*self.sample_rate
         baseline_shift_slope = self._getBaselineSlope()
         baseline_cst = self._getBaselineCst()
-        vec_value_between_ons = self.segment
+        vec_value_between_ons = self.segment_ppg
         num_t = self.dn
         baseline = baseline_shift_slope*self.peak_time*self.sample_rate + baseline_cst
         sum = 0
@@ -935,7 +935,7 @@ class BmExctator:
 
             :return: Au/Asp biomarker
         """
-        u_max = self.segment_d1[self.get_u()]
+        u_max = self.segment_vpg[self.get_u()]
         sp_amp = self.peak_value
         return u_max / sp_amp
 
@@ -944,8 +944,8 @@ class BmExctator:
 
             :return: Av/Au biomarker
         """
-        u_max = self.segment_d1[self.get_u()]
-        v_min = self.segment_d1[self.get_v()]
+        u_max = self.segment_vpg[self.get_u()]
+        v_min = self.segment_vpg[self.get_v()]
         return v_min / u_max
 
     def get_ratio_Aw_Au(self):
@@ -953,8 +953,8 @@ class BmExctator:
 
             :return: Aw/Au biomarker
         """
-        u_max = self.segment_d1[self.get_u()]
-        w_max = self.segment_d1[self.get_w()]
+        u_max = self.segment_vpg[self.get_u()]
+        w_max = self.segment_vpg[self.get_w()]
         return w_max / u_max
 
     def get_ratio_Ab_Aa(self):
@@ -962,8 +962,8 @@ class BmExctator:
 
             :return: Ab/Aa biomarker
         """
-        a_max = self.segment_d2[self.get_a()]
-        b_min = self.segment_d2[self.get_b()]
+        a_max = self.segment_apg[self.get_a()]
+        b_min = self.segment_apg[self.get_b()]
         return b_min / a_max
 
     def get_ratio_Ac_Aa(self):
@@ -971,8 +971,8 @@ class BmExctator:
 
             :return: Ac/Aa biomarker
         """
-        a_max = self.segment_d2[self.get_a()]
-        c_max = self.segment_d2[self.get_c()]
+        a_max = self.segment_apg[self.get_a()]
+        c_max = self.segment_apg[self.get_c()]
         return c_max / a_max
 
     def get_ratio_Ad_Aa(self):
@@ -980,8 +980,8 @@ class BmExctator:
 
             :return: Ad/Aa biomarker
         """
-        a_max = self.segment_d2[self.get_a()]
-        d_min = self.segment_d2[self.get_d()]
+        a_max = self.segment_apg[self.get_a()]
+        d_min = self.segment_apg[self.get_d()]
         return d_min / a_max
 
     def get_ratio_Ae_Aa(self):
@@ -989,8 +989,8 @@ class BmExctator:
 
             :return: Ae/Aa biomarker
         """
-        a_max = self.segment_d2[self.get_a()]
-        e_max = self.segment_d2[self.get_e()]
+        a_max = self.segment_apg[self.get_a()]
+        e_max = self.segment_apg[self.get_e()]
         return e_max / a_max
 
     def get_ratio_Af_Aa(self):
@@ -998,8 +998,8 @@ class BmExctator:
 
             :return: Af/Aa biomarker
         """
-        a_max = self.segment_d2[self.get_a()]
-        f_min = self.segment_d2[self.get_f()]
+        a_max = self.segment_apg[self.get_a()]
+        f_min = self.segment_apg[self.get_f()]
         return f_min / a_max
 
     def get_ratio_Ap2_Ap1(self):
@@ -1007,7 +1007,7 @@ class BmExctator:
 
             :return: Ap2/Ap1 biomarker
         """
-        Rp2p1 = self.segment[self.p2]/self.segment[self.p1]
+        Rp2p1 = self.segment_ppg[self.p2]/self.segment_ppg[self.p1]
         return Rp2p1
 
     def get_ratio_AcAb_Aa(self):
@@ -1015,9 +1015,9 @@ class BmExctator:
 
             :return: (Ac-Ab)/Aa biomarker
         """
-        Aa = self.segment_d2[self.get_a()]
-        Ab = self.segment_d2[self.get_b()]
-        Ac = self.segment_d2[self.get_c()]
+        Aa = self.segment_apg[self.get_a()]
+        Ab = self.segment_apg[self.get_b()]
+        Ac = self.segment_apg[self.get_c()]
         return (Ac-Ab)/Aa
 
     def get_ratio_AdAb_Aa(self):
@@ -1025,9 +1025,9 @@ class BmExctator:
 
             :return: (Ad-Ab)/Aa biomarker
         """
-        Aa = self.segment_d2[self.get_a()]
-        Ab = self.segment_d2[self.get_b()]
-        Ad = self.segment_d2[self.get_d()]
+        Aa = self.segment_apg[self.get_a()]
+        Ab = self.segment_apg[self.get_b()]
+        Ad = self.segment_apg[self.get_d()]
         return (Ad-Ab)/Aa
 
     def getAGI(self):
@@ -1035,11 +1035,11 @@ class BmExctator:
 
             :return: (Ab-Ac-Ad-Ae)/Aa biomarker
         """
-        Aa = self.segment_d2[self.get_a()]
-        Ab = self.segment_d2[self.get_b()]
-        Ac = self.segment_d2[self.get_c()]
-        Ad = self.segment_d2[self.get_d()]
-        Ae = self.segment_d2[self.get_e()]
+        Aa = self.segment_apg[self.get_a()]
+        Ab = self.segment_apg[self.get_b()]
+        Ac = self.segment_apg[self.get_c()]
+        Ad = self.segment_apg[self.get_d()]
+        Ae = self.segment_apg[self.get_e()]
         return (Ab-Ac-Ad-Ae)/Aa
 
     def getAGImod(self):
@@ -1047,10 +1047,10 @@ class BmExctator:
 
             :return: (Ab-Ac-Ad)/Aa biomarker
         """
-        Aa = self.segment_d2[self.get_a()]
-        Ab = self.segment_d2[self.get_b()]
-        Ac = self.segment_d2[self.get_c()]
-        Ad = self.segment_d2[self.get_d()]
+        Aa = self.segment_apg[self.get_a()]
+        Ab = self.segment_apg[self.get_b()]
+        Ac = self.segment_apg[self.get_c()]
+        Ad = self.segment_apg[self.get_d()]
         return (Ab-Ac-Ad)/Aa
 
     def getAGIinf(self):
@@ -1058,9 +1058,9 @@ class BmExctator:
 
             :return: (Ab-Ae)/Aa biomarker
         """
-        Aa = self.segment_d2[self.get_a()]
-        Ab = self.segment_d2[self.get_b()]
-        Ae = self.segment_d2[self.get_e()]
+        Aa = self.segment_apg[self.get_a()]
+        Ab = self.segment_apg[self.get_b()]
+        Ae = self.segment_apg[self.get_e()]
         return (Ab-Ae)/Aa
 
     def getAI(self):
@@ -1068,7 +1068,7 @@ class BmExctator:
 
             :return: AI biomarker
         """
-        AI = (self.segment[self.p2]-self.segment[self.p1])/self.peak_value
+        AI = (self.segment_ppg[self.p2]-self.segment_ppg[self.p1])/self.peak_value
         return AI
 
     def getRIp1(self):
@@ -1076,7 +1076,7 @@ class BmExctator:
 
             :return: RIp1 biomarker
         """
-        RIp1 = self.getDiastolicPeak()/self.segment[self.p1]
+        RIp1 = self.getDiastolicPeak()/self.segment_ppg[self.p1]
         return RIp1
 
     def getRIp2(self):
@@ -1084,7 +1084,7 @@ class BmExctator:
 
             :return: RIp2 biomarker
         """
-        RIp2 = self.getDiastolicPeak()/self.segment[self.p2]
+        RIp2 = self.getDiastolicPeak()/self.segment_ppg[self.p2]
         return RIp2
 
     def getSC(self):
@@ -1092,9 +1092,9 @@ class BmExctator:
 
             :return: SC biomarker
         """
-        ddxSPA=self.segment_d2[(self.getTsp()*self.sample_rate).astype(int)]
+        ddxSPA=self.segment_apg[(self.getTsp()*self.sample_rate).astype(int)]
         SPA=self.getSystolicPeak()
-        MS=self.segment[self.u]
+        MS=self.segment_ppg[self.u]
         SC = ddxSPA/((SPA-MS)/SPA)
         return SC
 
@@ -1130,7 +1130,7 @@ class BmExctator:
 
             :return: MS biomarker
         """
-        MS = self.segment_d1[self.u]
+        MS = self.segment_vpg[self.u]
         return MS
 
     def getUpslope(self):
@@ -1183,12 +1183,12 @@ class BmExctator:
 
             :return: (Ab-Ac-Ad-Ae-Af)/Aa biomarker
         """
-        Aa = self.segment_d2[self.get_a()]
-        Ab = self.segment_d2[self.get_b()]
-        Ac = self.segment_d2[self.get_c()]
-        Ad = self.segment_d2[self.get_d()]
-        Ae = self.segment_d2[self.get_e()]
-        Af = self.segment_d2[self.get_e()]
+        Aa = self.segment_apg[self.get_a()]
+        Ab = self.segment_apg[self.get_b()]
+        Ac = self.segment_apg[self.get_c()]
+        Ad = self.segment_apg[self.get_d()]
+        Ae = self.segment_apg[self.get_e()]
+        Af = self.segment_apg[self.get_e()]
         return (Ab-Ac-Ad-Ae-Af)/Aa
 
 ###########################################################################
@@ -1209,7 +1209,7 @@ def get_biomarkers(s: pyPPG.PPG, fp: pyPPG.Fiducials, biomarkers_lst):
     """
 
     fs=s.fs
-    ppg=s.filt_sig
+    ppg=s.ppg
     data = DotMap()
 
     df = pd.DataFrame()
@@ -1218,13 +1218,13 @@ def get_biomarkers(s: pyPPG.PPG, fp: pyPPG.Fiducials, biomarkers_lst):
     onsets = fp.on.values
     offsets = fp.off.values
 
-    for i in range(len(onsets)):
+    for i in range(len(onsets)-1):
         onset = onsets[i]
         offset = offsets[i]
-        data.sig = ppg[int(onset):int(offset)]
-        data.d1 = s.filt_d1[int(onset):int(offset)]
-        data.d2 = s.filt_d2[int(onset):int(offset)]
-        data.d3 = s.filt_d3[int(onset):int(offset)]
+        data.ppg = ppg[int(onset):int(offset)]
+        data.vpg = s.vpg[int(onset):int(offset)]
+        data.apg = s.apg[int(onset):int(offset)]
+        data.jpg = s.jpg[int(onset):int(offset)]
         peak = peaks[(peaks > onset) * (peaks < offset)]
         if len(peak) != 1:
             continue

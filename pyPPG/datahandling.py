@@ -1,5 +1,4 @@
 import pyPPG
-from pyPPG.preproc import Preprocessing
 
 import matplotlib.pyplot as plt
 import scipy.io
@@ -38,10 +37,10 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
         * s.name: name of the record
         * s.v: 1-d array, a vector of PPG values
         * s.fs: the sampling frequency of the PPG in Hz
-        * s.filt_sig: 1-d array, a vector of the filtered PPG values
-        * s.filt_d1: 1-d array, a vector of the filtered PPG' values
-        * s.filt_d2: 1-d array, a vector of the filtered PPG" values
-        * s.filt_d3: 1-d array, a vector of the filtered PPG'" values
+        * s.ppg: 1-d array, a vector of the filtered PPG values
+        * s.vpg: 1-d array, a vector of the filtered PPG' values
+        * s.apg: 1-d array, a vector of the filtered PPG" values
+        * s.jpg: 1-d array, a vector of the filtered PPG'" values
         * s.filtering: a bool for filtering
         * s.correct: a bool for filtering
     """
@@ -101,18 +100,15 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
     elif sig_format == 'edf':
         input_sig = mne.io.read_raw_edf(sig_path)
         try:
-            # sig = mne.io.read_raw_edf(sig_path, include='Pleth')
-            sig = -input_sig['Pleth'][0][0]
+            sig = mne.io.read_raw_edf(sig_path, include='Pleth')
+            sig = -sig.get_data().squeeze()
         except:
             try:
-                #sig = mne.io.read_raw_edf(sig_path, include='data')
-                sig = -input_sig['PPG'][0][0]
+                input_name = simpledialog.askstring("Input", "Define the PPG channel name:")
+                sig = mne.io.read_raw_edf(sig_path, include=input_name)
+                sig = -sig.get_data().squeeze()
             except:
-                try:
-                    input_name = simpledialog.askstring("Input", "Define the PPG channel name:")
-                    sig = -input_sig[input_name][0][0]
-                except:
-                    print('There is no valid channel for PPG in the .edf file!')
+                print('There is no valid channel for PPG in the .edf file!')
 
         try:
             fs = int(np.round(input_sig.info['sfreq']))
@@ -165,13 +161,13 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, print_f
 
     fig = plt.figure(figsize=(figure_width/100, figure_height/100))
     ax1 = plt.subplot(411)
-    plt.plot(s.filt_sig, 'k', label=None)
+    plt.plot(s.ppg, 'k', label=None)
     ax2 = plt.subplot(412, sharex=ax1)
-    plt.plot(s.filt_d1, 'k', label=None)
+    plt.plot(s.vpg, 'k', label=None)
     ax3 = plt.subplot(413, sharex=ax2)
-    plt.plot(s.filt_d2, 'k', label=None)
+    plt.plot(s.apg, 'k', label=None)
     ax4 = plt.subplot(414, sharex=ax3)
-    plt.plot(s.filt_d3, 'k', label=None)
+    plt.plot(s.jpg, 'k', label=None)
     fig.subplots_adjust(hspace=0, wspace=0)
 
     marker = ['o', 's', 's','o', 'o', 's', 'o', 'o', 's', 'o', 's', 'o', 's', 'o', 's']
@@ -179,10 +175,10 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, print_f
 
     fid_names = ('sp', 'on', 'dn','dp', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e', 'f', 'p1', 'p2')
     ylabe_names = ['PPG', 'PPG\'', 'PPG\'\'', 'PPG\'\'\'']
-    s_type = ['filt_sig', 'filt_sig', 'filt_sig','filt_sig', 'filt_d1', 'filt_d1', 'filt_d1', 'filt_d2', 'filt_d2', 'filt_d2', 'filt_d2', 'filt_d2', 'filt_d2', 'filt_d3','filt_d3']
+    s_type = ['ppg', 'ppg', 'ppg','ppg', 'vpg', 'vpg', 'vpg', 'apg', 'apg', 'apg', 'apg', 'apg', 'apg', 'jpg','jpg']
 
     str_sig = 0
-    end_sig = len(s.filt_sig)
+    end_sig = len(s.ppg)
     len_sig=end_sig-str_sig
     step_small = 1
     step_big = step_small * 5
@@ -194,15 +190,16 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, print_f
     major_ticks = np.arange(str_sig, end_sig, major_diff)
     minor_ticks = np.arange(str_sig, end_sig, minor_diff)
 
+    sig_names=('ppg','vpg','apg','jpg')
     for n in fid_names:
         ind = fid_names.index(n)
-        if s_type[ind][-1] == 'g':
+        tmp_ind = sig_names.index(s_type[ind])
+        if tmp_ind == 0:
             plt_num = 1
             plt.subplot(411)
             plt.title(s.name, fontsize=20)
         else:
-            plt_num = int(s_type[ind][-1]) + 1
-
+            plt_num = tmp_ind+1
 
         ax = plt.subplot(4, 1, plt_num)
         tmp_pnt=eval("fp." + n + ".values")
