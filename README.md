@@ -80,3 +80,7 @@ https://pyppg.readthedocs.io/en/latest/
     - A set of configuration files that adapt the PPG peak detection and ***pyPPG*** algorithms to work with sleep PPG data.
 
 All PPG measures can be further adapted for the analysis for efficient heart rate measurement as well as health assessment with clinically relevant biomarkers.
+
+## Acknowledgments
+
+This work was supported by the Estate of Zofia (Sophie) Fridman and funding from the Israel Innovation Authority, and the British Heart Foundation (grant FS/20/20/34626).
