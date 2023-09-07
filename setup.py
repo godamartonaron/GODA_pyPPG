@@ -13,7 +13,7 @@ setup(
     name='pyPPG',
     version='1.0.21',
     description='pyPPG: a python toolbox for PPG morphological analysis.',
-    author='Marton A. Goda, PhD',
+    author='Marton A. Goda, PhD; Peter H. Charlton',
     author_email="marton.goda@campus.technion.ac.il",
     long_description=long_description,
     long_description_content_type="text/markdown",
