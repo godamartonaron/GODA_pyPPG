@@ -83,14 +83,14 @@
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
 
 <div class="viewcode-block" id="Preprocessing"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.preproc.Preprocessing">[docs]</a><span class="k">def</span> <span class="nf">Preprocessing</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">,</span> <span class="n">filtering</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;The function calculates the preprocessed PPG, PPG&#39;, PPG&quot;, and PPG&#39;&quot;.</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;This function calculates the preprocessed PPG, PPG&#39;, PPG&quot;, and PPG&#39;&quot; signals.</span>
 
 <span class="sd">    :param s: a struct of PPG signal:</span>
 <span class="sd">        - s.v: a vector of PPG values</span>
 <span class="sd">        - s.fs: the sampling frequency of the PPG in Hz</span>
 <span class="sd">    :type s: DotMap</span>
 
-<span class="sd">    :return: filt_sig, filt_d1, filt_d2, filt_d3: preprocessed PPG, PPG&#39;, PPG&quot;, and PPG&#39;&quot;</span>
+<span class="sd">    :return: ppg, vpg, apg, jpg: preprocessed PPG, PPG&#39;, PPG&quot;, and PPG&#39;&quot;</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1">## PPG filtering</span>
@@ -99,23 +99,23 @@
         <span class="n">fH</span> <span class="o">=</span> <span class="mi">12</span>
         <span class="n">order</span> <span class="o">=</span> <span class="mi">4</span>
         <span class="n">b</span><span class="p">,</span><span class="n">a</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">cheby2</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="p">[</span><span class="n">fL</span><span class="p">,</span> <span class="n">fH</span><span class="p">],</span> <span class="s1">&#39;bandpass&#39;</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span>
-        <span class="n">filt_sig_cb2</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">ppg_cb2</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">&gt;=</span> <span class="mi">75</span><span class="p">:</span>
             <span class="n">win</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">*</span> <span class="mf">0.02</span><span class="p">)</span>
             <span class="n">B</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">win</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
-            <span class="n">filt_sig</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">filt_sig_cb2</span><span class="p">)</span>
+            <span class="n">ppg</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ppg_cb2</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">filt_sig</span><span class="o">=</span><span class="n">filt_sig_cb2</span>
+            <span class="n">ppg</span><span class="o">=</span><span class="n">ppg_cb2</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">filt_sig</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">v</span>
+        <span class="n">ppg</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">v</span>
 
     <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">&gt;=</span> <span class="mi">150</span><span class="p">:</span>
         <span class="c1">## PPG&#39; filtering</span>
         <span class="n">win</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">)</span>
         <span class="n">B1</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">win</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
-        <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
-        <span class="n">filt_d1</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">ppg</span><span class="p">)</span>
+        <span class="n">vpg</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
 
         <span class="c1">## PPG&quot; filtering</span>
         <span class="n">win</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">*</span> <span class="mf">0.02</span><span class="p">)</span>
@@ -123,16 +123,16 @@
         <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
         <span class="n">dx</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
         <span class="n">ddx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span>
-        <span class="n">filt_d2</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ddx</span><span class="p">)</span>
+        <span class="n">apg</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ddx</span><span class="p">)</span>
 
         <span class="c1">## PPG&#39;&quot; filtering</span>
-        <span class="n">filt_d3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">ddx</span><span class="p">)</span>
+        <span class="n">jpg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">ddx</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">filt_d1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">filt_sig</span><span class="p">)</span>
-        <span class="n">filt_d2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">filt_d1</span><span class="p">)</span>
-        <span class="n">filt_d3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">filt_d2</span><span class="p">)</span>
+        <span class="n">vpg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">ppg</span><span class="p">)</span>
+        <span class="n">apg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">vpg</span><span class="p">)</span>
+        <span class="n">jpg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">apg</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">filt_sig</span><span class="p">,</span> <span class="n">filt_d1</span><span class="p">,</span> <span class="n">filt_d2</span><span class="p">,</span> <span class="n">filt_d3</span></div>
+    <span class="k">return</span> <span class="n">ppg</span><span class="p">,</span> <span class="n">vpg</span><span class="p">,</span> <span class="n">apg</span><span class="p">,</span> <span class="n">jpg</span></div>
 </pre></div>
 
            </div>

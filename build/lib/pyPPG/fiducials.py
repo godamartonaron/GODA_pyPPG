@@ -30,7 +30,7 @@ class FpCollection:
     ############################ Get Fiducial Points ##########################
     ###########################################################################
     def get_fiducials(self, s: pyPPG.PPG, correct=True):
-        '''The function calculates the PPG Fiducial Points.
+        '''This function calculates the PPG Fiducial Points.
             - Original signal: List of systolic peak, pulse onset, dicrotic notch, and diastolic peak
             - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
             - 2nd derivative: List of maximum and minimum points in 2nd derivitive between the onset to onset intervals (a, b, c, d, e)
@@ -47,15 +47,15 @@ class FpCollection:
         peak_detector='PPGdet'
 
         # Extract Fiducial Points
-        drt0_fp=pd.DataFrame()
+        ppg_fp=pd.DataFrame()
         peaks, onsets = self.get_peak_onset(peak_detector)
         dicroticnotch = self.get_dicrotic_notch(peaks, onsets)
 
-        drt1_fp = self.get_1st_drt_fiducials(onsets)
-        drt2_fp = self.get_2nd_drt_fiducials(onsets, peaks)
-        drt3_fp = self.get_3rd_drt_fiducials(onsets, drt2_fp)
+        vpg_fp = self.get_vpg_fiducials(onsets)
+        apg_fp = self.get_apg_fiducials(onsets, peaks)
+        jpg_fp = self.get_jpg_fiducials(onsets, apg_fp)
 
-        diastolicpeak = self.get_diastolic_peak(onsets, dicroticnotch, drt2_fp.e)
+        diastolicpeak = self.get_diastolic_peak(onsets, dicroticnotch, apg_fp.e)
 
         # Merge Fiducial Points
         keys=('on', 'sp', 'dn','dp')
@@ -63,12 +63,12 @@ class FpCollection:
         dummy.fill(np.NaN)
         n=0
         for temp_val in (onsets,peaks,dicroticnotch,diastolicpeak):
-            drt0_fp[keys[n]] = dummy
-            drt0_fp[keys[n]][0:len(temp_val)]=temp_val
+            ppg_fp[keys[n]] = dummy
+            ppg_fp[keys[n]][0:len(temp_val)]=temp_val
             n=n+1
 
         fiducials=pd.DataFrame()
-        for temp_drt in (drt0_fp,drt1_fp,drt2_fp,drt3_fp):
+        for temp_drt in (ppg_fp,vpg_fp,apg_fp,jpg_fp):
             for key in list(temp_drt.keys()):
                 fiducials[key] = dummy
                 temp_val = temp_drt[key].values
@@ -137,10 +137,10 @@ class FpCollection:
         '''
 
         # inputs
-        x = copy.deepcopy(self.filt_sig)                    #signal
+        x = copy.deepcopy(self.ppg)                    #signal
         fso=self.fs
         fs = 75
-        x = resample(x, int(len(self.filt_sig)*(fs/fso)))
+        x = resample(x, int(len(self.ppg)*(fs/fso)))
         up = self.set_beat_detection()                 #settings
         win_sec=10
         w = fs * win_sec                                    #window length(number of samples)
@@ -212,16 +212,16 @@ class FpCollection:
         peaks, fn = self.correct_IBI(all_p4, px, np.median(all_hr), fs, up)
 
         peaks = (all_p4/fs*fso).astype(int)
-        onsets, peaks = self.find_onsets(self.filt_sig, fso, up, peaks,60/np.median(all_hr)*fs)
+        onsets, peaks = self.find_onsets(self.ppg, fso, up, peaks,60/np.median(all_hr)*fs)
 
         # Correct Peaks
         for i in range(0, len(peaks) - 1):
-            max_loc = np.argmax(self.filt_sig[onsets[i]:onsets[i + 1]]) + onsets[i]
+            max_loc = np.argmax(self.ppg[onsets[i]:onsets[i + 1]]) + onsets[i]
             if peaks[i] != max_loc:
                 peaks[i] = max_loc
 
         # Correct onsets
-        onsets, peaks = self.find_onsets(self.filt_sig, fso, up, peaks, 60 / np.median(all_hr) * fs)
+        onsets, peaks = self.find_onsets(self.ppg, fso, up, peaks, 60 / np.median(all_hr) * fs)
 
         temp_i = np.where(np.diff(onsets) == 0)[0]
         if len(temp_i) > 0:
@@ -804,7 +804,7 @@ class FpCollection:
         """
 
         ## The 2nd derivative and Hamming low pass filter is calculated.
-        dxx = np.diff(np.diff(self.filt_sig))
+        dxx = np.diff(np.diff(self.ppg))
         fs = self.fs
 
         # Make filter
@@ -817,7 +817,7 @@ class FpCollection:
         a = [1, 1, 0, 0]                            # Amplitudes
         b = firls(n, f, a)
 
-        lp_filt_sig = filtfilt(b, 1,  dxx)          # Low pass filtered signal with 20 cut off Frequency and 5 Hz Transition width
+        lp_ppg = filtfilt(b, 1,  dxx)          # Low pass filtered signal with 20 cut off Frequency and 5 Hz Transition width
 
         ## The weighting is calculated and applied to each beat individually
         def t_wmax(i, peaks,onsets):
@@ -830,7 +830,7 @@ class FpCollection:
 
         dic_not=[]
         for i in range(0,len(onsets)-1):
-            nth_beat = lp_filt_sig[onsets[i]:onsets[i + 1]]
+            nth_beat = lp_ppg[onsets[i]:onsets[i + 1]]
 
             i_Pmax=peaks[i]-onsets[i]
             t_Pmax=(peaks[i]-onsets[i])/fs
@@ -900,12 +900,12 @@ class FpCollection:
                 end_segment=int(onsets[i]+len_segments[i])
                 try:
                     start_segment = int(dicroticnotch[i])
-                    temp_segment = self.filt_sig[start_segment:end_segment]
+                    temp_segment = self.ppg[start_segment:end_segment]
                     max_locs, _ = find_peaks(temp_segment)
 
                     if len(max_locs)==0:
                         start_segment = int(e_point[i])
-                        temp_segment = self.filt_d1[start_segment:end_segment]
+                        temp_segment = self.vpg[start_segment:end_segment]
                         max_locs, _ = find_peaks(temp_segment)
 
                 except:
@@ -921,7 +921,7 @@ class FpCollection:
     ###########################################################################
     ####################### Get First Derivitive Points #######################
     ###########################################################################
-    def get_1st_drt_fiducials(self, onsets: list):
+    def get_vpg_fiducials(self, onsets: list):
         """Calculate first derivitive points u and v from the PPG' signal
 
         :param onsets: onsets of the signal
@@ -933,7 +933,7 @@ class FpCollection:
             - w: The first local maximum or inflection point after the dicrotic notch on PPG’
         """
 
-        dx = self.filt_d1
+        dx = self.vpg
 
         nan_v = np.empty(len(onsets)-1)
         nan_v[:] = np.NaN
@@ -962,14 +962,14 @@ class FpCollection:
             except:
                 pass
 
-        drt1_fp = pd.DataFrame({"u":[], "v":[], "w":[]})
-        drt1_fp.u, drt1_fp.v, drt1_fp.w = u, v, w
-        return drt1_fp
+        vpg_fp = pd.DataFrame({"u":[], "v":[], "w":[]})
+        vpg_fp.u, vpg_fp.v, vpg_fp.w = u, v, w
+        return vpg_fp
 
     ###########################################################################
     ####################### Get Second Derivitive Points ######################
     ###########################################################################
-    def get_2nd_drt_fiducials(self, onsets: list, peaks: np.array):
+    def get_apg_fiducials(self, onsets: list, peaks: np.array):
         """Calculate Second derivitive points a, b, c, d, e, and f from the PPG" signal
 
         :param onsets: onsets of the signal
@@ -986,9 +986,9 @@ class FpCollection:
             - f: The first local minimum after the e-point on PPG"
         """
 
-        sig = self.filt_sig
-        ddx = self.filt_d2
-        dddx = self.filt_d3
+        sig = self.ppg
+        ddx = self.apg
+        dddx = self.jpg
 
         nan_v = np.empty(len(onsets)-1)
         nan_v[:] = np.NaN
@@ -1077,24 +1077,24 @@ class FpCollection:
             except:
                 pass
 
-        drt2_fp = pd.DataFrame({"a":[], "b":[], "c":[],"d":[], "e":[], "f":[]})
-        drt2_fp.a, drt2_fp.b, drt2_fp.c, drt2_fp.d, drt2_fp.e, drt2_fp.f = a, b, c, d, e, f
-        return drt2_fp
+        apg_fp = pd.DataFrame({"a":[], "b":[], "c":[],"d":[], "e":[], "f":[]})
+        apg_fp.a, apg_fp.b, apg_fp.c, apg_fp.d, apg_fp.e, apg_fp.f = a, b, c, d, e, f
+        return apg_fp
 
-    def get_3rd_drt_fiducials(self, onsets: list, drt2_fp: pd.DataFrame):
+    def get_jpg_fiducials(self, onsets: list, apg_fp: pd.DataFrame):
         """Calculate third derivitive points p1 and p2 from the PPG'" signal
 
             :param onsets: onsets of the signal
             :type onsets: list
-            :param drt2_fp: fiducial points of PPG" signal
-            :type drt2_fp: DataFrame
+            :param apg_fp: fiducial points of PPG" signal
+            :type apg_fp: DataFrame
 
             :return:
                 - p1: The first local maximum after the b-point on PPG'"
                 - p2: The last local minimum after the b-point and before the d-point on PPG'"
 
         """
-        dddx = self.filt_d3
+        dddx = self.jpg
 
         nan_v = np.empty(len(onsets)-1)
         nan_v[:] = np.NaN
@@ -1103,7 +1103,7 @@ class FpCollection:
         for i in range(0, len(onsets) - 1):
             try:
                 # p1 fiducial point
-                ref_b = drt2_fp.b[np.squeeze(np.where(np.logical_and(drt2_fp.b > onsets[i], drt2_fp.b < onsets[i + 1])))]
+                ref_b = apg_fp.b[np.squeeze(np.where(np.logical_and(apg_fp.b > onsets[i], apg_fp.b < onsets[i + 1])))]
                 if ref_b.size == 0:
                     ref_b = onsets[i]
 
@@ -1119,8 +1119,8 @@ class FpCollection:
 
                 # p2 fiducial point
                 ref_start = p1[i]
-                ref_c = drt2_fp.c[np.squeeze(np.where(np.logical_and(drt2_fp.c > onsets[i], drt2_fp.c < onsets[i + 1])))]
-                ref_d = drt2_fp.d[np.squeeze(np.where(np.logical_and(drt2_fp.d > onsets[i], drt2_fp.d < onsets[i + 1])))]
+                ref_c = apg_fp.c[np.squeeze(np.where(np.logical_and(apg_fp.c > onsets[i], apg_fp.c < onsets[i + 1])))]
+                ref_d = apg_fp.d[np.squeeze(np.where(np.logical_and(apg_fp.d > onsets[i], apg_fp.d < onsets[i + 1])))]
 
                 if ref_d > ref_c:
                     ref_end = ref_d
@@ -1129,7 +1129,7 @@ class FpCollection:
                     ref_start = ref_c
                     ref_end = onsets[i + 1]
                     min_ind = 0
-                elif drt2_fp.e.size > 0:
+                elif apg_fp.e.size > 0:
                     ref_end = onsets[i + 1]
                     min_ind = 0
 
@@ -1145,10 +1145,10 @@ class FpCollection:
             except:
                 pass
 
-        drt3_fp = pd.DataFrame({"p1": [], "p2": []})
-        drt3_fp.p1, drt3_fp.p2 = p1, p2
+        jpg_fp = pd.DataFrame({"p1": [], "p2": []})
+        jpg_fp.p1, jpg_fp.p2 = p1, p2
 
-        return drt3_fp
+        return jpg_fp
 
     def correct_fiducials(self,fiducials: pd.DataFrame):
         """Correct the Fiducial Points
@@ -1170,7 +1170,7 @@ class FpCollection:
                 else:
                     win_onl = fiducials.on[i]
 
-                min_loc = np.argmax(self.filt_sig[fiducials.on[i]+win_onl:fiducials.on[i]+win_onr]) + fiducials.on[i]
+                min_loc = np.argmax(self.ppg[fiducials.on[i]+win_onl:fiducials.on[i]+win_onr]) + fiducials.on[i]
                 if fiducials.on[i] != min_loc:
 
                     if fiducials.a[i] > self.fs*0.075:
@@ -1178,13 +1178,13 @@ class FpCollection:
                     else:
                         win_a = int(fiducials.a[i])
 
-                    fiducials.on[i] = np.argmax(self.filt_d3[int(fiducials.a[i]) - win_a:int(fiducials.a[i])]) + int(fiducials.a[i]) - win_a
+                    fiducials.on[i] = np.argmax(self.jpg[int(fiducials.a[i]) - win_a:int(fiducials.a[i])]) + int(fiducials.a[i]) - win_a
             except:
                 pass
 
             # Correct dicrotic notch
             try:
-                temp_segment=self.filt_sig[int(fiducials.sp[i]):int(fiducials.dp[i])]
+                temp_segment=self.ppg[int(fiducials.sp[i]):int(fiducials.dp[i])]
                 min_dn=find_peaks(-temp_segment)[0]+fiducials.sp[i]
                 diff_dn=abs(min_dn-fiducials.dp[i])
                 if len(min_dn)>0 and diff_dn>round(self.fs/100):
@@ -1192,13 +1192,13 @@ class FpCollection:
                     try:
                         strt_dn = int(fiducials.sp[i])
                         stp_dn = int(fiducials.f[i])
-                        fiducials.dn[i] = find_peaks(-self.filt_sig[strt_dn:stp_dn])[0][-1] + strt_dn
+                        fiducials.dn[i] = find_peaks(-self.ppg[strt_dn:stp_dn])[0][-1] + strt_dn
                         if fiducials.dn[i] > min_dn:
                             fiducials.dn[i] = min_dn
                     except:
                         strt_dn = fiducials.e[i]
                         stp_dn = fiducials.f[i]
-                        fiducials.dn[i] = np.argmin(self.filt_d3[strt_dn:stp_dn])+strt_dn
+                        fiducials.dn[i] = np.argmin(self.jpg[strt_dn:stp_dn])+strt_dn
                         if fiducials.dn[i] > min_dn:
                             fiducials.dn[i] = min_dn
 
@@ -1208,19 +1208,19 @@ class FpCollection:
             # Correct v and w-point
             try:
                 if fiducials.v[i]> fiducials.e[i]:
-                    fiducials.v[i] = np.argmin(self.filt_d1[int(fiducials.u[i]):int(fiducials.e[i])]) + int(fiducials.u[i])
-                    fiducials.w[i] = find_peaks(self.filt_d1[int(fiducials.v[i]):int(fiducials.f[i])])[0][0] + int(fiducials.v[i])
+                    fiducials.v[i] = np.argmin(self.vpg[int(fiducials.u[i]):int(fiducials.e[i])]) + int(fiducials.u[i])
+                    fiducials.w[i] = find_peaks(self.vpg[int(fiducials.v[i]):int(fiducials.f[i])])[0][0] + int(fiducials.v[i])
             except:
                 pass
 
             # Correct w-point
             try:
                 temp_end=int(np.diff(fiducials.on[i:i+2])*0.8)
-                temp_segment=self.filt_d1[int(fiducials.dn[i]):int(fiducials.on[i]+temp_end)]
+                temp_segment=self.vpg[int(fiducials.dn[i]):int(fiducials.on[i]+temp_end)]
                 min_w=find_peaks(-temp_segment)[0]+fiducials.dn[i]
 
                 if fiducials.w[i] < fiducials.e[i]:
-                    fiducials.w[i] = np.argmax(self.filt_d1[int(fiducials.e[i]):int(fiducials.f[i])]) + int(fiducials.e[i])
+                    fiducials.w[i] = np.argmax(self.vpg[int(fiducials.e[i]):int(fiducials.f[i])]) + int(fiducials.e[i])
 
                 # if fiducials.w[i] > fiducials.f[i]:
                 #     fiducials.w[i] = int(fiducials.f[i])
@@ -1234,7 +1234,7 @@ class FpCollection:
             # Correct f-point
             try:
                 temp_end=int(np.diff(fiducials.on[i:i+2])*0.8)
-                temp_segment=self.filt_d2[int(fiducials.e[i]):int(fiducials.on[i]+temp_end)]
+                temp_segment=self.apg[int(fiducials.e[i]):int(fiducials.on[i]+temp_end)]
                 min_f=np.argmin(temp_segment)+fiducials.e[i]
 
                 if fiducials.w[i] > fiducials.f[i]:

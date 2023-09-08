@@ -82,8 +82,8 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
         fpex = FP.FpCollection(s)
 
         # Extract fiducial points
-        fiducials = fpex.get_fiducials(s, correct) #+ s.start_sig
-        if print_flag: print("Fiducial points:\n", fiducials)
+        fiducials = fpex.get_fiducials(s, correct)
+        if print_flag: print("Fiducial points:\n", fiducials + s.start_sig)
 
     ## PPG SQI
     fp = Fiducials(fiducials)
@@ -115,11 +115,12 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
         bm = Biomarkers(bm_defs, bm_vals, bm_stats)
 
         ## Save data
-        save_data(s, fp, bm, savingformat, savingfolder, print_flag)
+        fp_new = Fiducials(fp.get_fp() + s.start_sig)
+        save_data(s, fp_new, bm, savingformat, savingfolder, print_flag)
 
     if print_flag: print('Program finished')
     
-    return fiducials
+    return fiducials + s.start_sig
 
 ###########################################################################
 ############################## RUN EXAMPLE CODE ###########################

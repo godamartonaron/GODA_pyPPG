@@ -89,17 +89,16 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-
 <span class="c1">###########################################################################</span>
 <span class="c1">################################## EXAMPLE ################################</span>
 <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="ppg_example"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.example.ppg_example">[docs]</a><span class="k">def</span> <span class="nf">ppg_example</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="p">[],</span> <span class="n">start_sig</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end_sig</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">filtering</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">correct</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">process_type</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span>
-                <span class="n">savingfolder</span><span class="o">=</span><span class="s2">&quot;temp_dir&quot;</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">savingformat</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="n">fiducials</span><span class="o">=</span><span class="p">[],</span> <span class="n">print_flag</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="ppg_example"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.example.ppg_example">[docs]</a><span class="k">def</span> <span class="nf">ppg_example</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="p">[],</span> <span class="n">start_sig</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end_sig</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">filtering</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">correct</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">process_type</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span>
+                <span class="n">savingfolder</span><span class="o">=</span><span class="s2">&quot;temp_dir&quot;</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">savingformat</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="n">fiducials</span><span class="o">=</span><span class="p">[],</span> <span class="n">print_flag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This is an example code for PPG analysis. The main parts:</span>
 <span class="sd">        1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.</span>
 <span class="sd">        2) Get Fiducial points: extract the fiducial points of PPG, PPG&#39;, PPG&#39;&#39; and PPG&#39;&quot; signals</span>
-<span class="sd">        3) Plot Fiducials Points</span>
+<span class="sd">        3) Plot Fiducial Points</span>
 <span class="sd">        4) Get Biomarkers: extract 74 PPG biomarkers in four categories:</span>
 <span class="sd">            - PPG signal</span>
 <span class="sd">            - Signal ratios</span>
@@ -119,7 +118,7 @@
 <span class="sd">    :type end_sig: int</span>
 <span class="sd">    :param filtering: a bool for filtering</span>
 <span class="sd">    :type filtering: bool</span>
-<span class="sd">    :param correct: a bool for fiducials points corretion</span>
+<span class="sd">    :param correct: a bool for fiducial points correction</span>
 <span class="sd">    :type correct: bool</span>
 <span class="sd">    :param process_type: the type of the process, which can be &quot;fiducials&quot;, &quot;biomarkers&quot;, or &quot;both&quot;</span>
 <span class="sd">    :type process_type: str</span>
@@ -146,16 +145,15 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1">## Loading a raw PPG signal</span>
-    <span class="n">ppg_data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">start_sig</span><span class="p">,</span> <span class="n">end_sig</span><span class="p">)</span>
+    <span class="n">signal</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">start_sig</span><span class="p">,</span> <span class="n">end_sig</span><span class="p">)</span>
 
     <span class="c1">## Preprocessing</span>
-    <span class="k">if</span> <span class="n">filtering</span><span class="p">:</span>
-        <span class="n">ppg_data</span><span class="o">.</span><span class="n">filt_sig</span><span class="p">,</span> <span class="n">ppg_data</span><span class="o">.</span><span class="n">filt_d1</span><span class="p">,</span> <span class="n">ppg_data</span><span class="o">.</span><span class="n">filt_d2</span><span class="p">,</span> <span class="n">ppg_data</span><span class="o">.</span><span class="n">filt_d3</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="p">(</span><span class="n">ppg_data</span><span class="p">,</span> <span class="n">filtering</span><span class="o">=</span><span class="n">filtering</span><span class="p">)</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">vpg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">apg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">jpg</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">filtering</span><span class="o">=</span><span class="n">filtering</span><span class="p">)</span>
 
     <span class="c1">## Create a PPG class</span>
-    <span class="n">ppg_data</span><span class="o">.</span><span class="n">filtering</span> <span class="o">=</span> <span class="n">filtering</span>
-    <span class="n">ppg_data</span><span class="o">.</span><span class="n">correct</span> <span class="o">=</span> <span class="n">correct</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">PPG</span><span class="p">(</span><span class="n">ppg_data</span><span class="p">)</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">filtering</span> <span class="o">=</span> <span class="n">filtering</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">correct</span> <span class="o">=</span> <span class="n">correct</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">PPG</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
 
     <span class="c1">## Get Fiducial points</span>
     <span class="k">if</span> <span class="n">process_type</span> <span class="o">==</span> <span class="s1">&#39;fiducials&#39;</span> <span class="ow">or</span> <span class="n">process_type</span> <span class="o">==</span> <span class="s1">&#39;both&#39;</span><span class="p">:</span>
@@ -163,8 +161,13 @@
         <span class="n">fpex</span> <span class="o">=</span> <span class="n">FP</span><span class="o">.</span><span class="n">FpCollection</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
         <span class="c1"># Extract fiducial points</span>
-        <span class="n">fiducials</span> <span class="o">=</span> <span class="n">fpex</span><span class="o">.</span><span class="n">get_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">correct</span><span class="p">)</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span>
-        <span class="k">if</span> <span class="n">print_flag</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fiducial points:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fiducials</span><span class="p">)</span>
+        <span class="n">fiducials</span> <span class="o">=</span> <span class="n">fpex</span><span class="o">.</span><span class="n">get_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">correct</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">print_flag</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fiducial points:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fiducials</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">)</span>
+
+    <span class="c1">## PPG SQI</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fiducials</span><span class="p">)</span>
+    <span class="n">ppgSQI</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SQI</span><span class="o">.</span><span class="n">get_ppgSQI</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">sp</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">print_flag</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean PPG SQI: &#39;</span><span class="p">,</span> <span class="n">ppgSQI</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
         <span class="c1"># Create a fiducials class</span>
@@ -191,16 +194,12 @@
         <span class="n">bm</span> <span class="o">=</span> <span class="n">Biomarkers</span><span class="p">(</span><span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span><span class="p">,</span> <span class="n">bm_stats</span><span class="p">)</span>
 
         <span class="c1">## Save data</span>
-        <span class="n">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">bm</span><span class="p">,</span> <span class="n">savingformat</span><span class="p">,</span> <span class="n">savingfolder</span><span class="p">,</span> <span class="n">print_flag</span><span class="p">)</span>
-
-    <span class="c1">## PPG SQI</span>
-    <span class="n">fp</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fiducials</span><span class="p">)</span>
-    <span class="n">ppgSQI</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SQI</span><span class="o">.</span><span class="n">get_ppgSQI</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">filt_sig</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">sp</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">print_flag</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean PPG SQI: &#39;</span><span class="p">,</span> <span class="n">ppgSQI</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">)</span>
+        <span class="n">fp_new</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">get_fp</span><span class="p">()</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">)</span>
+        <span class="n">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp_new</span><span class="p">,</span> <span class="n">bm</span><span class="p">,</span> <span class="n">savingformat</span><span class="p">,</span> <span class="n">savingfolder</span><span class="p">,</span> <span class="n">print_flag</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">print_flag</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Program finished&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">fiducials</span></div>
-
+    
+    <span class="k">return</span> <span class="n">fiducials</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span></div>
 
 <span class="c1">###########################################################################</span>
 <span class="c1">############################## RUN EXAMPLE CODE ###########################</span>

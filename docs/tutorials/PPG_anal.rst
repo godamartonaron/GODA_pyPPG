@@ -1,5 +1,8 @@
 Comprehensive PPG Analysis
 ==========================
+.. raw:: html
+
+   <a href="https://colab.research.google.com/drive/1ImUZyVCmeIp1ma_IFgTKzivBBUdv9g1d#scrollTo=yULBFCXMT77m">Colab Notebook</a>
 
 In this tutorial we will learn how to extract the biomarkers from PPG pulse waves.
 Our objectives are to:
@@ -13,11 +16,6 @@ ________________________
 
 .. code-block:: python
 
-    import numpy as np
-    import sys
-    import json
-    import pandas as pd
-
     !pip install pyPPG
 
     from pyPPG import PPG, Fiducials, Biomarkers
@@ -26,6 +24,11 @@ ________________________
     import pyPPG.fiducials as FP
     import pyPPG.biomarkers as BM
     import pyPPG.ppg_sqi as SQI
+
+    import numpy as np
+    import sys
+    import json
+    import pandas as pd
 
 
 Setup input parameters:
@@ -73,8 +76,8 @@ _________________________
     fpex = FP.FpCollection(s)
 
     # Extract fiducial points
-    fiducials = fpex.get_fiducials(s, correct=True) + s.start_sig
-    print("Fiducial points:\n",fiducials)
+    fiducials = fpex.get_fiducials(s, correct=True)
+    print("Fiducial points:\n",fiducials + s.start_sig)
 
 
 Plot fiducial points:
@@ -124,7 +127,8 @@ ______________
 .. code-block:: python
 
     # Save PPG struct, fiducial points, biomarkers
-    save_data(s, fp, bm, savingformat, savingfolder)
+    fp_new = Fiducials(fp.get_fp() + s.start_sig)
+    save_data(s, fp_new, bm, savingformat, savingfolder)
 
 
 Extracted fiducial points

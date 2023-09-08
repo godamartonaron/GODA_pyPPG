@@ -99,10 +99,10 @@
 
 <span class="sd">        :param data: struct of PPG,PPG&#39;, PPG&quot;, PPG&#39;&quot;:</span>
 
-<span class="sd">            - data.sig: segment of PPG timeseries to analyse and extract biomarkers as a np array</span>
-<span class="sd">            - data.d1: segment of PPG&#39;</span>
-<span class="sd">            - data.d2: segment of PPG&quot;</span>
-<span class="sd">            - data.d3: segment of PPG&#39;&quot;</span>
+<span class="sd">            - data.ppg: segment of PPG timeseries to analyse and extract biomarkers as a np array</span>
+<span class="sd">            - data.vpg: segment of PPG&#39;</span>
+<span class="sd">            - data.apg: segment of PPG&quot;</span>
+<span class="sd">            - data.jpg: segment of PPG&#39;&quot;</span>
 <span class="sd">        :type data: DotMap</span>
 <span class="sd">        :param peak_value: PPG peak value</span>
 <span class="sd">        :type peak_value: float</span>
@@ -127,10 +127,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">fiducials</span><span class="o">=</span><span class="n">fiducials</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">list_biomarkers</span><span class="o">=</span><span class="n">list_biomarkers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">segment</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sig</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">segment_d1</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">d1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">d2</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">segment_d3</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">d3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">ppg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segment_vpg</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">vpg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">apg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segment_jpg</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">jpg</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">peak_value</span> <span class="o">=</span> <span class="n">peak_value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">peak_time</span> <span class="o">=</span> <span class="n">peak_time</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_peak_value</span> <span class="o">=</span> <span class="n">next_peak_value</span>
@@ -404,7 +404,7 @@
         <span class="n">idx_ons</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onsets_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
         <span class="n">idx_peak</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">peak_time</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">idx_peak</span> <span class="o">-</span> <span class="n">idx_ons</span>
-        <span class="n">vec_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span> <span class="n">idx</span><span class="p">])</span>
+        <span class="n">vec_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span> <span class="n">idx</span><span class="p">])</span>
         <span class="n">t_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getTime</span><span class="p">(</span><span class="n">vec_data</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
         <span class="n">t_data</span> <span class="o">=</span> <span class="n">t_val</span> <span class="o">+</span> <span class="n">idx_ons</span>
         <span class="k">return</span> <span class="n">t_data</span>
@@ -421,7 +421,7 @@
         <span class="n">idx_peak</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">peak_time</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">idx_peak</span> <span class="o">-</span> <span class="n">idx_ons_left</span>
         <span class="n">idx2</span> <span class="o">=</span> <span class="n">idx_ons_right</span> <span class="o">-</span> <span class="n">idx_ons_left</span>
-        <span class="n">vec_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span> <span class="n">idx2</span><span class="p">])</span>
+        <span class="n">vec_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span> <span class="n">idx2</span><span class="p">])</span>
         <span class="n">t_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getTime</span><span class="p">(</span><span class="n">vec_data</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
         <span class="n">t_data</span> <span class="o">=</span> <span class="n">t_val</span> <span class="o">+</span> <span class="n">idx_peak</span>
         <span class="k">return</span> <span class="n">t_data</span>
@@ -561,7 +561,7 @@
 
 <span class="sd">            :return: Dicrotic Notch Amplitude biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">dn_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dn</span><span class="p">]</span>
+        <span class="n">dn_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dn</span><span class="p">]</span>
         <span class="n">dn_amp</span> <span class="o">=</span> <span class="n">dn_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">dn_amp</span>
 
@@ -571,7 +571,7 @@
 <span class="sd">            :return: Diastolic Peak Amplitude biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">## temp solution 04/04/2023 --&gt; if DN==DP</span>
-        <span class="n">dp_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">+</span><span class="mi">20</span><span class="p">]</span>
+        <span class="n">dp_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">+</span><span class="mi">20</span><span class="p">]</span>
         <span class="n">dia_peak</span> <span class="o">=</span> <span class="n">dp_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">dia_peak</span>
 
@@ -594,7 +594,7 @@
         <span class="n">right_onset_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_times</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span>
         <span class="n">baseline_shift_slope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getBaselineSlope</span><span class="p">()</span>
         <span class="n">baseline_cst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getBaselineCst</span><span class="p">()</span>
-        <span class="n">vec_value_between_ons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment</span>
+        <span class="n">vec_value_between_ons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span>
         <span class="n">num_t</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vec_value_between_ons</span><span class="p">)</span>
         <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline_shift_slope</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">peak_time</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">+</span> <span class="n">baseline_cst</span>
         <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
@@ -613,7 +613,7 @@
         <span class="n">right_onset_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_times</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span>
         <span class="n">baseline_shift_slope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getBaselineSlope</span><span class="p">()</span>
         <span class="n">baseline_cst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getBaselineCst</span><span class="p">()</span>
-        <span class="n">vec_value_between_ons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment</span>
+        <span class="n">vec_value_between_ons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span>
         <span class="n">num_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dn</span>
         <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline_shift_slope</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">peak_time</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">+</span> <span class="n">baseline_cst</span>
         <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1014,7 +1014,7 @@
 
 <span class="sd">            :return: Au/Asp biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">u_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_u</span><span class="p">()]</span>
+        <span class="n">u_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_vpg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_u</span><span class="p">()]</span>
         <span class="n">sp_amp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">peak_value</span>
         <span class="k">return</span> <span class="n">u_max</span> <span class="o">/</span> <span class="n">sp_amp</span>
 
@@ -1023,8 +1023,8 @@
 
 <span class="sd">            :return: Av/Au biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">u_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_u</span><span class="p">()]</span>
-        <span class="n">v_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_v</span><span class="p">()]</span>
+        <span class="n">u_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_vpg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_u</span><span class="p">()]</span>
+        <span class="n">v_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_vpg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_v</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">v_min</span> <span class="o">/</span> <span class="n">u_max</span>
 
     <span class="k">def</span> <span class="nf">get_ratio_Aw_Au</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1032,8 +1032,8 @@
 
 <span class="sd">            :return: Aw/Au biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">u_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_u</span><span class="p">()]</span>
-        <span class="n">w_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_w</span><span class="p">()]</span>
+        <span class="n">u_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_vpg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_u</span><span class="p">()]</span>
+        <span class="n">w_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_vpg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_w</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">w_max</span> <span class="o">/</span> <span class="n">u_max</span>
 
     <span class="k">def</span> <span class="nf">get_ratio_Ab_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1041,8 +1041,8 @@
 
 <span class="sd">            :return: Ab/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">a_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
-        <span class="n">b_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
+        <span class="n">a_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
+        <span class="n">b_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">b_min</span> <span class="o">/</span> <span class="n">a_max</span>
 
     <span class="k">def</span> <span class="nf">get_ratio_Ac_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1050,8 +1050,8 @@
 
 <span class="sd">            :return: Ac/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">a_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
-        <span class="n">c_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
+        <span class="n">a_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
+        <span class="n">c_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">c_max</span> <span class="o">/</span> <span class="n">a_max</span>
 
     <span class="k">def</span> <span class="nf">get_ratio_Ad_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1059,8 +1059,8 @@
 
 <span class="sd">            :return: Ad/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">a_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
-        <span class="n">d_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
+        <span class="n">a_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
+        <span class="n">d_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">d_min</span> <span class="o">/</span> <span class="n">a_max</span>
 
     <span class="k">def</span> <span class="nf">get_ratio_Ae_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1068,8 +1068,8 @@
 
 <span class="sd">            :return: Ae/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">a_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
-        <span class="n">e_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
+        <span class="n">a_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
+        <span class="n">e_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">e_max</span> <span class="o">/</span> <span class="n">a_max</span>
 
     <span class="k">def</span> <span class="nf">get_ratio_Af_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1077,8 +1077,8 @@
 
 <span class="sd">            :return: Af/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">a_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
-        <span class="n">f_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_f</span><span class="p">()]</span>
+        <span class="n">a_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
+        <span class="n">f_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_f</span><span class="p">()]</span>
         <span class="k">return</span> <span class="n">f_min</span> <span class="o">/</span> <span class="n">a_max</span>
 
     <span class="k">def</span> <span class="nf">get_ratio_Ap2_Ap1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1086,7 +1086,7 @@
 
 <span class="sd">            :return: Ap2/Ap1 biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Rp2p1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">]</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">]</span>
+        <span class="n">Rp2p1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">]</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">Rp2p1</span>
 
     <span class="k">def</span> <span class="nf">get_ratio_AcAb_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1094,9 +1094,9 @@
 
 <span class="sd">            :return: (Ac-Ab)/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
-        <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
-        <span class="n">Ac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
+        <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
+        <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
+        <span class="n">Ac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Ac</span><span class="o">-</span><span class="n">Ab</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
 
     <span class="k">def</span> <span class="nf">get_ratio_AdAb_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1104,9 +1104,9 @@
 
 <span class="sd">            :return: (Ad-Ab)/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
-        <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
-        <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
+        <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
+        <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
+        <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Ad</span><span class="o">-</span><span class="n">Ab</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
 
     <span class="k">def</span> <span class="nf">getAGI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1114,11 +1114,11 @@
 
 <span class="sd">            :return: (Ab-Ac-Ad-Ae)/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
-        <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
-        <span class="n">Ac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
-        <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
-        <span class="n">Ae</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
+        <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
+        <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
+        <span class="n">Ac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
+        <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
+        <span class="n">Ae</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Ab</span><span class="o">-</span><span class="n">Ac</span><span class="o">-</span><span class="n">Ad</span><span class="o">-</span><span class="n">Ae</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
 
     <span class="k">def</span> <span class="nf">getAGImod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1126,10 +1126,10 @@
 
 <span class="sd">            :return: (Ab-Ac-Ad)/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
-        <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
-        <span class="n">Ac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
-        <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
+        <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
+        <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
+        <span class="n">Ac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
+        <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Ab</span><span class="o">-</span><span class="n">Ac</span><span class="o">-</span><span class="n">Ad</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
 
     <span class="k">def</span> <span class="nf">getAGIinf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1137,9 +1137,9 @@
 
 <span class="sd">            :return: (Ab-Ae)/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
-        <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
-        <span class="n">Ae</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
+        <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
+        <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
+        <span class="n">Ae</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Ab</span><span class="o">-</span><span class="n">Ae</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
 
     <span class="k">def</span> <span class="nf">getAI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1147,7 +1147,7 @@
 
 <span class="sd">            :return: AI biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">AI</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">])</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">peak_value</span>
+        <span class="n">AI</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">])</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">peak_value</span>
         <span class="k">return</span> <span class="n">AI</span>
 
     <span class="k">def</span> <span class="nf">getRIp1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1155,7 +1155,7 @@
 
 <span class="sd">            :return: RIp1 biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">RIp1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicPeak</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">]</span>
+        <span class="n">RIp1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicPeak</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">RIp1</span>
 
     <span class="k">def</span> <span class="nf">getRIp2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1163,7 +1163,7 @@
 
 <span class="sd">            :return: RIp2 biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">RIp2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicPeak</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">]</span>
+        <span class="n">RIp2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicPeak</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">RIp2</span>
 
     <span class="k">def</span> <span class="nf">getSC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1171,9 +1171,9 @@
 
 <span class="sd">            :return: SC biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">ddxSPA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">getTsp</span><span class="p">()</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
+        <span class="n">ddxSPA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">getTsp</span><span class="p">()</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
         <span class="n">SPA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">getSystolicPeak</span><span class="p">()</span>
-        <span class="n">MS</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">]</span>
+        <span class="n">MS</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">]</span>
         <span class="n">SC</span> <span class="o">=</span> <span class="n">ddxSPA</span><span class="o">/</span><span class="p">((</span><span class="n">SPA</span><span class="o">-</span><span class="n">MS</span><span class="p">)</span><span class="o">/</span><span class="n">SPA</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">SC</span>
 
@@ -1209,7 +1209,7 @@
 
 <span class="sd">            :return: MS biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">MS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">]</span>
+        <span class="n">MS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_vpg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">MS</span>
 
     <span class="k">def</span> <span class="nf">getUpslope</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1262,12 +1262,12 @@
 
 <span class="sd">            :return: (Ab-Ac-Ad-Ae-Af)/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
-        <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
-        <span class="n">Ac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
-        <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
-        <span class="n">Ae</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
-        <span class="n">Af</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_d2</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
+        <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
+        <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
+        <span class="n">Ac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
+        <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
+        <span class="n">Ae</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
+        <span class="n">Af</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">Ab</span><span class="o">-</span><span class="n">Ac</span><span class="o">-</span><span class="n">Ad</span><span class="o">-</span><span class="n">Ae</span><span class="o">-</span><span class="n">Af</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span></div>
 
 <span class="c1">###########################################################################</span>
@@ -1288,7 +1288,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">fs</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span>
-    <span class="n">ppg</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">filt_sig</span>
+    <span class="n">ppg</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">ppg</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">DotMap</span><span class="p">()</span>
 
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
@@ -1297,13 +1297,13 @@
     <span class="n">onsets</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">values</span>
     <span class="n">offsets</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">off</span><span class="o">.</span><span class="n">values</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">onsets</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">onsets</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">onset</span> <span class="o">=</span> <span class="n">onsets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">offset</span> <span class="o">=</span> <span class="n">offsets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">sig</span> <span class="o">=</span> <span class="n">ppg</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">onset</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">offset</span><span class="p">)]</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">d1</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">filt_d1</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">onset</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">offset</span><span class="p">)]</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">d2</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">filt_d2</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">onset</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">offset</span><span class="p">)]</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">d3</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">filt_d3</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">onset</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">offset</span><span class="p">)]</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">ppg</span> <span class="o">=</span> <span class="n">ppg</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">onset</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">offset</span><span class="p">)]</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">vpg</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">vpg</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">onset</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">offset</span><span class="p">)]</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">apg</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">apg</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">onset</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">offset</span><span class="p">)]</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">jpg</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">jpg</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">onset</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">offset</span><span class="p">)]</span>
         <span class="n">peak</span> <span class="o">=</span> <span class="n">peaks</span><span class="p">[(</span><span class="n">peaks</span> <span class="o">&gt;</span> <span class="n">onset</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">peaks</span> <span class="o">&lt;</span> <span class="n">offset</span><span class="p">)]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">peak</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">continue</span>
