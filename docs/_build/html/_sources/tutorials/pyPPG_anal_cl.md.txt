@@ -1,0 +1,804 @@
+# Comprehensive PPG Analysis
+
+In this tutorial we will learn how to extract biomarkers from a photoplethysmogram (PPG) signal.
+
+Our objectives are to:
+
+- Detect the standard fiducial points on PPG pulse waves
+- Calculate pulse wave biomarkers from the fiducial points
+- Saving data in different data format
+
+## Setup
+
+Import Python packages:
+________________________
+
+- Install the _[pyPPG](https://pyppg.readthedocs.io/)_ toolbox for PPG analysis
+
+
+```python
+!pip install pyPPG
+```
+
+    Collecting pyPPG
+      Downloading pyPPG-1.0.22-py3-none-any.whl (53 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m53.1/53.1 kB[0m [31m824.5 kB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting scipy==1.9.1 (from pyPPG)
+      Downloading scipy-1.9.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (43.9 MB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m43.9/43.9 MB[0m [31m10.9 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting numpy==1.23.2 (from pyPPG)
+      Downloading numpy-1.23.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (17.0 MB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m17.0/17.0 MB[0m [31m22.8 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting dotmap==1.3.30 (from pyPPG)
+      Downloading dotmap-1.3.30-py3-none-any.whl (11 kB)
+    Collecting pandas==1.4.4 (from pyPPG)
+      Downloading pandas-1.4.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.6 MB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m11.6/11.6 MB[0m [31m25.1 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting wfdb==3.4.0 (from pyPPG)
+      Downloading wfdb-3.4.0-py3-none-any.whl (137 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m137.5/137.5 kB[0m [31m13.6 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting mne==0.23.4 (from pyPPG)
+      Downloading mne-0.23.4-py3-none-any.whl (6.9 MB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m6.9/6.9 MB[0m [31m62.1 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting Eel==0.14.0 (from pyPPG)
+      Downloading Eel-0.14.0.tar.gz (17 kB)
+      Preparing metadata (setup.py) ... [?25l[?25hdone
+    Requirement already satisfied: Jinja2==3.1.2 in /usr/local/lib/python3.10/dist-packages (from pyPPG) (3.1.2)
+    Collecting MarkupSafe==2.1.1 (from pyPPG)
+      Downloading MarkupSafe-2.1.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (25 kB)
+    Collecting Pillow==9.2.0 (from pyPPG)
+      Downloading Pillow-9.2.0-cp310-cp310-manylinux_2_28_x86_64.whl (3.2 MB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m3.2/3.2 MB[0m [31m86.3 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting altgraph==0.17.3 (from pyPPG)
+      Downloading altgraph-0.17.3-py2.py3-none-any.whl (21 kB)
+    Requirement already satisfied: appdirs==1.4.4 in /usr/local/lib/python3.10/dist-packages (from pyPPG) (1.4.4)
+    Collecting attrs==22.1.0 (from pyPPG)
+      Downloading attrs-22.1.0-py2.py3-none-any.whl (58 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m58.8/58.8 kB[0m [31m6.0 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting auto-py-to-exe==2.23.1 (from pyPPG)
+      Downloading auto_py_to_exe-2.23.1-py2.py3-none-any.whl (97 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m97.5/97.5 kB[0m [31m9.7 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting boltons==21.0.0 (from pyPPG)
+      Downloading boltons-21.0.0-py2.py3-none-any.whl (193 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m193.7/193.7 kB[0m [31m19.3 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting bottle==0.12.23 (from pyPPG)
+      Downloading bottle-0.12.23-py3-none-any.whl (90 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m90.1/90.1 kB[0m [31m7.9 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting bottle-websocket==0.2.9 (from pyPPG)
+      Downloading bottle-websocket-0.2.9.tar.gz (2.0 kB)
+      Preparing metadata (setup.py) ... [?25l[?25hdone
+    Collecting certifi==2022.9.24 (from pyPPG)
+      Downloading certifi-2022.9.24-py3-none-any.whl (161 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m161.1/161.1 kB[0m [31m16.2 MB/s[0m eta [36m0:00:00[0m
+    [?25hRequirement already satisfied: cffi==1.15.1 in /usr/local/lib/python3.10/dist-packages (from pyPPG) (1.15.1)
+    Collecting chardet==5.0.0 (from pyPPG)
+      Downloading chardet-5.0.0-py3-none-any.whl (193 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m193.6/193.6 kB[0m [31m19.1 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting charset-normalizer==2.1.1 (from pyPPG)
+      Downloading charset_normalizer-2.1.1-py3-none-any.whl (39 kB)
+    Collecting colorama==0.4.5 (from pyPPG)
+      Downloading colorama-0.4.5-py2.py3-none-any.whl (16 kB)
+    Collecting contourpy==1.0.5 (from pyPPG)
+      Downloading contourpy-1.0.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (295 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m295.9/295.9 kB[0m [31m23.3 MB/s[0m eta [36m0:00:00[0m
+    [?25hRequirement already satisfied: cycler==0.11.0 in /usr/local/lib/python3.10/dist-packages (from pyPPG) (0.11.0)
+    Collecting decorator==5.1.1 (from pyPPG)
+      Downloading decorator-5.1.1-py3-none-any.whl (9.1 kB)
+    Collecting dotteddict==2016.3.11 (from pyPPG)
+      Downloading dotteddict-2016.3.11.tar.gz (3.1 kB)
+      Preparing metadata (setup.py) ... [?25l[?25hdone
+    Collecting face==20.1.1 (from pyPPG)
+      Downloading face-20.1.1-py3-none-any.whl (51 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m51.1/51.1 kB[0m [31m5.1 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting fonttools==4.37.1 (from pyPPG)
+      Downloading fonttools-4.37.1-py3-none-any.whl (957 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m957.2/957.2 kB[0m [31m48.5 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting future==0.18.2 (from pyPPG)
+      Downloading future-0.18.2.tar.gz (829 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m829.2/829.2 kB[0m [31m61.4 MB/s[0m eta [36m0:00:00[0m
+    [?25h  Preparing metadata (setup.py) ... [?25l[?25hdone
+    Collecting gevent==21.12.0 (from pyPPG)
+      Downloading gevent-21.12.0-cp310-cp310-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (6.1 MB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m6.1/6.1 MB[0m [31m5.8 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting gevent-websocket==0.10.1 (from pyPPG)
+      Downloading gevent_websocket-0.10.1-py3-none-any.whl (22 kB)
+    Collecting glom==22.1.0 (from pyPPG)
+      Downloading glom-22.1.0-py2.py3-none-any.whl (100 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m100.7/100.7 kB[0m [31m9.3 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting greenlet==1.1.3 (from pyPPG)
+      Downloading greenlet-1.1.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (155 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m155.9/155.9 kB[0m [31m12.7 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting heartpy==1.2.7 (from pyPPG)
+      Downloading heartpy-1.2.7-py3-none-any.whl (1.0 MB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m1.0/1.0 MB[0m [31m48.7 MB/s[0m eta [36m0:00:00[0m
+    [?25hRequirement already satisfied: idna==3.4 in /usr/local/lib/python3.10/dist-packages (from pyPPG) (3.4)
+    Collecting joblib==1.2.0 (from pyPPG)
+      Downloading joblib-1.2.0-py3-none-any.whl (297 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m298.0/298.0 kB[0m [31m22.8 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting kiwisolver==1.4.4 (from pyPPG)
+      Downloading kiwisolver-1.4.4-cp310-cp310-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (1.6 MB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m1.6/1.6 MB[0m [31m56.0 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting matplotlib==3.6.1 (from pyPPG)
+      Downloading matplotlib-3.6.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.8 MB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m11.8/11.8 MB[0m [31m15.4 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting mpldatacursor==0.7.1 (from pyPPG)
+      Downloading mpldatacursor-0.7.1-py3-none-any.whl (23 kB)
+    Collecting packaging==21.3 (from pyPPG)
+      Downloading packaging-21.3-py3-none-any.whl (40 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m40.8/40.8 kB[0m [31m3.8 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting parallel-map==0.2.1 (from pyPPG)
+      Downloading parallel_map-0.2.1.tar.gz (4.9 kB)
+      Preparing metadata (setup.py) ... [?25l[?25hdone
+    Requirement already satisfied: patsy==0.5.3 in /usr/local/lib/python3.10/dist-packages (from pyPPG) (0.5.3)
+    Collecting pefile==2022.5.30 (from pyPPG)
+      Downloading pefile-2022.5.30.tar.gz (72 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m72.9/72.9 kB[0m [31m8.4 MB/s[0m eta [36m0:00:00[0m
+    [?25h  Preparing metadata (setup.py) ... [?25l[?25hdone
+    Collecting pip==21.3.1 (from pyPPG)
+      Downloading pip-21.3.1-py3-none-any.whl (1.7 MB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m1.7/1.7 MB[0m [31m83.6 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting pooch==1.6.0 (from pyPPG)
+      Downloading pooch-1.6.0-py3-none-any.whl (56 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m56.3/56.3 kB[0m [31m6.5 MB/s[0m eta [36m0:00:00[0m
+    [?25hRequirement already satisfied: pycparser==2.21 in /usr/local/lib/python3.10/dist-packages (from pyPPG) (2.21)
+    Collecting pyinstaller==5.5 (from pyPPG)
+      Downloading pyinstaller-5.5-py3-none-manylinux2014_x86_64.whl (593 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m593.2/593.2 kB[0m [31m46.2 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting pyinstaller-hooks-contrib==2022.10 (from pyPPG)
+      Downloading pyinstaller_hooks_contrib-2022.10-py2.py3-none-any.whl (244 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m244.7/244.7 kB[0m [31m20.7 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting pyparsing==3.0.9 (from pyPPG)
+      Downloading pyparsing-3.0.9-py3-none-any.whl (98 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m98.3/98.3 kB[0m [31m11.3 MB/s[0m eta [36m0:00:00[0m
+    [?25hRequirement already satisfied: python-dateutil==2.8.2 in /usr/local/lib/python3.10/dist-packages (from pyPPG) (2.8.2)
+    Collecting pytz==2022.4 (from pyPPG)
+      Downloading pytz-2022.4-py2.py3-none-any.whl (500 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m500.8/500.8 kB[0m [31m38.8 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting pywin32-ctypes==0.2.0 (from pyPPG)
+      Downloading pywin32_ctypes-0.2.0-py2.py3-none-any.whl (28 kB)
+    Collecting requests==2.28.1 (from pyPPG)
+      Downloading requests-2.28.1-py3-none-any.whl (62 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m62.8/62.8 kB[0m [31m6.6 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting scikit-learn==1.1.3 (from pyPPG)
+      Downloading scikit_learn-1.1.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (30.5 MB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m30.5/30.5 MB[0m [31m35.7 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting setuptools==60.2.0 (from pyPPG)
+      Downloading setuptools-60.2.0-py3-none-any.whl (953 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m953.1/953.1 kB[0m [31m63.7 MB/s[0m eta [36m0:00:00[0m
+    [?25hRequirement already satisfied: six==1.16.0 in /usr/local/lib/python3.10/dist-packages (from pyPPG) (1.16.0)
+    Collecting soundfile==0.11.0 (from pyPPG)
+      Downloading soundfile-0.11.0-py2.py3-none-any.whl (23 kB)
+    Collecting statsmodels==0.13.2 (from pyPPG)
+      Downloading statsmodels-0.13.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (10.0 MB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m10.0/10.0 MB[0m [31m7.8 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting threadpoolctl==3.1.0 (from pyPPG)
+      Downloading threadpoolctl-3.1.0-py3-none-any.whl (14 kB)
+    Collecting tqdm==4.64.1 (from pyPPG)
+      Downloading tqdm-4.64.1-py2.py3-none-any.whl (78 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m78.5/78.5 kB[0m [31m7.9 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting urllib3==1.26.12 (from pyPPG)
+      Downloading urllib3-1.26.12-py2.py3-none-any.whl (140 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m140.4/140.4 kB[0m [31m12.2 MB/s[0m eta [36m0:00:00[0m
+    [?25hCollecting wheel==0.37.1 (from pyPPG)
+      Downloading wheel-0.37.1-py2.py3-none-any.whl (35 kB)
+    Collecting whichcraft==0.6.1 (from pyPPG)
+      Downloading whichcraft-0.6.1-py2.py3-none-any.whl (5.2 kB)
+    Collecting zope.event==4.5.0 (from pyPPG)
+      Downloading zope.event-4.5.0-py2.py3-none-any.whl (6.8 kB)
+    Collecting zope.interface==5.4.0 (from pyPPG)
+      Downloading zope.interface-5.4.0.tar.gz (249 kB)
+    [2K     [90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m [32m249.3/249.3 kB[0m [31m22.0 MB/s[0m eta [36m0:00:00[0m
+    [?25h  Preparing metadata (setup.py) ... [?25l[?25hdone
+    Building wheels for collected packages: bottle-websocket, dotteddict, Eel, future, parallel-map, pefile, zope.interface
+      Building wheel for bottle-websocket (setup.py) ... [?25l[?25hdone
+      Created wheel for bottle-websocket: filename=bottle_websocket-0.2.9-py3-none-any.whl size=2329 sha256=a64aa0a5a7705a8fb3f41ff079f0c7a4fc8e925597e7c0b0a9b3406f56bb142f
+      Stored in directory: /root/.cache/pip/wheels/d2/9c/7d/5cc2fe1ff85ad654a0e86d72d1706a97ef15db2200b83c98d6
+      Building wheel for dotteddict (setup.py) ... [?25l[?25hdone
+      Created wheel for dotteddict: filename=dotteddict-2016.3.11-py2.py3-none-any.whl size=3268 sha256=20d7dbd96ff83a380e39f397292de580906aa55c9b262df8af5e0b84b7417f64
+      Stored in directory: /root/.cache/pip/wheels/f2/c8/c1/1b09c392549c50c4ed3809951deb63ba6d20798d5a1add9fe7
+      Building wheel for Eel (setup.py) ... [?25l[?25hdone
+      Created wheel for Eel: filename=Eel-0.14.0-py3-none-any.whl size=17437 sha256=55fc49b9061c9f60fc596042fd0cd733372a51f6ce3cc2b5f02d577683d4b58c
+      Stored in directory: /root/.cache/pip/wheels/5a/22/db/6e4ab5a6f105d4404fce7e17b453aa2ae920c70b04ac8ed294
+      Building wheel for future (setup.py) ... [?25l[?25hdone
+      Created wheel for future: filename=future-0.18.2-py3-none-any.whl size=491058 sha256=bcd2737ec5cc19ceae10edd4adc0f1d1e84ccdb6c9ae1a730b2f7af41d3aa831
+      Stored in directory: /root/.cache/pip/wheels/22/73/06/557dc4f4ef68179b9d763930d6eec26b88ed7c389b19588a1c
+      Building wheel for parallel-map (setup.py) ... [?25l[?25hdone
+      Created wheel for parallel-map: filename=parallel_map-0.2.1-py3-none-any.whl size=4632 sha256=daeb38426106bce721222040b143fd07243ebfa34ed4ae4349f998d41b203969
+      Stored in directory: /root/.cache/pip/wheels/65/a6/0e/d05f4547ab79dc6a1abfa672ea8e8831ee8f82e7c8ae13cd7f
+      Building wheel for pefile (setup.py) ... [?25l[?25hdone
+      Created wheel for pefile: filename=pefile-2022.5.30-py3-none-any.whl size=69363 sha256=349cb6784998de026d8e6730fe7f46d578f227b01b5f8a495319d4b727aee505
+      Stored in directory: /root/.cache/pip/wheels/eb/60/37/ee40403cbd895ccdb57eb28b03b0afabeb449d5df9ce776a0d
+      Building wheel for zope.interface (setup.py) ... [?25l[?25hdone
+      Created wheel for zope.interface: filename=zope.interface-5.4.0-cp310-cp310-linux_x86_64.whl size=244045 sha256=e1d6e684d537fe467f43df0cdb6898e75697975a5fc6ca63d0a1e75fb7d3e0b1
+      Stored in directory: /root/.cache/pip/wheels/21/a9/8b/0bfc5594d8e109d5b25d6b69e0cff14d09d93e3522dcb16d2b
+    Successfully built bottle-websocket dotteddict Eel future parallel-map pefile zope.interface
+    Installing collected packages: whichcraft, pywin32-ctypes, pytz, parallel-map, dotteddict, dotmap, bottle, boltons, altgraph, wheel, urllib3, tqdm, threadpoolctl, setuptools, pyparsing, pyinstaller-hooks-contrib, pip, Pillow, numpy, MarkupSafe, kiwisolver, joblib, greenlet, future, fonttools, face, decorator, colorama, charset-normalizer, chardet, certifi, attrs, zope.interface, zope.event, soundfile, scipy, requests, pyinstaller, pefile, pandas, packaging, glom, contourpy, statsmodels, scikit-learn, pooch, mne, matplotlib, gevent, wfdb, mpldatacursor, heartpy, gevent-websocket, bottle-websocket, Eel, auto-py-to-exe, pyPPG
+      Attempting uninstall: pytz
+        Found existing installation: pytz 2023.3.post1
+        Uninstalling pytz-2023.3.post1:
+          Successfully uninstalled pytz-2023.3.post1
+      Attempting uninstall: wheel
+        Found existing installation: wheel 0.41.2
+        Uninstalling wheel-0.41.2:
+          Successfully uninstalled wheel-0.41.2
+      Attempting uninstall: urllib3
+        Found existing installation: urllib3 2.0.4
+        Uninstalling urllib3-2.0.4:
+          Successfully uninstalled urllib3-2.0.4
+      Attempting uninstall: tqdm
+        Found existing installation: tqdm 4.66.1
+        Uninstalling tqdm-4.66.1:
+          Successfully uninstalled tqdm-4.66.1
+      Attempting uninstall: threadpoolctl
+        Found existing installation: threadpoolctl 3.2.0
+        Uninstalling threadpoolctl-3.2.0:
+          Successfully uninstalled threadpoolctl-3.2.0
+      Attempting uninstall: setuptools
+        Found existing installation: setuptools 67.7.2
+        Uninstalling setuptools-67.7.2:
+          Successfully uninstalled setuptools-67.7.2
+      Attempting uninstall: pyparsing
+        Found existing installation: pyparsing 3.1.1
+        Uninstalling pyparsing-3.1.1:
+          Successfully uninstalled pyparsing-3.1.1
+      Attempting uninstall: pip
+        Found existing installation: pip 23.1.2
+        Uninstalling pip-23.1.2:
+          Successfully uninstalled pip-23.1.2
+      Attempting uninstall: Pillow
+        Found existing installation: Pillow 9.4.0
+        Uninstalling Pillow-9.4.0:
+          Successfully uninstalled Pillow-9.4.0
+      Attempting uninstall: numpy
+        Found existing installation: numpy 1.23.5
+        Uninstalling numpy-1.23.5:
+          Successfully uninstalled numpy-1.23.5
+      Attempting uninstall: MarkupSafe
+        Found existing installation: MarkupSafe 2.1.3
+        Uninstalling MarkupSafe-2.1.3:
+          Successfully uninstalled MarkupSafe-2.1.3
+      Attempting uninstall: kiwisolver
+        Found existing installation: kiwisolver 1.4.5
+        Uninstalling kiwisolver-1.4.5:
+          Successfully uninstalled kiwisolver-1.4.5
+      Attempting uninstall: joblib
+        Found existing installation: joblib 1.3.2
+        Uninstalling joblib-1.3.2:
+          Successfully uninstalled joblib-1.3.2
+      Attempting uninstall: greenlet
+        Found existing installation: greenlet 2.0.2
+        Uninstalling greenlet-2.0.2:
+          Successfully uninstalled greenlet-2.0.2
+      Attempting uninstall: future
+        Found existing installation: future 0.18.3
+        Uninstalling future-0.18.3:
+          Successfully uninstalled future-0.18.3
+      Attempting uninstall: fonttools
+        Found existing installation: fonttools 4.42.1
+        Uninstalling fonttools-4.42.1:
+          Successfully uninstalled fonttools-4.42.1
+      Attempting uninstall: decorator
+        Found existing installation: decorator 4.4.2
+        Uninstalling decorator-4.4.2:
+          Successfully uninstalled decorator-4.4.2
+      Attempting uninstall: charset-normalizer
+        Found existing installation: charset-normalizer 3.2.0
+        Uninstalling charset-normalizer-3.2.0:
+          Successfully uninstalled charset-normalizer-3.2.0
+      Attempting uninstall: chardet
+        Found existing installation: chardet 5.2.0
+        Uninstalling chardet-5.2.0:
+          Successfully uninstalled chardet-5.2.0
+      Attempting uninstall: certifi
+        Found existing installation: certifi 2023.7.22
+        Uninstalling certifi-2023.7.22:
+          Successfully uninstalled certifi-2023.7.22
+      Attempting uninstall: attrs
+        Found existing installation: attrs 23.1.0
+        Uninstalling attrs-23.1.0:
+          Successfully uninstalled attrs-23.1.0
+      Attempting uninstall: soundfile
+        Found existing installation: soundfile 0.12.1
+        Uninstalling soundfile-0.12.1:
+          Successfully uninstalled soundfile-0.12.1
+      Attempting uninstall: scipy
+        Found existing installation: scipy 1.10.1
+        Uninstalling scipy-1.10.1:
+          Successfully uninstalled scipy-1.10.1
+      Attempting uninstall: requests
+        Found existing installation: requests 2.31.0
+        Uninstalling requests-2.31.0:
+          Successfully uninstalled requests-2.31.0
+      Attempting uninstall: pandas
+        Found existing installation: pandas 1.5.3
+        Uninstalling pandas-1.5.3:
+          Successfully uninstalled pandas-1.5.3
+      Attempting uninstall: packaging
+        Found existing installation: packaging 23.1
+        Uninstalling packaging-23.1:
+          Successfully uninstalled packaging-23.1
+      Attempting uninstall: contourpy
+        Found existing installation: contourpy 1.1.0
+        Uninstalling contourpy-1.1.0:
+          Successfully uninstalled contourpy-1.1.0
+      Attempting uninstall: statsmodels
+        Found existing installation: statsmodels 0.14.0
+        Uninstalling statsmodels-0.14.0:
+          Successfully uninstalled statsmodels-0.14.0
+      Attempting uninstall: scikit-learn
+        Found existing installation: scikit-learn 1.2.2
+        Uninstalling scikit-learn-1.2.2:
+          Successfully uninstalled scikit-learn-1.2.2
+      Attempting uninstall: pooch
+        Found existing installation: pooch 1.7.0
+        Uninstalling pooch-1.7.0:
+          Successfully uninstalled pooch-1.7.0
+      Attempting uninstall: matplotlib
+        Found existing installation: matplotlib 3.7.1
+        Uninstalling matplotlib-3.7.1:
+          Successfully uninstalled matplotlib-3.7.1
+    [31mERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+    ipython 7.34.0 requires jedi>=0.16, which is not installed.
+    cvxpy 1.3.2 requires setuptools>65.5.1, but you have setuptools 60.2.0 which is incompatible.
+    google-colab 1.0.0 requires pandas==1.5.3, but you have pandas 1.4.4 which is incompatible.
+    google-colab 1.0.0 requires requests==2.31.0, but you have requests 2.28.1 which is incompatible.
+    jsonschema 4.19.0 requires attrs>=22.2.0, but you have attrs 22.1.0 which is incompatible.
+    librosa 0.10.1 requires soundfile>=0.12.1, but you have soundfile 0.11.0 which is incompatible.
+    moviepy 1.0.3 requires decorator<5.0,>=4.0.2, but you have decorator 5.1.1 which is incompatible.
+    pip-tools 6.13.0 requires pip>=22.2, but you have pip 21.3.1 which is incompatible.
+    plotnine 0.12.3 requires pandas>=1.5.0, but you have pandas 1.4.4 which is incompatible.
+    plotnine 0.12.3 requires statsmodels>=0.14.0, but you have statsmodels 0.13.2 which is incompatible.
+    referencing 0.30.2 requires attrs>=22.2.0, but you have attrs 22.1.0 which is incompatible.
+    seaborn 0.12.2 requires matplotlib!=3.6.1,>=3.1, but you have matplotlib 3.6.1 which is incompatible.
+    yfinance 0.2.28 requires pytz>=2022.5, but you have pytz 2022.4 which is incompatible.
+    yfinance 0.2.28 requires requests>=2.31, but you have requests 2.28.1 which is incompatible.[0m[31m
+    [0mSuccessfully installed Eel-0.14.0 MarkupSafe-2.1.1 Pillow-9.2.0 altgraph-0.17.3 attrs-22.1.0 auto-py-to-exe-2.23.1 boltons-21.0.0 bottle-0.12.23 bottle-websocket-0.2.9 certifi-2022.9.24 chardet-5.0.0 charset-normalizer-2.1.1 colorama-0.4.5 contourpy-1.0.5 decorator-5.1.1 dotmap-1.3.30 dotteddict-2016.3.11 face-20.1.1 fonttools-4.37.1 future-0.18.2 gevent-21.12.0 gevent-websocket-0.10.1 glom-22.1.0 greenlet-1.1.3 heartpy-1.2.7 joblib-1.2.0 kiwisolver-1.4.4 matplotlib-3.6.1 mne-0.23.4 mpldatacursor-0.7.1 numpy-1.23.2 packaging-21.3 pandas-1.4.4 parallel-map-0.2.1 pefile-2022.5.30 pip-21.3.1 pooch-1.6.0 pyPPG-1.0.22 pyinstaller-5.5 pyinstaller-hooks-contrib-2022.10 pyparsing-3.0.9 pytz-2022.4 pywin32-ctypes-0.2.0 requests-2.28.1 scikit-learn-1.1.3 scipy-1.9.1 setuptools-60.2.0 soundfile-0.11.0 statsmodels-0.13.2 threadpoolctl-3.1.0 tqdm-4.64.1 urllib3-1.26.12 wfdb-3.4.0 wheel-0.37.1 whichcraft-0.6.1 zope.event-4.5.0 zope.interface-5.4.0
+    
+
+
+
+- Import required components from _pyPPG_
+
+
+```python
+from pyPPG import PPG, Fiducials, Biomarkers
+from pyPPG.preproc import Preprocessing
+from pyPPG.datahandling import load_data, plot_fiducials, save_data
+import pyPPG.fiducials as FP
+import pyPPG.biomarkers as BM
+import pyPPG.ppg_sqi as SQI
+```
+
+- Import other packages
+
+
+```python
+import numpy as np
+import sys
+import json
+import pandas as pd
+```
+
+Setup input parameters:
+_______________________
+_The following input parameters are inputs to the `pyPPG.example` module (see the [documentation](https://pyppg.readthedocs.io/en/latest/pyPPG.html#module-pyPPG.example) for further details)._
+
+
+```python
+data_path = "PPG_MAT_sample.mat" # the path of the file containing the PPG signal to be analysed
+fs = 100 # the sampling frequency
+start_sig = 0 # the first sample of the signal to be analysed
+end_sig = -1 # the last sample of the signal to be analysed (here a value of '-1' indicates the last sample)
+correct = True # whether or not to apply correction to the detected fiducial points
+filtering = True # whether or not to filter the PPG signal
+savingfolder = 'temp_dir'
+savingformat = 'csv'
+```
+
+Load a raw PPG signal:
+__________________________
+
+
+```python
+# Load the raw PPG signal
+signal = load_data(data_path, fs, start_sig, end_sig)
+```
+
+Plot the raw PPG signal
+
+
+```python
+# import plotting package
+from matplotlib import pyplot as plt
+
+# setup figure
+fig, ax = plt.subplots()
+
+# create time vector
+t = np.arange(0, len(signal.v))/signal.fs
+
+# plot raw PPG signal
+ax.plot(t, signal.v, color = 'blue')
+ax.set(xlabel = 'Time (s)', ylabel = 'raw PPG')
+
+# show plot
+plt.show()
+```
+
+
+    
+![png](pyPPG_anal_cl_files/pyPPG_anal_cl_14_0.png)
+    
+
+
+## PPG signal processing
+
+Prepare the PPG data:
+_____________________
+
+Filter the PPG signal and obtain first, second and third derivatives (_vpg_, _apg_, and _jpg_ respectively).
+
+
+```python
+signal.ppg, signal.vpg, signal.apg, signal.jpg = Preprocessing(signal, filtering=filtering)
+```
+
+Plot the derived signals
+
+
+```python
+# setup figure
+fig, (ax1,ax2,ax3,ax4) = plt.subplots(4, 1, sharex = True, sharey = False)
+
+# create time vector
+t = np.arange(0, len(signal.ppg))/signal.fs
+
+# plot filtered PPG signal
+ax1.plot(t, signal.ppg)
+ax1.set(xlabel = '', ylabel = 'PPG')
+
+# plot first derivative
+ax2.plot(t, signal.vpg)
+ax2.set(xlabel = '', ylabel = 'PPG\'')
+
+# plot second derivative
+ax3.plot(t, signal.apg)
+ax3.set(xlabel = '', ylabel = 'PPG\'\'')
+
+# plot third derivative
+ax4.plot(t, signal.jpg)
+ax4.set(xlabel = 'Time (s)', ylabel = 'PPG\'\'\'')
+
+# show plot
+plt.show()
+```
+
+
+    
+![png](pyPPG_anal_cl_files/pyPPG_anal_cl_20_0.png)
+    
+
+
+Store the derived signals in a class
+
+
+```python
+# Create a PPG class
+signal.filtering = filtering
+signal.correct = correct
+s = PPG(signal)
+```
+
+Identify fiducial points:
+__________________________
+
+Initialise the fiducials package
+
+
+```python
+fpex = FP.FpCollection(s)
+```
+
+Extract fiducial points
+
+
+```python
+fiducials = fpex.get_fiducials(s, correct=True) # here the starting sample is added so that the results are relative to the start of the original signal (rather than the start of the analysed segment)
+```
+
+Display the results
+
+
+```python
+print("Fiducial points:\n",fiducials + s.start_sig)
+```
+
+    Fiducial points:
+                       on    sp    dn    dp   off     u     v     w     a     b  \
+    Index of pulse                                                               
+    0                  1    63    82    99   151    57    70    90    52    62   
+    1                151   165   184   202   249   159   172   193   154   164   
+    2                249   264   283   300   346   258   270   291   252   262   
+    3                346   360   380   396   446   354   367   387   349   359   
+    4                446   460   479   496   551   454   466   487   449   459   
+    5                551   565   584   601   660   559   571   592   554   564   
+    6                660   674   693   710   758   668   680   701   663   673   
+    7                758   773   792   809   827   767   779   800   761   771   
+    8                827   863   883   891   918   858   870   890   853   862   
+    9                918   953   972   989  1033   947   959   980   941   951   
+    10              1033  1048  1068  1083  1141  1042  1054  1075  1037  1046   
+    11              1141  1156  1175  1192  1253  1150  1162  1183  1145  1155   
+    12              1253  1272  1291  1308  1369  1266  1278  1299  1261  1271   
+    13              1369  1385  1404  1421  1473  1379  1391  1412  1374  1383   
+    14              1473  1488  1507  1523  1577  1481  1494  1514  1476  1486   
+    15              1577  1592  1611  1628  1683  1586  1598  1619  1580  1590   
+    
+                       c     d     e     f    p1    p2  
+    Index of pulse                                      
+    0                 67    67    76    97    67    79  
+    1                169   169   178   200   169   181  
+    2                268   268   276   299   268   279  
+    3                364   364   373   394   364   376  
+    4                464   464   472   494   464   476  
+    5                569   569   577   599   569   580  
+    6                678   678   686   708   678   689  
+    7                776   776   785   806   776   788  
+    8                867   867   876   898   867   878  
+    9                957   957   965   987   957   968  
+    10              1052  1052  1059  1082  1052  1062  
+    11              1160  1160  1168  1189  1160  1171  
+    12              1276  1276  1284  1305  1276  1288  
+    13              1388  1388  1397  1419  1388  1400  
+    14              1492  1492  1499  1521  1492  1502  
+    15              1595  1595  1603  1625  1595  1606  
+    
+
+Plot fiducial points:
+_____________________
+
+
+```python
+# Create a fiducials class
+fp = Fiducials(fiducials)
+
+# Plot fiducial points
+# plot_fiducials(s, fp, savingfolder)
+```
+
+Calculate PPG biomarkers:
+_________________________
+
+Initialise the biomarkers package
+
+
+```python
+bmex = BM.BmCollection(s, fp)
+```
+
+Extract biomarkers
+
+
+```python
+bm_defs, bm_vals, bm_stats = bmex.get_biomarkers()
+tmp_keys=bm_stats.keys()
+print('Statistics of the biomarkers:')
+for i in tmp_keys: print(i,'\n',bm_stats[i])
+
+# Create a biomarkers class
+bm = Biomarkers(bm_defs, bm_vals, bm_stats)
+```
+
+    Statistics of the biomarkers:
+    ppg_sig 
+                         Tpi       Tpp      Tsys      Tdia       Tsp       Tdp  \
+    Statistics                                                                  
+    mean           1.076429  1.027857  0.405000  0.510000  0.212857  0.566429   
+    median         1.045000  1.025000  0.340000  0.520000  0.150000  0.510000   
+    std            0.136466  0.068575  0.134257  0.085189  0.134134  0.129703   
+    percentile_25  0.985000  0.990000  0.332500  0.472500  0.140000  0.500000   
+    percentile_75  1.112500  1.072500  0.372500  0.572500  0.182500  0.542500   
+    iqr            0.127500  0.082500  0.040000  0.100000  0.042500  0.042500   
+    skew           1.936252  0.168864  2.050779 -1.321288  2.076834  2.346906   
+    kurtosis       3.874239 -0.525062  3.162370  1.909309  3.291431  4.536605   
+    mad            0.091633  0.055000  0.099286  0.062857  0.098776  0.090102   
+    
+                         deltaT     Tsw10     Tsw25     Tsw33  ...     Tpw66  \
+    Statistics                                                 ...             
+    mean           3.535714e-01  0.127143  0.088571  0.077857  ...  0.106429   
+    median         3.600000e-01  0.100000  0.080000  0.080000  ...  0.110000   
+    std            2.091040e-02  0.058484  0.013553  0.008601  ...  0.004792   
+    percentile_25  3.600000e-01  0.100000  0.080000  0.070000  ...  0.100000   
+    percentile_75  3.600000e-01  0.110000  0.090000  0.080000  ...  0.110000   
+    iqr            1.165734e-15  0.010000  0.010000  0.010000  ...  0.010000   
+    skew          -3.056405e+00  2.017730  1.637357  1.099637  ... -0.596285   
+    kurtosis       7.979813e+00  2.114358  1.222963  0.721332  ... -1.644444   
+    mad            1.153061e-02  0.040816  0.009796  0.006735  ...  0.004592   
+    
+                      Tpw75         Tpw90         Asp         Adn        Adp  \
+    Statistics                                                                 
+    mean           0.088571  5.142857e-02  327.958338  -91.481260 -43.816184   
+    median         0.090000  5.000000e-02  325.950899  -94.349722 -53.442856   
+    std            0.003499  3.499271e-03   35.367727   20.552423  25.406933   
+    percentile_25  0.090000  5.000000e-02  300.941994 -103.610588 -58.126807   
+    percentile_75  0.090000  5.000000e-02  346.154084  -88.095813 -43.937019   
+    iqr            0.000000  8.326673e-16   45.212090   15.514775  14.189788   
+    skew          -2.041241  2.041241e+00    0.377367    1.302207   1.772997   
+    kurtosis       2.166667  2.166667e+00   -0.809719    1.274118   1.927563   
+    mad            0.002449  2.448980e-03   29.830993   14.555061  17.333385   
+    
+                        Aoff     AUCpi    AUCsys    AUCdia  
+    Statistics                                              
+    mean            3.796037  1.065858  1.220763 -0.154905  
+    median         -1.453709  0.405914  0.947481 -0.500772  
+    std            20.997987  4.111061  1.429803  2.725263  
+    percentile_25  -5.237568 -0.379057  0.496143 -1.067000  
+    percentile_75   5.291011  1.115427  1.091384  0.039337  
+    iqr            10.528579  1.494484  0.595241  1.106337  
+    skew            2.535539  2.306674  2.655391  1.983475  
+    kurtosis        6.024704  5.282085  6.420208  4.337625  
+    mad            12.550206  2.471233  0.831112  1.654687  
+    
+    [9 rows x 35 columns]
+    sig_ratios 
+                          IPR  Tsys/Tdia  Tpw25/Tpi  Tpw50/Tpi  Tpw75/Tpi  \
+    Statistics                                                             
+    mean           58.633622   0.850972   0.371039   0.124582   0.083309   
+    median         58.537978   0.676538   0.405627   0.124405   0.082951   
+    std             3.906253   0.435545   0.121438   0.016015   0.008871   
+    percentile_25  55.952381   0.608324   0.311983   0.119542   0.078785   
+    percentile_75  60.606061   0.729880   0.430247   0.131990   0.089135   
+    iqr             4.653680   0.121556   0.118264   0.012448   0.010350   
+    skew            0.128921   1.826298  -0.275521   0.172855  -0.807210   
+    kurtosis       -0.447524   2.038004  -0.322797   2.147354   1.272429   
+    mad             3.132122   0.329446   0.095916   0.010298   0.006428   
+    
+                   Tpw25/Tsp  Tpw50/Tsp  Tpw75/Tsp  Tdw10/Tsw10  Tdw25/Tsw25  ...  \
+    Statistics                                                                ...   
+    mean            2.258055   0.759470   0.512401     2.912073     3.524802  ...   
+    median          2.800000   0.866667   0.600000     3.000000     4.111111  ...   
+    std             0.942332   0.230902   0.164552     1.178603     1.366004  ...   
+    percentile_25   1.299603   0.716283   0.480263     2.015152     3.666667  ...   
+    percentile_75   2.983333   0.928571   0.642857     4.127273     4.468750  ...   
+    iqr             1.683730   0.212289   0.162594     2.112121     0.802083  ...   
+    skew           -0.627279  -1.300219  -1.140770    -0.351140    -1.181610  ...   
+    kurtosis       -1.258614   0.179503  -0.194012    -1.157866    -0.279050  ...   
+    mad             0.858942   0.189618   0.133716     0.973215     1.082058  ...   
+    
+                   Tdw66/Tsw66  Tdw75/Tsw75  Tdw90/Tsw90   Tsp/Tpi   Asp/Aoff  \
+    Statistics                                                                  
+    mean              1.076190     1.150000     1.250000  0.192150 -12.212785   
+    median            1.100000     1.250000     1.500000  0.143544 -11.363295   
+    std               0.134771     0.166905     0.349319  0.096438   4.477473   
+    percentile_25     1.000000     1.062500     1.000000  0.139167 -14.462687   
+    percentile_75     1.200000     1.250000     1.500000  0.161505  -9.427249   
+    iqr               0.200000     0.187500     0.500000  0.022338   5.035438   
+    skew             -0.512795    -1.267421    -0.814593  1.530783  -0.554015   
+    kurtosis         -1.101077    -0.052268    -1.127503  0.586151   0.575757   
+    mad               0.123810     0.142857     0.321429  0.076691   3.457399   
+    
+                    Adp/Asp       IPA   Tsp/Asp   Asp/deltaT  Asp/(Tpi-Tsp)  
+    Statistics                                                               
+    mean          -0.140271 -3.899443  0.000651   932.849936     387.324073  
+    median        -0.168885 -0.585390  0.000477   905.419164     355.996502  
+    std            0.083601  6.692072  0.000429   131.372345      80.009323  
+    percentile_25 -0.188080 -4.354817  0.000448   835.949983     341.971176  
+    percentile_75 -0.123793  0.019450  0.000541  1014.709460     389.356501  
+    iqr            0.064287  4.374268  0.000093   178.759477      47.385324  
+    skew           1.309266 -1.423205  2.529634     0.807260       2.154395  
+    kurtosis       1.097359  0.466513  5.429304    -0.007216       3.753654  
+    mad            0.060140  5.398398  0.000289   106.122655      52.301316  
+    
+    [9 rows x 22 columns]
+    ppg_derivs 
+                          Tu        Tv        Tw        Ta        Tb        Tc  \
+    Statistics                                                                  
+    mean           0.152857  0.275714  0.482857  0.101429  0.199286  0.252143   
+    median         0.090000  0.210000  0.420000  0.035000  0.130000  0.190000   
+    std            0.135300  0.136367  0.134134  0.134953  0.134773  0.134440   
+    percentile_25  0.080000  0.210000  0.410000  0.030000  0.130000  0.180000   
+    percentile_75  0.122500  0.242500  0.452500  0.072500  0.170000  0.220000   
+    iqr            0.042500  0.032500  0.042500  0.042500  0.040000  0.040000   
+    skew           2.039623  2.084505  2.076834  2.067919  2.096589  2.075672   
+    kurtosis       3.109996  3.314428  3.291431  3.242838  3.380747  3.280025   
+    mad            0.100204  0.100408  0.098776  0.099388  0.098878  0.099082   
+    
+                         Td        Te        Tf      Tb-c      Tb-d       Tp1  \
+    Statistics                                                                  
+    mean           0.252143  0.334286  0.552857  0.052857  0.052857  0.252143   
+    median         0.190000  0.270000  0.490000  0.050000  0.050000  0.190000   
+    std            0.134440  0.137098  0.135142  0.004518  0.004518  0.134440   
+    percentile_25  0.180000  0.260000  0.480000  0.050000  0.050000  0.180000   
+    percentile_75  0.220000  0.302500  0.515000  0.057500  0.057500  0.220000   
+    iqr            0.040000  0.042500  0.035000  0.007500  0.007500  0.040000   
+    skew           2.075672  2.074254  2.049040  0.948683  0.948683  2.075672   
+    kurtosis       3.280025  3.272316  3.137225 -1.100000 -1.100000  3.280025   
+    mad            0.099082  0.101020  0.100204  0.004082  0.004082  0.099082   
+    
+                        Tp2    Tp1-dp    Tp2-dp  
+    Statistics                                   
+    mean           0.365000  0.314286  0.201429  
+    median         0.300000  0.320000  0.210000  
+    std            0.135844  0.021285  0.020304  
+    percentile_25  0.292500  0.320000  0.200000  
+    percentile_75  0.340000  0.320000  0.210000  
+    iqr            0.047500  0.000000  0.010000  
+    skew           2.101479 -2.967598 -3.061694  
+    kurtosis       3.431211  7.642927  7.961229  
+    mad            0.099286  0.011837  0.011020  
+    derivs_ratios 
+                      Tu/Tpi    Tv/Tpi    Tw/Tpi    Ta/Tpi    Tb/Tpi    Tc/Tpi  \
+    Statistics                                                                  
+    mean           0.152404  0.272494  0.474817  0.102046  0.197621  0.249326   
+    median         0.082071  0.211061  0.412071  0.032866  0.131313  0.182255   
+    std            0.138630  0.142987  0.147276  0.136887  0.139028  0.140258   
+    percentile_25  0.078190  0.196314  0.391415  0.030076  0.124107  0.176944   
+    percentile_75  0.110555  0.220617  0.434186  0.065233  0.153450  0.202134   
+    iqr            0.032365  0.024303  0.042771  0.035158  0.029342  0.025190   
+    skew           1.860419  1.819000  1.668741  1.917474  1.885907  1.830105   
+    kurtosis       2.204810  2.018680  1.413607  2.477554  2.316181  2.063092   
+    mad            0.105931  0.109764  0.114390  0.103551  0.105919  0.107722   
+    
+                     Td/Tpi    Te/Tpi    Tf/Tpi  (Tu-Ta)/Tpi  ...  (Ac-Ab)/Aa  \
+    Statistics                                                ...               
+    mean           0.249326  0.329779  0.543512     0.048431  ...    0.629126   
+    median         0.182255  0.270922  0.482424     0.048077  ...    0.644025   
+    std            0.140258  0.145563  0.151690     0.006183  ...    0.083149   
+    percentile_25  0.176944  0.248214  0.457901     0.045978  ...    0.597811   
+    percentile_75  0.202134  0.279522  0.514362     0.051020  ...    0.680482   
+    iqr            0.025190  0.031307  0.056461     0.005043  ...    0.082671   
+    skew           1.830105  1.770317  1.580042    -0.268151  ...   -1.081134   
+    kurtosis       2.063092  1.817851  1.101874     1.281379  ...    1.326632   
+    mad            0.107722  0.112162  0.117978     0.004347  ...    0.062315   
+    
+                   (Ad-Ab)/Aa       AGI    AGImod    AGIinf        AI      RIp1  \
+    Statistics                                                                    
+    mean             0.629126 -0.438015  0.218002 -2.132271 -1.148811  0.442925   
+    median           0.644025 -0.446443  0.198144 -2.117388 -1.157529  0.492667   
+    std              0.083149  0.165851  0.153149  0.126804  0.061912  0.258397   
+    percentile_25    0.597811 -0.503858  0.137207 -2.174380 -1.189483  0.454834   
+    percentile_75    0.680482 -0.380027  0.287431 -2.048128 -1.119794  0.577178   
+    iqr              0.082671  0.123831  0.150225  0.126251  0.069689  0.122344   
+    skew            -1.081134  0.925991  0.535540 -0.666308  0.574710 -1.502583   
+    kurtosis         1.326632  1.364820  0.779554 -0.128637 -0.374387  1.465950   
+    mad              0.062315  0.113401  0.115388  0.100916  0.049879  0.176040   
+    
+                       RIp2         SC      IPAD  
+    Statistics                                    
+    mean           0.442925 -16.159314 -4.746571  
+    median         0.492667 -15.736239 -1.349974  
+    std            0.258397   1.348839  6.724842  
+    percentile_25  0.454834 -17.138831 -5.289929  
+    percentile_75  0.577178 -15.360320 -0.761505  
+    iqr            0.122344   1.778511  4.528424  
+    skew          -1.502583  -0.352586 -1.414377  
+    kurtosis       1.465950  -0.694723  0.435675  
+    mad            0.176040   1.116700  5.438320  
+    
+    [9 rows x 30 columns]
+    
+
+Calculate PPG SQI:
+_________________________
+
+
+```python
+# Get PPG SQI
+ppgSQI = round(np.mean(SQI.get_ppgSQI(s.ppg, s.fs, fp.sp)) * 100, 2)
+print('Mean PPG SQI: ', ppgSQI, '%')
+```
+
+    Mean PPG SQI:  91.69 %
+    
+
+Save PPG data:
+______________
+
+
+```python
+# Save PPG struct, fiducial points, biomarkers
+fp_new = Fiducials(fp.get_fp() + s.start_sig)
+save_data(s, fp_new, bm, savingformat, savingfolder)
+```
+
+    Results have been saved into the "temp_dir".
+    

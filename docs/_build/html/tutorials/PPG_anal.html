@@ -51,14 +51,21 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="pyPPG_example.html">pyPPG example code</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Comprehensive PPG Analysis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#import-python-packages">Import Python packages:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#setup-input-parameters">Setup input parameters:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#loading-a-raw-ppg-signal">Loading a raw PPG signal:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#prepare-the-ppg-data">Prepare the PPG data:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#identify-fiducial-points">Identify fiducial points:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#plot-fiducial-points">Plot fiducial points:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#calculate-ppg-biomarkers">Calculate PPG biomarkers:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#import-python-packages">Import Python packages:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-input-parameters">Setup input parameters:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-a-raw-ppg-signal">Loading a raw PPG signal:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plot-the-raw-ppg-signal">Plot the raw PPG signal:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ppg-signal-processing">PPG signal processing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prepare-the-ppg-data">Prepare the PPG data:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#identify-fiducial-points">Identify fiducial points:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plot-fiducial-points">Plot fiducial points:</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#calculate-ppg-sqi">Calculate PPG SQI:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculate-ppg-biomarkers">Calculate PPG biomarkers:</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#save-ppg-data">Save PPG data:</a></li>
 </ul>
 </li>
@@ -91,8 +98,8 @@
              
   <section id="comprehensive-ppg-analysis">
 <h1>Comprehensive PPG Analysis<a class="headerlink" href="#comprehensive-ppg-analysis" title="Permalink to this heading"></a></h1>
-<a href="https://colab.research.google.com/drive/1ImUZyVCmeIp1ma_IFgTKzivBBUdv9g1d#scrollTo=yULBFCXMT77m">Colab Notebook</a><p>In this tutorial we will learn how to extract the biomarkers from PPG pulse waves.
-Our objectives are to:</p>
+<a href="https://colab.research.google.com/drive/1ImUZyVCmeIp1ma_IFgTKzivBBUdv9g1d#scrollTo=yULBFCXMT77m">Colab Notebook</a><p>In this tutorial we will learn how to extract biomarkers from a photoplethysmogram (PPG) signal.</p>
+<p>Our objectives are to:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Detect the standard fiducial points on PPG pulse waves</p></li>
@@ -100,50 +107,118 @@ Our objectives are to:</p>
 <li><p>Saving data in different data format</p></li>
 </ul>
 </div></blockquote>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
 <section id="import-python-packages">
-<h2>Import Python packages:<a class="headerlink" href="#import-python-packages" title="Permalink to this heading"></a></h2>
+<h3>Import Python packages:<a class="headerlink" href="#import-python-packages" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Install the pyPPG toolbox for PPG analysis</p></li>
+</ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pyPPG
-
-from pyPPG import PPG, Fiducials, Biomarkers
-from pyPPG.preproc import Preprocessing
-from pyPPG.datahandling import load_data, plot_fiducials, save_data
-import pyPPG.fiducials as FP
-import pyPPG.biomarkers as BM
-import pyPPG.ppg_sqi as SQI
-
-import numpy as np
-import sys
-import json
-import pandas as pd
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Import required components from pyPPG</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyPPG</span> <span class="kn">import</span> <span class="n">PPG</span><span class="p">,</span> <span class="n">Fiducials</span><span class="p">,</span> <span class="n">Biomarkers</span>
+<span class="kn">from</span> <span class="nn">pyPPG.preproc</span> <span class="kn">import</span> <span class="n">Preprocessing</span>
+<span class="kn">from</span> <span class="nn">pyPPG.datahandling</span> <span class="kn">import</span> <span class="n">load_data</span><span class="p">,</span> <span class="n">plot_fiducials</span><span class="p">,</span> <span class="n">save_data</span>
+<span class="kn">import</span> <span class="nn">pyPPG.fiducials</span> <span class="k">as</span> <span class="nn">FP</span>
+<span class="kn">import</span> <span class="nn">pyPPG.biomarkers</span> <span class="k">as</span> <span class="nn">BM</span>
+<span class="kn">import</span> <span class="nn">pyPPG.ppg_sqi</span> <span class="k">as</span> <span class="nn">SQI</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Import other packages</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </section>
 <section id="setup-input-parameters">
-<h2>Setup input parameters:<a class="headerlink" href="#setup-input-parameters" title="Permalink to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<span class="n">fs</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">start_sig</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">end_sig</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-<span class="n">correct</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">filtering</span> <span class="o">=</span> <span class="kc">True</span>
+<h3>Setup input parameters:<a class="headerlink" href="#setup-input-parameters" title="Permalink to this heading"></a></h3>
+<p>The following input parameters are inputs to the <a class="reference external" href="https://pyppg.readthedocs.io/en/latest/tutorials/pyPPG_example.html">pyPPG.example</a> module (see the documentation for further details).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;PPG_MAT_sample.mat&quot;</span> <span class="c1"># the path of the file containing the PPG signal to be analysed</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># the sampling frequency</span>
+<span class="n">start_sig</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># the first sample of the signal to be analysed</span>
+<span class="n">end_sig</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># the last sample of the signal to be analysed (here a value of &#39;-1&#39; indicates the last sample)</span>
+<span class="n">correct</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># whether or not to apply correction to the detected fiducial points</span>
+<span class="n">filtering</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># whether or not to filter the PPG signal</span>
 <span class="n">savingfolder</span> <span class="o">=</span> <span class="s1">&#39;temp_dir&#39;</span>
 <span class="n">savingformat</span> <span class="o">=</span> <span class="s1">&#39;csv&#39;</span>
 </pre></div>
 </div>
 </section>
 <section id="loading-a-raw-ppg-signal">
-<h2>Loading a raw PPG signal:<a class="headerlink" href="#loading-a-raw-ppg-signal" title="Permalink to this heading"></a></h2>
+<h3>Loading a raw PPG signal:<a class="headerlink" href="#loading-a-raw-ppg-signal" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the raw PPG signal</span>
 <span class="n">signal</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">start_sig</span><span class="p">,</span> <span class="n">end_sig</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="prepare-the-ppg-data">
-<h2>Prepare the PPG data:<a class="headerlink" href="#prepare-the-ppg-data" title="Permalink to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Preprocessing</span>
-<span class="n">signal</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">vpg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">apg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">jpg</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">filtering</span><span class="o">=</span><span class="n">filtering</span><span class="p">)</span>
+<section id="plot-the-raw-ppg-signal">
+<h3>Plot the raw PPG signal:<a class="headerlink" href="#plot-the-raw-ppg-signal" title="Permalink to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import plotting package</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 
-<span class="c1"># Create a PPG class</span>
+<span class="c1"># setup figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="c1"># create time vector</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">v</span><span class="p">))</span><span class="o">/</span><span class="n">signal</span><span class="o">.</span><span class="n">fs</span>
+
+<span class="c1"># plot raw PPG signal</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (s)&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;raw PPG&#39;</span><span class="p">)</span>
+
+<span class="c1"># show plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/raw_PPG.png" class="align-center" src="../_images/raw_PPG.png" />
+</section>
+</section>
+<section id="ppg-signal-processing">
+<h2>PPG signal processing<a class="headerlink" href="#ppg-signal-processing" title="Permalink to this heading"></a></h2>
+<section id="prepare-the-ppg-data">
+<h3>Prepare the PPG data:<a class="headerlink" href="#prepare-the-ppg-data" title="Permalink to this heading"></a></h3>
+<p>Filter the PPG signal and obtain first, second and third derivatives (vpg, apg, and jpg respectively).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">signal</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">vpg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">apg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">jpg</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">filtering</span><span class="o">=</span><span class="n">filtering</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Plot the derived signals</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># setup figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span><span class="n">ax2</span><span class="p">,</span><span class="n">ax3</span><span class="p">,</span><span class="n">ax4</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># create time vector</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">ppg</span><span class="p">))</span><span class="o">/</span><span class="n">signal</span><span class="o">.</span><span class="n">fs</span>
+
+<span class="c1"># plot filtered PPG signal</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">ppg</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;PPG&#39;</span><span class="p">)</span>
+
+<span class="c1"># plot first derivative</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">vpg</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;PPG</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># plot second derivative</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">apg</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;PPG</span><span class="se">\&#39;\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># plot third derivative</span>
+<span class="n">ax4</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">jpg</span><span class="p">)</span>
+<span class="n">ax4</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;Time (s)&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;PPG</span><span class="se">\&#39;\&#39;\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># show plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/PPG_derivs.png" class="align-center" src="../_images/PPG_derivs.png" />
+<p>Store the derived signals in a class</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a PPG class</span>
 <span class="n">signal</span><span class="o">.</span><span class="n">filtering</span> <span class="o">=</span> <span class="n">filtering</span>
 <span class="n">signal</span><span class="o">.</span><span class="n">correct</span> <span class="o">=</span> <span class="n">correct</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">PPG</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
@@ -151,18 +226,22 @@ import pandas as pd
 </div>
 </section>
 <section id="identify-fiducial-points">
-<h2>Identify fiducial points:<a class="headerlink" href="#identify-fiducial-points" title="Permalink to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Init the fiducials package</span>
-<span class="n">fpex</span> <span class="o">=</span> <span class="n">FP</span><span class="o">.</span><span class="n">FpCollection</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-
-<span class="c1"># Extract fiducial points</span>
-<span class="n">fiducials</span> <span class="o">=</span> <span class="n">fpex</span><span class="o">.</span><span class="n">get_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">correct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fiducial points:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">fiducials</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">)</span>
+<h3>Identify fiducial points:<a class="headerlink" href="#identify-fiducial-points" title="Permalink to this heading"></a></h3>
+<p>Initialise the fiducials package</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fpex</span> <span class="o">=</span> <span class="n">FP</span><span class="o">.</span><span class="n">FpCollection</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Extract fiducial points</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fiducials</span> <span class="o">=</span> <span class="n">fpex</span><span class="o">.</span><span class="n">get_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">correct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># here the starting sample is added so that the results are relative to the start of the original signal (rather than the start of the analysed segment)</span>
+</pre></div>
+</div>
+<p>Display the results</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fiducial points:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">fiducials</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="plot-fiducial-points">
-<h2>Plot fiducial points:<a class="headerlink" href="#plot-fiducial-points" title="Permalink to this heading"></a></h2>
+<h3>Plot fiducial points:<a class="headerlink" href="#plot-fiducial-points" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a fiducials class</span>
 <span class="n">fp</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fiducials</span><span class="p">)</span>
 
@@ -174,6 +253,15 @@ import pandas as pd
 <dt>PPG fiducial points</dt><dd><img alt="../_images/PPG_MAT_sample.png" class="align-center" src="../_images/PPG_MAT_sample.png" />
 </dd>
 </dl>
+</section>
+</section>
+<section id="calculate-ppg-sqi">
+<h2>Calculate PPG SQI:<a class="headerlink" href="#calculate-ppg-sqi" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get PPG SQI</span>
+<span class="n">ppgSQI</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SQI</span><span class="o">.</span><span class="n">get_ppgSQI</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">sp</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean PPG SQI: &#39;</span><span class="p">,</span> <span class="n">ppgSQI</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="calculate-ppg-biomarkers">
 <h2>Calculate PPG biomarkers:<a class="headerlink" href="#calculate-ppg-biomarkers" title="Permalink to this heading"></a></h2>
@@ -188,14 +276,6 @@ import pandas as pd
 
 <span class="c1"># Create a biomarkers class</span>
 <span class="n">bm</span> <span class="o">=</span> <span class="n">Biomarkers</span><span class="p">(</span><span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span><span class="p">,</span> <span class="n">bm_stats</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="calculate-ppg-sqi">
-<h2>Calculate PPG SQI:<a class="headerlink" href="#calculate-ppg-sqi" title="Permalink to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get PPG SQI</span>
-<span class="n">ppgSQI</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SQI</span><span class="o">.</span><span class="n">get_ppgSQI</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">sp</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean PPG SQI: &#39;</span><span class="p">,</span> <span class="n">ppgSQI</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
