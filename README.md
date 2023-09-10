@@ -58,7 +58,7 @@ pandas == 1.5.0
 
 wfdb == 4.0.0
 
-mne == 1.2.0
+mne == 1.5.0
 
 All the python requirements are installed when the toolbox is installed, so there is no need for any additional commands.
 

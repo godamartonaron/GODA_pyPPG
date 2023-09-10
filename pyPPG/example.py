@@ -13,7 +13,7 @@ import pandas as pd
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, correct=True,process_type="both",
+def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, correct=True, process_type="both",
                 savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="csv", fiducials=[], print_flag=False):
     '''
     This is an example code for PPG analysis. The main parts:
@@ -54,7 +54,9 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
     :param print_flag: a bool for print message
     :type print_flag: bool
 
-    :return: fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points
+    :return:
+        - fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points
+        - s: object of PPG signal
 
     Example:
 
