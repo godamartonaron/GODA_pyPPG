@@ -140,11 +140,6 @@ The main components:
       -  `Collection of
          Physionet <https://physionet.org/content/?topic=ppg>`__
 
-3. **Configuration**
-
-   -  A set of configuration files that adapt the PPG peak detection and
-      **pyPPG** algorithms to work with sleep PPG data.
-
 All PPG measures can be further adapted for the analysis for efficient
 heart rate measurement as well as health assessment with clinically
 relevant biomarkers.

@@ -31,7 +31,7 @@ def Preprocessing(s: DotMap, filtering: bool):
     else:
         ppg=s.v
 
-    if s.fs >= 150:
+    if s.fs >= 999:
         ## PPG' filtering
         win = round(s.fs * 0.01)
         B1 = 1 / win * np.ones(win)
@@ -41,7 +41,7 @@ def Preprocessing(s: DotMap, filtering: bool):
         ## PPG" filtering
         win = round(s.fs * 0.02)
         B2 = 1 / win * np.ones(win)
-        dx = np.gradient(s.v)
+        dx = np.gradient(ppg)
         dx = filtfilt(B, 1, dx)
         ddx = np.gradient(dx)
         apg = filtfilt(B2, 1, ddx)

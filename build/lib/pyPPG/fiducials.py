@@ -97,7 +97,7 @@ class FpCollection:
     ###########################################################################
     ############################ PPG beat detector ############################
     ###########################################################################
-    def get_peak_onset(self, peak_detector: str):
+    def get_peak_onset(self, peak_detector='PPGdet'):
         '''PPGdet detects beats in a photoplethysmogram (PPG) signal
         using the improved 'Automatic Beat Detection' of Aboy M et al.
 

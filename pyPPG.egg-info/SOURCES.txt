@@ -10,8 +10,6 @@ pyPPG/example.py
 pyPPG/fiducials.py
 pyPPG/ppg_sqi.py
 pyPPG/preproc.py
-pyPPG/sample_fig.py
-pyPPG/test_mesa.py
 pyPPG.egg-info/PKG-INFO
 pyPPG.egg-info/SOURCES.txt
 pyPPG.egg-info/dependency_links.txt

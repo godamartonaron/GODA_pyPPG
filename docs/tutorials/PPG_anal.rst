@@ -160,13 +160,13 @@ Extract fiducial points
 
 .. code-block:: python
 
-    fiducials = fpex.get_fiducials(s, correct=True) # here the starting sample is added so that the results are relative to the start of the original signal (rather than the start of the analysed segment)
+    fiducials = fpex.get_fiducials(s, correct=True)
 
 Display the results
 
 .. code-block:: python
 
-    print("Fiducial points:\n",fiducials + s.start_sig)
+    print("Fiducial points:\n",fiducials + s.start_sig) # here the starting sample is added so that the results are relative to the start of the original signal (rather than the start of the analysed segment)
 
 
 Plot fiducial points:
@@ -216,7 +216,7 @@ ______________
 .. code-block:: python
 
     # Save PPG struct, fiducial points, biomarkers
-    fp_new = Fiducials(fp.get_fp() + s.start_sig)
+    fp_new = Fiducials(fp.get_fp() + s.start_sig) # here the starting sample is added so that the results are relative to the start of the original signal (rather than the start of the analysed segment)
     save_data(s, fp_new, bm, savingformat, savingfolder)
 
 

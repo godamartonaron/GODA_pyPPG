@@ -14,7 +14,7 @@ import pandas as pd
 ################################## EXAMPLE ################################
 ###########################################################################
 def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, correct=True,process_type="both",
-                savingfolder="temp_dir", savefig=True, savingformat="csv", fiducials=[], print_flag=False):
+                savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="csv", fiducials=[], print_flag=False):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -47,6 +47,8 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
     :type savingfolder: str
     :param savefig: a bool for current figure saving
     :type savefig: bool
+    :param show_fig: a bool for show figure
+    :type show_fig: bool
     :param savingformat: file format of the saved date, the provided file formats .mat and .csv
     :type savingformat: str
     :param print_flag: a bool for print message
@@ -95,7 +97,7 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
         fp = Fiducials(fiducials)
 
         # Plot fiducial points
-        plot_fiducials(s, fp, savingfolder, print_flag)
+        plot_fiducials(s, fp, savingfolder, show_fig, print_flag)
 
     ## Get Biomarkers and Statistics
     if process_type == 'biomarkers' or process_type == 'both':
@@ -120,7 +122,7 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
 
     if print_flag: print('Program finished')
     
-    return fiducials + s.start_sig
+    return fiducials + s.start_sig, s
 
 ###########################################################################
 ############################## RUN EXAMPLE CODE ###########################

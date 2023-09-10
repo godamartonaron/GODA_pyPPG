@@ -133,7 +133,7 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
 ###########################################################################
 ########################### Plot Fiducial points ##########################
 ###########################################################################
-def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, print_flag=True):
+def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, show_fig = True, print_flag=True):
     """
     Plot fiducial points of the filtered PPG signal.
 
@@ -142,6 +142,8 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, print_f
     :param fp: object of fiducial points
     :type fp: pyPPG.Fiducials object
     :param savingfolder: location of the saved figure
+    :param show_fig: a bool for show figure
+    :type show_fig: bool
     :param print_flag: a bool for print message
     :type print_flag: bool
     """
@@ -224,7 +226,7 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, print_f
 
     plt.xlabel('Time [s]', fontsize=20)
     plt.xticks(major_ticks,major_ticks_names, fontsize=20)
-    plt.show()
+    if show_fig: plt.show()
 
     canvas = FigureCanvas(fig)
     tmp_dir=savingfolder+os.sep+'PPG_Figures'+os.sep

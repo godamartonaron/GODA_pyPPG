@@ -212,7 +212,7 @@
 <span class="c1">###########################################################################</span>
 <span class="c1">########################### Plot Fiducial points ##########################</span>
 <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="plot_fiducials"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.plot_fiducials">[docs]</a><span class="k">def</span> <span class="nf">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fp</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">Fiducials</span><span class="p">,</span> <span class="n">savingfolder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">print_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_fiducials"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.plot_fiducials">[docs]</a><span class="k">def</span> <span class="nf">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fp</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">Fiducials</span><span class="p">,</span> <span class="n">savingfolder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">show_fig</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">print_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot fiducial points of the filtered PPG signal.</span>
 
@@ -221,6 +221,8 @@
 <span class="sd">    :param fp: object of fiducial points</span>
 <span class="sd">    :type fp: pyPPG.Fiducials object</span>
 <span class="sd">    :param savingfolder: location of the saved figure</span>
+<span class="sd">    :param show_fig: a bool for show figure</span>
+<span class="sd">    :type show_fig: bool</span>
 <span class="sd">    :param print_flag: a bool for print message</span>
 <span class="sd">    :type print_flag: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -303,7 +305,7 @@
 
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [s]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">major_ticks</span><span class="p">,</span><span class="n">major_ticks_names</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">show_fig</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="n">canvas</span> <span class="o">=</span> <span class="n">FigureCanvas</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
     <span class="n">tmp_dir</span><span class="o">=</span><span class="n">savingfolder</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">+</span><span class="s1">&#39;PPG_Figures&#39;</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span>

@@ -110,7 +110,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ppg</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">v</span>
 
-    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">&gt;=</span> <span class="mi">150</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">&gt;=</span> <span class="mi">999</span><span class="p">:</span>
         <span class="c1">## PPG&#39; filtering</span>
         <span class="n">win</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">)</span>
         <span class="n">B1</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">win</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
@@ -120,7 +120,7 @@
         <span class="c1">## PPG&quot; filtering</span>
         <span class="n">win</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">*</span> <span class="mf">0.02</span><span class="p">)</span>
         <span class="n">B2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">win</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
-        <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">ppg</span><span class="p">)</span>
         <span class="n">dx</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
         <span class="n">ddx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span>
         <span class="n">apg</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ddx</span><span class="p">)</span>

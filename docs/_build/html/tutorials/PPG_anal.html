@@ -232,11 +232,11 @@
 </pre></div>
 </div>
 <p>Extract fiducial points</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fiducials</span> <span class="o">=</span> <span class="n">fpex</span><span class="o">.</span><span class="n">get_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">correct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># here the starting sample is added so that the results are relative to the start of the original signal (rather than the start of the analysed segment)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fiducials</span> <span class="o">=</span> <span class="n">fpex</span><span class="o">.</span><span class="n">get_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">correct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Display the results</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fiducial points:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">fiducials</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fiducial points:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">fiducials</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">)</span> <span class="c1"># here the starting sample is added so that the results are relative to the start of the original signal (rather than the start of the analysed segment)</span>
 </pre></div>
 </div>
 </section>
@@ -282,7 +282,7 @@
 <section id="save-ppg-data">
 <h2>Save PPG data:<a class="headerlink" href="#save-ppg-data" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save PPG struct, fiducial points, biomarkers</span>
-<span class="n">fp_new</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">get_fp</span><span class="p">()</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">)</span>
+<span class="n">fp_new</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">get_fp</span><span class="p">()</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">)</span> <span class="c1"># here the starting sample is added so that the results are relative to the start of the original signal (rather than the start of the analysed segment)</span>
 <span class="n">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp_new</span><span class="p">,</span> <span class="n">bm</span><span class="p">,</span> <span class="n">savingformat</span><span class="p">,</span> <span class="n">savingfolder</span><span class="p">)</span>
 </pre></div>
 </div>
