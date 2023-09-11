@@ -61,7 +61,7 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
     try:
         sig_format=sig_path[len(sig_path)-sig_path[::-1].index('.'):]
     except:
-        print('Invalid signal path!')
+        raise('Invalid signal path!')
 
     if sig_format=='mat':
         input_sig = scipy.io.loadmat(sig_path)
@@ -108,7 +108,7 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
                 sig = mne.io.read_raw_edf(sig_path, include=input_name)
                 sig = -sig.get_data().squeeze()
             except:
-                print('There is no valid channel for PPG in the .edf file!')
+                raise('There is no valid channel for PPG in the .edf file!')
 
         try:
             fs = int(np.round(input_sig.info['sfreq']))
@@ -124,7 +124,11 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
     else:
         s.end_sig = len(sig)
 
-    s.v=sig[s.start_sig:s.end_sig]
+    try:
+        s.v=sig[s.start_sig:s.end_sig]
+    except:
+        raise('There is no valid PPG signal!')
+
     s.fs=fs
     s.name=rec_name
 
@@ -320,6 +324,6 @@ def save_data(s: pyPPG.PPG, fp: pyPPG.Fiducials, bm: pyPPG.Biomarkers, savingfor
             matlab_struct = tmp_df.to_dict(orient='list')
             scipy.io.savemat(file_name,matlab_struct)
     else:
-        if print_flag: print('The file format is not suported for data saving! You can use "mat" or "csv" file formats.')
+        raise('The file format is not suported for data saving! You can use "mat" or "csv" file formats.')
 
     if print_flag: print('Results have been saved into the "'+tmp_dir+'".')
