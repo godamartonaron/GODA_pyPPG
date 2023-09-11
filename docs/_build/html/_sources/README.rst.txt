@@ -7,7 +7,7 @@ standard biomarkers.
 
 If you use the pyPPG resource, please cite:
 
-*Goda M, Charlton PH, and Behar J,*\ **'pyPPG: A Python toolbox for
+*Goda MA, Charlton PH, and Behar JA,*\ **'pyPPG: A Python toolbox for
 comprehensive photoplethysmography signal analysis'**\ *, [Under
 review]*
 

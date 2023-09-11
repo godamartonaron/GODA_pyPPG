@@ -5,7 +5,7 @@ A toolbox for photoplethysmogram (PPG) analysis, including beat detection, fiduc
 
 If you use the pyPPG resource, please cite:
 
-_Goda M, Charlton PH, and Behar J, **'pyPPG: A Python toolbox for comprehensive
+_Goda MA, Charlton PH, and Behar JA, **'pyPPG: A Python toolbox for comprehensive
 photoplethysmography signal analysis'**, [Under review]_
 
 ## Introduction

@@ -31,7 +31,7 @@ def Preprocessing(s: DotMap, filtering: bool):
     else:
         ppg=s.v
 
-    if s.fs >= 999:
+    if s.fs >= 150:
         ## PPG' filtering
         win = round(s.fs * 0.01)
         B1 = 1 / win * np.ones(win)

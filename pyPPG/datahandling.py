@@ -15,7 +15,7 @@ from tkinter import simpledialog
 ###########################################################################
 ####################### Data Acquisition from Files #######################
 ###########################################################################
-def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
+def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1, channel='Pleth'):
     """
     Load raw PPG data.
 
@@ -27,6 +27,8 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
     :type fs: int
     :param end_sig: the last sample of the signal to be analysed
     :type end_sig: int
+    :param channel: channel of the file
+    :type channel: channel of the file
 
     :return: s: dictionary of the PPG signal:
 
@@ -100,7 +102,7 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
     elif sig_format == 'edf':
         input_sig = mne.io.read_raw_edf(sig_path)
         try:
-            sig = mne.io.read_raw_edf(sig_path, include='Pleth')
+            sig = mne.io.read_raw_edf(sig_path, include=channel)
             sig = -sig.get_data().squeeze()
         except:
             try:
@@ -137,7 +139,7 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1):
 ###########################################################################
 ########################### Plot Fiducial points ##########################
 ###########################################################################
-def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, show_fig = True, print_flag=True):
+def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, show_fig = True, print_flag=True, use_tk=False):
     """
     Plot fiducial points of the filtered PPG signal.
 
@@ -150,13 +152,20 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, show_fi
     :type show_fig: bool
     :param print_flag: a bool for print message
     :type print_flag: bool
+    :param use_tk: a bool for using tk
+    :type use_tk: bool
     """
 
     # Create a hidden root window to get screen dimensions
-    root = tk.Tk()
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-    root.destroy()
+    if use_tk:
+        root = tk.Tk()
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        root.destroy()
+    else:
+        screen_width = 700
+        screen_height = 1200
+
 
     # Define a scaling factor for the figure size (e.g., 0.8 for 80% of the screen size)
     scaling_factor = 0.8

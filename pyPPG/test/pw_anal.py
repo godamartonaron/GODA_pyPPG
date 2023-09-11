@@ -70,12 +70,14 @@ if __name__ == '__main__':
         annot_error[n] = temp_v
 
     for i in range(0,set_len):
+        print(i)
 
         # Define sampling frequency, load filtered signal, 1st and 2nd derivative
         fs = input_sig['ppg_data']['fs'][0,0][0][0]
         fs = np.squeeze(fs)
 
         ppg_v = input_sig['ppg_data']['filt_sig'][0,i]
+        ppg_v = input_sig['ppg_data']['sig'][0, i]
         ppg_v =np.squeeze(ppg_v)
 
         drt1 = input_sig['ppg_data']['d1'][0,i]
@@ -203,11 +205,11 @@ if __name__ == '__main__':
         if cmp_pc !=1:
 
             ## Preprocessing
-            #s.ppg, s.vpg, s.apg, s.jpg = Preprocessing(s, filtering=True)
+            s.ppg, s.vpg, s.apg, s.jpg = Preprocessing(s, filtering=True)
 
             ## Create a PPG class
             s.filtering = True
-            s.correct = False
+            s.correct = False#True#False
             s_class = PPG(s,check_ppg=False)
 
 
@@ -251,7 +253,7 @@ if __name__ == '__main__':
             ## Un comment 10/09/2023
             strt_dn=det_e
             stp_dn=det_f
-            det_dn = np.argmin(drt3[strt_dn:stp_dn])+strt_dn
+            # det_dn = np.argmin(drt3[strt_dn:stp_dn])+strt_dn
 
             if det_w>det_f:
                 det_w = det_f
@@ -281,43 +283,65 @@ if __name__ == '__main__':
                 pass
 
             ## Comment 10/09/2023
-            # Correct v-point
-            if det_v>det_e:
-                det_v = np.argmin(drt1[det_u:det_e])+ det_u
-                det_w = find_peaks(drt1[det_v:det_f])[0][0] + det_v
-
-            # Correct w-point
-            try:
-                temp_end = int(np.diff(ons) * 0.8)
-                temp_segment = s.filt_d1[int(det_dn):int(ons[0] + temp_end)]
-                min_w = find_peaks(-temp_segment)[0] + det_dn
-                if len(min_w)>1:
-                    min_w=min_w[0]
-
-                if det_w<det_e:
-                    det_w = np.argmax(drt1[det_e:det_f])+det_e
-
-                if det_w>det_f:
-                    det_w = det_f
-
-                if det_w > min_w:
-                    det_w = min_w
-            except:
-                pass
-
-            # Correct f-point
-            try:
-                temp_end = int(np.diff(ons) * 0.8)
-                temp_segment = s.filt_d2[int(det_e):int(ons[0] + temp_end)]
-                min_f = np.argmin(temp_segment) + det_e
-
-                if det_w > det_f:
-                    det_f = min_f
-            except:
-                pass
+            # # Correct v-point
+            # if det_v>det_e:
+            #     det_v = np.argmin(drt1[det_u:det_e])+ det_u
+            #     det_w = find_peaks(drt1[det_v:det_f])[0][0] + det_v
+            #
+            # # Correct w-point
+            # try:
+            #     temp_end = int(np.diff(ons) * 0.8)
+            #     temp_segment = s.filt_d1[int(det_dn):int(ons[0] + temp_end)]
+            #     min_w = find_peaks(-temp_segment)[0] + det_dn
+            #     if len(min_w)>1:
+            #         min_w=min_w[0]
+            #
+            #     if det_w<det_e:
+            #         det_w = np.argmax(drt1[det_e:det_f])+det_e
+            #
+            #     if det_w>det_f:
+            #         det_w = det_f
+            #
+            #     if det_w > min_w:
+            #         det_w = min_w
+            # except:
+            #     pass
+            #
+            # # Correct f-point
+            # try:
+            #     temp_end = int(np.diff(ons) * 0.8)
+            #     temp_segment = s.filt_d2[int(det_e):int(ons[0] + temp_end)]
+            #     min_f = np.argmin(temp_segment) + det_e
+            #
+            #     if det_w > det_f:
+            #         det_f = min_f
+            # except:
+            #     pass
 
             for n in f_names:
                 exec("M_FID_2['" + n + "'][i] =det_" + n)
+
+            # Calculate distance error
+            for n in f_names:
+                exec (n+".append(np.squeeze(det_"+n+"))")
+                if eval("ref_"+n+".size") > 0:
+                    if n == 'on':
+                        if  cmp_pc:
+                            exec("temp_dist=np.array(np.mean(np.squeeze(ref_"+n+" - det_"+n+")))")
+                        else:
+                            exec("temp_dist=np.array(np.mean(np.squeeze(ref_" + n + "[0] - det_" + n + ")))")
+                    else:
+                        exec("temp_dist=np.squeeze(ref_"+n+" - det_"+n+")")
+                    if eval("temp_dist.size") > 0:
+                        exec("dist_"+ n + ".append(temp_dist)")
+                        exec ("dist_error['"+n+"'][i] = temp_dist")
+
+        elif cmp_pc==1:
+            for n in f_names:
+                if n!='on':
+                    exec("M_FID_2['" + n + "'][i] =det_" + n)
+                else:
+                    exec("M_FID_2['" + n + "'][i] =np.mean(det_" + n+")")
 
             # Calculate distance error
             for n in f_names:

@@ -5,7 +5,7 @@ class PPG:
     '''
     This is class for the input PPG parameters.
     '''
-    def __init__(self,s):
+    def __init__(self,s, check_ppg=True):
         """
         :param s: dictionary  of the PPG signal:
 
@@ -23,12 +23,25 @@ class PPG:
             * s.filtering: a bool for filtering
             * s.correct: a bool for filtering
         :type s: DotMap
+        :param check_ppg: a bool for checking ppg length and sampling frequency
+        :type check_ppg: bool
 
         """
 
         if s.fs <= 0:
             raise WrongParameter("Sampling frequency should be strictly positive")
-        _check_shape_(s.v, s.fs)
+
+        if check_ppg: _check_shape_(s.v, s.fs)
+
+        try:
+            s.start_sig>0
+        except:
+            s.start_sig = 0
+
+        try:
+            s.end_sig>-1
+        except:
+            s.end_sig = -1
 
         keys=s.keys()
         keys_list = list(keys)

@@ -3,6 +3,10 @@ PhysioZoo PPG morphological analysis
 
 In this tutorial you will learn how to use **PhysioZoo PPG** to calculate morphological PPG biomarkers (i.e. pulse wave features) and export their values.
 
+If you use the pyPPG resource, please cite:
+
+*Goda MA, Charlton PH, and Behar JA*, '**pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis**', [Under review]
+
 **Introduction**
 ----------------------
 The PPG signal is an optical measurement of the arterial pulse wave `(Charlton et

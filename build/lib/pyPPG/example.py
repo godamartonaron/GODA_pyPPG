@@ -53,6 +53,8 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
     :type savingformat: str
     :param print_flag: a bool for print message
     :type print_flag: bool
+    :param use_tk: a bool for using tk
+    :type use_tk: bool
 
     :return:
         - fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points
@@ -70,7 +72,7 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
     '''
 
     ## Loading a raw PPG signal
-    signal = load_data(data_path, fs, start_sig, end_sig)
+    signal = load_data(data_path, fs, start_sig, end_sig, channel='Pleth')
 
     ## Preprocessing
     signal.ppg, signal.vpg, signal.apg, signal.jpg = Preprocessing(signal, filtering=filtering)
@@ -99,7 +101,7 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1, filtering=True, co
         fp = Fiducials(fiducials)
 
         # Plot fiducial points
-        plot_fiducials(s, fp, savingfolder, show_fig, print_flag)
+        plot_fiducials(s, fp, savingfolder, show_fig, print_flag, use_tk=False)
 
     ## Get Biomarkers and Statistics
     if process_type == 'biomarkers' or process_type == 'both':
