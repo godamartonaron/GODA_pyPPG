@@ -121,8 +121,8 @@
 <li><p>Import required components from pyPPG</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyPPG</span> <span class="kn">import</span> <span class="n">PPG</span><span class="p">,</span> <span class="n">Fiducials</span><span class="p">,</span> <span class="n">Biomarkers</span>
-<span class="kn">from</span> <span class="nn">pyPPG.preproc</span> <span class="kn">import</span> <span class="n">Preprocessing</span>
 <span class="kn">from</span> <span class="nn">pyPPG.datahandling</span> <span class="kn">import</span> <span class="n">load_data</span><span class="p">,</span> <span class="n">plot_fiducials</span><span class="p">,</span> <span class="n">save_data</span>
+    <span class="kn">import</span> <span class="nn">pyPPG.preproc</span> <span class="k">as</span> <span class="nn">PP</span>
 <span class="kn">import</span> <span class="nn">pyPPG.fiducials</span> <span class="k">as</span> <span class="nn">FP</span>
 <span class="kn">import</span> <span class="nn">pyPPG.biomarkers</span> <span class="k">as</span> <span class="nn">BM</span>
 <span class="kn">import</span> <span class="nn">pyPPG.ppg_sqi</span> <span class="k">as</span> <span class="nn">SQI</span>
@@ -145,8 +145,6 @@
 <span class="n">fs</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># the sampling frequency</span>
 <span class="n">start_sig</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># the first sample of the signal to be analysed</span>
 <span class="n">end_sig</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># the last sample of the signal to be analysed (here a value of &#39;-1&#39; indicates the last sample)</span>
-<span class="n">correct</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># whether or not to apply correction to the detected fiducial points</span>
-<span class="n">filtering</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># whether or not to filter the PPG signal</span>
 <span class="n">savingfolder</span> <span class="o">=</span> <span class="s1">&#39;temp_dir&#39;</span>
 <span class="n">savingformat</span> <span class="o">=</span> <span class="s1">&#39;csv&#39;</span>
 </pre></div>
@@ -155,7 +153,7 @@
 <section id="loading-a-raw-ppg-signal">
 <h3>Loading a raw PPG signal:<a class="headerlink" href="#loading-a-raw-ppg-signal" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the raw PPG signal</span>
-<span class="n">signal</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">start_sig</span><span class="p">,</span> <span class="n">end_sig</span><span class="p">)</span>
+<span class="n">signal</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">start_sig</span><span class="o">=</span><span class="n">start_sig</span><span class="p">,</span> <span class="n">end_sig</span><span class="o">=</span><span class="n">end_sig</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -186,7 +184,12 @@
 <section id="prepare-the-ppg-data">
 <h3>Prepare the PPG data:<a class="headerlink" href="#prepare-the-ppg-data" title="Permalink to this heading"></a></h3>
 <p>Filter the PPG signal and obtain first, second and third derivatives (vpg, apg, and jpg respectively).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">signal</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">vpg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">apg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">jpg</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">filtering</span><span class="o">=</span><span class="n">filtering</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">signal</span><span class="o">.</span><span class="n">filtering</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># whether or not to filter the PPG signal</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">fL</span><span class="o">=</span><span class="mf">0.5</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">fH</span><span class="o">=</span><span class="mi">12</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">order</span><span class="o">=</span><span class="mi">4</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">sm_wins</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ppg&#39;</span><span class="p">:</span><span class="mi">50</span><span class="p">,</span><span class="s1">&#39;vpg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;apg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;jpg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">}</span>
+<span class="n">signal</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">vpg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">apg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">jpg</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><span class="n">signal</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Plot the derived signals</p>
@@ -219,20 +222,19 @@
 <img alt="../_images/PPG_derivs.png" class="align-center" src="../_images/PPG_derivs.png" />
 <p>Store the derived signals in a class</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a PPG class</span>
-<span class="n">signal</span><span class="o">.</span><span class="n">filtering</span> <span class="o">=</span> <span class="n">filtering</span>
 <span class="n">signal</span><span class="o">.</span><span class="n">correct</span> <span class="o">=</span> <span class="n">correct</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">PPG</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">PPG</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">signal</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="identify-fiducial-points">
 <h3>Identify fiducial points:<a class="headerlink" href="#identify-fiducial-points" title="Permalink to this heading"></a></h3>
 <p>Initialise the fiducials package</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fpex</span> <span class="o">=</span> <span class="n">FP</span><span class="o">.</span><span class="n">FpCollection</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fpex</span> <span class="o">=</span> <span class="n">FP</span><span class="o">.</span><span class="n">FpCollection</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Extract fiducial points</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fiducials</span> <span class="o">=</span> <span class="n">fpex</span><span class="o">.</span><span class="n">get_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">correct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fiducials</span> <span class="o">=</span> <span class="n">fpex</span><span class="o">.</span><span class="n">get_fiducials</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Display the results</p>
@@ -243,10 +245,10 @@
 <section id="plot-fiducial-points">
 <h3>Plot fiducial points:<a class="headerlink" href="#plot-fiducial-points" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a fiducials class</span>
-<span class="n">fp</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fiducials</span><span class="p">)</span>
+<span class="n">fp</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fp</span><span class="o">=</span><span class="n">fiducials</span><span class="p">)</span>
 
 <span class="c1"># Plot fiducial points</span>
-<span class="n">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">savingfolder</span><span class="p">)</span>
+<span class="n">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">fp</span><span class="p">,</span> <span class="n">savingfolder</span><span class="o">=</span><span class="n">savingfolder</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl>
@@ -258,7 +260,7 @@
 <section id="calculate-ppg-sqi">
 <h2>Calculate PPG SQI:<a class="headerlink" href="#calculate-ppg-sqi" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get PPG SQI</span>
-<span class="n">ppgSQI</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SQI</span><span class="o">.</span><span class="n">get_ppgSQI</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">sp</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ppgSQI</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SQI</span><span class="o">.</span><span class="n">get_ppgSQI</span><span class="p">(</span><span class="n">ppg</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="n">fp</span><span class="o">.</span><span class="n">sp</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean PPG SQI: &#39;</span><span class="p">,</span> <span class="n">ppgSQI</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -266,7 +268,7 @@
 <section id="calculate-ppg-biomarkers">
 <h2>Calculate PPG biomarkers:<a class="headerlink" href="#calculate-ppg-biomarkers" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Init the biomarkers package</span>
-<span class="n">bmex</span> <span class="o">=</span> <span class="n">BM</span><span class="o">.</span><span class="n">BmCollection</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+<span class="n">bmex</span> <span class="o">=</span> <span class="n">BM</span><span class="o">.</span><span class="n">BmCollection</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">fp</span><span class="p">)</span>
 
 <span class="c1"># Extract biomarkers</span>
 <span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span><span class="p">,</span> <span class="n">bm_stats</span> <span class="o">=</span> <span class="n">bmex</span><span class="o">.</span><span class="n">get_biomarkers</span><span class="p">()</span>
@@ -275,7 +277,7 @@
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tmp_keys</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">bm_stats</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
 <span class="c1"># Create a biomarkers class</span>
-<span class="n">bm</span> <span class="o">=</span> <span class="n">Biomarkers</span><span class="p">(</span><span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span><span class="p">,</span> <span class="n">bm_stats</span><span class="p">)</span>
+<span class="n">bm</span> <span class="o">=</span> <span class="n">Biomarkers</span><span class="p">(</span><span class="n">bm_defs</span><span class="o">=</span><span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span><span class="o">=</span><span class="n">bm_vals</span><span class="p">,</span> <span class="n">bm_stats</span><span class="o">=</span><span class="n">bm_stats</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -283,7 +285,7 @@
 <h2>Save PPG data:<a class="headerlink" href="#save-ppg-data" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save PPG struct, fiducial points, biomarkers</span>
 <span class="n">fp_new</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">get_fp</span><span class="p">()</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">)</span> <span class="c1"># here the starting sample is added so that the results are relative to the start of the original signal (rather than the start of the analysed segment)</span>
-<span class="n">save_data</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp_new</span><span class="p">,</span> <span class="n">bm</span><span class="p">,</span> <span class="n">savingformat</span><span class="p">,</span> <span class="n">savingfolder</span><span class="p">)</span>
+<span class="n">save_data</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">fp_new</span><span class="p">,</span> <span class="n">bm</span><span class="o">=</span><span class="n">bm</span><span class="p">,</span> <span class="n">savingformat</span><span class="o">=</span><span class="n">savingformat</span><span class="p">,</span> <span class="n">savingfolder</span><span class="o">=</span><span class="n">savingfolder</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl>

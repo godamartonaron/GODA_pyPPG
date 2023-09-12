@@ -1,3 +1,4 @@
+import pyPPG
 from pyPPG import PPG, Fiducials, Biomarkers
 from pyPPG.datahandling import load_data, plot_fiducials, save_data
 import pyPPG.preproc as PP
@@ -13,9 +14,9 @@ import pandas as pd
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1,  fiducials=[], process_type="both", channel="",
+def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1, fiducials=pd.DataFrame(), process_type="both", channel="",
                 filtering=True, fL=0.5, fH=12, order=4, sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}, correct=True,
-                savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="csv", print_flag=False, use_tk=False):
+                savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="csv", print_flag=True, use_tk=False):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -101,7 +102,7 @@ def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1,  fiducials=[],
 
     ## Create a PPG class
     signal.correct = correct
-    s = PPG(signal)
+    s = PPG(s=signal)
 
     ## Get Fiducial points
     if process_type == 'fiducials' or process_type == 'both':
@@ -109,23 +110,23 @@ def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1,  fiducials=[],
         fpex = FP.FpCollection(s=s)
 
         # Extract fiducial points
-        fiducials = fpex.get_fiducials(s=s, correct=correct)
+        fiducials = fpex.get_fiducials(s=s)
         if print_flag: print("Fiducial points:\n", fiducials + s.start_sig)
 
     ## PPG SQI
-    fp = Fiducials(fp=fiducials)
-    ppgSQI = round(np.mean(SQI.get_ppgSQI(ppg=s.ppg, fs=s.fs, annotation=fp.sp)) * 100, 2)
-    if print_flag: print('Mean PPG SQI: ', ppgSQI, '%')
-
-    if savefig:
-        # Create a fiducials class
         fp = Fiducials(fp=fiducials)
+        ppgSQI = round(np.mean(SQI.get_ppgSQI(ppg=s.ppg, fs=s.fs, annotation=fp.sp)) * 100, 2)
+        if print_flag: print('Mean PPG SQI: ', ppgSQI, '%')
 
-        # Plot fiducial points
-        plot_fiducials(s=s, fp=fp, savingfolder=savingfolder, show_fig=show_fig, print_flag=print_flag, use_tk=use_tk)
+        if savefig:
+            # Create a fiducials class
+            fp = Fiducials(fp=fiducials)
+
+            # Plot fiducial points
+            plot_fiducials(s=s, fp=fp, savingfolder=savingfolder, show_fig=show_fig, print_flag=print_flag, use_tk=use_tk)
 
     ## Get Biomarkers and Statistics
-    if process_type == 'biomarkers' or process_type == 'both':
+    if (process_type == 'biomarkers' or process_type == 'both') and len(fiducials)>0:
         # Initialise the biomarkers package
         fp = Fiducials(fp=fiducials)
         bmex = BM.BmCollection(s=s, fp=fp)

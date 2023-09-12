@@ -28,8 +28,8 @@ Import Python packages:
 .. code-block:: python
 
     from pyPPG import PPG, Fiducials, Biomarkers
-    from pyPPG.preproc import Preprocessing
     from pyPPG.datahandling import load_data, plot_fiducials, save_data
+	import pyPPG.preproc as PP
     import pyPPG.fiducials as FP
     import pyPPG.biomarkers as BM
     import pyPPG.ppg_sqi as SQI
@@ -55,8 +55,6 @@ The following input parameters are inputs to the `pyPPG.example <https://pyppg.r
     fs = 100 # the sampling frequency
     start_sig = 0 # the first sample of the signal to be analysed
     end_sig = -1 # the last sample of the signal to be analysed (here a value of '-1' indicates the last sample)
-    correct = True # whether or not to apply correction to the detected fiducial points
-    filtering = True # whether or not to filter the PPG signal
     savingfolder = 'temp_dir'
     savingformat = 'csv'
 
@@ -66,7 +64,7 @@ Loading a raw PPG signal:
 .. code-block:: python
 
     # Load the raw PPG signal
-    signal = load_data(data_path, fs, start_sig, end_sig)
+    signal = load_data(data_path=data_path, fs=fs, start_sig=start_sig, end_sig=end_sig)
 
 
 Plot the raw PPG signal:
@@ -104,7 +102,12 @@ Filter the PPG signal and obtain first, second and third derivatives (vpg, apg, 
 
 .. code-block:: python
 
-    signal.ppg, signal.vpg, signal.apg, signal.jpg = Preprocessing(signal, filtering=filtering)
+    signal.filtering = True # whether or not to filter the PPG signal
+	signal.fL=0.5
+	signal.fH=12
+	signal.order=4
+	signal.sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}
+    signal.ppg, signal.vpg, signal.apg, signal.jpg = Preprocessing(signal=signal)
 
 Plot the derived signals
 
@@ -143,9 +146,8 @@ Store the derived signals in a class
 .. code-block:: python
 
     # Create a PPG class
-    signal.filtering = filtering
     signal.correct = correct
-    s = PPG(signal)
+    s = PPG(s=signal)
 
 Identify fiducial points:
 --------------------------
@@ -154,13 +156,13 @@ Initialise the fiducials package
 
 .. code-block:: python
 
-    fpex = FP.FpCollection(s)
+    fpex = FP.FpCollection(s=s)
 
 Extract fiducial points
 
 .. code-block:: python
 
-    fiducials = fpex.get_fiducials(s, correct=True)
+    fiducials = fpex.get_fiducials(s=s)
 
 Display the results
 
@@ -175,10 +177,10 @@ Plot fiducial points:
 .. code-block:: python
 
     # Create a fiducials class
-    fp = Fiducials(fiducials)
+    fp = Fiducials(fp=fiducials)
 
     # Plot fiducial points
-    plot_fiducials(s, fp, savingfolder)
+    plot_fiducials(s=s, fp=fp, savingfolder=savingfolder)
 
 PPG fiducial points
      .. image:: PPG_MAT_sample.png
@@ -190,7 +192,7 @@ _________________________
 .. code-block:: python
 
     # Get PPG SQI
-    ppgSQI = round(np.mean(SQI.get_ppgSQI(s.ppg, s.fs, fp.sp)) * 100, 2)
+    ppgSQI = round(np.mean(SQI.get_ppgSQI(ppg=s.ppg, fs=s.fs, annotation=fp.sp)) * 100, 2)
     print('Mean PPG SQI: ', ppgSQI, '%')
 
 Calculate PPG biomarkers:
@@ -199,7 +201,7 @@ _________________________
 .. code-block:: python
 
     # Init the biomarkers package
-    bmex = BM.BmCollection(s, fp)
+    bmex = BM.BmCollection(s=s, fp=fp)
 
     # Extract biomarkers
     bm_defs, bm_vals, bm_stats = bmex.get_biomarkers()
@@ -208,7 +210,7 @@ _________________________
     for i in tmp_keys: print(i,'\n',bm_stats[i])
 
     # Create a biomarkers class
-    bm = Biomarkers(bm_defs, bm_vals, bm_stats)
+    bm = Biomarkers(bm_defs=bm_defs, bm_vals=bm_vals, bm_stats=bm_stats)
 
 Save PPG data:
 ______________
@@ -217,7 +219,7 @@ ______________
 
     # Save PPG struct, fiducial points, biomarkers
     fp_new = Fiducials(fp.get_fp() + s.start_sig) # here the starting sample is added so that the results are relative to the start of the original signal (rather than the start of the analysed segment)
-    save_data(s, fp_new, bm, savingformat, savingfolder)
+    save_data(s=s, fp=fp_new, bm=bm, savingformat=savingformat, savingfolder=savingfolder)
 
 
 Extracted fiducial points

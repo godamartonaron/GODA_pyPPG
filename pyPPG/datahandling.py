@@ -100,23 +100,23 @@ def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel=
             print('The default sampling frequency is 1 kHz for .txt.')
 
     elif sig_format == 'edf':
-        input_sig = mne.io.read_raw_edf(sig_path)
         try:
-            sig = mne.io.read_raw_edf(sig_path, include=channel)
-            sig = -sig.get_data().squeeze()
+            input_sig = mne.io.read_raw_edf(sig_path, include=channel)
+            sig = -input_sig.get_data().squeeze()
         except:
             try:
                 input_name = simpledialog.askstring("Input", "Define the PPG channel name:")
-                sig = mne.io.read_raw_edf(sig_path, include=input_name)
-                sig = -sig.get_data().squeeze()
+                input_sig = mne.io.read_raw_edf(sig_path, include=input_name)
+                sig = -input_sig.get_data().squeeze()
             except:
                 raise('There is no valid channel for PPG in the .edf file!')
 
-        try:
-            fs = int(np.round(input_sig.info['sfreq']))
-        except:
-            fs = 256
-            print('The default sampling frequency is 256 Hz for .edf.')
+        if np.isnan(fs):
+            try:
+                fs = int(np.round(input_sig.info['sfreq']))
+            except:
+                fs = 256
+                print('The default sampling frequency is 256 Hz for .edf.')
 
     s = DotMap()
 

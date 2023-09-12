@@ -179,23 +179,23 @@
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The default sampling frequency is 1 kHz for .txt.&#39;</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">sig_format</span> <span class="o">==</span> <span class="s1">&#39;edf&#39;</span><span class="p">:</span>
-        <span class="n">input_sig</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">sig_path</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">sig</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">sig_path</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">channel</span><span class="p">)</span>
-            <span class="n">sig</span> <span class="o">=</span> <span class="o">-</span><span class="n">sig</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+            <span class="n">input_sig</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">sig_path</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">channel</span><span class="p">)</span>
+            <span class="n">sig</span> <span class="o">=</span> <span class="o">-</span><span class="n">input_sig</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">input_name</span> <span class="o">=</span> <span class="n">simpledialog</span><span class="o">.</span><span class="n">askstring</span><span class="p">(</span><span class="s2">&quot;Input&quot;</span><span class="p">,</span> <span class="s2">&quot;Define the PPG channel name:&quot;</span><span class="p">)</span>
-                <span class="n">sig</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">sig_path</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">input_name</span><span class="p">)</span>
-                <span class="n">sig</span> <span class="o">=</span> <span class="o">-</span><span class="n">sig</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+                <span class="n">input_sig</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_edf</span><span class="p">(</span><span class="n">sig_path</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">input_name</span><span class="p">)</span>
+                <span class="n">sig</span> <span class="o">=</span> <span class="o">-</span><span class="n">input_sig</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">raise</span><span class="p">(</span><span class="s1">&#39;There is no valid channel for PPG in the .edf file!&#39;</span><span class="p">)</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">fs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">input_sig</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">]))</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">fs</span> <span class="o">=</span> <span class="mi">256</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The default sampling frequency is 256 Hz for .edf.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">fs</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">fs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">input_sig</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;sfreq&#39;</span><span class="p">]))</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">fs</span> <span class="o">=</span> <span class="mi">256</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The default sampling frequency is 256 Hz for .edf.&#39;</span><span class="p">)</span>
 
     <span class="n">s</span> <span class="o">=</span> <span class="n">DotMap</span><span class="p">()</span>
 

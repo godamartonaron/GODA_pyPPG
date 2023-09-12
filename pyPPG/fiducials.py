@@ -29,7 +29,7 @@ class FpCollection:
     ###########################################################################
     ############################ Get Fiducial Points ##########################
     ###########################################################################
-    def get_fiducials(self, s: pyPPG.PPG, correct=True):
+    def get_fiducials(self, s: pyPPG.PPG):
         '''This function calculates the PPG Fiducial Points.
             - Original signal: List of systolic peak, pulse onset, dicrotic notch, and diastolic peak
             - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)
@@ -37,8 +37,6 @@ class FpCollection:
 
         :param s: object of PPG signal
         :type s: pyPPG.PPG object
-        :param correct: a bool for fiducials points corretion
-        :type correct: bool
 
         :return: fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points
         '''
@@ -75,7 +73,7 @@ class FpCollection:
                 fiducials[key][0:len(temp_val)]=temp_val
 
         # Correct Fiducial Points
-        if correct:
+        if s.correct:
             fiducials=self.correct_fiducials(fiducials)
 
         fiducials=fiducials.astype('Int64')
