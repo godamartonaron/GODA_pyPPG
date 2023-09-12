@@ -1,9 +1,4 @@
 from pyPPG.example import*
-from pyPPG.fiducials import FpCollection
-
-# from FiducialPoints import*
-# from Biomarkers import*
-# from Statistics import*
 
 import matplotlib.pyplot as plt
 import scipy.io
@@ -18,7 +13,7 @@ from six.moves import cPickle as pickle
 import matplotlib.mlab
 from scipy.io import savemat
 
-from scipy.signal import kaiserord, firwin, filtfilt, detrend, periodogram, lfilter, find_peaks, firls, resample
+from scipy.signal import filtfilt, find_peaks
 
 ###########################################################################
 ####################### Data Acquisition from Files #######################
@@ -247,12 +242,6 @@ if __name__ == '__main__':
                 except:
                     exec("det_" + fid_names[j] + "=np.NaN")
 
-            # det_u, det_v, det_w = np.array(int(drt1_fp.u)), np.array(int(drt1_fp.v)), np.array(int(drt1_fp.w))
-            # det_a, det_b, det_c, det_d, det_e, det_f = np.array(int(drt2_fp.a)), np.array(int(drt2_fp.b)), np.array(int(drt2_fp.c)), np.array(int(drt2_fp.d)), np.array(int(drt2_fp.e)), np.array(int(drt2_fp.f))
-            # det_p1, det_p2 = np.array(int(drt3_fp.p1)), np.array(int(drt3_fp.p2))
-            ##
-
-
             ### Check fidu
             if det_a>75:
                 win_on=75
@@ -264,7 +253,6 @@ if __name__ == '__main__':
             ## Un comment 10/09/2023
             strt_dn=det_e
             stp_dn=det_f
-            # det_dn = np.argmin(drt3[strt_dn:stp_dn])+strt_dn
 
             if det_w>det_f:
                 det_w = det_f
@@ -273,61 +261,12 @@ if __name__ == '__main__':
                 det_w = np.argmax(drt1[det_e:det_f])+det_e
             ##
 
-            # try:
-            #     temp_segment = s.ppg[int(ref_sp):int(det_dp)]
-            #     min_dn = find_peaks(-temp_segment)[0] + ref_sp
-            #     diff_dn = abs(min_dn - det_dp)
-            #     if len(min_dn) > 0 and diff_dn > round(s.fs / 100):
-            #         try:
-            #             strt_dn = int(ref_sp)
-            #             stp_dn = int(det_f)
-            #             det_dn = find_peaks(-s.ppg[strt_dn:stp_dn])[0][-1] + strt_dn
-            #             if det_dn > min_dn:
-            #                 det_dn = min_dn
-            #         except:
-            #             strt_dn = det_e
-            #             stp_dn = det_f
-            #             det_dn = np.argmin(drt3[strt_dn:stp_dn])+strt_dn
-            #             if det_dn > min_dn:
-            #                 det_dn = min_dn
-            # except:
-            #     pass
 
             ## Comment 10/09/2023
             # # Correct v-point
             if det_v>det_e:
                 det_v = np.argmin(drt1[det_u:det_e])+ det_u
                 det_w = find_peaks(drt1[det_v:det_f])[0][0] + det_v
-
-            # # Correct w-point
-            # try:
-            #     temp_end = int(np.diff(ons) * 0.8)
-            #     temp_segment = s.filt_d1[int(det_dn):int(ons[0] + temp_end)]
-            #     min_w = find_peaks(-temp_segment)[0] + det_dn
-            #     if len(min_w)>1:
-            #         min_w=min_w[0]
-            #
-            #     if det_w<det_e:
-            #         det_w = np.argmax(drt1[det_e:det_f])+det_e
-            #
-            #     if det_w>det_f:
-            #         det_w = det_f
-            #
-            #     if det_w > min_w:
-            #         det_w = min_w
-            # except:
-            #     pass
-
-            # Correct f-point
-            # try:
-            #     temp_end = int(np.diff(ons) * 0.8)
-            #     temp_segment = s.filt_d2[int(det_e):int(ons[0] + temp_end)]
-            #     min_f = np.argmin(temp_segment) + det_e
-            #
-            #     if det_w > det_f:
-            #         det_f = min_f
-            # except:
-            #     pass
 
             for n in f_names:
                 exec("M_FID_2['" + n + "'][i] =det_" + n)
@@ -462,7 +401,6 @@ if __name__ == '__main__':
             plt.xticks(fontsize=20)
             plt.xticks(range(str_sig, end_sig, 500),range(0, len_sig, 500))
             plt.xticks(range(str_sig, end_sig, 100))
-            # plt.grid(color='g', linestyle='--', linewidth=0.5)
             # plt.savefig(('temp_dir/MG_PC_annot5/py_%s.png')%(name))
             plt.show()
             plt.close('all')
@@ -507,27 +445,3 @@ if __name__ == '__main__':
     print('STD',': ', STD)
     print('BIAS', ': ', BIAS)
     print('Program finished!')
-
-def setup_up_abdp_algorithm():
-    """
-    This function setups the filter parameters of the algorithm
-
-    :return: filter parameters of the algorithm, DotMap.
-
-    """
-    # plausible HR limits
-    up=DotMap()
-    up.fl = 30               #lower bound for HR
-    up.fh = 200              #upper bound for HR
-    up.fl_hz = up.fl/60
-    up.fh_hz = up.fh/60
-
-    # Thresholds
-    up.deriv_threshold = 75          #originally 90
-    up.upper_hr_thresh_prop = 2.25   #originally 1.75
-    up.lower_hr_thresh_prop = 0.5    #originally 0.75
-
-    # Other parameters
-    up.win_size = 10    #in secs
-
-    return up

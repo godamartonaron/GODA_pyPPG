@@ -15,7 +15,7 @@ from tkinter import simpledialog
 ###########################################################################
 ####################### Data Acquisition from Files #######################
 ###########################################################################
-def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1, channel='Pleth'):
+def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel='Pleth'):
     """
     Load raw PPG data.
 
@@ -163,8 +163,8 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, show_fi
         screen_height = root.winfo_screenheight()
         root.destroy()
     else:
-        screen_width = 700
-        screen_height = 1200
+        screen_width = 1500
+        screen_height = 800
 
 
     # Define a scaling factor for the figure size (e.g., 0.8 for 80% of the screen size)

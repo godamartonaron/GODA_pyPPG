@@ -13,9 +13,9 @@ import pandas as pd
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1,  fiducials=[], process_type="both", channel="",
+def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1,  fiducials=[], process_type="both", channel="",
                 filtering=True, fL=0.5, fH=12, order=4, sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}, correct=True,
-                savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="csv", print_flag=False, use_tk='False'):
+                savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="csv", print_flag=False, use_tk=False):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -32,10 +32,10 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1,  fiducials=[], pro
 
     :param data_path: path of the PPG signal
     :type data_path: str
-    :param start_sig: beginning the of signal in sample
-    :type start_sig: int
     :param fs: sampling_frequency
     :type fs: int
+    :param start_sig: beginning the of signal in sample
+    :type start_sig: int
     :param end_sig: end of the signal in sample
     :type end_sig: int
     :param fiducials: DataFrame of the fiducial points

@@ -94,7 +94,7 @@
 <span class="c1">###########################################################################</span>
 <span class="c1">####################### Data Acquisition from Files #######################</span>
 <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="load_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.load_data">[docs]</a><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">start_sig</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end_sig</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="s1">&#39;Pleth&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="load_data"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.datahandling.load_data">[docs]</a><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">start_sig</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end_sig</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="s1">&#39;Pleth&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load raw PPG data.</span>
 
@@ -242,8 +242,8 @@
         <span class="n">screen_height</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">winfo_screenheight</span><span class="p">()</span>
         <span class="n">root</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">screen_width</span> <span class="o">=</span> <span class="mi">700</span>
-        <span class="n">screen_height</span> <span class="o">=</span> <span class="mi">1200</span>
+        <span class="n">screen_width</span> <span class="o">=</span> <span class="mi">1500</span>
+        <span class="n">screen_height</span> <span class="o">=</span> <span class="mi">800</span>
 
 
     <span class="c1"># Define a scaling factor for the figure size (e.g., 0.8 for 80% of the screen size)</span>
