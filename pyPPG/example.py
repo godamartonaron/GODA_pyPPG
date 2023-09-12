@@ -97,7 +97,7 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1,  fiducials=[], pro
 
     # Filter and calculate the PPG, PPG', PPG", and PPG'" signals
     signal.filtering = filtering
-    signal.ppg, signal.vpg, signal.apg, signal.jpg = prep.get_signals(signal)
+    signal.ppg, signal.vpg, signal.apg, signal.jpg = prep.get_signals(s=signal)
 
     ## Create a PPG class
     signal.correct = correct
@@ -114,7 +114,7 @@ def ppg_example(data_path="", fs=[], start_sig=0, end_sig=-1,  fiducials=[], pro
 
     ## PPG SQI
     fp = Fiducials(fp=fiducials)
-    ppgSQI = round(np.mean(SQI.get_ppgSQI(s.ppg, s.fs, fp.sp)) * 100, 2)
+    ppgSQI = round(np.mean(SQI.get_ppgSQI(ppg=s.ppg, fs=s.fs, annotation=fp.sp)) * 100, 2)
     if print_flag: print('Mean PPG SQI: ', ppgSQI, '%')
 
     if savefig:
