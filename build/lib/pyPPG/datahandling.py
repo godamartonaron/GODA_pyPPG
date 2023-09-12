@@ -27,8 +27,8 @@ def load_data(data_path = "", fs = [], start_sig = 0, end_sig = -1, channel='Ple
     :type fs: int
     :param end_sig: the last sample of the signal to be analysed
     :type end_sig: int
-    :param channel: channel of the file
-    :type channel: channel of the file
+    :param channel: channel of the .edf file
+    :type channel: channel of the .edf file
 
     :return: s: dictionary of the PPG signal:
 

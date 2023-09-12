@@ -5,9 +5,9 @@ class PPG:
     '''
     This is class for the input PPG parameters.
     '''
-    def __init__(self,s, check_ppg=True):
+    def __init__(self,s: dict, check_ppg=True):
         """
-        :param s: dictionary  of the PPG signal:
+        :param s: dictionary of the PPG signal:
 
             * s.start_sig: beginning of the signal in sample
             * s.end_sig: end of the signal in sample
@@ -67,7 +67,7 @@ class Fiducials:
         '''
         This is class for the PPG fiducial points.
         '''
-        def __init__(self, fp):
+        def __init__(self, fp: pd.DataFrame):
             """
             :param fiducials: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.
 
@@ -119,7 +119,7 @@ class Biomarkers:
         '''
         This is class for the PPG biomarkers.
         '''
-        def __init__(self, bm_defs, bm_vals, bm_stats):
+        def __init__(self, bm_defs:dict, bm_vals:dict, bm_stats:dict):
             """
                 This class constitutes a comprehensive dictionary encompassing biomarker definitions, values, and statistics. Each dictionary is organized into the subsequent subdirectories:
                     * ppg_sig: description for the PPG signal

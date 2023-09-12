@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyPPG.preproc &mdash; pyPPG 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pyPPG
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">pyPPG</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/pyPPG_example.html">pyPPG example code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/PPG_anal.html">Comprehensive PPG Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/PZ_PPG.html">PhysioZoo PPG morphological analysis</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyPPG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../pyPPG.html">pyPPG</a></li>
+      <li class="breadcrumb-item active">pyPPG.preproc</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyPPG.preproc</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">dotmap</span> <span class="kn">import</span> <span class="n">DotMap</span>
+<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">filtfilt</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
+
+<div class="viewcode-block" id="Preprocess"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.preproc.Preprocess">[docs]</a><span class="k">class</span> <span class="nc">Preprocess</span><span class="p">:</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1">######################## Initialization of Biomarkers #####################</span>
+    <span class="c1">###########################################################################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fL</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">fH</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sm_wins</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ppg&#39;</span><span class="p">:</span><span class="mi">50</span><span class="p">,</span><span class="s1">&#39;vpg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;apg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;jpg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">}):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The purpose of the Preprocess class is to filter and calculate the PPG, PPG&#39;, PPG&quot;, and PPG&#39;&quot; signals.</span>
+
+<span class="sd">        :param fL: Lower cutoff frequency (Hz)</span>
+<span class="sd">        :type fL: int</span>
+<span class="sd">        :param fH: Upper cutoff frequency (Hz)</span>
+<span class="sd">        :type fH: int</span>
+<span class="sd">        :param order:Filter order</span>
+<span class="sd">        :type order: int</span>
+<span class="sd">        :param sm_wins: dictionary of smoothing windows in millisecond</span>
+<span class="sd">            - ppg: windows for PPG signal</span>
+<span class="sd">            - vpg: windows for PPG&#39; signal</span>
+<span class="sd">            - apg: windows for PPG&quot; signal</span>
+<span class="sd">            - jpg: windows for PPG&#39;&quot; signal</span>
+<span class="sd">        :type: dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fL</span> <span class="o">=</span> <span class="n">fL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fH</span> <span class="o">=</span> <span class="n">fH</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="o">=</span><span class="n">order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sm_wins</span><span class="o">=</span><span class="n">sm_wins</span>
+
+<div class="viewcode-block" id="Preprocess.get_signals"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.preproc.Preprocess.get_signals">[docs]</a>    <span class="k">def</span> <span class="nf">get_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="n">DotMap</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;This function calculates the preprocessed PPG, PPG&#39;, PPG&quot;, and PPG&#39;&quot; signals.</span>
+
+<span class="sd">        :param s: a struct of PPG signal:</span>
+<span class="sd">            - s.v: a vector of PPG values</span>
+<span class="sd">            - s.fs: the sampling frequency of the PPG in Hz</span>
+<span class="sd">            - s.filtering: a bool for filtering</span>
+<span class="sd">        :type s: DotMap</span>
+
+<span class="sd">        :return: ppg, vpg, apg, jpg: preprocessed PPG, PPG&#39;, PPG&quot;, and PPG&#39;&quot;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1">## PPG filtering</span>
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">filtering</span><span class="p">:</span>
+            <span class="n">fL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fL</span>
+            <span class="n">fH</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fH</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span>
+            <span class="k">if</span> <span class="n">fL</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">b</span><span class="p">,</span><span class="n">a</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">cheby2</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="p">[</span><span class="n">fH</span><span class="p">],</span> <span class="s1">&#39;low&#39;</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">cheby2</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="p">[</span><span class="n">fL</span><span class="p">,</span><span class="n">fH</span><span class="p">],</span> <span class="s1">&#39;bandpass&#39;</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span>
+
+            <span class="n">ppg_cb2</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">&gt;=</span> <span class="mi">75</span><span class="p">:</span>
+                <span class="n">win</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sm_wins</span><span class="p">[</span><span class="s1">&#39;ppg&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+                <span class="n">B</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">win</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
+                <span class="n">ppg</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ppg_cb2</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ppg</span><span class="o">=</span><span class="n">ppg_cb2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ppg</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">v</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">&gt;=</span> <span class="mi">150</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">filtering</span><span class="p">:</span>
+            <span class="c1">## PPG&#39; filtering</span>
+            <span class="n">win</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sm_wins</span><span class="p">[</span><span class="s1">&#39;vpg&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+            <span class="n">B1</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">win</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
+            <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">ppg</span><span class="p">)</span>
+            <span class="n">vpg</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+
+            <span class="c1">## PPG&quot; filtering</span>
+            <span class="n">win</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sm_wins</span><span class="p">[</span><span class="s1">&#39;apg&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+            <span class="n">B2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">win</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
+            <span class="n">ddx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">vpg</span><span class="p">)</span>
+            <span class="n">apg</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ddx</span><span class="p">)</span>
+
+            <span class="c1">## PPG&#39;&quot; filtering</span>
+            <span class="n">win</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sm_wins</span><span class="p">[</span><span class="s1">&#39;jpg&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+            <span class="n">B3</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">win</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
+            <span class="n">dddx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">apg</span><span class="p">)</span>
+            <span class="n">jpg</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">B3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dddx</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">vpg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">ppg</span><span class="p">)</span>
+            <span class="n">apg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">vpg</span><span class="p">)</span>
+            <span class="n">jpg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">apg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ppg</span><span class="p">,</span> <span class="n">vpg</span><span class="p">,</span> <span class="n">apg</span><span class="p">,</span> <span class="n">jpg</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Marton A. GODA, PhD.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

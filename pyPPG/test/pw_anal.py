@@ -205,11 +205,22 @@ if __name__ == '__main__':
         if cmp_pc !=1:
 
             ## Preprocessing
-            s.ppg, s.vpg, s.apg, s.jpg = Preprocessing(s, filtering=True)
+            sm_wins = {'ppg': 50, 'vpg': 10, 'apg': 10, 'jpg': 10}
+            prep = PP.Preprocess(fL=0, fH=12, order=4, sm_wins=sm_wins)
+
+            # Filter and calculate the PPG, PPG', PPG", and PPG'" signals
+            s.filtering = True
+            s.ppg, s.vpg, s.apg, s.jpg = prep.get_signals(s)
+
+            # drt0 = input_sig['ppg_data']['filt_sig'][0, i]
+            # plt.plot(s.jpg / np.max(s.jpg), label='p.jpg')
+            # plt.plot(drt3 / np.max(drt3), label='m.jpg')
+            # plt.legend()
+            # plt.show()
 
             ## Create a PPG class
-            s.filtering = True
-            s.correct = False#True#False
+
+            s.correct = True#False
             s_class = PPG(s,check_ppg=False)
 
 
@@ -262,32 +273,32 @@ if __name__ == '__main__':
                 det_w = np.argmax(drt1[det_e:det_f])+det_e
             ##
 
-            try:
-                temp_segment = s.ppg[int(ref_sp):int(det_dp)]
-                min_dn = find_peaks(-temp_segment)[0] + ref_sp
-                diff_dn = abs(min_dn - det_dp)
-                if len(min_dn) > 0 and diff_dn > round(s.fs / 100):
-                    try:
-                        strt_dn = int(ref_sp)
-                        stp_dn = int(det_f)
-                        det_dn = find_peaks(-s.ppg[strt_dn:stp_dn])[0][-1] + strt_dn
-                        if det_dn > min_dn:
-                            det_dn = min_dn
-                    except:
-                        strt_dn = det_e
-                        stp_dn = det_f
-                        det_dn = np.argmin(drt3[strt_dn:stp_dn])+strt_dn
-                        if det_dn > min_dn:
-                            det_dn = min_dn
-            except:
-                pass
+            # try:
+            #     temp_segment = s.ppg[int(ref_sp):int(det_dp)]
+            #     min_dn = find_peaks(-temp_segment)[0] + ref_sp
+            #     diff_dn = abs(min_dn - det_dp)
+            #     if len(min_dn) > 0 and diff_dn > round(s.fs / 100):
+            #         try:
+            #             strt_dn = int(ref_sp)
+            #             stp_dn = int(det_f)
+            #             det_dn = find_peaks(-s.ppg[strt_dn:stp_dn])[0][-1] + strt_dn
+            #             if det_dn > min_dn:
+            #                 det_dn = min_dn
+            #         except:
+            #             strt_dn = det_e
+            #             stp_dn = det_f
+            #             det_dn = np.argmin(drt3[strt_dn:stp_dn])+strt_dn
+            #             if det_dn > min_dn:
+            #                 det_dn = min_dn
+            # except:
+            #     pass
 
             ## Comment 10/09/2023
             # # Correct v-point
-            # if det_v>det_e:
-            #     det_v = np.argmin(drt1[det_u:det_e])+ det_u
-            #     det_w = find_peaks(drt1[det_v:det_f])[0][0] + det_v
-            #
+            if det_v>det_e:
+                det_v = np.argmin(drt1[det_u:det_e])+ det_u
+                det_w = find_peaks(drt1[det_v:det_f])[0][0] + det_v
+
             # # Correct w-point
             # try:
             #     temp_end = int(np.diff(ons) * 0.8)
@@ -306,8 +317,8 @@ if __name__ == '__main__':
             #         det_w = min_w
             # except:
             #     pass
-            #
-            # # Correct f-point
+
+            # Correct f-point
             # try:
             #     temp_end = int(np.diff(ons) * 0.8)
             #     temp_segment = s.filt_d2[int(det_e):int(ons[0] + temp_end)]
