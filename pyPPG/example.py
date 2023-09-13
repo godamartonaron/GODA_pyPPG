@@ -48,17 +48,17 @@ def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1, fiducials=pd.D
     :param filtering: a bool for filtering
     :type filtering: bool
     :param fL: Lower cutoff frequency (Hz)
-    :type fL: int
+    :type fL: float
     :param fH: Upper cutoff frequency (Hz)
-    :type fH: int
-    :param order:Filter order
+    :type fH: float
+    :param order: Filter order
     :type order: int
-    :param sm_wins: dictionary of smoothing windows in millisecond
+    :param sm_wins: dictionary of smoothing windows in millisecond:
         - ppg: windows for PPG signal
         - vpg: windows for PPG' signal
         - apg: windows for PPG" signal
         - jpg: windows for PPG'" signal
-    :type: dict
+    :type sm_wins: dict
     :param correct: a bool for fiducial points correction
     :type correct: bool
     :param savingfolder: location of the saved data
@@ -71,7 +71,7 @@ def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1, fiducials=pd.D
     :type savingformat: str
     :param print_flag: a bool for print message
     :type print_flag: bool
-    :param use_tk: a bool for using tk
+    :param use_tk: a bool for using tkinter interface
     :type use_tk: bool
 
     :return:
@@ -90,7 +90,7 @@ def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1, fiducials=pd.D
     '''
 
     ## Loading a raw PPG signal
-    signal = load_data(data_path=data_path, fs=fs, start_sig=start_sig, end_sig=end_sig, channel=channel)
+    signal = load_data(data_path=data_path, fs=fs, start_sig=start_sig, end_sig=end_sig, channel=channel, use_tk=True)
 
     ## Preprocessing
     # Initialise the filters
@@ -114,16 +114,15 @@ def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1, fiducials=pd.D
         if print_flag: print("Fiducial points:\n", fiducials + s.start_sig)
 
     ## PPG SQI
+        # Create a fiducials class
         fp = Fiducials(fp=fiducials)
+
+        # Calculate SQI
         ppgSQI = round(np.mean(SQI.get_ppgSQI(ppg=s.ppg, fs=s.fs, annotation=fp.sp)) * 100, 2)
         if print_flag: print('Mean PPG SQI: ', ppgSQI, '%')
 
-        if savefig:
-            # Create a fiducials class
-            fp = Fiducials(fp=fiducials)
-
-            # Plot fiducial points
-            plot_fiducials(s=s, fp=fp, savingfolder=savingfolder, show_fig=show_fig, print_flag=print_flag, use_tk=use_tk)
+    ## Plot fiducial points
+        plot_fiducials(s=s, fp=fp, savefig=savefig, savingfolder=savingfolder, show_fig=show_fig, print_flag=print_flag, use_tk=use_tk)
 
     ## Get Biomarkers and Statistics
     if (process_type == 'biomarkers' or process_type == 'both') and len(fiducials)>0:
@@ -142,13 +141,14 @@ def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1, fiducials=pd.D
         # Create a biomarkers class
         bm = Biomarkers(bm_defs=bm_defs, bm_vals=bm_vals, bm_stats=bm_stats)
 
-        ## Save data
+    ## Save data
         fp_new = Fiducials(fp=fp.get_fp() + s.start_sig)
         save_data(s=s, fp=fp_new, bm=bm, savingformat=savingformat, savingfolder=savingfolder, print_flag=print_flag)
 
     if print_flag: print('Program finished')
 
     return fiducials + s.start_sig, s
+
 
 ###########################################################################
 ############################## RUN EXAMPLE CODE ###########################

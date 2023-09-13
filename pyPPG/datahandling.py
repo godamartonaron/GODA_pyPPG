@@ -15,7 +15,7 @@ from tkinter import simpledialog
 ###########################################################################
 ####################### Data Acquisition from Files #######################
 ###########################################################################
-def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel='Pleth'):
+def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel='Pleth', use_tk=True):
     """
     Load raw PPG data.
 
@@ -29,6 +29,8 @@ def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel=
     :type end_sig: int
     :param channel: channel of the .edf file
     :type channel: channel of the .edf file
+    :param use_tk: a bool for using tkinter interface
+    :type use_tk: bool
 
     :return: s: dictionary of the PPG signal:
 
@@ -105,7 +107,7 @@ def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel=
             sig = -input_sig.get_data().squeeze()
         except:
             try:
-                input_name = simpledialog.askstring("Input", "Define the PPG channel name:")
+                if use_tk: input_name = simpledialog.askstring("Input", "Define the PPG channel name:")
                 input_sig = mne.io.read_raw_edf(sig_path, include=input_name)
                 sig = -input_sig.get_data().squeeze()
             except:
@@ -139,7 +141,7 @@ def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel=
 ###########################################################################
 ########################### Plot Fiducial points ##########################
 ###########################################################################
-def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, show_fig = True, print_flag=True, use_tk=False):
+def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder='temp_dir', show_fig = True, print_flag=True, use_tk=False, new_fig=True, marker=[]):
     """
     Plot fiducial points of the filtered PPG signal.
 
@@ -147,13 +149,20 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, show_fi
     :type s: pyPPG.PPG object
     :param fp: object of fiducial points
     :type fp: pyPPG.Fiducials object
+    :param savefig: a bool for save figure
+    :type savefig: bool
     :param savingfolder: location of the saved figure
     :param show_fig: a bool for show figure
     :type show_fig: bool
     :param print_flag: a bool for print message
     :type print_flag: bool
-    :param use_tk: a bool for using tk
+    :param use_tk: a bool for using tkinter interface
     :type use_tk: bool
+    :param new_fig: a bool for creating new figure
+    :type new_fig: bool
+    :param marker: list of fiducial points markers
+    :type marker: list
+
     """
 
     # Create a hidden root window to get screen dimensions
@@ -174,7 +183,7 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, show_fi
     figure_width = screen_width * scaling_factor
     figure_height = screen_height * scaling_factor
 
-    fig = plt.figure(figsize=(figure_width/100, figure_height/100))
+    if new_fig: fig = plt.figure(figsize=(figure_width/100, figure_height/100))
     ax1 = plt.subplot(411)
     plt.plot(s.ppg, 'k', label=None)
     ax2 = plt.subplot(412, sharex=ax1)
@@ -183,9 +192,11 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, show_fi
     plt.plot(s.apg, 'k', label=None)
     ax4 = plt.subplot(414, sharex=ax3)
     plt.plot(s.jpg, 'k', label=None)
-    fig.subplots_adjust(hspace=0, wspace=0)
+    if new_fig: fig.subplots_adjust(hspace=0, wspace=0)
 
-    marker = ['o', 's', 's','o', 'o', 's', 'o', 'o', 's', 'o', 's', 'o', 's', 'o', 's']
+    if len(marker)==0:
+        marker = ['o', 's', 's','o', 'o', 's', 'o', 'o', 's', 'o', 's', 'o', 's', 'o', 's']
+
     color = ['r', 'b', 'g','m', 'r', 'b', 'g', 'r', 'b', 'g', 'm', 'c', 'k', 'r', 'b']
 
     fid_names = ('sp', 'on', 'dn','dp', 'u', 'v', 'w', 'a', 'b', 'c', 'd', 'e', 'f', 'p1', 'p2')
@@ -241,13 +252,14 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savingfolder: str, show_fi
     plt.xticks(major_ticks,major_ticks_names, fontsize=20)
     if show_fig: plt.show()
 
-    canvas = FigureCanvas(fig)
-    tmp_dir=savingfolder+os.sep+'PPG_Figures'+os.sep
+    if savefig:
+        canvas = FigureCanvas(fig)
+        tmp_dir=savingfolder+os.sep+'PPG_Figures'+os.sep
 
-    os.makedirs(tmp_dir, exist_ok=True)
+        os.makedirs(tmp_dir, exist_ok=True)
 
-    canvas.print_png((tmp_dir+'%s_btwn_%s-%s.png') % (s.name,s.start_sig,s.end_sig))
-    if print_flag: print('Figure has been saved in the "'+savingfolder+'".')
+        canvas.print_png((tmp_dir+'%s_btwn_%s-%s.png') % (s.name,s.start_sig,s.end_sig))
+        if print_flag: print('Figure has been saved in the "'+savingfolder+'".')
 
 ###########################################################################
 ################################# Save Data ###############################

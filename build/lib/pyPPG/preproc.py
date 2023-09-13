@@ -13,17 +13,17 @@ class Preprocess:
         The purpose of the Preprocess class is to filter and calculate the PPG, PPG', PPG", and PPG'" signals.
 
         :param fL: Lower cutoff frequency (Hz)
-        :type fL: int
+        :type fL: float
         :param fH: Upper cutoff frequency (Hz)
-        :type fH: int
-        :param order:Filter order
+        :type fH: float
+        :param order: Filter order
         :type order: int
-        :param sm_wins: dictionary of smoothing windows in millisecond
+        :param sm_wins: dictionary of smoothing windows in millisecond:
             - ppg: windows for PPG signal
             - vpg: windows for PPG' signal
             - apg: windows for PPG" signal
             - jpg: windows for PPG'" signal
-        :type: dict
+        :type sm_wins: dict
 
         """
 

@@ -161,39 +161,25 @@
 <li><p><strong>process_type</strong> (<em>str</em>) – the type of the process, which can be “fiducials”, “biomarkers”, or “both”</p></li>
 <li><p><strong>channel</strong> (<em>channel</em><em> of </em><em>the .edf file</em>) – channel of the .edf file</p></li>
 <li><p><strong>filtering</strong> (<em>bool</em>) – a bool for filtering</p></li>
-<li><p><strong>fL</strong> (<em>int</em>) – Lower cutoff frequency (Hz)</p></li>
-<li><p><strong>fH</strong> (<em>int</em>) – Upper cutoff frequency (Hz)</p></li>
-</ul>
-</dd>
-</dl>
-<p>:param order:Filter order
-:type order: int
-:param sm_wins: dictionary of smoothing windows in millisecond</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>ppg: windows for PPG signal</p></li>
-<li><p>vpg: windows for PPG’ signal</p></li>
-<li><p>apg: windows for PPG” signal</p></li>
-<li><p>jpg: windows for PPG’” signal</p></li>
-</ul>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
+<li><p><strong>fL</strong> (<em>float</em>) – Lower cutoff frequency (Hz)</p></li>
+<li><p><strong>fH</strong> (<em>float</em>) – Upper cutoff frequency (Hz)</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – Filter order</p></li>
+<li><p><strong>sm_wins</strong> (<em>dict</em>) – dictionary of smoothing windows in millisecond:
+- ppg: windows for PPG signal
+- vpg: windows for PPG’ signal
+- apg: windows for PPG” signal
+- jpg: windows for PPG’” signal</p></li>
 <li><p><strong>correct</strong> (<em>bool</em>) – a bool for fiducial points correction</p></li>
 <li><p><strong>savingfolder</strong> (<em>str</em>) – location of the saved data</p></li>
 <li><p><strong>savefig</strong> (<em>bool</em>) – a bool for current figure saving</p></li>
 <li><p><strong>show_fig</strong> (<em>bool</em>) – a bool for show figure</p></li>
 <li><p><strong>savingformat</strong> (<em>str</em>) – file format of the saved date, the provided file formats .mat and .csv</p></li>
 <li><p><strong>print_flag</strong> (<em>bool</em>) – a bool for print message</p></li>
-<li><p><strong>use_tk</strong> (<em>bool</em>) – a bool for using tk</p></li>
+<li><p><strong>use_tk</strong> (<em>bool</em>) – a bool for using tkinter interface</p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><ul class="simple">
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p>fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points</p></li>
 <li><p>s: object of PPG signal</p></li>
 </ul>
@@ -347,25 +333,15 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fL</strong> (<em>int</em>) – Lower cutoff frequency (Hz)</p></li>
-<li><p><strong>fH</strong> (<em>int</em>) – Upper cutoff frequency (Hz)</p></li>
+<li><p><strong>fL</strong> (<em>float</em>) – Lower cutoff frequency (Hz)</p></li>
+<li><p><strong>fH</strong> (<em>float</em>) – Upper cutoff frequency (Hz)</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – Filter order</p></li>
+<li><p><strong>sm_wins</strong> (<em>dict</em>) – dictionary of smoothing windows in millisecond:
+- ppg: windows for PPG signal
+- vpg: windows for PPG’ signal
+- apg: windows for PPG” signal
+- jpg: windows for PPG’” signal</p></li>
 </ul>
-</dd>
-</dl>
-<p>:param order:Filter order
-:type order: int
-:param sm_wins: dictionary of smoothing windows in millisecond</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>ppg: windows for PPG signal</p></li>
-<li><p>vpg: windows for PPG’ signal</p></li>
-<li><p>apg: windows for PPG” signal</p></li>
-<li><p>jpg: windows for PPG’” signal</p></li>
-</ul>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -510,7 +486,7 @@ Written by Qiao Li, February 21, 2011</p>
 <span id="pyppg-datahandling"></span><h2>pyPPG.datahandling<a class="headerlink" href="#module-pyPPG.datahandling" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyPPG.datahandling.load_data">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.datahandling.</span></span><span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">nan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Pleth'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/datahandling.html#load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.datahandling.load_data" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyPPG.datahandling.</span></span><span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">nan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Pleth'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/datahandling.html#load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.datahandling.load_data" title="Permalink to this definition"></a></dt>
 <dd><p>Load raw PPG data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -520,6 +496,7 @@ Written by Qiao Li, February 21, 2011</p>
 <li><p><strong>fs</strong> (<em>int</em>) – the sampling frequency of the PPG in Hz</p></li>
 <li><p><strong>end_sig</strong> (<em>int</em>) – the last sample of the signal to be analysed</p></li>
 <li><p><strong>channel</strong> (<em>channel</em><em> of </em><em>the .edf file</em>) – channel of the .edf file</p></li>
+<li><p><strong>use_tk</strong> (<em>bool</em>) – a bool for using tkinter interface</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -546,17 +523,20 @@ Written by Qiao Li, February 21, 2011</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyPPG.datahandling.plot_fiducials">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.datahandling.</span></span><span class="sig-name descname"><span class="pre">plot_fiducials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyPPG.Fiducials" title="pyPPG.Fiducials"><span class="pre">Fiducials</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingfolder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_flag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/datahandling.html#plot_fiducials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.datahandling.plot_fiducials" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyPPG.datahandling.</span></span><span class="sig-name descname"><span class="pre">plot_fiducials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyPPG.Fiducials" title="pyPPG.Fiducials"><span class="pre">Fiducials</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingfolder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'temp_dir'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_flag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marker</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/datahandling.html#plot_fiducials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.datahandling.plot_fiducials" title="Permalink to this definition"></a></dt>
 <dd><p>Plot fiducial points of the filtered PPG signal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>s</strong> (<em>pyPPG.PPG object</em>) – object of PPG signal</p></li>
 <li><p><strong>fp</strong> (<em>pyPPG.Fiducials object</em>) – object of fiducial points</p></li>
+<li><p><strong>savefig</strong> (<em>bool</em>) – a bool for save figure</p></li>
 <li><p><strong>savingfolder</strong> – location of the saved figure</p></li>
 <li><p><strong>show_fig</strong> (<em>bool</em>) – a bool for show figure</p></li>
 <li><p><strong>print_flag</strong> (<em>bool</em>) – a bool for print message</p></li>
-<li><p><strong>use_tk</strong> (<em>bool</em>) – a bool for using tk</p></li>
+<li><p><strong>use_tk</strong> (<em>bool</em>) – a bool for using tkinter interface</p></li>
+<li><p><strong>new_fig</strong> (<em>bool</em>) – a bool for creating new figure</p></li>
+<li><p><strong>marker</strong> (<em>list</em>) – list of fiducial points markers</p></li>
 </ul>
 </dd>
 </dl>

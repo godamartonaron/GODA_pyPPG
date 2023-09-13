@@ -4,14 +4,6 @@ import matplotlib.pyplot as plt
 import scipy.io
 import numpy as np
 from dotmap import DotMap
-from tkinter import filedialog
-import mne
-import time
-
-from six.moves import cPickle as pickle
-
-import matplotlib.mlab
-from scipy.io import savemat
 
 from scipy.signal import filtfilt, find_peaks
 
@@ -180,9 +172,9 @@ if __name__ == '__main__':
         pks,ons=[],[]
         exec("pks = [ref_sp]")
         exec("ons = ref_on")
-        # if plt_sig==1:
-        #     plt.scatter(pks, ppg_v[pks], s=150, linewidth=2, marker='o',  facecolors='c', edgecolors='r', label='pk')
-        #     plt.scatter(ons, ppg_v[ons], s=150, linewidth=2, marker='s',  facecolors='m', edgecolors='b', label='on')
+        if plt_sig==1:
+            plt.scatter(pks, ppg_v[pks], s=150, linewidth=2, marker='o',  facecolors='c', edgecolors='r', label='pk')
+            plt.scatter(ons, ppg_v[ons], s=150, linewidth=2, marker='s',  facecolors='m', edgecolors='b', label='on')
 
         # Detect fiducial points
         s = DotMap()
@@ -192,6 +184,7 @@ if __name__ == '__main__':
         s.vpg = drt1
         s.apg = drt2
         s.jpg = drt3
+        s.name = name
 
         # s.filt_d1 = drt1
         # s.filt_d2 = drt2
@@ -201,15 +194,20 @@ if __name__ == '__main__':
 
             ## Preprocessing
             sm_wins = {'ppg': 50, 'vpg': 10, 'apg': 10, 'jpg': 10}
-            prep = PP.Preprocess(fL=0, fH=12, order=4, sm_wins=sm_wins)
+            #prep = PP.Preprocess(fL=0, fH=12, order=4, sm_wins=sm_wins)
+            prep = PP.Preprocess(fL=0.5, fH=12, order=4, sm_wins=sm_wins)
+            prep = PP.Preprocess(fL=0.5000001, fH=12, order=4, sm_wins=sm_wins)
+            #prep = PP.Preprocess(fL=0.49999999, fH=12, order=4, sm_wins=sm_wins)
 
             # Filter and calculate the PPG, PPG', PPG", and PPG'" signals
             s.filtering = True
+            # s.v = np.concatenate((ppg_v,ppg_v+(ppg_v[-1]-ppg_v[0])),axis=0)
+            # s.name = name+'+'+name
             s.ppg, s.vpg, s.apg, s.jpg = prep.get_signals(s)
 
             # drt0 = input_sig['ppg_data']['filt_sig'][0, i]
-            # plt.plot(s.jpg / np.max(s.jpg), label='p.jpg')
-            # plt.plot(drt3 / np.max(drt3), label='m.jpg')
+            # plt.plot(s.ppg / np.max(s.ppg), label='p.ppg')
+            # plt.plot(drt0 / np.max(drt0), label='m.ppg')
             # plt.legend()
             # plt.show()
 
@@ -265,8 +263,11 @@ if __name__ == '__main__':
             ## Comment 10/09/2023
             # # Correct v-point
             if det_v>det_e:
-                det_v = np.argmin(drt1[det_u:det_e])+ det_u
-                det_w = find_peaks(drt1[det_v:det_f])[0][0] + det_v
+                try:
+                    det_v = np.argmin(drt1[det_u:det_e])+ det_u
+                    det_w = find_peaks(drt1[det_v:det_f])[0][0] + det_v
+                except:
+                    pass
 
             for n in f_names:
                 exec("M_FID_2['" + n + "'][i] =det_" + n)
@@ -376,6 +377,35 @@ if __name__ == '__main__':
 
                 # exec("is_fidu=~np.isnan(np.squeeze(det_" + n + ")) and ~np.isnan(np.squeeze(ref_" + n + "))")
 
+                # fid_ref= pd.DataFrame()
+                # for fi in fid_names:
+                #     try:
+                #         fid_ref[fi] = eval("ref_"+fi)
+                #     except:
+                #         fid_ref[fi] = np.nan
+                #
+                # fid_ref['dp']=np.nan
+                # fp = Fiducials(fp=fid_ref)
+                # marker1 = ['o', 's', 's','o', 'o', 's', 'o', 'o', 's', 'o', 's', 'o', 's', 'o', 's']
+                # plot_fiducials(s=s, fp=fp, savefig=False, show_fig=False, print_flag=False, use_tk=False)
+                #
+                # fid_det = pd.DataFrame()
+                # for fi in fid_names:
+                #     try:
+                #         fid_det[fi] = eval("det_"+fi)
+                #     except:
+                #         fid_det[fi] = np.nan
+                #
+                # fid_det['dp']=np.nan
+                # fp = Fiducials(fp=fid_det)
+                # marker2 = ['*', 'x', 'x', '*','*', 'x', '*', '*', 'x', '*', 'x', '*', 'x', '*', 'x']
+                # plot_fiducials(s=s, fp=fp, savefig=False, show_fig=False, print_flag=False, use_tk=False, new_fig=False, marker=marker2)
+                #
+                # plt.show()
+
+                # s_type = ['s.ppg']*2+['s.vpg']*3+['s.apg']*6+['j.apg']*2
+                # plt_nums = [1]*2+[2]*3+[3]*6+[4]*2
+
                 if  plt_sig==1 and is_fidu:
                     if s_type[ind][-1]=='v':
                         plt_num=1
@@ -383,6 +413,7 @@ if __name__ == '__main__':
                         plt.title(name, fontsize=20)
                     else:
                         plt_num=int(s_type[ind][-1])+1
+                        # plt_num = plt_nums[ind]
 
                     plt.subplot(4,1,plt_num)
 

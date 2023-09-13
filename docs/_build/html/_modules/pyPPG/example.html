@@ -127,17 +127,17 @@
 <span class="sd">    :param filtering: a bool for filtering</span>
 <span class="sd">    :type filtering: bool</span>
 <span class="sd">    :param fL: Lower cutoff frequency (Hz)</span>
-<span class="sd">    :type fL: int</span>
+<span class="sd">    :type fL: float</span>
 <span class="sd">    :param fH: Upper cutoff frequency (Hz)</span>
-<span class="sd">    :type fH: int</span>
-<span class="sd">    :param order:Filter order</span>
+<span class="sd">    :type fH: float</span>
+<span class="sd">    :param order: Filter order</span>
 <span class="sd">    :type order: int</span>
-<span class="sd">    :param sm_wins: dictionary of smoothing windows in millisecond</span>
+<span class="sd">    :param sm_wins: dictionary of smoothing windows in millisecond:</span>
 <span class="sd">        - ppg: windows for PPG signal</span>
 <span class="sd">        - vpg: windows for PPG&#39; signal</span>
 <span class="sd">        - apg: windows for PPG&quot; signal</span>
 <span class="sd">        - jpg: windows for PPG&#39;&quot; signal</span>
-<span class="sd">    :type: dict</span>
+<span class="sd">    :type sm_wins: dict</span>
 <span class="sd">    :param correct: a bool for fiducial points correction</span>
 <span class="sd">    :type correct: bool</span>
 <span class="sd">    :param savingfolder: location of the saved data</span>
@@ -150,7 +150,7 @@
 <span class="sd">    :type savingformat: str</span>
 <span class="sd">    :param print_flag: a bool for print message</span>
 <span class="sd">    :type print_flag: bool</span>
-<span class="sd">    :param use_tk: a bool for using tk</span>
+<span class="sd">    :param use_tk: a bool for using tkinter interface</span>
 <span class="sd">    :type use_tk: bool</span>
 
 <span class="sd">    :return:</span>
@@ -169,7 +169,7 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1">## Loading a raw PPG signal</span>
-    <span class="n">signal</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">start_sig</span><span class="o">=</span><span class="n">start_sig</span><span class="p">,</span> <span class="n">end_sig</span><span class="o">=</span><span class="n">end_sig</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">)</span>
+    <span class="n">signal</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">start_sig</span><span class="o">=</span><span class="n">start_sig</span><span class="p">,</span> <span class="n">end_sig</span><span class="o">=</span><span class="n">end_sig</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span> <span class="n">use_tk</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1">## Preprocessing</span>
     <span class="c1"># Initialise the filters</span>
@@ -193,16 +193,15 @@
         <span class="k">if</span> <span class="n">print_flag</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fiducial points:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fiducials</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">)</span>
 
     <span class="c1">## PPG SQI</span>
+        <span class="c1"># Create a fiducials class</span>
         <span class="n">fp</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fp</span><span class="o">=</span><span class="n">fiducials</span><span class="p">)</span>
+
+        <span class="c1"># Calculate SQI</span>
         <span class="n">ppgSQI</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SQI</span><span class="o">.</span><span class="n">get_ppgSQI</span><span class="p">(</span><span class="n">ppg</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="n">fp</span><span class="o">.</span><span class="n">sp</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">print_flag</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean PPG SQI: &#39;</span><span class="p">,</span> <span class="n">ppgSQI</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
-            <span class="c1"># Create a fiducials class</span>
-            <span class="n">fp</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fp</span><span class="o">=</span><span class="n">fiducials</span><span class="p">)</span>
-
-            <span class="c1"># Plot fiducial points</span>
-            <span class="n">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">fp</span><span class="p">,</span> <span class="n">savingfolder</span><span class="o">=</span><span class="n">savingfolder</span><span class="p">,</span> <span class="n">show_fig</span><span class="o">=</span><span class="n">show_fig</span><span class="p">,</span> <span class="n">print_flag</span><span class="o">=</span><span class="n">print_flag</span><span class="p">,</span> <span class="n">use_tk</span><span class="o">=</span><span class="n">use_tk</span><span class="p">)</span>
+    <span class="c1">## Plot fiducial points</span>
+        <span class="n">plot_fiducials</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">fp</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="n">savefig</span><span class="p">,</span> <span class="n">savingfolder</span><span class="o">=</span><span class="n">savingfolder</span><span class="p">,</span> <span class="n">show_fig</span><span class="o">=</span><span class="n">show_fig</span><span class="p">,</span> <span class="n">print_flag</span><span class="o">=</span><span class="n">print_flag</span><span class="p">,</span> <span class="n">use_tk</span><span class="o">=</span><span class="n">use_tk</span><span class="p">)</span>
 
     <span class="c1">## Get Biomarkers and Statistics</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">process_type</span> <span class="o">==</span> <span class="s1">&#39;biomarkers&#39;</span> <span class="ow">or</span> <span class="n">process_type</span> <span class="o">==</span> <span class="s1">&#39;both&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">fiducials</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
@@ -221,13 +220,14 @@
         <span class="c1"># Create a biomarkers class</span>
         <span class="n">bm</span> <span class="o">=</span> <span class="n">Biomarkers</span><span class="p">(</span><span class="n">bm_defs</span><span class="o">=</span><span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span><span class="o">=</span><span class="n">bm_vals</span><span class="p">,</span> <span class="n">bm_stats</span><span class="o">=</span><span class="n">bm_stats</span><span class="p">)</span>
 
-        <span class="c1">## Save data</span>
+    <span class="c1">## Save data</span>
         <span class="n">fp_new</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fp</span><span class="o">=</span><span class="n">fp</span><span class="o">.</span><span class="n">get_fp</span><span class="p">()</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">)</span>
         <span class="n">save_data</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">fp_new</span><span class="p">,</span> <span class="n">bm</span><span class="o">=</span><span class="n">bm</span><span class="p">,</span> <span class="n">savingformat</span><span class="o">=</span><span class="n">savingformat</span><span class="p">,</span> <span class="n">savingfolder</span><span class="o">=</span><span class="n">savingfolder</span><span class="p">,</span> <span class="n">print_flag</span><span class="o">=</span><span class="n">print_flag</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">print_flag</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Program finished&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">fiducials</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">,</span> <span class="n">s</span></div>
+
 
 <span class="c1">###########################################################################</span>
 <span class="c1">############################## RUN EXAMPLE CODE ###########################</span>
