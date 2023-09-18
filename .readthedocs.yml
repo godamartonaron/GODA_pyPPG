@@ -4,6 +4,13 @@
 # Required
 version: 2
 
+# Updated configuration (build.os)
+build:
+  os: ubuntu-20.04
+  commands:
+    - pip install -r requirements.txt
+    - make html
+
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
   configuration: docs/conf.py
@@ -20,11 +27,3 @@ python:
   version: 3.10
   install:
     - requirements: docs/requirements.txt
-
-
-# Updated configuration (build.os)
-build:
-  os: ubuntu-20.04
-  tools:
-    - sphinx
-    - make
