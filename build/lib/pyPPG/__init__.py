@@ -5,7 +5,7 @@ class PPG:
     '''
     This is class for the input PPG parameters.
     '''
-    def __init__(self,s: dict, check_ppg=True):
+    def __init__(self,s={}, check_ppg=True):
         """
         :param s: dictionary of the PPG signal:
 
@@ -21,7 +21,7 @@ class PPG:
             * s.apg: 1-d array, a vector of the filtered PPG" values
             * s.jpg: 1-d array, a vector of the filtered PPG'" values
             * s.filtering: a bool for filtering
-            * s.correct: a bool for filtering
+            * s.correction: DataFrame where the key is the name of the fiducial points and the value is bool
         :type s: DotMap
         :param check_ppg: a bool for checking ppg length and sampling frequency
         :type check_ppg: bool
@@ -42,6 +42,15 @@ class PPG:
             s.end_sig>-1
         except:
             s.end_sig = -1
+
+        # Initialise the correction for fiducial points
+        if len(s.correction)<1:
+            corr_on = ['on', 'dn', 'dp', 'v', 'w', 'f']
+            corr_off = ['dn']
+            correction=pd.DataFrame()
+            correction.loc[0, corr_on] = True
+            correction.loc[0, corr_off] = False
+            s.correction=correction
 
         keys=s.keys()
         keys_list = list(keys)
@@ -69,7 +78,7 @@ class Fiducials:
         '''
         def __init__(self, fp: pd.DataFrame):
             """
-            :param fiducials: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.
+            :param fiducials: DataFrame where the key is the name of the fiducial points and the value is the list of fiducial points PPG Fiducials Points
 
                 * PPG signal (fp.on, fp.sp, fp.dn, fp.dp): List of pulse onset, systolic peak, dicrotic notch, diastolic peak
                 * 1st derivative (fp.u, fp.v, fp.w): List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals
@@ -99,11 +108,12 @@ class Fiducials:
 
             return pd.DataFrame(fp)
 
-        def get_row(self, row_index):
+        def get_row(self, row_index: int):
             """
             This function retrieves the specified row from the DataFrame of fiducial points.
 
             :param row_index: the index corresponding to the row in the fiducial points DataFrame
+            :type row_index: int
 
             :return: the corresponding row in the fiducial points DataFrame
             """
@@ -119,7 +129,7 @@ class Biomarkers:
         '''
         This is class for the PPG biomarkers.
         '''
-        def __init__(self, bm_defs:dict, bm_vals:dict, bm_stats:dict):
+        def __init__(self, bm_defs={}, bm_vals={}, bm_stats={}):
             """
                 This class constitutes a comprehensive dictionary encompassing biomarker definitions, values, and statistics. Each dictionary is organized into the subsequent subdirectories:
                     * ppg_sig: description for the PPG signal

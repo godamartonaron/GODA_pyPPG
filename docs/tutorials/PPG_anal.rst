@@ -19,9 +19,10 @@ Import Python packages:
 -----------------------
 
 * Install the pyPPG toolbox for PPG analysis
+
 .. code-block:: python
 
-    !pip install pyPPG
+    pip install pyPPG
 
 * Import required components from pyPPG
 
@@ -103,10 +104,10 @@ Filter the PPG signal and obtain first, second and third derivatives (vpg, apg, 
 .. code-block:: python
 
     signal.filtering = True # whether or not to filter the PPG signal
-	signal.fL=0.5
-	signal.fH=12
-	signal.order=4
-	signal.sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}
+    signal.fL=0.5000001 # Lower cutoff frequency (Hz)
+    signal.fH=12 # Upper cutoff frequency (Hz)
+    signal.order=4 # Filter order
+    signal.sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10} # smoothing windows in millisecond for the PPG, PPG', PPG", and PPG'"
     signal.ppg, signal.vpg, signal.apg, signal.jpg = Preprocessing(signal=signal)
 
 Plot the derived signals
@@ -145,8 +146,12 @@ Store the derived signals in a class
 
 .. code-block:: python
 
+    # Initialise the correction for fiducial points
+    corr_on = ['on', 'dn', 'dp', 'v', 'w', 'f']
+    correction.loc[0, corr_on] = True
+    signal.correction=correction
+
     # Create a PPG class
-    signal.correct = correct
     s = PPG(s=signal)
 
 Identify fiducial points:

@@ -66,15 +66,14 @@ class FpCollection:
             n=n+1
 
         fiducials=pd.DataFrame()
-        for temp_drt in (ppg_fp,vpg_fp,apg_fp,jpg_fp):
-            for key in list(temp_drt.keys()):
+        for temp_sig in (ppg_fp,vpg_fp,apg_fp,jpg_fp):
+            for key in list(temp_sig.keys()):
                 fiducials[key] = dummy
-                temp_val = temp_drt[key].values
+                temp_val = temp_sig[key].values
                 fiducials[key][0:len(temp_val)]=temp_val
 
         # Correct Fiducial Points
-        if s.correct:
-            fiducials=self.correct_fiducials(fiducials)
+        fiducials=self.correct_fiducials(fiducials, s.correction)
 
         fiducials=fiducials.astype('Int64')
 
@@ -84,7 +83,7 @@ class FpCollection:
 
         # Update index name
         fiducials = fiducials.drop(len(fiducials)-1)
-        fiducials=fiducials.rename_axis('Index of pulse')
+        fiducials = fiducials.rename_axis('Index of pulse')
 
         # Add pulse offsets
         fiducials.insert(4, 'off', offsets)
@@ -1148,11 +1147,13 @@ class FpCollection:
 
         return jpg_fp
 
-    def correct_fiducials(self,fiducials: pd.DataFrame):
+    def correct_fiducials(self,fiducials=pd.DataFrame(), correction=pd.DataFrame()):
         """Correct the Fiducial Points
 
-            :param fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points.
+            :param fiducials: DataFrame where the key is the name of the fiducial points and the value is the list of fiducial points PPG Fiducials Points
             :type fiducials: DataFrame
+            :param correction: DataFrame where the key is the name of the fiducial points and the value is bool
+            :type correction: DataFrame
 
             :return:
                 - fiducials: a dictionary where the key is the name of the fiducial pints and the value is the list of fiducial points
@@ -1161,90 +1162,87 @@ class FpCollection:
         for i in range(0,len(fiducials.on)):
 
             # Correct onset
-            try:
-                win_onr = self.fs * 0.005
-                if fiducials.on[i]>win_onr:
-                    win_onl = win_onr
-                else:
-                    win_onl = fiducials.on[i]
-
-                min_loc = np.argmax(self.ppg[fiducials.on[i]+win_onl:fiducials.on[i]+win_onr]) + fiducials.on[i]
-                if fiducials.on[i] != min_loc:
-
-                    if fiducials.a[i] > self.fs*0.075:
-                        win_a = int(self.fs*0.075)
+            if correction.on[0]:
+                try:
+                    win_onr = self.fs * 0.005
+                    if fiducials.on[i]>win_onr:
+                        win_onl = win_onr
                     else:
-                        win_a = int(fiducials.a[i])
+                        win_onl = fiducials.on[i]
 
-                    fiducials.on[i] = np.argmax(self.jpg[int(fiducials.a[i]) - win_a:int(fiducials.a[i])]) + int(fiducials.a[i]) - win_a
-            except:
-                pass
+                    min_loc = np.argmax(self.ppg[fiducials.on[i]+win_onl:fiducials.on[i]+win_onr]) + fiducials.on[i]
+                    if fiducials.on[i] != min_loc:
+
+                        if fiducials.a[i] > self.fs*0.075:
+                            win_a = int(self.fs*0.075)
+                        else:
+                            win_a = int(fiducials.a[i])
+
+                        fiducials.on[i] = np.argmax(self.jpg[int(fiducials.a[i]) - win_a:int(fiducials.a[i])]) + int(fiducials.a[i]) - win_a
+                except:
+                    pass
 
             # Correct dicrotic notch
-            try:
-                temp_segment=self.ppg[int(fiducials.sp[i]):int(fiducials.dp[i])]
-                min_dn=find_peaks(-temp_segment)[0]+fiducials.sp[i]
-                diff_dn=abs(min_dn-fiducials.dp[i])
-                if len(min_dn)>0 and diff_dn>round(self.fs/100):
-                    fiducials.dn[i]=min_dn
-                    try:
-                        strt_dn = int(fiducials.sp[i])
-                        stp_dn = int(fiducials.f[i])
-                        fiducials.dn[i] = find_peaks(-self.ppg[strt_dn:stp_dn])[0][-1] + strt_dn
-                        if fiducials.dn[i] > min_dn:
-                            fiducials.dn[i] = min_dn
-                    except:
-                        strt_dn = fiducials.e[i]
-                        stp_dn = fiducials.f[i]
-                        fiducials.dn[i] = np.argmin(self.jpg[strt_dn:stp_dn])+strt_dn
-                        if fiducials.dn[i] > min_dn:
-                            fiducials.dn[i] = min_dn
+            if correction.dn[0]:
+                try:
+                    temp_segment = self.ppg[int(fiducials.sp[i]):int(fiducials.dp[i])]
+                    min_dn = find_peaks(-temp_segment)[0] + fiducials.sp[i]
+                    diff_dn = abs(min_dn - fiducials.dp[i])
+                    if len(min_dn) > 0 and diff_dn > round(self.fs / 100):
+                        fiducials.dn[i] = min_dn
+                        try:
+                            strt_dn = int(fiducials.sp[i])
+                            stp_dn = int(fiducials.f[i])
+                            fiducials.dn[i] = find_peaks(-self.ppg[strt_dn:stp_dn])[0][-1] + strt_dn
+                            if fiducials.dn[i] > min_dn:
+                                fiducials.dn[i] = min_dn
+                        except:
+                            strt_dn = fiducials.e[i]
+                            stp_dn = fiducials.f[i]
+                            fiducials.dn[i] = np.argmin(self.jpg[strt_dn:stp_dn]) + strt_dn
+                            if fiducials.dn[i] > min_dn:
+                                fiducials.dn[i] = min_dn
 
-            except:
-                pass
-
-            # Correct v and w-point
-            try:
-                if fiducials.v[i]> fiducials.e[i]:
-                    fiducials.v[i] = np.argmin(self.vpg[int(fiducials.u[i]):int(fiducials.e[i])]) + int(fiducials.u[i])
-                    fiducials.w[i] = find_peaks(self.vpg[int(fiducials.v[i]):int(fiducials.f[i])])[0][0] + int(fiducials.v[i])
-            except:
-                pass
+                except:
+                    pass
 
             # Correct w-point
-            try:
-                temp_end=int(np.diff(fiducials.on[i:i+2])*0.8)
-                temp_segment=self.vpg[int(fiducials.dn[i]):int(fiducials.on[i]+temp_end)]
-                min_w=find_peaks(-temp_segment)[0]+fiducials.dn[i]
+            if correction.w[0]:
+                if fiducials.w[i] > fiducials.f[i]:
+                    fiducials.loc[i, 'w'] = fiducials.f[i]
 
                 if fiducials.w[i] < fiducials.e[i]:
-                    fiducials.w[i] = np.argmax(self.vpg[int(fiducials.e[i]):int(fiducials.f[i])]) + int(fiducials.e[i])
+                    try:
+                        fiducials.loc[i, 'w'] = [np.argmax(self.vpg[int(fiducials.e[i]):int(fiducials.f[i])]) + fiducials.e[i]]
+                    except:
+                        pass
 
-                # if fiducials.w[i] > fiducials.f[i]:
-                #     fiducials.w[i] = int(fiducials.f[i])
-
-                if fiducials.w[i] > min_w:
-                    fiducials.w[i] = min_w
-
-            except:
-                pass
+            # Correct v-point and w-point
+            if correction.v[0] and correction.w[0]:
+                if fiducials.v[i] > fiducials.e[i]:
+                    try:
+                        fiducials.loc[i, 'v'] = [np.argmin(self.vpg[int(fiducials.u[i]):int(fiducials.e[i])]) + fiducials.u[i]]
+                        fiducials.loc[i, 'w'] = [find_peaks(self.vpg[int(fiducials.v[i]):int(fiducials.f[i])])[0][0] + fiducials.v[i]]
+                    except:
+                        pass
 
             # Correct f-point
-            try:
-                temp_end=int(np.diff(fiducials.on[i:i+2])*0.8)
-                temp_segment=self.apg[int(fiducials.e[i]):int(fiducials.on[i]+temp_end)]
-                min_f=np.argmin(temp_segment)+fiducials.e[i]
+            if correction.f[0]:
+                try:
+                    temp_end=int(np.diff(fiducials.on[i:i+2])*0.8)
+                    temp_segment=self.apg[int(fiducials.e[i]):int(fiducials.on[i]+temp_end)]
+                    min_f=np.argmin(temp_segment)+fiducials.e[i]
 
-                if fiducials.w[i] > fiducials.f[i]:
-                    fiducials.f[i] = min_f
-            except:
-                pass
-
+                    if fiducials.w[i] > fiducials.f[i]:
+                        fiducials.f[i] = min_f
+                except:
+                    pass
 
         # Correct diastolic peak
-        try:
-            fiducials.dp = self.get_diastolic_peak(fiducials.on, fiducials.dn, fiducials.e)
-        except:
-            pass
+        if correction.dp[0]:
+            try:
+                fiducials.dp = self.get_diastolic_peak(fiducials.on, fiducials.dn, fiducials.e)
+            except:
+                pass
 
         return fiducials

@@ -93,7 +93,7 @@ Requirements
 Python Requirements:
 ~~~~~~~~~~~~~~~~~~~~
 
-Python >= 3.10
+Python == 3.10
 
 scipy == 1.9.1
 

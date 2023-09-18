@@ -4,3 +4,6 @@ __pycache__
 pyPPG/temp_dir
 pyPPG/test
 pyPPG/test/temp_dir
+#pyPPG/validation
+pyPPG/validation/PPG-BP_annot
+pyPPG/validation/temp_dir

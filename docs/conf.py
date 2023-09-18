@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.abspath("../pyPPG"))
 
 project = 'pyPPG'
 copyright = '2023, Marton A. GODA, PhD'
-author = 'Marton A. GODA, PhD'
+author = 'Marton A. GODA, PhD; Peter H CHARLTON, PhD'
 release = '1.0.0'
 
 
@@ -96,7 +96,7 @@ html_theme = 'sphinx_rtd_theme'
 # documentation.
 #
 
-html_logo = "logo.png"
+html_logo = "logo-hr.png"
 
 html_theme_options = {
     'logo_only': False

@@ -141,7 +141,9 @@ def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel=
 ###########################################################################
 ########################### Plot Fiducial points ##########################
 ###########################################################################
-def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder='temp_dir', show_fig = True, print_flag=True, use_tk=False, new_fig=True, marker=[]):
+def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder='temp_dir', show_fig = True,
+                   print_flag=True, use_tk=False, new_fig=True, marker=[], title='Detection', legend_loc='upper right',
+                   legend_fontsize=20, marker_size=60, facecolor=False, subtext={}, canvas=np.nan):
     """
     Plot fiducial points of the filtered PPG signal.
 
@@ -162,7 +164,20 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder
     :type new_fig: bool
     :param marker: list of fiducial points markers
     :type marker: list
-
+    :param title: title of the legend
+    :type title: str
+    :param legend_loc: location of the legend
+    :type legend_loc: str
+    :param legend_fontsize: fontsize of the legends
+    :type legend_fontsize: int
+    :param marker_size: size of markers
+    :type marker_size: int
+    :param facecolor: a bool for facecolor of markers
+    :type facecolor: bool
+    :param subtext: dictionary for subplots text
+    :type subtext: dict
+    :param canvas: canvas of the figure
+    :type canvas: FigureCanvas
     """
 
     # Create a hidden root window to get screen dimensions
@@ -192,7 +207,9 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder
     plt.plot(s.apg, 'k', label=None)
     ax4 = plt.subplot(414, sharex=ax3)
     plt.plot(s.jpg, 'k', label=None)
-    if new_fig: fig.subplots_adjust(hspace=0, wspace=0)
+    if new_fig:
+        fig.subplots_adjust(hspace=0, wspace=0)
+        canvas = FigureCanvas(fig)
 
     if len(marker)==0:
         marker = ['o', 's', 's','o', 'o', 's', 'o', 'o', 's', 'o', 's', 'o', 's', 'o', 's']
@@ -228,38 +245,70 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder
             plt_num = tmp_ind+1
 
         ax = plt.subplot(4, 1, plt_num)
+
         tmp_pnt=eval("fp." + n + ".values")
         tmp_pnt=tmp_pnt[~np.isnan(tmp_pnt)].astype(int)
         tmp_sig=eval("s." + s_type[ind])
-        exec("plt.scatter(tmp_pnt, tmp_sig[tmp_pnt], s=60,linewidth=2, marker = marker[ind],facecolors='none', color=color[ind], label=n)")
-        plt.ylabel(ylabe_names[plt_num - 1], fontsize=20)
 
-        exec("plt.xlim([str_sig,end_sig])")
-        leg = plt.legend(loc='upper right', fontsize=20, ncol=2,facecolor="orange",frameon=True)
-        for text in leg.get_texts():
-            text.set_weight('bold')
+        if facecolor:
+            fc=color[ind]
+        else:
+            fc='none'
 
-        ax.set_xticks(major_ticks)
-        ax.set_xticks(minor_ticks, minor=True)
+        exec("plt.scatter(tmp_pnt, tmp_sig[tmp_pnt], s=marker_size,linewidth=2, marker = marker[ind], facecolors=fc, color=color[ind], label=n)")
 
-        ax.grid(which='both')
-        ax.grid(which='minor', alpha=0.2,axis='x')
-        ax.grid(which='major', alpha=1,axis='x')
+        if ind<len(s_type)-1:
+            legend_flag = s_type[ind] != s_type[ind + 1]
+        else:
+            legend_flag=True
 
-        plt.yticks([])
+        if legend_flag:
+            leg = ax.legend(loc=legend_loc, fontsize=legend_fontsize, ncol=2, facecolor="orange", frameon=True, title=title)
+            ax.add_artist(leg)
+
+            try:
+                tmp_txt=subtext[s_type[ind]]
+                plt.text(-.14, 0.95, tmp_txt, fontsize=legend_fontsize,transform=ax.transAxes, va='top', ha='left',
+                         bbox={'facecolor': 'yellow', 'alpha': 0.5, 'edgecolor': 'black', 'pad': 5})
+            except:
+                pass
+
+            if s_type[ind]=='jpg':
+                try:
+                    tmp_txt = 'MAE(STD):'+'\n'+str(subtext['mae'])+'('+str(subtext['std'])+')'
+                    plt.text(-.14, 0, tmp_txt, fontsize=legend_fontsize, transform=ax.transAxes, va='top', ha='left', weight='bold', color='w',
+                             bbox={'facecolor': 'red', 'alpha': 0.5, 'edgecolor': 'black', 'pad': 5})
+                except:
+                    pass
+
+            plt.ylabel(ylabe_names[plt_num - 1], fontsize=20)
+
+            exec("plt.xlim([str_sig,end_sig])")
+            for text in leg.get_texts():
+                text.set_weight('bold')
+
+            ax.set_xticks(major_ticks)
+            ax.set_xticks(minor_ticks, minor=True)
+
+            ax.grid(which='both')
+            ax.grid(which='minor', alpha=0.2,axis='x')
+            ax.grid(which='major', alpha=1,axis='x')
+
+            plt.yticks([])
 
     plt.xlabel('Time [s]', fontsize=20)
     plt.xticks(major_ticks,major_ticks_names, fontsize=20)
     if show_fig: plt.show()
 
     if savefig:
-        canvas = FigureCanvas(fig)
         tmp_dir=savingfolder+os.sep+'PPG_Figures'+os.sep
 
         os.makedirs(tmp_dir, exist_ok=True)
 
         canvas.print_png((tmp_dir+'%s_btwn_%s-%s.png') % (s.name,s.start_sig,s.end_sig))
         if print_flag: print('Figure has been saved in the "'+savingfolder+'".')
+
+    return canvas
 
 ###########################################################################
 ################################# Save Data ###############################
@@ -334,10 +383,11 @@ def save_data(s: pyPPG.PPG, fp: pyPPG.Fiducials, bm: pyPPG.Biomarkers, savingfor
             matlab_struct = tmp_df.to_dict(orient='list')
             scipy.io.savemat(file_name,matlab_struct)
 
-            file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
-            tmp_df=bm.bm_stats[key]
-            tmp_df.columns = [s.replace('-', '_') for s in tmp_df.columns]
-            scipy.io.savemat(file_name, tmp_df)
+            if len(bm.bm_stats)>0:
+                file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
+                tmp_df=bm.bm_stats[key]
+                tmp_df.columns = [s.replace('-', '_') for s in tmp_df.columns]
+                scipy.io.savemat(file_name, tmp_df)
 
             file_name = (r'.'+os.sep+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
             tmp_df=bm.bm_defs[key]

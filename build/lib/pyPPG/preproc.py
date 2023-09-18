@@ -8,7 +8,7 @@ class Preprocess:
     ###########################################################################
     ######################## Initialization of Biomarkers #####################
     ###########################################################################
-    def __init__(self,fL=0.5, fH=12, order=4, sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}):
+    def __init__(self,fL=0.5000001, fH=12, order=4, sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}):
         """
         The purpose of the Preprocess class is to filter and calculate the PPG, PPG', PPG", and PPG'" signals.
 
@@ -49,6 +49,7 @@ class Preprocess:
             fL = self.fL
             fH = self.fH
             order = self.order
+
             if fL==0:
                 b,a = signal.cheby2(order, 20, [fH], 'low', fs=s.fs)
             else:

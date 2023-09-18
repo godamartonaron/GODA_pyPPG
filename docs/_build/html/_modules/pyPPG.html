@@ -30,7 +30,7 @@
           
           <a href="../index.html" class="icon icon-home">
             pyPPG
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+              <img src="../_static/logo-hr.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -83,7 +83,7 @@
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This is class for the input PPG parameters.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">s</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">check_ppg</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="p">{},</span> <span class="n">check_ppg</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param s: dictionary of the PPG signal:</span>
 
@@ -99,7 +99,7 @@
 <span class="sd">            * s.apg: 1-d array, a vector of the filtered PPG&quot; values</span>
 <span class="sd">            * s.jpg: 1-d array, a vector of the filtered PPG&#39;&quot; values</span>
 <span class="sd">            * s.filtering: a bool for filtering</span>
-<span class="sd">            * s.correct: a bool for filtering</span>
+<span class="sd">            * s.correction: DataFrame where the key is the name of the fiducial points and the value is bool</span>
 <span class="sd">        :type s: DotMap</span>
 <span class="sd">        :param check_ppg: a bool for checking ppg length and sampling frequency</span>
 <span class="sd">        :type check_ppg: bool</span>
@@ -120,6 +120,15 @@
             <span class="n">s</span><span class="o">.</span><span class="n">end_sig</span><span class="o">&gt;-</span><span class="mi">1</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">s</span><span class="o">.</span><span class="n">end_sig</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="c1"># Initialise the correction for fiducial points</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">correction</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">corr_on</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;on&#39;</span><span class="p">,</span> <span class="s1">&#39;dn&#39;</span><span class="p">,</span> <span class="s1">&#39;dp&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">]</span>
+            <span class="n">corr_off</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dn&#39;</span><span class="p">]</span>
+            <span class="n">correction</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+            <span class="n">correction</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">corr_on</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">correction</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">corr_off</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">correction</span><span class="o">=</span><span class="n">correction</span>
 
         <span class="n">keys</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="n">keys_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
@@ -147,7 +156,7 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            :param fiducials: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points PPG Fiducials Points.</span>
+<span class="sd">            :param fiducials: DataFrame where the key is the name of the fiducial points and the value is the list of fiducial points PPG Fiducials Points</span>
 
 <span class="sd">                * PPG signal (fp.on, fp.sp, fp.dn, fp.dp): List of pulse onset, systolic peak, dicrotic notch, diastolic peak</span>
 <span class="sd">                * 1st derivative (fp.u, fp.v, fp.w): List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals</span>
@@ -177,11 +186,12 @@
 
             <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Fiducials.get_row"><a class="viewcode-back" href="../pyPPG.html#pyPPG.Fiducials.get_row">[docs]</a>        <span class="k">def</span> <span class="nf">get_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_index</span><span class="p">):</span>
+<div class="viewcode-block" id="Fiducials.get_row"><a class="viewcode-back" href="../pyPPG.html#pyPPG.Fiducials.get_row">[docs]</a>        <span class="k">def</span> <span class="nf">get_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            This function retrieves the specified row from the DataFrame of fiducial points.</span>
 
 <span class="sd">            :param row_index: the index corresponding to the row in the fiducial points DataFrame</span>
+<span class="sd">            :type row_index: int</span>
 
 <span class="sd">            :return: the corresponding row in the fiducial points DataFrame</span>
 <span class="sd">            &quot;&quot;&quot;</span>
@@ -197,7 +207,7 @@
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        This is class for the PPG biomarkers.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bm_defs</span><span class="p">:</span><span class="nb">dict</span><span class="p">,</span> <span class="n">bm_vals</span><span class="p">:</span><span class="nb">dict</span><span class="p">,</span> <span class="n">bm_stats</span><span class="p">:</span><span class="nb">dict</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bm_defs</span><span class="o">=</span><span class="p">{},</span> <span class="n">bm_vals</span><span class="o">=</span><span class="p">{},</span> <span class="n">bm_stats</span><span class="o">=</span><span class="p">{}):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                This class constitutes a comprehensive dictionary encompassing biomarker definitions, values, and statistics. Each dictionary is organized into the subsequent subdirectories:</span>
 <span class="sd">                    * ppg_sig: description for the PPG signal</span>

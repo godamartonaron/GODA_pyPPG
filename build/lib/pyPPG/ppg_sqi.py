@@ -18,8 +18,8 @@ def get_ppgSQI(ppg: list, fs: int, annotation: list):
     Reference:
     ----------
 
-    `Original Matlab implementation <https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m>`_:
-    Qiao Li, November 10, 2014.
+    - `Original Matlab implementation <https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m>`_: Qiao Li, November 10, 2014.
+    - Python implementation: Márton Áron Goda, PhD, November 11, 2022.
     '''
 
     Fs = fs

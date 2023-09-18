@@ -1,15 +1,15 @@
 Metadata-Version: 2.1
 Name: pyPPG
-Version: 1.0.32
+Version: 1.0.35
 Summary: pyPPG: a python toolbox for PPG morphological analysis.
 Home-page: https://github.com/godamartonaron/GODA_pyPPG
-Author: Marton A. Goda, PhD; Peter H. Charlton
+Author: Marton A. Goda, PhD; Peter H. Charlton, PhD
 Author-email: marton.goda@campus.technion.ac.il
 Project-URL: Bug Tracker, https://github.com/pypa/sampleproject/issues
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: GNU Affero General Public License v3
 Classifier: Operating System :: OS Independent
-Requires-Python: >=3.10
+Requires-Python: ==3.10
 Description-Content-Type: text/markdown
 License-File: LICENSE.txt
 License-File: AUTHORS.rst
@@ -62,7 +62,7 @@ For more details see the [pyPPG example code](https://pyppg.readthedocs.io/en/la
 ## Requirements
 ### Python Requirements:
 
-Python >= 3.10
+Python == 3.10
 
 scipy == 1.9.1
 

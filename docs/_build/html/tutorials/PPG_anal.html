@@ -33,7 +33,7 @@
           
           <a href="../index.html" class="icon icon-home">
             pyPPG
-              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+              <img src="../_static/logo-hr.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -114,7 +114,7 @@
 <ul class="simple">
 <li><p>Install the pyPPG toolbox for PPG analysis</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pyPPG
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyPPG</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -185,10 +185,10 @@
 <h3>Prepare the PPG data:<a class="headerlink" href="#prepare-the-ppg-data" title="Permalink to this heading"></a></h3>
 <p>Filter the PPG signal and obtain first, second and third derivatives (vpg, apg, and jpg respectively).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">signal</span><span class="o">.</span><span class="n">filtering</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># whether or not to filter the PPG signal</span>
-    <span class="n">signal</span><span class="o">.</span><span class="n">fL</span><span class="o">=</span><span class="mf">0.5</span>
-    <span class="n">signal</span><span class="o">.</span><span class="n">fH</span><span class="o">=</span><span class="mi">12</span>
-    <span class="n">signal</span><span class="o">.</span><span class="n">order</span><span class="o">=</span><span class="mi">4</span>
-    <span class="n">signal</span><span class="o">.</span><span class="n">sm_wins</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ppg&#39;</span><span class="p">:</span><span class="mi">50</span><span class="p">,</span><span class="s1">&#39;vpg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;apg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;jpg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">}</span>
+<span class="n">signal</span><span class="o">.</span><span class="n">fL</span><span class="o">=</span><span class="mf">0.5000001</span> <span class="c1"># Lower cutoff frequency (Hz)</span>
+<span class="n">signal</span><span class="o">.</span><span class="n">fH</span><span class="o">=</span><span class="mi">12</span> <span class="c1"># Upper cutoff frequency (Hz)</span>
+<span class="n">signal</span><span class="o">.</span><span class="n">order</span><span class="o">=</span><span class="mi">4</span> <span class="c1"># Filter order</span>
+<span class="n">signal</span><span class="o">.</span><span class="n">sm_wins</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ppg&#39;</span><span class="p">:</span><span class="mi">50</span><span class="p">,</span><span class="s1">&#39;vpg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;apg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;jpg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">}</span> <span class="c1"># smoothing windows in millisecond for the PPG, PPG&#39;, PPG&quot;, and PPG&#39;&quot;</span>
 <span class="n">signal</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">vpg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">apg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">jpg</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><span class="n">signal</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -221,8 +221,12 @@
 </div>
 <img alt="../_images/PPG_derivs.png" class="align-center" src="../_images/PPG_derivs.png" />
 <p>Store the derived signals in a class</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a PPG class</span>
-<span class="n">signal</span><span class="o">.</span><span class="n">correct</span> <span class="o">=</span> <span class="n">correct</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialise the correction for fiducial points</span>
+<span class="n">corr_on</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;on&#39;</span><span class="p">,</span> <span class="s1">&#39;dn&#39;</span><span class="p">,</span> <span class="s1">&#39;dp&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">]</span>
+<span class="n">correction</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">corr_on</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">signal</span><span class="o">.</span><span class="n">correction</span><span class="o">=</span><span class="n">correction</span>
+
+<span class="c1"># Create a PPG class</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">PPG</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">signal</span><span class="p">)</span>
 </pre></div>
 </div>

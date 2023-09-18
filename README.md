@@ -46,7 +46,7 @@ For more details see the [pyPPG example code](https://pyppg.readthedocs.io/en/la
 ## Requirements
 ### Python Requirements:
 
-Python >= 3.10
+Python == 3.10
 
 scipy == 1.9.1
 

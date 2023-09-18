@@ -1,3 +1,5 @@
+import pandas as pd
+
 import pyPPG
 
 from pyPPG.ppg_bm.ppg_sig import get_ppg_sig
@@ -28,9 +30,12 @@ class BmCollection:
     ###########################################################################
     ############################ Get PPG Biomarkers ###########################
     ###########################################################################
-    def get_biomarkers (self):
+    def get_biomarkers (self, get_stat=True):
         """
         This function retrieves the list of biomarkers, computes their values, and calculates associated statistics.
+
+        :param get_stat: a bool for calculating the statistics of biomarkers
+        :type get_stat: bool
 
         :return:
             - bm_defs: dictionary of biomarkers with name, definition and unit
@@ -51,13 +56,19 @@ class BmCollection:
         bm_defs = {'ppg_sig': def_ppg_sig, 'sig_ratios': def_sig_ratios, 'ppg_derivs': def_ppg_derivs, 'derivs_ratios': def_derivs_ratios}
 
         ## Get Statistics
-        bm_stats = get_statistics(fp.sp, fp.on, bm_vals)
+        if get_stat:
+            bm_stats = get_statistics(fp.sp, fp.on, bm_vals)
+        else:
+            bm_stats={'ppg_sig': [], 'sig_ratios': [], 'ppg_derivs': [], 'derivs_ratios': []}
 
         ## Update index names
         BM_keys = bm_vals.keys()
         for key in BM_keys:
             bm_vals[key] = bm_vals[key].rename_axis('Index of pulse')
             bm_defs[key] = bm_defs[key].rename_axis('No. biomarkers')
-            bm_stats[key] = bm_stats[key].rename_axis('Statistics')
+            if get_stat: bm_stats[key] = bm_stats[key].rename_axis('Statistics')
 
-        return bm_defs, bm_vals, bm_stats
+        if get_stat:
+            return bm_defs, bm_vals, bm_stats
+        else:
+            return bm_defs, bm_vals

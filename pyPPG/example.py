@@ -15,7 +15,7 @@ import pandas as pd
 ################################## EXAMPLE ################################
 ###########################################################################
 def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1, fiducials=pd.DataFrame(), process_type="both", channel="",
-                filtering=True, fL=0.5, fH=12, order=4, sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}, correct=True,
+                filtering=True, fL=0.5, fH=12, order=4, sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}, correction=pd.DataFrame(),
                 savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="csv", print_flag=True, use_tk=False):
     '''
     This is an example code for PPG analysis. The main parts:
@@ -59,8 +59,8 @@ def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1, fiducials=pd.D
         - apg: windows for PPG" signal
         - jpg: windows for PPG'" signal
     :type sm_wins: dict
-    :param correct: a bool for fiducial points correction
-    :type correct: bool
+    :param correction: DataFrame where the key is the name of the fiducial points and the value is bool
+    :type correction: DataFrame
     :param savingfolder: location of the saved data
     :type savingfolder: str
     :param savefig: a bool for current figure saving
@@ -100,8 +100,12 @@ def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1, fiducials=pd.D
     signal.filtering = filtering
     signal.ppg, signal.vpg, signal.apg, signal.jpg = prep.get_signals(s=signal)
 
+    # Initialise the correction for fiducial points
+    corr_on = ['on', 'dn', 'dp', 'v', 'w', 'f']
+    correction.loc[0, corr_on] = True
+    signal.correction=correction
+
     ## Create a PPG class
-    signal.correct = correct
     s = PPG(s=signal)
 
     ## Get Fiducial points
