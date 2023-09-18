@@ -25,3 +25,6 @@ python:
 # Updated configuration (build.os)
 build:
   os: ubuntu-20.04
+  tools:
+    - sphinx
+    - make
