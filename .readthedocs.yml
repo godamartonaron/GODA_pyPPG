@@ -17,6 +17,11 @@ formats:
   - pdf
 
 python:
-  version: 3.8
+  version: 3.10
   install:
     - requirements: docs/requirements.txt
+
+
+# Updated configuration (build.os)
+build:
+  os: latest
