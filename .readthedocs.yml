@@ -24,4 +24,4 @@ python:
 
 # Updated configuration (build.os)
 build:
-  os: latest
+  os: ubuntu-20.04
