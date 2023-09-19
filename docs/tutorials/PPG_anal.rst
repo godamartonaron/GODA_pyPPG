@@ -30,7 +30,7 @@ Import Python packages:
 
     from pyPPG import PPG, Fiducials, Biomarkers
     from pyPPG.datahandling import load_data, plot_fiducials, save_data
-	import pyPPG.preproc as PP
+    import pyPPG.preproc as PP
     import pyPPG.fiducials as FP
     import pyPPG.biomarkers as BM
     import pyPPG.ppg_sqi as SQI
@@ -43,7 +43,7 @@ Import Python packages:
     import sys
     import json
     import pandas as pd
-
+    import matplotlib.pyplot as plt
 
 Setup input parameters:
 -----------------------
@@ -55,7 +55,7 @@ The following input parameters are inputs to the `pyPPG.example <https://pyppg.r
     data_path = "PPG_MAT_sample.mat" # the path of the file containing the PPG signal to be analysed
     fs = 100 # the sampling frequency
     start_sig = 0 # the first sample of the signal to be analysed
-    end_sig = -1 # the last sample of the signal to be analysed (here a value of '-1' indicates the last sample)
+    end_sig = 20*fs # 20 second long signal to be analysed
     savingfolder = 'temp_dir'
     savingformat = 'csv'
 
@@ -109,6 +109,9 @@ Filter the PPG signal and obtain first, second and third derivatives (vpg, apg, 
     signal.order=4 # Filter order
     signal.sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10} # smoothing windows in millisecond for the PPG, PPG', PPG", and PPG'"
     signal.ppg, signal.vpg, signal.apg, signal.jpg = Preprocessing(signal=signal)
+
+    prep = PP.Preprocess(fL=signal.fL, fH=signal.fH, order=signal.order, sm_wins=signal.sm_wins)
+    signal.ppg, signal.vpg, signal.apg, signal.jpg = prep.get_signals(s=signal)
 
 Plot the derived signals
 

@@ -78,69 +78,32 @@
              
   <section id="pyppg-toolbox-documentation">
 <h1><em>pyPPG</em> toolbox documentation<a class="headerlink" href="#pyppg-toolbox-documentation" title="Permalink to this heading"></a></h1>
-<p>A toolbox for photoplethysmogram (PPG) analysis, including beat
-detection, fiducial point detection, and comprehensive assessment of
-standard biomarkers.</p>
+<p>A toolbox for finger photoplethysmogram (PPG) analysis, including beat detection, fiducial point detection, and comprehensive assessment of standard biomarkers.</p>
 <p>If you use the pyPPG resource, please cite:</p>
-<p><em>Goda MA, Charlton PH, and Behar JA,</em><strong>‘pyPPG: A Python toolbox for
-comprehensive photoplethysmography signal analysis’</strong><em>, [Under
-review]</em></p>
+<p><em>Goda MA, Charlton PH, and Behar JA,</em><strong>‘pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis’</strong><em>, [Under review]</em></p>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
-<p><strong>pyPPG</strong> is a standardised toolbox to analyze long-term finger PPG
-recordings in real-time. The toolbox extracts state-of-the-art PPG
-biomarkers (<em>i.e.</em> pulse wave features) from PPG signals. The algorithms
-implemented in the <em>pyPPG</em> toolbox have been validated on freely
-available PPG databases. Consequently, <em>pyPPG</em> offers robust and
-comprehensive assessment of clinically relevant biomarkers from
-continuous PPG signals.</p>
+<p><strong>pyPPG</strong> is a standardised toolbox to analyze long-term finger PPG recordings in real-time. The toolbox extracts state-of-the-art PPG biomarkers (<em>i.e.</em> pulse wave features) from PPG signals. The algorithms implemented in the <em>pyPPG</em> toolbox have been validated on freely available PPG databases. Consequently, <em>pyPPG</em> offers robust and comprehensive assessment of clinically relevant biomarkers from continuous PPG signals.</p>
 </section>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>The following steps are implemented in the <strong>pyPPG</strong> toolbox:</p>
 <ol class="arabic simple">
-<li><p><strong>Loading a raw PPG signal</strong>: The toolbox can accept PPG signals in
-various file formats such as <em>.mat</em>, <em>.txt</em>, <em>.csv</em>, or <em>.edf</em>. These
-files should contain raw PPG data along with the corresponding
-sampling rate.</p>
+<li><p><strong>Loading a raw PPG signal</strong>: The toolbox can accept PPG signals in various file formats such as <em>.mat</em>, <em>.txt</em>, <em>.csv</em>, or <em>.edf</em>. These files should contain raw PPG data along with the corresponding sampling rate.</p>
 <ul class="simple">
-<li><p><em>.mat</em>: Data should be stored in two variables within the file:
-(i) ‘Fs’ representing the sampling frequency, and (ii) ‘Data’, a
-vector containing the raw PPG signal.</p></li>
-<li><p><em>.txt</em>: The raw PPG signal should be stored in tabular form
-(single tab or space-delimited), and you need to provide the
-sampling frequency as an input parameter to the script using ‘fs’.</p></li>
-<li><p><em>.csv</em>: This format stores raw PPG signal data with comma
-separation. Similar to .txt, the sampling frequency must be
-provided as an input parameter to the script using ‘fs’.</p></li>
-<li><p><em>.edf</em>: The <a class="reference external" href="https://www.edfplus.info/">European Data Format</a>
-is supported, and it applies ‘Pleth’ channel by default. However,
-if using a different channel name, then the user needs to define
-it themselves.</p></li>
+<li><p><em>.mat</em>: Data should be stored in two variables within the file: (i) ‘Fs’ representing the sampling frequency, and (ii) ‘Data’, a vector containing the raw PPG signal.</p></li>
+<li><p><em>.txt</em>: The raw PPG signal should be stored in tabular form (single tab or space-delimited), and you need to provide the sampling frequency as an input parameter to the script using ‘fs’.</p></li>
+<li><p><em>.csv</em>: This format stores raw PPG signal data with comma separation. Similar to .txt, the sampling frequency must be provided as an input parameter to the script using ‘fs’.</p></li>
+<li><p><em>.edf</em>: The <a class="reference external" href="https://www.edfplus.info/">European Data Format</a> is supported, and it applies ‘Pleth’ channel by default. However, if using a different channel name, then the user needs to define it themselves.</p></li>
 </ul>
 </li>
-<li><p><strong>Preprocessing</strong>: The raw signal is filtered to remove unwanted
-noise and artifacts. Subsequently, the signal is resampled to 75 Hz.</p></li>
-<li><p><strong>Pulse wave segmentation</strong>: The toolbox employs a peak detector to
-identify the systolic peaks. It uses an <a class="reference external" href="https://arxiv.org/abs/2307.10398">improved
-version</a> of a beat detection
-algorithm originally proposed in <a class="reference external" href="https://doi.org/10.1109/TBME.2005.855725">(Aboy et
-al. 2005)</a>. Based on the
-peak locations, the toolbox also detects the pulse onsets and
-offsets, which indicate the start and end of the PPG pulse waves.</p></li>
-<li><p><strong>Fiducial points identification</strong>: For each pulse wave, the toolbox
-detects a set of fiducial points.</p></li>
-<li><p><strong>Biomarker engineering</strong>: Based on the fiducial points, a set of 74
-PPG digital biomarkers (<em>i.e.</em> pulse wave features) are calculated.</p></li>
+<li><p><strong>Preprocessing</strong>: The raw signal is filtered to remove unwanted noise and artifacts. Subsequently, the signal is resampled to 75 Hz.</p></li>
+<li><p><strong>Pulse wave segmentation</strong>: The toolbox employs a peak detector to identify the systolic peaks. It uses an <a class="reference external" href="https://arxiv.org/abs/2307.10398">improved version</a> of a beat detection algorithm originally proposed in <a class="reference external" href="https://doi.org/10.1109/TBME.2005.855725">(Aboy et al. 2005)</a>. Based on the peak locations, the toolbox also detects the pulse onsets and offsets, which indicate the start and end of the PPG pulse waves.</p></li>
+<li><p><strong>Fiducial points identification</strong>: For each pulse wave, the toolbox detects a set of fiducial points.</p></li>
+<li><p><strong>Biomarker engineering</strong>: Based on the fiducial points, a set of 74 PPG digital biomarkers (<em>i.e.</em> pulse wave features) are calculated.</p></li>
 </ol>
-<p>The <em>pyPPG</em> toolbox also provides an optional PPG signal quality index
-based on the Matlab implementation of the work by <a class="reference external" href="https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m">(Li et
-al. 2015)</a>.</p>
-<img alt="_images/pyPPG_pipeline.svg" class="align-center" src="_images/pyPPG_pipeline.svg" /><p>The toolbox identifies individual pulse waves in a PPG signal by
-identifying <strong>systolic peaks (sp)</strong>, and then identifying the <strong>pulse
-onset (on)</strong> and <strong>offset (off)</strong> on either side of each systolic peak
-which indicate the start and end of the pulse wave, respectively.</p>
-<p>The toolbox identifies individual pulse waves in a PPG signal by identifying <strong>systolic peaks (sp)</strong>, and then identifying the <strong>pulse onset (on)</strong> and <strong>offset (off)</strong> on either side of each systolic peak which indicate the start and end of the pulse wave, respectively.</p>
+<p>The <em>pyPPG</em> toolbox also provides an optional PPG signal quality index based on the Matlab implementation of the work by <a class="reference external" href="https://github.com/MIT-LCP/PhysioNetChallengePublic/blob/master/2015/sample-submission/ppgSQI.m">(Li et al. 2015)</a>.</p>
+<img alt="_images/pyPPG_pipeline.svg" class="align-center" src="_images/pyPPG_pipeline.svg" /><p>The toolbox identifies individual pulse waves in a PPG signal by identifying <strong>systolic peaks (sp)</strong>, and then identifying the <strong>pulse onset (on)</strong> and <strong>offset (off)</strong> on either side of each systolic peak which indicate the start and end of the pulse wave, respectively.</p>
 <img alt="_images/PPG_sample.svg" class="align-center" src="_images/PPG_sample.svg" /></section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
@@ -160,8 +123,7 @@ code</a></p>
 <p>pandas == 1.5.0</p>
 <p>wfdb == 4.0.0</p>
 <p>mne == 1.5.0</p>
-<p>All the python requirements are installed when the toolbox is installed,
-so there is no need for any additional commands.</p>
+<p>All the python requirements are installed when the toolbox is installed, so there is no need for any additional commands.</p>
 </section>
 </section>
 <section id="documentation">
@@ -173,11 +135,7 @@ so there is no need for any additional commands.</p>
 <ol class="arabic simple">
 <li><p><strong>Software</strong></p>
 <ul class="simple">
-<li><p>An open-source algorithmic <strong>pyPPG</strong> toolbox, which loads a PPG
-signal, preprocesses it, segments individual pulse waves,
-identifies fiducial points, and calculates a set of biomarkers.
-This can be used within your own data analysis code using the
-<strong>pyPPG</strong> API.</p></li>
+<li><p>An open-source algorithmic <strong>pyPPG</strong> toolbox, which loads a PPG signal, preprocesses it, segments individual pulse waves, identifies fiducial points, and calculates a set of biomarkers. This can be used within your own data analysis code using the <strong>pyPPG</strong> API.</p></li>
 </ul>
 </li>
 <li><p><strong>Databases</strong></p>
@@ -199,15 +157,11 @@ Physionet</a></p></li>
 </ul>
 </li>
 </ol>
-<p>All PPG measures can be further adapted for the analysis for efficient
-heart rate measurement as well as health assessment with clinically
-relevant biomarkers.</p>
+<p>All PPG measures can be further adapted for the analysis for efficient heart rate measurement as well as health assessment with clinically relevant biomarkers.</p>
 </section>
 <section id="acknowledgments">
 <h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Permalink to this heading"></a></h2>
-<p>This work was supported by the Estate of Zofia (Sophie) Fridman and
-funding from the Israel Innovation Authority, and the British Heart
-Foundation (grant FS/20/20/34626).</p>
+<p>This work was supported by the Estate of Zofia (Sophie) Fridman and funding from the Israel Innovation Authority, and the British Heart Foundation (grant FS/20/20/34626).</p>
 </section>
 </section>
 

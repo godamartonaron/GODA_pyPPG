@@ -122,7 +122,7 @@
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyPPG</span> <span class="kn">import</span> <span class="n">PPG</span><span class="p">,</span> <span class="n">Fiducials</span><span class="p">,</span> <span class="n">Biomarkers</span>
 <span class="kn">from</span> <span class="nn">pyPPG.datahandling</span> <span class="kn">import</span> <span class="n">load_data</span><span class="p">,</span> <span class="n">plot_fiducials</span><span class="p">,</span> <span class="n">save_data</span>
-    <span class="kn">import</span> <span class="nn">pyPPG.preproc</span> <span class="k">as</span> <span class="nn">PP</span>
+<span class="kn">import</span> <span class="nn">pyPPG.preproc</span> <span class="k">as</span> <span class="nn">PP</span>
 <span class="kn">import</span> <span class="nn">pyPPG.fiducials</span> <span class="k">as</span> <span class="nn">FP</span>
 <span class="kn">import</span> <span class="nn">pyPPG.biomarkers</span> <span class="k">as</span> <span class="nn">BM</span>
 <span class="kn">import</span> <span class="nn">pyPPG.ppg_sqi</span> <span class="k">as</span> <span class="nn">SQI</span>
@@ -135,6 +135,7 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 </div>
 </section>
@@ -144,7 +145,7 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;PPG_MAT_sample.mat&quot;</span> <span class="c1"># the path of the file containing the PPG signal to be analysed</span>
 <span class="n">fs</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># the sampling frequency</span>
 <span class="n">start_sig</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># the first sample of the signal to be analysed</span>
-<span class="n">end_sig</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># the last sample of the signal to be analysed (here a value of &#39;-1&#39; indicates the last sample)</span>
+<span class="n">end_sig</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">fs</span> <span class="c1"># 20 second long signal to be analysed</span>
 <span class="n">savingfolder</span> <span class="o">=</span> <span class="s1">&#39;temp_dir&#39;</span>
 <span class="n">savingformat</span> <span class="o">=</span> <span class="s1">&#39;csv&#39;</span>
 </pre></div>
@@ -190,6 +191,9 @@
 <span class="n">signal</span><span class="o">.</span><span class="n">order</span><span class="o">=</span><span class="mi">4</span> <span class="c1"># Filter order</span>
 <span class="n">signal</span><span class="o">.</span><span class="n">sm_wins</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ppg&#39;</span><span class="p">:</span><span class="mi">50</span><span class="p">,</span><span class="s1">&#39;vpg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;apg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;jpg&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">}</span> <span class="c1"># smoothing windows in millisecond for the PPG, PPG&#39;, PPG&quot;, and PPG&#39;&quot;</span>
 <span class="n">signal</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">vpg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">apg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">jpg</span> <span class="o">=</span> <span class="n">Preprocessing</span><span class="p">(</span><span class="n">signal</span><span class="o">=</span><span class="n">signal</span><span class="p">)</span>
+
+<span class="n">prep</span> <span class="o">=</span> <span class="n">PP</span><span class="o">.</span><span class="n">Preprocess</span><span class="p">(</span><span class="n">fL</span><span class="o">=</span><span class="n">signal</span><span class="o">.</span><span class="n">fL</span><span class="p">,</span> <span class="n">fH</span><span class="o">=</span><span class="n">signal</span><span class="o">.</span><span class="n">fH</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">signal</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="n">sm_wins</span><span class="o">=</span><span class="n">signal</span><span class="o">.</span><span class="n">sm_wins</span><span class="p">)</span>
+<span class="n">signal</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">vpg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">apg</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">jpg</span> <span class="o">=</span> <span class="n">prep</span><span class="o">.</span><span class="n">get_signals</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">signal</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Plot the derived signals</p>

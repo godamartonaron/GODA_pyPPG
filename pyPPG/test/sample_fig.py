@@ -73,7 +73,7 @@ with open(DB_dir+'IDs.txt', "r") as file:
 
 data_path = DB_dir + 'mesa-sleep-0010.edf'  # the path of the file containing the PPG signal to be analysed
 start_sig = 1000000+95*256 # the first sample of the signal to be analysed
-end_sig = 1000000+110*256 # the last sample of the signal to be analysed
+end_sig = 1000000+115*256 # the last sample of the signal to be analysed
 savingfolder = 'temp_dir/figs'
 
 # run example code

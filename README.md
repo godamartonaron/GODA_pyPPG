@@ -1,7 +1,7 @@
 
 # *pyPPG* toolbox documentation
 
-A toolbox for photoplethysmogram (PPG) analysis, including beat detection, fiducial point detection, and comprehensive assessment of standard biomarkers.
+A toolbox for finger photoplethysmogram (PPG) analysis, including beat detection, fiducial point detection, and comprehensive assessment of standard biomarkers.
 
 If you use the pyPPG resource, please cite:
 
@@ -29,9 +29,7 @@ The *pyPPG* toolbox also provides an optional PPG signal quality index based on 
 
 ![](figs/pyPPG_pipeline.svg)
 
-The toolbox identifies individual pulse waves in a PPG signal by identifying ***systolic peaks (sp)***, and then
-identifying the ***pulse onset (on)*** and ***offset (off)*** on either side of each systolic peak which indicate the
-start and end of the pulse wave, respectively.
+The toolbox identifies individual pulse waves in a PPG signal by identifying ***systolic peaks (sp)***, and then identifying the ***pulse onset (on)*** and ***offset (off)*** on either side of each systolic peak which indicate the start and end of the pulse wave, respectively.
 
 ![](figs/PPG_sample.svg)
 

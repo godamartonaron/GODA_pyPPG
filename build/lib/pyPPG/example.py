@@ -14,7 +14,7 @@ import pandas as pd
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1, fiducials=pd.DataFrame(), process_type="both", channel="",
+def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1, fiducials=pd.DataFrame(), process_type="both", channel="Pleth",
                 filtering=True, fL=0.5, fH=12, order=4, sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}, correction=pd.DataFrame(),
                 savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="csv", print_flag=True, use_tk=False):
     '''
