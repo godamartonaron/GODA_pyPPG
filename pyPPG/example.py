@@ -6,6 +6,8 @@ import pyPPG.fiducials as FP
 import pyPPG.biomarkers as BM
 import pyPPG.ppg_sqi as SQI
 
+import pyPPG.validation.pw_anal as PW
+
 import numpy as np
 import sys
 import json
@@ -14,8 +16,8 @@ import pandas as pd
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
-def ppg_example(data_path="", fs=np.nan, start_sig=0, end_sig=-1, fiducials=pd.DataFrame(), process_type="both", channel="Pleth",
-                filtering=True, fL=0.5, fH=12, order=4, sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}, correction=pd.DataFrame(),
+def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFrame(), process_type="both", channel="Pleth",
+                filtering=True, fL=0.5000001, fH=12, order=4, sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}, correction=pd.DataFrame(),
                 savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="csv", print_flag=True, use_tk=False):
     '''
     This is an example code for PPG analysis. The main parts:

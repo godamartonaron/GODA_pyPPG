@@ -1,5 +1,6 @@
 Comprehensive PPG Analysis
 ==========================
+
 .. raw:: html
 
    <a href="https://colab.research.google.com/drive/1ImUZyVCmeIp1ma_IFgTKzivBBUdv9g1d#scrollTo=yULBFCXMT77m">Colab Notebook</a>
@@ -13,6 +14,8 @@ Our objectives are to:
     * Calculate pulse wave biomarkers from the fiducial points
     * Saving data in different data format
 
+You can use the sample PPG data by downloading it from the following link: `Sample PPG data <https://github.com/godamartonaron/GODA_pyPPG/blob/main/sample_data/PPG_MAT_sample.mat>`__.
+
 Setup
 ______
 Import Python packages:
@@ -22,7 +25,7 @@ Import Python packages:
 
 .. code-block:: python
 
-    pip install pyPPG
+    pip install pyPPG==1.0.37
 
 * Import required components from pyPPG
 
@@ -43,7 +46,6 @@ Import Python packages:
     import sys
     import json
     import pandas as pd
-    import matplotlib.pyplot as plt
 
 Setup input parameters:
 -----------------------
@@ -53,9 +55,8 @@ The following input parameters are inputs to the `pyPPG.example <https://pyppg.r
 .. code-block:: python
 
     data_path = "PPG_MAT_sample.mat" # the path of the file containing the PPG signal to be analysed
-    fs = 100 # the sampling frequency
     start_sig = 0 # the first sample of the signal to be analysed
-    end_sig = 20*fs # 20 second long signal to be analysed
+    end_sig = -1 # the last sample of the signal to be analysed (here a value of '-1' indicates the last sample)
     savingfolder = 'temp_dir'
     savingformat = 'csv'
 
@@ -65,8 +66,8 @@ Loading a raw PPG signal:
 .. code-block:: python
 
     # Load the raw PPG signal
-    signal = load_data(data_path=data_path, fs=fs, start_sig=start_sig, end_sig=end_sig)
-
+    signal = load_data(data_path=data_path, start_sig=start_sig, end_sig=end_sig, use_tk=False)
+    signal.v = signal.v [0:20*signal.fs] # 20 second long signal to be analysed
 
 Plot the raw PPG signal:
 ------------------------
@@ -108,7 +109,6 @@ Filter the PPG signal and obtain first, second and third derivatives (vpg, apg, 
     signal.fH=12 # Upper cutoff frequency (Hz)
     signal.order=4 # Filter order
     signal.sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10} # smoothing windows in millisecond for the PPG, PPG', PPG", and PPG'"
-    signal.ppg, signal.vpg, signal.apg, signal.jpg = Preprocessing(signal=signal)
 
     prep = PP.Preprocess(fL=signal.fL, fH=signal.fH, order=signal.order, sm_wins=signal.sm_wins)
     signal.ppg, signal.vpg, signal.apg, signal.jpg = prep.get_signals(s=signal)
@@ -151,11 +151,12 @@ Store the derived signals in a class
 
     # Initialise the correction for fiducial points
     corr_on = ['on', 'dn', 'dp', 'v', 'w', 'f']
+    correction=pd.DataFrame()
     correction.loc[0, corr_on] = True
     signal.correction=correction
 
     # Create a PPG class
-    s = PPG(s=signal)
+    s = PPG(signal)
 
 Identify fiducial points:
 --------------------------
@@ -188,7 +189,7 @@ Plot fiducial points:
     fp = Fiducials(fp=fiducials)
 
     # Plot fiducial points
-    plot_fiducials(s=s, fp=fp, savingfolder=savingfolder)
+    plot_fiducials(s, fp, savingfolder, legend_fontsize=12)
 
 PPG fiducial points
      .. image:: PPG_MAT_sample.png

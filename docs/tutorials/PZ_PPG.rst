@@ -1,4 +1,4 @@
-PhysioZoo PPG morphological analysis
+PhysioZoo PPG analysis
 ====================================
 
 In this tutorial you will learn how to use **PhysioZoo PPG** to calculate morphological PPG biomarkers (i.e. pulse wave features) and export their values.

@@ -73,33 +73,30 @@ def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel=
         try:
             fs = np.squeeze(input_sig.get("Fs"))
         except:
-            fs = 100
-            print('The default sampling frequency is 100 Hz for .mat.')
+            fs = 125
+            print('The default sampling frequency is 125 Hz for .mat.')
     elif sig_format=='csv':
         input_sig = pd.read_csv(sig_path, encoding='utf-8')
         sig = input_sig
         sig = np.squeeze(sig.values)
-        try:
-            fs > 0
-        except:
-            fs = 75
-            print('The default sampling frequency is 75 Hz for .csv.')
+
+        if fs<=0:
+            fs = 125
+            print('The default sampling frequency is 125 Hz for .csv.')
 
     elif sig_format=='txt':
         try:
-            input_sig = np.loadtxt(sig_path, delimiter='\t').astype(int)
+            input_sig = np.loadtxt(sig_path, delimiter='\t')
         except:
             try:
-                input_sig = np.loadtxt(sig_path, delimiter=' ').astype(int)
+                input_sig = np.loadtxt(sig_path, delimiter=' ')
             except:
                 print('ERROR! The data separator is not supported for .txt.')
         sig = input_sig
 
-        try:
-            fs > 0
-        except:
-            fs = 1000
-            print('The default sampling frequency is 1 kHz for .txt.')
+        if fs<=0:
+            fs = 125
+            print('The default sampling frequency is 125 Hz for .txt.')
 
     elif sig_format == 'edf':
         try:
@@ -113,7 +110,7 @@ def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel=
             except:
                 raise('There is no valid channel for PPG in the .edf file!')
 
-        if np.isnan(fs):
+        if fs<=0:
             try:
                 fs = int(np.round(input_sig.info['sfreq']))
             except:

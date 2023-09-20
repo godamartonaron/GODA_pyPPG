@@ -11,7 +11,7 @@ with open('docs'+os.sep+'requirements.txt') as f:
 
 setup(
     name='pyPPG',
-    version='1.0.36',
+    version='1.0.37',
     description='pyPPG: a python toolbox for PPG morphological analysis.',
     author='Marton A. Goda, PhD; Peter H. Charlton, PhD',
     author_email="marton.goda@campus.technion.ac.il",
@@ -29,6 +29,7 @@ setup(
         "pyPPG": ["*"],
         "pyPPG"+os.sep+"ppg_bm": ["*"],
         "pyPPG"+os.sep+"pack_ppg": ["*"],
+        "pyPPG"+os.sep+"validation": ["*"],
     },
 
     install_requires=[required],
