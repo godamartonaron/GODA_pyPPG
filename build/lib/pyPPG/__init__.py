@@ -5,7 +5,7 @@ class PPG:
     '''
     This is class for the input PPG parameters.
     '''
-    def __init__(self,s={}, check_ppg=True):
+    def __init__(self,s={}, check_ppg_len=True):
         """
         :param s: dictionary of the PPG signal:
 
@@ -23,15 +23,17 @@ class PPG:
             * s.filtering: a bool for filtering
             * s.correction: DataFrame where the key is the name of the fiducial points and the value is bool
         :type s: DotMap
-        :param check_ppg: a bool for checking ppg length and sampling frequency
-        :type check_ppg: bool
+        :param check_ppg_len: a bool for checking ppg length and sampling frequency
+        :type check_ppg_len: bool
 
         """
 
         if s.fs <= 0:
             raise WrongParameter("Sampling frequency should be strictly positive")
 
-        if check_ppg: _check_shape_(s.v, s.fs)
+        if check_ppg_len: _check_shape_(s.v, s.fs)
+
+        s.check_ppg_len=check_ppg_len
 
         try:
             s.start_sig>0

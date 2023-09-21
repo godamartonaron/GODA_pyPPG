@@ -11,7 +11,7 @@ with open('docs'+os.sep+'requirements.txt') as f:
 
 setup(
     name='pyPPG',
-    version='1.0.37',
+    version='1.0.38',
     description='pyPPG: a python toolbox for PPG morphological analysis.',
     author='Marton A. Goda, PhD; Peter H. Charlton, PhD',
     author_email="marton.goda@campus.technion.ac.il",
@@ -24,12 +24,12 @@ setup(
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",
     ],
-    packages={"pyPPG", "pyPPG"+os.sep+"ppg_bm", "pyPPG"+os.sep+"pack_ppg"},
+    packages={"pyPPG", "pyPPG"+os.sep+"ppg_bm", "pyPPG"+os.sep+"pack_ppg", "pyPPG"+os.sep+"validation"},
     package_data={
         "pyPPG": ["*"],
         "pyPPG"+os.sep+"ppg_bm": ["*"],
         "pyPPG"+os.sep+"pack_ppg": ["*"],
-        "pyPPG"+os.sep+"validation": ["*"],
+        "pyPPG"+os.sep+"validation": ["pw_anal.py, __init__.py"],
     },
 
     install_requires=[required],

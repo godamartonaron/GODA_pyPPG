@@ -18,7 +18,7 @@ import pandas as pd
 ###########################################################################
 def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFrame(), process_type="both", channel="Pleth",
                 filtering=True, fL=0.5000001, fH=12, order=4, sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}, correction=pd.DataFrame(),
-                savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="csv", print_flag=True, use_tk=False):
+                savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="csv", print_flag=True, use_tk=False, check_ppg_len=True):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -75,6 +75,8 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
     :type print_flag: bool
     :param use_tk: a bool for using tkinter interface
     :type use_tk: bool
+    :param check_ppg: a bool for checking ppg length and sampling frequency
+    :type check_ppg: bool
 
     :return:
         - fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points
@@ -108,7 +110,7 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
     signal.correction=correction
 
     ## Create a PPG class
-    s = PPG(s=signal)
+    s = PPG(s=signal, check_ppg_len=check_ppg_len)
 
     ## Get Fiducial points
     if process_type == 'fiducials' or process_type == 'both':

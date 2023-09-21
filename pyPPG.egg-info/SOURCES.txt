@@ -24,3 +24,5 @@ pyPPG/ppg_bm/ppg_derivs.py
 pyPPG/ppg_bm/ppg_sig.py
 pyPPG/ppg_bm/sig_ratios.py
 pyPPG/ppg_bm/statistics.py
+pyPPG/validation/__init__.py
+pyPPG/validation/pw_anal.py
