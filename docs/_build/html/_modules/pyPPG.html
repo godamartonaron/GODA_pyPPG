@@ -6,15 +6,20 @@
   <title>pyPPG &mdash; pyPPG 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/jupyter-sphinx.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/thebelab.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../_static/thebelab-helper.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
@@ -48,7 +53,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/pyPPG_example.html">pyPPG example code</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/PPG_anal.html">Comprehensive PPG Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/PZ_PPG.html">PhysioZoo PPG morphological analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/PZ_PPG.html">PhysioZoo PPG analysis</a></li>
 </ul>
 
         </div>
@@ -79,11 +84,13 @@
 <span></span><span class="kn">from</span> <span class="nn">pyPPG.pack_ppg._ErrorHandler</span> <span class="kn">import</span> <span class="n">_check_shape_</span><span class="p">,</span> <span class="n">WrongParameter</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<div class="viewcode-block" id="PPG"><a class="viewcode-back" href="../pyPPG.html#pyPPG.PPG">[docs]</a><span class="k">class</span> <span class="nc">PPG</span><span class="p">:</span>
+<div class="viewcode-block" id="PPG">
+<a class="viewcode-back" href="../pyPPG.html#pyPPG.PPG">[docs]</a>
+<span class="k">class</span> <span class="nc">PPG</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This is class for the input PPG parameters.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="p">{},</span> <span class="n">check_ppg</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="p">{},</span> <span class="n">check_ppg_len</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param s: dictionary of the PPG signal:</span>
 
@@ -101,15 +108,17 @@
 <span class="sd">            * s.filtering: a bool for filtering</span>
 <span class="sd">            * s.correction: DataFrame where the key is the name of the fiducial points and the value is bool</span>
 <span class="sd">        :type s: DotMap</span>
-<span class="sd">        :param check_ppg: a bool for checking ppg length and sampling frequency</span>
-<span class="sd">        :type check_ppg: bool</span>
+<span class="sd">        :param check_ppg_len: a bool for checking ppg length and sampling frequency</span>
+<span class="sd">        :type check_ppg_len: bool</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">WrongParameter</span><span class="p">(</span><span class="s2">&quot;Sampling frequency should be strictly positive&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">check_ppg</span><span class="p">:</span> <span class="n">_check_shape_</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">check_ppg_len</span><span class="p">:</span> <span class="n">_check_shape_</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span>
+
+        <span class="n">s</span><span class="o">.</span><span class="n">check_ppg_len</span><span class="o">=</span><span class="n">check_ppg_len</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="o">&gt;</span><span class="mi">0</span>
@@ -135,7 +144,9 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
             <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="s1">&#39; = s[i]&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PPG.get_s"><a class="viewcode-back" href="../pyPPG.html#pyPPG.PPG.get_s">[docs]</a>    <span class="k">def</span> <span class="nf">get_s</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PPG.get_s">
+<a class="viewcode-back" href="../pyPPG.html#pyPPG.PPG.get_s">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_s</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function retrieves the dictionary of the PPG signal.</span>
 
@@ -147,10 +158,14 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
             <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Fiducials"><a class="viewcode-back" href="../pyPPG.html#pyPPG.Fiducials">[docs]</a><span class="k">class</span> <span class="nc">Fiducials</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Fiducials">
+<a class="viewcode-back" href="../pyPPG.html#pyPPG.Fiducials">[docs]</a>
+<span class="k">class</span> <span class="nc">Fiducials</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        This is class for the PPG fiducial points.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -171,7 +186,9 @@
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
                 <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39; = fp[i]&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Fiducials.get_fp"><a class="viewcode-back" href="../pyPPG.html#pyPPG.Fiducials.get_fp">[docs]</a>        <span class="k">def</span> <span class="nf">get_fp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Fiducials.get_fp">
+<a class="viewcode-back" href="../pyPPG.html#pyPPG.Fiducials.get_fp">[docs]</a>
+        <span class="k">def</span> <span class="nf">get_fp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            This function retrieves the struct of the fiducial points.</span>
 
@@ -186,7 +203,10 @@
 
             <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Fiducials.get_row"><a class="viewcode-back" href="../pyPPG.html#pyPPG.Fiducials.get_row">[docs]</a>        <span class="k">def</span> <span class="nf">get_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Fiducials.get_row">
+<a class="viewcode-back" href="../pyPPG.html#pyPPG.Fiducials.get_row">[docs]</a>
+        <span class="k">def</span> <span class="nf">get_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            This function retrieves the specified row from the DataFrame of fiducial points.</span>
 
@@ -201,9 +221,13 @@
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
                 <span class="n">fp_row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="kc">None</span><span class="p">)[</span><span class="n">row_index</span><span class="p">]</span>
 
-            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fp_row</span><span class="p">,[</span><span class="n">row_index</span><span class="p">])</span></div></div>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fp_row</span><span class="p">,[</span><span class="n">row_index</span><span class="p">])</span></div>
+</div>
 
-<div class="viewcode-block" id="Biomarkers"><a class="viewcode-back" href="../pyPPG.html#pyPPG.Biomarkers">[docs]</a><span class="k">class</span> <span class="nc">Biomarkers</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Biomarkers">
+<a class="viewcode-back" href="../pyPPG.html#pyPPG.Biomarkers">[docs]</a>
+<span class="k">class</span> <span class="nc">Biomarkers</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        This is class for the PPG biomarkers.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -227,7 +251,9 @@
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;bm_defs&#39;</span><span class="p">,</span> <span class="s1">&#39;bm_vals&#39;</span><span class="p">,</span> <span class="s1">&#39;bm_stats&#39;</span><span class="p">]:</span>
                 <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s1">&#39; = &#39;</span> <span class="o">+</span><span class="n">i</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Biomarkers.get_bm"><a class="viewcode-back" href="../pyPPG.html#pyPPG.Biomarkers.get_bm">[docs]</a>        <span class="k">def</span> <span class="nf">get_bm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Biomarkers.get_bm">
+<a class="viewcode-back" href="../pyPPG.html#pyPPG.Biomarkers.get_bm">[docs]</a>
+        <span class="k">def</span> <span class="nf">get_bm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            This function retrieves the dictionary of the biomarkers.</span>
 
@@ -240,7 +266,9 @@
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">keys_list</span><span class="p">:</span>
                 <span class="n">bm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">bm</span><span class="p">)</span></div></div>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">bm</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
 
            </div>

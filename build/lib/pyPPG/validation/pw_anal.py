@@ -344,8 +344,8 @@ class PulseWaveAnal:
             s.ppg = ppg_v
 
             ## Preprocessing
-            sm_wins = {'ppg': 50, 'vpg': 10, 'apg': 10, 'jpg': 10}
-            prep = PP.Preprocess(fL=0.5000001, fH=12, order=4, sm_wins=sm_wins)
+            sm_wins = {'ppg': 20, 'vpg': 10, 'apg': 10, 'jpg': 10}
+            prep = PP.Preprocess(fL=0.5000001, fH=10, order=4, sm_wins=sm_wins)
 
             # Filter and calculate the PPG, PPG', PPG", and PPG'" signals
             s.filtering = True
@@ -423,7 +423,7 @@ class PulseWaveAnal:
 
         ppg_fp['dp'] = fpex.get_diastolic_peak(onsets, ppg_fp.dn, apg_fp.e)
 
-        det_fp = pwex.merge_fiducials(ppg_fp, vpg_fp, apg_fp, jpg_fp)
+        det_fp = self.merge_fiducials(ppg_fp, vpg_fp, apg_fp, jpg_fp)
 
         if bool(len(correction)): det_fp = fpex.correct_fiducials(fiducials=det_fp, correction=correction)
 
@@ -468,8 +468,8 @@ class PulseWaveAnal:
 if __name__ == '__main__':
 
     # Flag for package usage
-    ppgbp=False     # validation of PPG-BP dataset
-    pw_ext=True     # extract features of pulse waves
+    ppgbp=True     # validation of PPG-BP dataset
+    pw_ext=False     # extract features of pulse waves
 
     # Initialise the pulse wave package
     pwex = PulseWaveAnal()

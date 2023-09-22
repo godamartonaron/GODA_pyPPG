@@ -14,7 +14,7 @@ Our objectives are to:
     * Calculate pulse wave biomarkers from the fiducial points
     * Saving data in different data format
 
-You can use the sample PPG data by downloading it from the following link: `Sample PPG data <https://github.com/godamartonaron/GODA_pyPPG/blob/main/sample_data/PPG_MAT_sample.mat>`__.
+You can use the sample PPG data by downloading it from the following link: `Sample PPG data <https://zenodo.org/record/8369487/files/Sample_PPG_MAT_125Hz.mat?download=1>`__.
 
 Setup
 ______
@@ -25,7 +25,7 @@ Import Python packages:
 
 .. code-block:: python
 
-    pip install pyPPG==1.0.37
+    pip install pyPPG==1.0.40
 
 * Import required components from pyPPG
 
@@ -54,7 +54,7 @@ The following input parameters are inputs to the `pyPPG.example <https://pyppg.r
 
 .. code-block:: python
 
-    data_path = "PPG_MAT_sample.mat" # the path of the file containing the PPG signal to be analysed
+    data_path = "Sample_PPG_MAT_125Hz.mat" # the path of the file containing the PPG signal to be analysed
     start_sig = 0 # the first sample of the signal to be analysed
     end_sig = -1 # the last sample of the signal to be analysed (here a value of '-1' indicates the last sample)
     savingfolder = 'temp_dir'

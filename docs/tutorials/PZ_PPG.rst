@@ -9,13 +9,7 @@ If you use the pyPPG resource, please cite:
 
 **Introduction**
 ----------------------
-The PPG signal is an optical measurement of the arterial pulse wave `(Charlton et
-al. 2019) <https://journals.physiology.org/doi/full/10.1152/ajpheart.00218.2019>`__, *i.e.*, the wave generated when blood is ejected from the heart, temporarily increasing arterial pressure and causing vessel expansion and contraction `(Alastruey et
-al. 2023) <https://journals.physiology.org/doi/full/10.1152/ajpheart.00705.2022>`__, the PPG signal is influenced by a range of physiological systems, such as: the heart, including heart rate, heart rhythm, and the nature of ejection `(Charlton et
-al. 2020) <https://ieeexplore.ieee.org/abstract/document/9733047/>`__; the blood vessels, including vessel stiffness, diameter, and blood pressure; the microvasculature, including peripheral compliance and resistance `(Charlton et
-al. 2020) <https://ieeexplore.ieee.org/abstract/document/9733047/>`__; the autonomic nervous system which influences heart rate variability `(Gil et
-al. 2010) <https://iopscience.iop.org/article/10.1088/0967-3334/31/9/015/meta>`__; and the respiratory system, which impacts the pulse wave through changes in intrathoracic pressure `(Charlton et
-al. 2017) <https://iopscience.iop.org/article/10.1088/1361-6579/aa670e/meta>`__. Thus, there is potential to extract much physiological information from the PPG signal.
+The PPG signal is an optical measurement of the arterial pulse wave `[1] <https://journals.physiology.org/doi/full/10.1152/ajpheart.00218.2019>`__, *i.e.*, the wave generated when blood is ejected from the heart, temporarily increasing arterial pressure and causing vessel expansion and contraction `[2] <https://journals.physiology.org/doi/full/10.1152/ajpheart.00705.2022>`__, the PPG signal is influenced by a range of physiological systems, such as: the heart, including heart rate, heart rhythm, and the nature of ejection `[3] <https://ieeexplore.ieee.org/abstract/document/9733047/>`__; the blood vessels, including vessel stiffness, diameter, and blood pressure; the microvasculature, including peripheral compliance and resistance `[3] <https://ieeexplore.ieee.org/abstract/document/9733047/>`__; the autonomic nervous system which influences heart rate variability `[4] <https://iopscience.iop.org/article/10.1088/0967-3334/31/9/015/meta>`__; and the respiratory system, which impacts the pulse wave through changes in intrathoracic pressure `[5] <https://iopscience.iop.org/article/10.1088/1361-6579/aa670e/meta>`__. Thus, there is potential to extract much physiological information from the PPG signal.
 
 Studying the morphological characteristics of the PPG may provide information on cardiovascular health.
 **PhysioZoo PPG** provides a framework and tools for extracting morphological biomarkers from the PPG signal.
@@ -64,3 +58,16 @@ You can export the morphological biomarkers. Go to File -> Save fiducial biomark
 
 .. .. image:: results_mor_analysis.PNG
    :align: center
+
+
+References:
+___________
+`[1] <https://journals.physiology.org/doi/full/10.1152/ajpheart.00218.2019>`__ Charlton, Peter H., et al. "Modeling arterial pulse waves in healthy aging: a database for in silico evaluation of hemodynamics and pulse wave indexes." American Journal of Physiology-Heart and Circulatory Physiology 317.5 (2019): H1062-H1085.
+
+`[2] <https://journals.physiology.org/doi/full/10.1152/ajpheart.00705.2022>`__ Alastruey, Jordi, et al. "Arterial pulse wave modeling and analysis for vascular-age studies: a review from VascAgeNet." American Journal of Physiology-Heart and Circulatory Physiology 325.1 (2023): H1-H29.
+
+`[3] <https://ieeexplore.ieee.org/abstract/document/9733047/>`__ Charlton, Peter H., et al. "Wearable photoplethysmography for cardiovascular monitoring." Proceedings of the IEEE 110.3 (2022): 355-381.
+
+`[4] <https://iopscience.iop.org/article/10.1088/0967-3334/31/9/015/meta>`__ Gil, Eduardo, et al. "Photoplethysmography pulse rate variability as a surrogate measurement of heart rate variability during non-stationary conditions." Physiological measurement 31.9 (2010): 1271.
+
+`[5] <https://iopscience.iop.org/article/10.1088/1361-6579/aa670e/meta>`__ Charlton, Peter H., et al. "Extraction of respiratory signals from the electrocardiogram and photoplethysmogram: technical and physiological determinants." Physiological measurement 38.5 (2017): 669.

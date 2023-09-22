@@ -112,7 +112,7 @@
 <li><p>Saving data in different data format</p></li>
 </ul>
 </div></blockquote>
-<p>You can use the sample PPG data by downloading it from the following link: <a class="reference external" href="https://github.com/godamartonaron/GODA_pyPPG/blob/main/sample_data/PPG_MAT_sample.mat">Sample PPG data</a>.</p>
+<p>You can use the sample PPG data by downloading it from the following link: <a class="reference external" href="https://zenodo.org/record/8369487/files/Sample_PPG_MAT_125Hz.mat?download=1">Sample PPG data</a>.</p>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
 <section id="import-python-packages">
@@ -120,7 +120,7 @@
 <ul class="simple">
 <li><p>Install the pyPPG toolbox for PPG analysis</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyPPG</span><span class="o">==</span><span class="mf">1.0.37</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyPPG</span><span class="o">==</span><span class="mf">1.0.40</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -147,7 +147,7 @@
 <section id="setup-input-parameters">
 <h3>Setup input parameters:<a class="headerlink" href="#setup-input-parameters" title="Link to this heading"></a></h3>
 <p>The following input parameters are inputs to the <a class="reference external" href="https://pyppg.readthedocs.io/en/latest/tutorials/pyPPG_example.html">pyPPG.example</a> module (see the documentation for further details).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;PPG_MAT_sample.mat&quot;</span> <span class="c1"># the path of the file containing the PPG signal to be analysed</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;Sample_PPG_MAT_125Hz.mat&quot;</span> <span class="c1"># the path of the file containing the PPG signal to be analysed</span>
 <span class="n">start_sig</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># the first sample of the signal to be analysed</span>
 <span class="n">end_sig</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># the last sample of the signal to be analysed (here a value of &#39;-1&#39; indicates the last sample)</span>
 <span class="n">savingfolder</span> <span class="o">=</span> <span class="s1">&#39;temp_dir&#39;</span>
