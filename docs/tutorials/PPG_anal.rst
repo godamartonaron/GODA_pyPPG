@@ -25,7 +25,7 @@ Import Python packages:
 
 .. code-block:: python
 
-    pip install pyPPG==1.0.40
+    pip install pyPPG==1.0.41
 
 * Import required components from pyPPG
 
