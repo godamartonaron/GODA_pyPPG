@@ -47,7 +47,7 @@ Available on pip, with the command: **pip install pyPPG**
 pip project: https://pypi.org/project/pyPPG/
 
 For more details see the `pyPPG example
-code <https://pyppg.readthedocs.io/en/latest/tutorials/pyPPG_example.html>`__
+code <https://pyppg.readthedocs.io/en/latest/tutorials/pyPPG_example.html>`__ and `pyPPG YouTube video <https://www.youtube.com/watch?v=DpUy84YJg1g&t=87s>`__
 
 Requirements
 ------------
