@@ -5,7 +5,7 @@ A toolbox for finger photoplethysmogram (PPG) analysis, including beat detection
 
 If you use the pyPPG resource, please cite:
 
-*Goda MA, Charlton PH, and Behar JA,*\ **'pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis'**\ *, [Under review]*
+*Goda MA, Charlton PH, and Behar JA,*\ **'pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis'**\ , (`The preprint is available HERE <https://arxiv.org/abs/2309.13767>`__)
 
 Introduction
 ------------
