@@ -78,6 +78,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#pyPPG.datahandling.load_data"><code class="docutils literal notranslate"><span class="pre">load_data()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#pyPPG.datahandling.plot_fiducials"><code class="docutils literal notranslate"><span class="pre">plot_fiducials()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#pyPPG.datahandling.save_data"><code class="docutils literal notranslate"><span class="pre">save_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyPPG.datahandling.load_fiducials"><code class="docutils literal notranslate"><span class="pre">load_fiducials()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
@@ -128,7 +129,7 @@
 <span id="pyppg-example"></span><h2>pyPPG.example<a class="headerlink" href="#module-pyPPG.example" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyPPG.example.ppg_example">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.example.</span></span><span class="sig-name descname"><span class="pre">ppg_example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path=''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_sig=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_sig=-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials=Empty</span> <span class="pre">DataFrame</span> <span class="pre">Columns:</span> <span class="pre">[]</span> <span class="pre">Index:</span> <span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_type='both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel='Pleth'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtering=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fL=0.5000001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fH=12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sm_wins={'apg':</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'jpg':</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ppg':</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'vpg':</span> <span class="pre">10}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correction=Empty</span> <span class="pre">DataFrame</span> <span class="pre">Columns:</span> <span class="pre">[]</span> <span class="pre">Index:</span> <span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingfolder='temp_dir'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_fig=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingformat='csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_flag=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tk=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_ppg_len=True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/example.html#ppg_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.example.ppg_example" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyPPG.example.</span></span><span class="sig-name descname"><span class="pre">ppg_example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path=''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_sig=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_sig=-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiducials=Empty</span> <span class="pre">DataFrame</span> <span class="pre">Columns:</span> <span class="pre">[]</span> <span class="pre">Index:</span> <span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_type='both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel='Pleth'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtering=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fL=0.5000001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fH=12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sm_wins={'apg':</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'jpg':</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ppg':</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'vpg':</span> <span class="pre">10}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correction=Empty</span> <span class="pre">DataFrame</span> <span class="pre">Columns:</span> <span class="pre">[]</span> <span class="pre">Index:</span> <span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingfolder='temp_dir'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_fig=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingformat='both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_flag=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tk=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_ppg_len=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saved_fiducials=''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savedata=True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/example.html#ppg_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.example.ppg_example" title="Link to this definition"></a></dt>
 <dd><dl class="simple">
 <dt>This is an example code for PPG analysis. The main parts:</dt><dd><ol class="arabic simple">
 <li><p>Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.</p></li>
@@ -165,26 +166,24 @@
 <li><p><strong>fH</strong> (<em>float</em>) – Upper cutoff frequency (Hz)</p></li>
 <li><p><strong>order</strong> (<em>int</em>) – Filter order</p></li>
 <li><p><strong>sm_wins</strong> (<em>dict</em>) – dictionary of smoothing windows in millisecond:
-- ppg: windows for PPG signal
-- vpg: windows for PPG’ signal
-- apg: windows for PPG” signal
-- jpg: windows for PPG’” signal</p></li>
+- ppg: window for PPG signal
+- vpg: window for PPG’ signal
+- apg: window for PPG” signal
+- jpg: window for PPG’” signal</p></li>
 <li><p><strong>correction</strong> (<em>DataFrame</em>) – DataFrame where the key is the name of the fiducial points and the value is bool</p></li>
 <li><p><strong>savingfolder</strong> (<em>str</em>) – location of the saved data</p></li>
 <li><p><strong>savefig</strong> (<em>bool</em>) – a bool for current figure saving</p></li>
 <li><p><strong>show_fig</strong> (<em>bool</em>) – a bool for show figure</p></li>
-<li><p><strong>savingformat</strong> (<em>str</em>) – file format of the saved date, the provided file formats .mat and .csv</p></li>
+<li><p><strong>savingformat</strong> (<em>str</em>) – file format of the saved date, the provided file formats .mat, .csv, or both</p></li>
 <li><p><strong>print_flag</strong> (<em>bool</em>) – a bool for print message</p></li>
 <li><p><strong>use_tk</strong> (<em>bool</em>) – a bool for using tkinter interface</p></li>
 <li><p><strong>check_ppg</strong> (<em>bool</em>) – a bool for checking ppg length and sampling frequency</p></li>
+<li><p><strong>saved_fiducials</strong> (<em>str</em>) – path of the file of the saved fiducial points</p></li>
+<li><p><strong>savedata</strong> (<em>bool</em>) – a bool for saving data</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points</p></li>
-<li><p>s: object of PPG signal</p></li>
-</ul>
-</p>
+<dd class="field-even"><p>file_names: dictionary of the saved file names</p>
 </dd>
 </dl>
 <p>Example:</p>
@@ -192,7 +191,7 @@
 <div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyPPG.example</span> <span class="kn">import</span> <span class="n">ppg_example</span>
 
 <span class="c1"># run example code</span>
-<span class="n">ppg_example</span><span class="p">(</span><span class="n">savedata</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ppg_example</span><span class="p">()</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -223,6 +222,21 @@
 <li><p>s.apg: 1-d array, a vector of the filtered PPG” values</p></li>
 <li><p>s.jpg: 1-d array, a vector of the filtered PPG’” values</p></li>
 <li><p>s.filtering: a bool for filtering</p></li>
+<li><p>s.fL: Lower cutoff frequency (Hz)</p></li>
+<li><p>s.fH: Upper cutoff frequency (Hz)</p></li>
+<li><p>s.order: Filter order</p></li>
+<li><ol class="loweralpha simple" start="19">
+<li><p>sm_wins: dictionary of smoothing windows in millisecond:</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>ppg: window for PPG signal</p></li>
+<li><p>vpg: window for PPG’ signal</p></li>
+<li><p>apg: window for PPG” signal</p></li>
+<li><p>jpg: window for PPG’” signal</p></li>
+</ul>
+</div></blockquote>
+</li>
 <li><p>s.correction: DataFrame where the key is the name of the fiducial points and the value is bool</p></li>
 </ul>
 </p></li>
@@ -338,10 +352,10 @@
 <li><p><strong>fH</strong> (<em>float</em>) – Upper cutoff frequency (Hz)</p></li>
 <li><p><strong>order</strong> (<em>int</em>) – Filter order</p></li>
 <li><p><strong>sm_wins</strong> (<em>dict</em>) – dictionary of smoothing windows in millisecond:
-- ppg: windows for PPG signal
-- vpg: windows for PPG’ signal
-- apg: windows for PPG” signal
-- jpg: windows for PPG’” signal</p></li>
+- ppg: window for PPG signal
+- vpg: window for PPG’ signal
+- apg: window for PPG” signal
+- jpg: window for PPG’” signal</p></li>
 </ul>
 </dd>
 </dl>
@@ -492,7 +506,7 @@ Written by Qiao Li, February 21, 2011</p>
 <span id="pyppg-datahandling"></span><h2>pyPPG.datahandling<a class="headerlink" href="#module-pyPPG.datahandling" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyPPG.datahandling.load_data">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.datahandling.</span></span><span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">nan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Pleth'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/datahandling.html#load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.datahandling.load_data" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyPPG.datahandling.</span></span><span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">nan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_sig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Pleth'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_flag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/datahandling.html#load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.datahandling.load_data" title="Link to this definition"></a></dt>
 <dd><p>Load raw PPG data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -503,6 +517,7 @@ Written by Qiao Li, February 21, 2011</p>
 <li><p><strong>end_sig</strong> (<em>int</em>) – the last sample of the signal to be analysed</p></li>
 <li><p><strong>channel</strong> (<em>channel</em><em> of </em><em>the .edf file</em>) – channel of the .edf file</p></li>
 <li><p><strong>use_tk</strong> (<em>bool</em>) – a bool for using tkinter interface</p></li>
+<li><p><strong>print_flag</strong> (<em>bool</em>) – a bool for print message</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -557,18 +572,34 @@ Written by Qiao Li, February 21, 2011</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyPPG.datahandling.save_data">
-<span class="sig-prename descclassname"><span class="pre">pyPPG.datahandling.</span></span><span class="sig-name descname"><span class="pre">save_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyPPG.PPG" title="pyPPG.PPG"><span class="pre">PPG</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyPPG.Fiducials" title="pyPPG.Fiducials"><span class="pre">Fiducials</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">bm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyPPG.Biomarkers" title="pyPPG.Biomarkers"><span class="pre">Biomarkers</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingformat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingfolder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_flag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/datahandling.html#save_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.datahandling.save_data" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pyPPG.datahandling.</span></span><span class="sig-name descname"><span class="pre">save_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">savingformat:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savingfolder:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_flag=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s={}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp=Empty</span> <span class="pre">DataFrame</span> <span class="pre">Columns:</span> <span class="pre">[]</span> <span class="pre">Index:</span> <span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bm=Empty</span> <span class="pre">DataFrame</span> <span class="pre">Columns:</span> <span class="pre">[]</span> <span class="pre">Index:</span> <span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/datahandling.html#save_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.datahandling.save_data" title="Link to this definition"></a></dt>
 <dd><p>Save the results of the filtered PPG analysis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> (<em>DotMap</em>) – a struct of PPG signal</p></li>
-<li><p><strong>fp</strong> (<em>pyPPG.Fiducial object</em>) – a struct of fiducial points</p></li>
-<li><p><strong>bm</strong> (<em>pyPPG.Biomarkers object</em>) – a dictionary of biomarkers</p></li>
 <li><p><strong>savingformat</strong> (<em>str</em>) – file format of the saved date, the provided file formats .mat and .csv</p></li>
 <li><p><strong>savingfolder</strong> (<em>str</em>) – location of the saved data</p></li>
 <li><p><strong>print_flag</strong> (<em>bool</em>) – a bool for print message</p></li>
+<li><p><strong>s</strong> (<em>DotMap</em>) – a struct of PPG signal</p></li>
+<li><p><strong>fp</strong> (<em>pyPPG.Fiducial object</em>) – a struct of fiducial points</p></li>
+<li><p><strong>bm</strong> (<em>pyPPG.Biomarkers object</em>) – a dictionary of biomarkers</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>file_names: dictionary of the saved file names</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyPPG.datahandling.load_fiducials">
+<span class="sig-prename descclassname"><span class="pre">pyPPG.datahandling.</span></span><span class="sig-name descname"><span class="pre">load_fiducials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">saved_fiducials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyPPG/datahandling.html#load_fiducials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyPPG.datahandling.load_fiducials" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>saved_fiducials</strong> (<em>str</em>) – path of the matlab struct of the saved fiducial points, where the name field is ‘PPG_fiducials’</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points</p>
 </dd>
 </dl>
 </dd></dl>
