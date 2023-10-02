@@ -5,21 +5,18 @@
 version: 2
 
 build:
-  os: "ubuntu-22.04"
+  os: ubuntu-22.04
   tools:
-    python:
-      version: 3.8
-      install:
-        - -r docs/requirements.txt 
+    python: "3.11"
 
-    sphinx:
-      configuration: docs/conf.py
+sphinx:
+  configuration: docs/conf.py
 
 # Optionally build your docs in additional formats such as PDF
 formats:
   - pdf
 
-#python:
+python:
 #  version: 3.8
-#  install:
-#    - requirements: docs/requirements.txt
+  install:
+    - requirements: docs/requirements.txt
