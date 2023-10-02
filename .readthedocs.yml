@@ -9,8 +9,10 @@ build:
   tools:
     python: "3.11"
 
-install:
-  - requirements: docs/requirements.txt
+python:
+  version: 3.8
+  install:
+    - requirements: docs/requirements.txt
 
 sphinx:
   configuration: docs/conf.py
