@@ -90,7 +90,8 @@
 <h1>PhysioZoo PPG analysis<a class="headerlink" href="#physiozoo-ppg-analysis" title="Link to this heading"></a></h1>
 <p>In this tutorial you will learn how to use <strong>PhysioZoo PPG</strong> to calculate morphological PPG biomarkers (i.e. pulse wave features) and export their values.</p>
 <p>If you use the pyPPG resource, please cite:</p>
-<p><em>Goda MA, Charlton PH, and Behar JA</em>, ‘<strong>pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis</strong>’, [Under review]</p>
+<p>Goda, M. A., Charlton, P. H., &amp; Behar, J. A. (2023). <strong>pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis</strong>. arXiv preprint arXiv:2309.13767., (<a class="reference external" href="https://arxiv.org/abs/2309.13767">The preprint is available HERE</a>)</p>
+<a class="reference external image-reference" href="https://www.youtube.com/watch?v=a92Fq09Qapw"><img alt="PhysioZoo PPG" src="../_images/PZ-PPG_video.png" /></a>
 <section id="introduction">
 <h2><strong>Introduction</strong><a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>The PPG signal is an optical measurement of the arterial pulse wave <a class="reference external" href="https://journals.physiology.org/doi/full/10.1152/ajpheart.00218.2019">[1]</a>, <em>i.e.</em>, the wave generated when blood is ejected from the heart, temporarily increasing arterial pressure and causing vessel expansion and contraction <a class="reference external" href="https://journals.physiology.org/doi/full/10.1152/ajpheart.00705.2022">[2]</a>, the PPG signal is influenced by a range of physiological systems, such as: the heart, including heart rate, heart rhythm, and the nature of ejection <a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/9733047/">[3]</a>; the blood vessels, including vessel stiffness, diameter, and blood pressure; the microvasculature, including peripheral compliance and resistance <a class="reference external" href="https://ieeexplore.ieee.org/abstract/document/9733047/">[3]</a>; the autonomic nervous system which influences heart rate variability <a class="reference external" href="https://iopscience.iop.org/article/10.1088/0967-3334/31/9/015/meta">[4]</a>; and the respiratory system, which impacts the pulse wave through changes in intrathoracic pressure <a class="reference external" href="https://iopscience.iop.org/article/10.1088/1361-6579/aa670e/meta">[5]</a>. Thus, there is potential to extract much physiological information from the PPG signal.</p>
@@ -99,7 +100,7 @@
 </section>
 <section id="performing-ppg-morphological-analysis">
 <h2><strong>Performing PPG morphological analysis</strong><a class="headerlink" href="#performing-ppg-morphological-analysis" title="Link to this heading"></a></h2>
-<p>Start by entering the PPG interface by clicking on the ‘Pulse’ menu on the top left, then load some PPG example by clicking File -&gt; Open data file -&gt; ppg_example.txt. The program will automaticly present the PPG file you imported.</p>
+<p>Start by entering the PPG interface by clicking on the ‘Pulse’ menu on the top left, then load some PPG example by clicking File -&gt; Open data file -&gt; Examples-1.6.7ExamplesTXTPPGhumanfingerHuman_example_ppg.txt. The program will automaticly present the PPG file you imported.</p>
 <p>To perform the analysis, please follow the instructions:</p>
 <ol class="arabic simple">
 <li><p>Prefiltering the signal: On the left panel, select the “Configuration” tab. On the bottom of the tab, you will find a section labeled: <strong>Fiducials filtering parameters</strong>.</p></li>
@@ -108,6 +109,7 @@
 </ol>
 <p>Congrats! You have made your first morphological analysis with <strong>PhysioZoo PPG</strong>!
 The biomarkers are divided into two different categories: Duration and Amplitudes, the statistical measurments of the biomarkers will be presented in a table, in the bottom panel.</p>
+<img alt="../_images/PZ-PPG_settings.png" class="align-center" src="../_images/PZ-PPG_settings.png" />
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For PPG anlysis 9 statistical mesurment computed over the selected window (defined by W.S. W.L.) will be presented for each biomarker namely: signal duration; average (AVG); median (MED); standard deviation (STD); lower and upper quartiles (Q1, Q3); inter-quartile range (IQR); Skewness (SKW, indicating a lack of symmetry in the distribution; Kurtosis (KUR, indicating the pointedness of a peak in the distribution curve); and the average difference between the mean and each data value (MAD)</p>
@@ -116,10 +118,12 @@ The biomarkers are divided into two different categories: Duration and Amplitude
 <section id="exporting-fiducial-points">
 <h2><strong>Exporting fiducial points</strong><a class="headerlink" href="#exporting-fiducial-points" title="Link to this heading"></a></h2>
 <p>You can export the fiducial points. Go to File -&gt; Save fiducial points. The excel file contains the computed fiducial points for each lead.</p>
+<img alt="../_images/PZ-PPG_fp.png" class="align-center" src="../_images/PZ-PPG_fp.png" />
 </section>
 <section id="exporting-morphological-biomarkers">
 <h2><strong>Exporting morphological biomarkers</strong><a class="headerlink" href="#exporting-morphological-biomarkers" title="Link to this heading"></a></h2>
 <p>You can export the morphological biomarkers. Go to File -&gt; Save fiducial biomarkers. The excel file contains the engineered PPG biomarkers.</p>
+<img alt="../_images/PZ-PPG_bm.png" class="align-center" src="../_images/PZ-PPG_bm.png" />
 <section id="references">
 <h3>References:<a class="headerlink" href="#references" title="Link to this heading"></a></h3>
 <p><a class="reference external" href="https://journals.physiology.org/doi/full/10.1152/ajpheart.00218.2019">[1]</a> Charlton, Peter H., et al. “Modeling arterial pulse waves in healthy aging: a database for in silico evaluation of hemodynamics and pulse wave indexes.” American Journal of Physiology-Heart and Circulatory Physiology 317.5 (2019): H1062-H1085.</p>

@@ -5,7 +5,11 @@ In this tutorial you will learn how to use **PhysioZoo PPG** to calculate morpho
 
 If you use the pyPPG resource, please cite:
 
-*Goda MA, Charlton PH, and Behar JA*, '**pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis**', [Under review]
+Goda, M. A., Charlton, P. H., & Behar, J. A. (2023). **pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis**. arXiv preprint arXiv:2309.13767., (`The preprint is available HERE <https://arxiv.org/abs/2309.13767>`__)
+
+.. image:: PZ-PPG_video.png
+   :alt: PhysioZoo PPG
+   :target: https://www.youtube.com/watch?v=a92Fq09Qapw
 
 **Introduction**
 ----------------------
@@ -16,10 +20,7 @@ Studying the morphological characteristics of the PPG may provide information on
 
 **Performing PPG morphological analysis**
 ------------------------------------------------------------
-Start by entering the PPG interface by clicking on the 'Pulse' menu on the top left, then load some PPG example by clicking File -> Open data file -> ppg_example.txt. The program will automaticly present the PPG file you imported.
-
-.. .. image:: before_analysis.png
-   :align: center
+Start by entering the PPG interface by clicking on the 'Pulse' menu on the top left, then load some PPG example by clicking File -> Open data file -> Examples-1.6.7\ExamplesTXT\PPG\human\finger\Human_example_ppg.txt. The program will automaticly present the PPG file you imported.
 
 To perform the analysis, please follow the instructions:
 
@@ -31,7 +32,7 @@ To perform the analysis, please follow the instructions:
 Congrats! You have made your first morphological analysis with **PhysioZoo PPG**!
 The biomarkers are divided into two different categories: Duration and Amplitudes, the statistical measurments of the biomarkers will be presented in a table, in the bottom panel.
 
-.. .. image:: after_analysis.png
+.. image:: PZ-PPG_settings.png
    :align: center
 
 .. note:: For PPG anlysis 9 statistical mesurment computed over the selected window (defined by W.S. W.L.) will be presented for each biomarker namely: signal duration; average (AVG); median (MED); standard deviation (STD); lower and upper quartiles (Q1, Q3); inter-quartile range (IQR); Skewness (SKW, indicating a lack of symmetry in the distribution; Kurtosis (KUR, indicating the pointedness of a peak in the distribution curve); and the average difference between the mean and each data value (MAD)
@@ -42,7 +43,7 @@ The biomarkers are divided into two different categories: Duration and Amplitude
 You can export the fiducial points. Go to File -> Save fiducial points. The excel file contains the computed fiducial points for each lead.
 
 
-.. .. image:: results_fiducials.png
+.. image:: PZ-PPG_fp.png
    :align: center
 
 **Exporting morphological biomarkers**
@@ -50,7 +51,7 @@ You can export the fiducial points. Go to File -> Save fiducial points. The exce
 
 You can export the morphological biomarkers. Go to File -> Save fiducial biomarkers. The excel file contains the engineered PPG biomarkers.
 
-.. .. image:: results_mor_analysis.PNG
+.. image:: PZ-PPG_bm.png
    :align: center
 
 
