@@ -11,6 +11,8 @@ Goda, M. A., Charlton, P. H., & Behar, J. A. (2023). **pyPPG: A Python toolbox f
    :alt: PhysioZoo PPG
    :target: https://www.youtube.com/watch?v=a92Fq09Qapw
 
+For more details see the `PhysioZoo PPG website <https://physiozoo.com/>`__ and `PhysioZoo PPG YouTube video <https://www.youtube.com/watch?v=a92Fq09Qapw>`__
+
 **Introduction**
 ----------------------
 The PPG signal is an optical measurement of the arterial pulse wave `[1] <https://journals.physiology.org/doi/full/10.1152/ajpheart.00218.2019>`__, *i.e.*, the wave generated when blood is ejected from the heart, temporarily increasing arterial pressure and causing vessel expansion and contraction `[2] <https://journals.physiology.org/doi/full/10.1152/ajpheart.00705.2022>`__, the PPG signal is influenced by a range of physiological systems, such as: the heart, including heart rate, heart rhythm, and the nature of ejection `[3] <https://ieeexplore.ieee.org/abstract/document/9733047/>`__; the blood vessels, including vessel stiffness, diameter, and blood pressure; the microvasculature, including peripheral compliance and resistance `[3] <https://ieeexplore.ieee.org/abstract/document/9733047/>`__; the autonomic nervous system which influences heart rate variability `[4] <https://iopscience.iop.org/article/10.1088/0967-3334/31/9/015/meta>`__; and the respiratory system, which impacts the pulse wave through changes in intrathoracic pressure `[5] <https://iopscience.iop.org/article/10.1088/1361-6579/aa670e/meta>`__. Thus, there is potential to extract much physiological information from the PPG signal.
