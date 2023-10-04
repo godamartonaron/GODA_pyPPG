@@ -24,7 +24,7 @@ class PPG:
             * s.fL: Lower cutoff frequency (Hz)
             * s.fH: Upper cutoff frequency (Hz)
             * s.order: Filter order
-            * s. sm_wins: dictionary of smoothing windows in millisecond:
+            * s.sm_wins: dictionary of smoothing windows in millisecond:
                 - ppg: window for PPG signal
                 - vpg: window for PPG' signal
                 - apg: window for PPG" signal
