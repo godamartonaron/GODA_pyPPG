@@ -11,11 +11,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -97,7 +97,7 @@
            <div itemprop="articleBody">
              
   <section id="comprehensive-ppg-analysis">
-<h1>Comprehensive PPG Analysis<a class="headerlink" href="#comprehensive-ppg-analysis" title="Permalink to this heading"></a></h1>
+<h1>Comprehensive PPG Analysis<a class="headerlink" href="#comprehensive-ppg-analysis" title="Link to this heading"></a></h1>
 <a href="https://colab.research.google.com/drive/1ImUZyVCmeIp1ma_IFgTKzivBBUdv9g1d#scrollTo=yULBFCXMT77m">Colab Notebook</a><p>In this tutorial we will learn how to extract biomarkers from a photoplethysmogram (PPG) signal.</p>
 <p>Our objectives are to:</p>
 <blockquote>
@@ -109,9 +109,9 @@
 </div></blockquote>
 <p>You can use the sample PPG data by downloading it from the following link: <a class="reference external" href="https://zenodo.org/record/8369487/files/Sample_PPG_MAT_125Hz.mat?download=1">Sample PPG data</a>.</p>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
 <section id="import-python-packages">
-<h3>Import Python packages:<a class="headerlink" href="#import-python-packages" title="Permalink to this heading"></a></h3>
+<h3>Import Python packages:<a class="headerlink" href="#import-python-packages" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Install the pyPPG toolbox for PPG analysis</p></li>
 </ul>
@@ -140,7 +140,7 @@
 </div>
 </section>
 <section id="setup-input-parameters">
-<h3>Setup input parameters:<a class="headerlink" href="#setup-input-parameters" title="Permalink to this heading"></a></h3>
+<h3>Setup input parameters:<a class="headerlink" href="#setup-input-parameters" title="Link to this heading"></a></h3>
 <p>The following input parameters are inputs to the <a class="reference external" href="https://pyppg.readthedocs.io/en/latest/tutorials/pyPPG_example.html">pyPPG.example</a> module (see the documentation for further details).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;Sample_PPG_MAT_125Hz.mat&quot;</span> <span class="c1"># the path of the file containing the PPG signal to be analysed</span>
 <span class="n">start_sig</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># the first sample of the signal to be analysed</span>
@@ -151,7 +151,7 @@
 </div>
 </section>
 <section id="loading-a-raw-ppg-signal">
-<h3>Loading a raw PPG signal:<a class="headerlink" href="#loading-a-raw-ppg-signal" title="Permalink to this heading"></a></h3>
+<h3>Loading a raw PPG signal:<a class="headerlink" href="#loading-a-raw-ppg-signal" title="Link to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the raw PPG signal</span>
 <span class="n">signal</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">,</span> <span class="n">start_sig</span><span class="o">=</span><span class="n">start_sig</span><span class="p">,</span> <span class="n">end_sig</span><span class="o">=</span><span class="n">end_sig</span><span class="p">,</span> <span class="n">use_tk</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">signal</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">v</span> <span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">20</span><span class="o">*</span><span class="n">signal</span><span class="o">.</span><span class="n">fs</span><span class="p">]</span> <span class="c1"># 20 second long signal to be analysed</span>
@@ -159,7 +159,7 @@
 </div>
 </section>
 <section id="plot-the-raw-ppg-signal">
-<h3>Plot the raw PPG signal:<a class="headerlink" href="#plot-the-raw-ppg-signal" title="Permalink to this heading"></a></h3>
+<h3>Plot the raw PPG signal:<a class="headerlink" href="#plot-the-raw-ppg-signal" title="Link to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import plotting package</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 
@@ -181,9 +181,9 @@
 </section>
 </section>
 <section id="ppg-signal-processing">
-<h2>PPG signal processing<a class="headerlink" href="#ppg-signal-processing" title="Permalink to this heading"></a></h2>
+<h2>PPG signal processing<a class="headerlink" href="#ppg-signal-processing" title="Link to this heading"></a></h2>
 <section id="prepare-the-ppg-data">
-<h3>Prepare the PPG data:<a class="headerlink" href="#prepare-the-ppg-data" title="Permalink to this heading"></a></h3>
+<h3>Prepare the PPG data:<a class="headerlink" href="#prepare-the-ppg-data" title="Link to this heading"></a></h3>
 <p>Filter the PPG signal and obtain first, second and third derivatives (vpg, apg, and jpg respectively).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">signal</span><span class="o">.</span><span class="n">filtering</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># whether or not to filter the PPG signal</span>
 <span class="n">signal</span><span class="o">.</span><span class="n">fL</span><span class="o">=</span><span class="mf">0.5000001</span> <span class="c1"># Lower cutoff frequency (Hz)</span>
@@ -236,7 +236,7 @@
 </div>
 </section>
 <section id="identify-fiducial-points">
-<h3>Identify fiducial points:<a class="headerlink" href="#identify-fiducial-points" title="Permalink to this heading"></a></h3>
+<h3>Identify fiducial points:<a class="headerlink" href="#identify-fiducial-points" title="Link to this heading"></a></h3>
 <p>Initialise the fiducials package</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fpex</span> <span class="o">=</span> <span class="n">FP</span><span class="o">.</span><span class="n">FpCollection</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
 </pre></div>
@@ -251,7 +251,7 @@
 </div>
 </section>
 <section id="plot-fiducial-points">
-<h3>Plot fiducial points:<a class="headerlink" href="#plot-fiducial-points" title="Permalink to this heading"></a></h3>
+<h3>Plot fiducial points:<a class="headerlink" href="#plot-fiducial-points" title="Link to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a fiducials class</span>
 <span class="n">fp</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fp</span><span class="o">=</span><span class="n">fiducials</span><span class="p">)</span>
 
@@ -266,7 +266,7 @@
 </section>
 </section>
 <section id="calculate-ppg-sqi">
-<h2>Calculate PPG SQI:<a class="headerlink" href="#calculate-ppg-sqi" title="Permalink to this heading"></a></h2>
+<h2>Calculate PPG SQI:<a class="headerlink" href="#calculate-ppg-sqi" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get PPG SQI</span>
 <span class="n">ppgSQI</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">SQI</span><span class="o">.</span><span class="n">get_ppgSQI</span><span class="p">(</span><span class="n">ppg</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">ppg</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="n">fp</span><span class="o">.</span><span class="n">sp</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean PPG SQI: &#39;</span><span class="p">,</span> <span class="n">ppgSQI</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">)</span>
@@ -274,7 +274,7 @@
 </div>
 </section>
 <section id="calculate-ppg-biomarkers">
-<h2>Calculate PPG biomarkers:<a class="headerlink" href="#calculate-ppg-biomarkers" title="Permalink to this heading"></a></h2>
+<h2>Calculate PPG biomarkers:<a class="headerlink" href="#calculate-ppg-biomarkers" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Init the biomarkers package</span>
 <span class="n">bmex</span> <span class="o">=</span> <span class="n">BM</span><span class="o">.</span><span class="n">BmCollection</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">fp</span><span class="p">)</span>
 
@@ -290,7 +290,7 @@
 </div>
 </section>
 <section id="save-ppg-data">
-<h2>Save PPG data:<a class="headerlink" href="#save-ppg-data" title="Permalink to this heading"></a></h2>
+<h2>Save PPG data:<a class="headerlink" href="#save-ppg-data" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save PPG struct, fiducial points, biomarkers</span>
 <span class="n">fp_new</span> <span class="o">=</span> <span class="n">Fiducials</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">get_fp</span><span class="p">()</span> <span class="o">+</span> <span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">)</span> <span class="c1"># here the starting sample is added so that the results are relative to the start of the original signal (rather than the start of the analysed segment)</span>
 <span class="n">save_data</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">fp_new</span><span class="p">,</span> <span class="n">bm</span><span class="o">=</span><span class="n">bm</span><span class="p">,</span> <span class="n">savingformat</span><span class="o">=</span><span class="n">savingformat</span><span class="p">,</span> <span class="n">savingfolder</span><span class="o">=</span><span class="n">savingfolder</span><span class="p">)</span>
