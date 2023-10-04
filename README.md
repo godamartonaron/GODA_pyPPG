@@ -77,4 +77,4 @@ All PPG measures can be further adapted for the analysis for efficient heart rat
 
 ## Acknowledgments
 
-This work was supported by the Estate of Zofia (Sophie) Fridman and funding from the Israel Innovation Authority, Network for Research in Vascular Ageing, and the British Heart Foundation (grant FS/20/20/34626).
+This work was supported by the Estate of Zofia (Sophie) Fridman and funding from the Israel Innovation Authority, COST Action CA18216 VascAgeNet, supported by COST (European Cooperation in Science and Technology), and the British Heart Foundation (grant FS/20/20/34626).
