@@ -13,7 +13,7 @@ Download and install Python 3.10 on your computer or server by visiting the offi
 
 **Step 2**: Download the Sample PPG Data
 
-You can use the sample PPG data by downloading it from the following link: `Sample PPG data <https://github.com/godamartonaron/GODA_pyPPG/tree/main/sample_data>`__.
+You can use the sample PPG data by downloading it from the following link: `Sample PPG data <https://github.com/aim-lab/GODA_pyPPG/tree/main/sample_data>`__.
 
 **Step 3**: Create and Activate a Virtual Environment
 
@@ -37,7 +37,7 @@ While the virtual environment is active, install pyPPG using pip:
 
    ppgenv\Scripts\python.exe -m pip install pyPPG
 
-*WARNING*: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead, or please review carefully the `list of package requirements <https://github.com/godamartonaron/GODA_pyPPG/blob/main/docs/requirements.txt>`__.
+*WARNING*: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead, or please review carefully the `list of package requirements <https://github.com/aim-lab/GODA_pyPPG/blob/main/docs/requirements.txt>`__.
 
 **Step 5**: Run the Example Code
 
