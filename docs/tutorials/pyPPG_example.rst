@@ -52,7 +52,7 @@ Run the example code, load the example files (*.mat*, *.txt*, *.csv*, or *.edf* 
 .. code-block:: python
 
    from pyPPG.example import ppg_example
-   ppg_example(savedata=True, savefig=True)
+   ppg_example()
 
 The resulting figures and outcomes are stored within the *temp_dir* folder, which is automatically generated within the project directory.
 
