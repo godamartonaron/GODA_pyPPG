@@ -397,7 +397,9 @@ def save_data(savingformat: str, savingfolder: str, print_flag=True, s={}, fp=pd
     if savingformat=="mat"  or savingformat=="both":
         file_name = (relative_path+tmp_dir+os.sep+temp_dirs[0]+os.sep+s.name+'_'+'Fiducials_btwn_%s-%s.mat')%(s.start_sig,s.end_sig)
         file_names['fiducials_mat']=file_name
-        savemat(file_name, {'PPG_fiducials': fp.get_fp().to_records(index=False)})
+        tmp_fp = fp.get_fp()
+        tmp_fp.index = tmp_fp.index + 1
+        savemat(file_name, {'PPG_fiducials': tmp_fp.to_records(index=True)})
 
         for key in BM_keys:
 
@@ -405,19 +407,19 @@ def save_data(savingformat: str, savingfolder: str, print_flag=True, s={}, fp=pd
             file_names[key+'_vals_mat']=file_name
             tmp_df_vals=bm.bm_vals[key]
             matlab_struct = tmp_df_vals.to_dict(orient='list')
-            savemat(file_name, {'PPG_vals': tmp_df_vals.to_records(index=False)})
+            savemat(file_name, {'PPG_vals': tmp_df_vals.to_records(index=True)})
 
             if len(bm.bm_stats)>0:
                 file_name = (relative_path+tmp_dir+os.sep+temp_dirs[2]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
                 file_names[key + '_stats_mat']=file_name
                 tmp_df_stat=bm.bm_stats[key]
-                savemat(file_name, {'PPG_stats': tmp_df_stat.to_records(index=False)})
+                savemat(file_name, {'PPG_stats': tmp_df_stat.to_records(index=True)})
 
             file_name = (relative_path+tmp_dir+os.sep+temp_dirs[3]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
             file_names[key + '_defs_mat']=file_name
             tmp_df_defs=bm.bm_defs[key]
             matlab_struct = tmp_df_defs.to_dict(orient='list')
-            savemat(file_name, {'PPG_defs': tmp_df_defs.to_records(index=False)})
+            savemat(file_name, {'PPG_defs': tmp_df_defs.to_records(index=True)})
 
             file_name = (relative_path+tmp_dir+os.sep+temp_dirs[5]+os.sep+'%s_btwn_%s-%s.mat')%(s.name+'_'+key,s.start_sig,s.end_sig)
             file_names[key + '_defs_stats_mat']=file_name
@@ -427,7 +429,7 @@ def save_data(savingformat: str, savingfolder: str, print_flag=True, s={}, fp=pd
             tmp_df_defs_and_stats=pd.concat([tmp_df_defs2, tmp_df_stat2], axis=1)
             savemat(file_name, {key: tmp_df_defs_and_stats.to_records(index=True)})
 
-    else:
+    if savingformat != "csv" and savingformat != "mat" and savingformat != "both":
         raise('The file format is not suported for data saving! You can use "mat" or "csv" file formats.')
 
     if print_flag: print('Results have been saved into the "'+tmp_dir+'".')
