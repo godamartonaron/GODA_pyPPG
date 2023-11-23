@@ -19,10 +19,10 @@ class Preprocess:
         :param order: Filter order
         :type order: int
         :param sm_wins: dictionary of smoothing windows in millisecond:
-            - ppg: windows for PPG signal
-            - vpg: windows for PPG' signal
-            - apg: windows for PPG" signal
-            - jpg: windows for PPG'" signal
+            - ppg: window for PPG signal
+            - vpg: window for PPG' signal
+            - apg: window for PPG" signal
+            - jpg: window for PPG'" signal
         :type sm_wins: dict
 
         """

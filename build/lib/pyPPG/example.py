@@ -1,24 +1,24 @@
 import pyPPG
 from pyPPG import PPG, Fiducials, Biomarkers
-from pyPPG.datahandling import load_data, plot_fiducials, save_data
+from pyPPG.datahandling import load_data, plot_fiducials, save_data, load_fiducials
 import pyPPG.preproc as PP
 import pyPPG.fiducials as FP
 import pyPPG.biomarkers as BM
 import pyPPG.ppg_sqi as SQI
 
-import pyPPG.validation.pw_anal as PW
-
 import numpy as np
 import sys
 import json
 import pandas as pd
+import scipy.io
 
 ###########################################################################
 ################################## EXAMPLE ################################
 ###########################################################################
 def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFrame(), process_type="both", channel="Pleth",
                 filtering=True, fL=0.5000001, fH=12, order=4, sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}, correction=pd.DataFrame(),
-                savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="csv", print_flag=True, use_tk=False, check_ppg_len=True):
+                savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="both", print_flag=True, use_tk=False, check_ppg_len=True,
+                saved_fiducials="", savedata=True):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -56,10 +56,10 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
     :param order: Filter order
     :type order: int
     :param sm_wins: dictionary of smoothing windows in millisecond:
-        - ppg: windows for PPG signal
-        - vpg: windows for PPG' signal
-        - apg: windows for PPG" signal
-        - jpg: windows for PPG'" signal
+        - ppg: window for PPG signal
+        - vpg: window for PPG' signal
+        - apg: window for PPG" signal
+        - jpg: window for PPG'" signal
     :type sm_wins: dict
     :param correction: DataFrame where the key is the name of the fiducial points and the value is bool
     :type correction: DataFrame
@@ -69,7 +69,7 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
     :type savefig: bool
     :param show_fig: a bool for show figure
     :type show_fig: bool
-    :param savingformat: file format of the saved date, the provided file formats .mat and .csv
+    :param savingformat: file format of the saved date, the provided file formats .mat, .csv, or both
     :type savingformat: str
     :param print_flag: a bool for print message
     :type print_flag: bool
@@ -77,10 +77,12 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
     :type use_tk: bool
     :param check_ppg: a bool for checking ppg length and sampling frequency
     :type check_ppg: bool
+    :param saved_fiducials: path of the file of the saved fiducial points
+    :type saved_fiducials: str
+    :param savedata: a bool for saving data
+    :type savedata: bool
 
-    :return:
-        - fiducial points: DataFrame where the key is the name of the fiducial pints and the value is the list of fiducial points
-        - s: object of PPG signal
+    :return: file_names: dictionary of the saved file names
 
     Example:
 
@@ -89,12 +91,12 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
             from pyPPG.example import ppg_example
 
             # run example code
-            ppg_example(savedata=True, savefig=True)
+            ppg_example()
 
     '''
 
     ## Loading a raw PPG signal
-    signal = load_data(data_path=data_path, fs=fs, start_sig=start_sig, end_sig=end_sig, channel=channel, use_tk=True)
+    signal = load_data(data_path=data_path, fs=fs, start_sig=start_sig, end_sig=end_sig, channel=channel, use_tk=True, print_flag=print_flag)
 
     ## Preprocessing
     # Initialise the filters
@@ -102,6 +104,10 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
 
     # Filter and calculate the PPG, PPG', PPG", and PPG'" signals
     signal.filtering = filtering
+    signal.fL = fL
+    signal.fH = fH
+    signal.order = order
+    signal.sm_wins = sm_wins
     signal.ppg, signal.vpg, signal.apg, signal.jpg = prep.get_signals(s=signal)
 
     # Initialise the correction for fiducial points
@@ -121,9 +127,15 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
         fiducials = fpex.get_fiducials(s=s)
         if print_flag: print("Fiducial points:\n", fiducials + s.start_sig)
 
-    ## PPG SQI
         # Create a fiducials class
         fp = Fiducials(fp=fiducials)
+
+        # Save data
+        if savedata:
+            fp_new = Fiducials(fp=fp.get_fp() + s.start_sig)
+            file_names=save_data(savingformat=savingformat, savingfolder=savingfolder, print_flag=print_flag, s=s, fp=fp_new)
+
+    ## PPG SQI
 
         # Calculate SQI
         ppgSQI = round(np.mean(SQI.get_ppgSQI(ppg=s.ppg, fs=s.fs, annotation=fp.sp)) * 100, 2)
@@ -132,10 +144,18 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
     ## Plot fiducial points
         plot_fiducials(s=s, fp=fp, savefig=savefig, savingfolder=savingfolder, show_fig=show_fig, print_flag=print_flag, use_tk=use_tk)
 
-    ## Get Biomarkers and Statistics
+    ## Load saved fiducial points from MATLAB struct
+    if ".mat" in saved_fiducials:
+        tmp_fp1 = load_fiducials(saved_fiducials=saved_fiducials)
+        tmp_fp2 = tmp_fp1[(tmp_fp1['on']>= s.start_sig) & (tmp_fp1['off']<= s.end_sig)]
+        fiducials = tmp_fp2-s.start_sig
+        fiducials.index =range(0,len(fiducials))
+
+        ## Get Biomarkers and Statistics
     if (process_type == 'biomarkers' or process_type == 'both') and len(fiducials)>0:
         # Initialise the biomarkers package
         fp = Fiducials(fp=fiducials)
+
         bmex = BM.BmCollection(s=s, fp=fp)
 
         # Extract biomarkers
@@ -149,13 +169,14 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
         # Create a biomarkers class
         bm = Biomarkers(bm_defs=bm_defs, bm_vals=bm_vals, bm_stats=bm_stats)
 
-    ## Save data
-        fp_new = Fiducials(fp=fp.get_fp() + s.start_sig)
-        save_data(s=s, fp=fp_new, bm=bm, savingformat=savingformat, savingfolder=savingfolder, print_flag=print_flag)
+        # Save data
+        if savedata:
+            fp_new = Fiducials(fp=fp.get_fp() + s.start_sig)
+            file_names=save_data(savingformat=savingformat, savingfolder=savingfolder, print_flag=print_flag, s=s, fp=fp_new, bm=bm)
 
     if print_flag: print('Program finished')
 
-    return fiducials + s.start_sig, s
+    return file_names
 
 
 ###########################################################################
@@ -169,27 +190,8 @@ if __name__ == "__main__":
         function_args = input_data['args']
 
         if function_name == 'ppg_example':
-            if input_data['args']['process_type'] == 'fiducials':
-                fiducials = ppg_example(**function_args)
-            if input_data['args']['process_type'] == 'biomarkers':
-                fiducials = input_data['args']['fiducials']
-                fiducials = fiducials.replace("'", '"')
-                fiducials = json.loads(fiducials)
-                fiducials = pd.DataFrame(fiducials['data'], columns=fiducials['columns'], index=fiducials['index'])
-
-                def subtract_if_numeric(x):
-                    if isinstance(x, (int, float)):
-                        tmp_diff = x - input_data['args']['start_sig']
-                        return tmp_diff
-                    else:
-                        return x
-
-                input_data['args']['fiducials'] = fiducials.applymap(subtract_if_numeric)
-                function_args = input_data['args']
-                ppg_example(**function_args)
-
-            json_data = fiducials.to_json(orient="split")
-            print(json.dumps(json_data))
+            file_names = ppg_example(**function_args)
+            print(json.dumps(file_names))
 
         else:
             print("Invalid function name")

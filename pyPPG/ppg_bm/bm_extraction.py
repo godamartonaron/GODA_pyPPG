@@ -1218,7 +1218,7 @@ def get_biomarkers(s: pyPPG.PPG, fp: pyPPG.Fiducials, biomarkers_lst):
     onsets = fp.on.values
     offsets = fp.off.values
 
-    for i in range(len(onsets)-1):
+    for i in range(len(onsets)):
         onset = onsets[i]
         offset = offsets[i]
         data.ppg = ppg[int(onset):int(offset)]
@@ -1255,7 +1255,8 @@ def get_biomarkers(s: pyPPG.PPG, fp: pyPPG.Fiducials, biomarkers_lst):
                 biomarkers_extractor = BmExctator(data, peak_value, peak_time, next_peak_value, next_peak_time, onsets_values, onsets_times, fs, biomarkers_lst,temp_fiducials)
                 biomarkers_vec = biomarkers_extractor.get_biomarker_extract_func()
                 lst = list(biomarkers_vec)
-                df_biomarkers.loc[len(df_biomarkers.index)] = lst
+                #df_biomarkers.loc[len(df_biomarkers.index)] = lst
+                df_biomarkers.loc[i] = lst
                 df = pd.concat({'onset': onset, 'offset': offset, 'peak': peak}, ignore_index=True)
             except:
                 pass

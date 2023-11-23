@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pyPPG
-Version: 1.0.41
+Version: 1.0.42
 Summary: pyPPG: a python toolbox for PPG morphological analysis.
 Home-page: https://github.com/godamartonaron/GODA_pyPPG
 Author: Marton A. Goda, PhD; Peter H. Charlton, PhD
@@ -21,8 +21,7 @@ A toolbox for finger photoplethysmogram (PPG) analysis, including beat detection
 
 If you use the pyPPG resource, please cite:
 
-_Goda MA, Charlton PH, and Behar JA, **'pyPPG: A Python toolbox for comprehensive
-photoplethysmography signal analysis'**, [Under review]_
+Goda, M. A., Charlton, P. H., & Behar, J. A. (2023). ***pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis***. arXiv preprint arXiv:2309.13767., [(The preprint is available HERE)](https://arxiv.org/abs/2309.13767)
 
 ## Introduction
 ***pyPPG*** is a standardised toolbox to analyze long-term finger PPG recordings in real-time. The toolbox extracts state-of-the-art PPG biomarkers (_i.e._ pulse wave features) from PPG signals. The algorithms implemented in the *pyPPG* toolbox have been validated on freely available PPG databases.
@@ -55,7 +54,7 @@ Available on pip, with the command:
 
 pip project: https://pypi.org/project/pyPPG/
 
-For more details see the [pyPPG example code](https://pyppg.readthedocs.io/en/latest/tutorials/pyPPG_example.html)
+For more details see the [pyPPG example code](https://pyppg.readthedocs.io/en/latest/tutorials/pyPPG_example.html) and [pyPPG YouTube video](https://www.youtube.com/watch?v=5VoMQ3FNjrM)
 
 ## Requirements
 ### Python Requirements:
@@ -94,4 +93,4 @@ All PPG measures can be further adapted for the analysis for efficient heart rat
 
 ## Acknowledgments
 
-This work was supported by the Estate of Zofia (Sophie) Fridman and funding from the Israel Innovation Authority, and the British Heart Foundation (grant FS/20/20/34626).
+This work was supported by the Estate of Zofia (Sophie) Fridman and funding from the Israel Innovation Authority, COST Action CA18216 VascAgeNet, supported by COST (European Cooperation in Science and Technology), and the British Heart Foundation (grant FS/20/20/34626).
