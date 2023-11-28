@@ -198,7 +198,11 @@ class BmExctator:
         biomarkers_vec = []
 
         for biomarker in self.list_biomarkers:
-            func_to_call = my_funcs[biomarker]
+            try:
+                func_to_call = my_funcs[biomarker]
+            except:
+                func_to_call = np.nan
+
             biomarkers_vec.append(func_to_call)
         return biomarkers_vec
 
@@ -482,8 +486,12 @@ class BmExctator:
 
             :return: Dicrotic Notch Amplitude biomarker
         """
-        dn_value = self.segment_ppg[self.dn]
-        dn_amp = dn_value - self.onsets_values[0]
+        try:
+            dn_value = self.segment_ppg[self.dn]
+            dn_amp = dn_value - self.onsets_values[0]
+        except:
+            dn_amp=np.nan
+
         return dn_amp
 
     def getDiastolicPeak(self):
@@ -491,9 +499,12 @@ class BmExctator:
 
             :return: Diastolic Peak Amplitude biomarker
         """
-        ## temp solution 04/04/2023 --> if DN==DP
-        dp_value = self.segment_ppg[self.dp+20]
-        dia_peak = dp_value - self.onsets_values[0]
+        try:
+            dp_value = self.segment_ppg[self.dp]
+            dia_peak = dp_value - self.onsets_values[0]
+        except:
+            dia_peak=np.nan
+
         return dia_peak
 
     def getPulseOffsetAmplitude(self):
@@ -989,24 +1000,29 @@ class BmExctator:
 
             :return: Ae/Aa biomarker
         """
+
         a_max = self.segment_apg[self.get_a()]
         e_max = self.segment_apg[self.get_e()]
-        return e_max / a_max
+        ratio_Ae_Aa = e_max / a_max
+        return ratio_Ae_Aa
 
     def get_ratio_Af_Aa(self):
         """ This function calculates the ratio of the f-point amplitude to the a-point amplitude.
 
             :return: Af/Aa biomarker
         """
+
         a_max = self.segment_apg[self.get_a()]
         f_min = self.segment_apg[self.get_f()]
-        return f_min / a_max
+        ratio_Af_Aa=f_min / a_max
+        return ratio_Af_Aa
 
     def get_ratio_Ap2_Ap1(self):
         """ The function calculates the ratio of the p2-point amplitude to the p1-point amplitude.
 
             :return: Ap2/Ap1 biomarker
         """
+
         Rp2p1 = self.segment_ppg[self.p2]/self.segment_ppg[self.p1]
         return Rp2p1
 
@@ -1015,59 +1031,70 @@ class BmExctator:
 
             :return: (Ac-Ab)/Aa biomarker
         """
+
         Aa = self.segment_apg[self.get_a()]
         Ab = self.segment_apg[self.get_b()]
         Ac = self.segment_apg[self.get_c()]
-        return (Ac-Ab)/Aa
+        ratio_AcAb_Aa=(Ac-Ab)/Aa
+        return ratio_AcAb_Aa
 
     def get_ratio_AdAb_Aa(self):
         """ The function calculates the ratio of the difference between the b-point amplitude and d-point amplitude to the a-point amplitude.
 
             :return: (Ad-Ab)/Aa biomarker
         """
+
         Aa = self.segment_apg[self.get_a()]
         Ab = self.segment_apg[self.get_b()]
         Ad = self.segment_apg[self.get_d()]
-        return (Ad-Ab)/Aa
+        ratio_AdAb_Aa=(Ad - Ab) / Aa
+        return ratio_AdAb_Aa
 
     def getAGI(self):
         """ The function calculates the Aging Index.
 
             :return: (Ab-Ac-Ad-Ae)/Aa biomarker
         """
+
         Aa = self.segment_apg[self.get_a()]
         Ab = self.segment_apg[self.get_b()]
         Ac = self.segment_apg[self.get_c()]
         Ad = self.segment_apg[self.get_d()]
         Ae = self.segment_apg[self.get_e()]
-        return (Ab-Ac-Ad-Ae)/Aa
+        AGI = (Ab-Ac-Ad-Ae)/Aa
+        return AGI
 
     def getAGImod(self):
         """ The function calculates the Modified Aging Index.
 
             :return: (Ab-Ac-Ad)/Aa biomarker
         """
+
         Aa = self.segment_apg[self.get_a()]
         Ab = self.segment_apg[self.get_b()]
         Ac = self.segment_apg[self.get_c()]
         Ad = self.segment_apg[self.get_d()]
-        return (Ab-Ac-Ad)/Aa
+        AGI_mod = (Ab - Ac - Ad) / Aa
+        return AGI_mod
 
     def getAGIinf(self):
         """ The function calculates the Informal Aging Index.
 
             :return: (Ab-Ae)/Aa biomarker
         """
+
         Aa = self.segment_apg[self.get_a()]
         Ab = self.segment_apg[self.get_b()]
         Ae = self.segment_apg[self.get_e()]
-        return (Ab-Ae)/Aa
+        AGI_inf=(Ab-Ae)/Aa
+        return AGI_inf
 
     def getAI(self):
         """ The function calculates the Augmentation Index, (PPG(Tp2) − PPG(Tp1))/Asp.
 
             :return: AI biomarker
         """
+
         AI = (self.segment_ppg[self.p2]-self.segment_ppg[self.p1])/self.peak_value
         return AI
 
@@ -1076,6 +1103,7 @@ class BmExctator:
 
             :return: RIp1 biomarker
         """
+
         RIp1 = self.getDiastolicPeak()/self.segment_ppg[self.p1]
         return RIp1
 
@@ -1084,6 +1112,7 @@ class BmExctator:
 
             :return: RIp2 biomarker
         """
+
         RIp2 = self.getDiastolicPeak()/self.segment_ppg[self.p2]
         return RIp2
 
@@ -1092,6 +1121,7 @@ class BmExctator:
 
             :return: SC biomarker
         """
+
         ddxSPA=self.segment_apg[(self.getTsp()*self.sample_rate).astype(int)]
         SPA=self.getSystolicPeak()
         MS=self.segment_ppg[self.u]
@@ -1204,7 +1234,7 @@ def get_biomarkers(s: pyPPG.PPG, fp: pyPPG.Fiducials, biomarkers_lst):
     :type fp: pyPPG.Fiducials object
 
     :return:
-        - df: data frame with onsets, offset and peaks
+        - df: data frame with onsets, offsets and peaks
         - df_biomarkers: data frame with PPG signal biomarkers
     """
 
@@ -1212,7 +1242,7 @@ def get_biomarkers(s: pyPPG.PPG, fp: pyPPG.Fiducials, biomarkers_lst):
     ppg=s.ppg
     data = DotMap()
 
-    df = pd.DataFrame()
+    df = pd.DataFrame(columns=['onset','offset','peak'])
     df_biomarkers = pd.DataFrame(columns=biomarkers_lst)
     peaks = fp.sp.values
     onsets = fp.on.values
@@ -1255,9 +1285,8 @@ def get_biomarkers(s: pyPPG.PPG, fp: pyPPG.Fiducials, biomarkers_lst):
                 biomarkers_extractor = BmExctator(data, peak_value, peak_time, next_peak_value, next_peak_time, onsets_values, onsets_times, fs, biomarkers_lst,temp_fiducials)
                 biomarkers_vec = biomarkers_extractor.get_biomarker_extract_func()
                 lst = list(biomarkers_vec)
-                #df_biomarkers.loc[len(df_biomarkers.index)] = lst
                 df_biomarkers.loc[i] = lst
-                df = pd.concat({'onset': onset, 'offset': offset, 'peak': peak}, ignore_index=True)
+                df.loc[i] = {'onset':onset, 'offset':offset, 'peak': peak}
             except:
                 pass
         else:

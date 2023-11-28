@@ -47,10 +47,10 @@ class BmCollection:
         fp = self.fp
 
         ## Get Biomarkers
-        bm_ppg_sig, def_ppg_sig = get_ppg_sig(s, fp)
-        bm_sig_ratios, def_sig_ratios = get_sig_ratios(s, fp)
-        bm_ppg_derivs, def_ppg_derivs = get_ppg_derivs(s, fp)
-        bm_derivs_ratios, def_derivs_ratios = get_derivs_ratios(s, fp)
+        pw_ppg_sig, bm_ppg_sig, def_ppg_sig = get_ppg_sig(s, fp)
+        pw_sig_ratios, bm_sig_ratios, def_sig_ratios = get_sig_ratios(s, fp)
+        pw_ppg_derivs, bm_ppg_derivs, def_ppg_derivs = get_ppg_derivs(s, fp)
+        pw_derivs_ratios, bm_derivs_ratios, def_derivs_ratios = get_derivs_ratios(s, fp)
 
         bm_vals={'ppg_sig': bm_ppg_sig , 'sig_ratios': bm_sig_ratios, 'ppg_derivs': bm_ppg_derivs, 'derivs_ratios': bm_derivs_ratios}
         bm_defs = {'ppg_sig': def_ppg_sig, 'sig_ratios': def_sig_ratios, 'ppg_derivs': def_ppg_derivs, 'derivs_ratios': def_derivs_ratios}
@@ -65,6 +65,7 @@ class BmCollection:
         BM_keys = bm_vals.keys()
         for key in BM_keys:
             bm_vals[key] = bm_vals[key].rename_axis('Index of pulse')
+            bm_vals[key].insert(0,'TimeStamp',pw_ppg_sig.onset)
             bm_defs[key] = bm_defs[key].rename_axis('No. biomarkers')
             if get_stat: bm_stats[key] = bm_stats[key].rename_axis('Statistics')
 

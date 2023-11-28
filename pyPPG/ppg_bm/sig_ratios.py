@@ -16,7 +16,8 @@ def get_sig_ratios(s: pyPPG.PPG, fp: pyPPG.Fiducials):
     :type fp: pyPPG.Fiducials object
 
     :return:
-        - biomarkers: dictionary of biomarkers of Signal ratios
+        - df_pw: data frame with onsets, offsets and peaks
+        - df_biomarkers: dictionary of biomarkers of Signal ratios
         - biomarkers_lst: list a biomarkers with name, definition and unit
     """
 
@@ -48,6 +49,6 @@ def get_sig_ratios(s: pyPPG.PPG, fp: pyPPG.Fiducials):
     header = ['name', 'definition', 'unit']
     biomarkers_lst = pd.DataFrame(biomarkers_lst, columns=header)
 
-    df, df_biomarkers = get_biomarkers(s, fp, biomarkers_lst.name)
+    df_pw, df_biomarkers = get_biomarkers(s, fp, biomarkers_lst.name)
 
-    return df_biomarkers, biomarkers_lst
+    return df_pw, df_biomarkers, biomarkers_lst
