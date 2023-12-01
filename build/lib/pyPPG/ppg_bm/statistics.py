@@ -31,6 +31,7 @@ def get_statistics(peaks: pd.Series, onsets: pd.Series, ppg_biomarkers: dict):
         df_stat = pd.DataFrame()
         for k in df_features.keys():
             data = df_features[k].values
+            data = data[~np.isnan(data)]
             df_tempstat = {}
 
             try: df_tempstat['mean'] = np.mean(data)
