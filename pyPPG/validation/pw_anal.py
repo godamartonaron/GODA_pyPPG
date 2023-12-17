@@ -13,6 +13,7 @@ from dotmap import DotMap
 
 from scipy.signal import filtfilt, find_peaks
 from pyPPG.ppg_bm.statistics import get_statistics
+from datetime import datetime
 
 
 class PulseWaveAnal:
@@ -108,7 +109,7 @@ class PulseWaveAnal:
     ########################### Plot Fiducial Points ##########################
     ###########################################################################
 
-    def plot_pulse_wave(self, s=pd.DataFrame(),fp1=pd.DataFrame(),fp2=pd.DataFrame(),d_error=pd.DataFrame(),compare=False,show_fig=False):
+    def plot_pulse_wave(self, s=pd.DataFrame(),fp1=pd.DataFrame(),fp2=pd.DataFrame(),d_error=pd.DataFrame(),compare=False,show_fig=False,dname='',annot1='', annot2=''):
         marker1 = ['o', 's', 's', 'o', 'o', 's', 'o', 'o', 's', 'o', 's', 'o', 's', 'o', 's']
         marker2 = ['*', 'X', 'X', '*', '*', 'X', '*', '*', 'X', '*', 'X', '*', 'X', '*', 'X']
         legend_fontsize = 9
@@ -141,10 +142,10 @@ class PulseWaveAnal:
 
         if compare:
             title = 'Ref.1 & Ref.2'
-            savingfolder = 'temp_dir'+os.sep+'Ref1_vs_Ref2'
+            savingfolder = 'temp_dir'+os.sep+dname+os.sep+annot1+'-'+annot2
         else:
             title = 'Ref.  &  Det.'
-            savingfolder = 'temp_dir'+os.sep+'Ref_vs_Det'
+            savingfolder = 'temp_dir'+os.sep+dname+os.sep+annot1+'-pyPPG'
 
 
         plot_fiducials(s=s, fp=fp2, savefig=True, show_fig=False, print_flag=False, use_tk=False, new_fig=False,
@@ -177,32 +178,37 @@ class PulseWaveAnal:
     ###########################################################################
     ################################# Save Data ###############################
     ###########################################################################
-    def save_all_data(self, save, compare, dist_error,annot_error,annot_error2=[]):
+    def save_all_data(self, save, compare, dist_error,annot_error,annot_error2,dname, annot1, annot2):
         # Save distance error and annotation error in .mat file
-        self.OutData['dist_error'] = dist_error.to_numpy()
-        self.OutData['annot_error_MG'] = annot_error.to_numpy()
-        self.OutData['MG_FID'] = self.M_FID_1.to_numpy()
+        self.OutData[annot1+'_ae'] = annot_error           # 1st annotation error (0,1)
+        self.OutData[annot1+'_fps'] = self.M_FID_1          # fiducial points of the 1st annotation
         if save:
             if compare:
-                self.OutData['annot_error_PC'] = annot_error2.to_numpy()
-                self.OutData['PC_FID'] = self.M_FID_2.to_numpy()
-                file_name = 'temp_dir'+os.sep+'results'+os.sep+'MG-PC_errors.mat'
+                self.OutData[annot2+'_ae'] = annot_error2   # 2nd annotation error (0,1)
+                self.OutData[annot2+'_fps'] = self.M_FID_2   # fiducial points of the 2nd annotation
+                self.OutData[annot1 + '_'+annot2+'_diff'] = dist_error # annotation difference (sample)
+                file_name = 'results'+os.sep+dname+os.sep+annot1+'-'+annot2+'.mat'
             else:
-                self.OutData['pyPPG_FID'] = self.M_FID_2.to_numpy()
+                self.OutData[annot1+'_pyPPG_diff'] = dist_error      # detection difference (sample)
+                self.OutData['pyPPG_fps'] = self.M_FID_2   # fiducial points of the pyPPG
                 try:
                     if len(self.annot_path2) > 0:
-                        file_name = 'temp_dir'+os.sep+'results'+os.sep+'MG-pyPPG_errors2.mat'
+                        file_name = 'results'+os.sep+dname+os.sep+annot1+'-pyPPG'+'.mat'
                 except:
-                    file_name = 'temp_dir'+os.sep+'results'+os.sep+'PC-pyPPG_errors2.mat'
-            scipy.io.savemat(file_name, self.OutData)
+                    file_name = 'results'+os.sep+dname+os.sep+annot2+'-pyPPG'+'.mat'
 
+            # Convert DataFrames to MATLAB tables with headers
+            matlab_data = {key: value.to_records(index=False) for key, value in self.OutData.items()}
+
+            # Save the dictionary of MATLAB tables to a .mat file
+            scipy.io.savemat(file_name, matlab_data, format='5', appendmat=False)
         return
 
     ###########################################################################
     ############################ Get PPG Validation ###########################
     ###########################################################################
 
-    def get_validation(self, s=pyPPG.PPG, ref_fp=pd.DataFrame(), plt_sig=True, correction=pd.DataFrame()):
+    def get_validation(self, s=pyPPG.PPG, ref_fp=pd.DataFrame(), plt_sig=True, correction=pd.DataFrame(),dname='',annot1='', annot2=''):
         ## Create a PPG class
         s.correct = True
         s_class = PPG(s, check_ppg_len=False)
@@ -227,7 +233,11 @@ class PulseWaveAnal:
         if apg_fp.a[0] > 75:
             win_on = 75
         else:
-            win_on = int(apg_fp.a[0])
+            try:
+                win_on = int(apg_fp.a[0])
+            except:
+                win_on = []
+                pass
 
         try:
             ppg_fp['on'] = np.argmax(s.jpg[int(apg_fp.a[0]) - win_on:int(apg_fp.a[0])]) + apg_fp.a[0] - win_on
@@ -248,27 +258,27 @@ class PulseWaveAnal:
         d_error = self.get_dist_error(ref_fp, det_fp, compare)
 
         # Plot fiducial points
-        if plt_sig: self.plot_pulse_wave(s=s, fp1=ref_fp, fp2=det_fp, d_error=d_error, compare=compare, show_fig=False)
+        if plt_sig: self.plot_pulse_wave(s=s, fp1=ref_fp, fp2=det_fp, d_error=d_error, compare=compare, show_fig=False,dname=dname,annot1=annot1, annot2=annot2)
 
         return det_fp, d_error
 
     ###########################################################################
     ######################## Get Annotation Difference  #######################
     ###########################################################################
-    def get_annot_diff(self, s, ref_fp,annot_path2,name,fid_names,compare,plt_sig):
+    def get_annot_diff(self, s, ref_fp,annot_path2,name,fid_names,compare,plt_sig,dname,annot1, annot2):
         ref1_fp = ref_fp
 
-        annot_file2 = annot_path2 + '/' + name + '.mat'
-        annot2 = scipy.io.loadmat(annot_file2)
+        annot_file2 = annot_path2 + os.sep + name + '.mat'
+        annotf2 = scipy.io.loadmat(annot_file2)
 
-        ref2_fp, annot_err = self.get_ref_fp(name, s.fs, fid_names, annot2)
+        ref2_fp, annot_err = self.get_ref_fp(name, s.fs, fid_names, annotf2)
         ref2_fp = pd.DataFrame(ref2_fp, index=[0])
 
         # Calculate distance error
         annot_diff = self.get_dist_error(ref1_fp, ref2_fp, compare)
 
         # Plot fiducial points
-        if plt_sig: self.plot_pulse_wave(s=s, fp1=ref1_fp, fp2=ref2_fp, d_error=annot_diff, compare=compare, show_fig=False)
+        if plt_sig: self.plot_pulse_wave(s=s, fp1=ref1_fp, fp2=ref2_fp, d_error=annot_diff, compare=compare, show_fig=False,dname=dname,annot1=annot1, annot2=annot2)
 
         return ref2_fp, annot_diff, annot_err
 
@@ -277,12 +287,12 @@ class PulseWaveAnal:
     ########################## Run PPG-BP Evaluation  #########################
     ###########################################################################
 
-    def run_ppg_bp_eval(self, compare=False, plt_sig=False, save=False, prnt_e=True, correction=pd.DataFrame()):
+    def run_ppg_bp_eval(self, compare=False, plt_sig=False, save=False, prnt_e=True, correction=pd.DataFrame(), annot1='', annot2='', version='06', dname='YYYY_MM_DD_HH_MM'):
         # Define input directories and files
         ppg_sig_dir = 'PPG-BP_annot'
-        ppg_file = os.sep+'PPG-BP1.mat'
-        annot_path = ppg_sig_dir+os.sep+'MG05_PPG-BP_annot'+os.sep+'merged'
-        self.annot_path2 = ppg_sig_dir + os.sep+ 'PC05_PPG-BP_annot'+os.sep+'merged'
+        ppg_file = os.sep+'PPG-BP_ref1.mat'
+        annot_path = ppg_sig_dir+os.sep+annot1+version+'_PPG-BP_annot'+os.sep+'merged'
+        self.annot_path2 = ppg_sig_dir + os.sep+annot2+version+'_PPG-BP_annot'+os.sep+'merged'
         sig_path = ppg_sig_dir + ppg_file
         input_sig = scipy.io.loadmat(sig_path)
 
@@ -297,9 +307,9 @@ class PulseWaveAnal:
         else:
             f_names = fid_names[1:]
 
-        dist_error = pd.DataFrame()
-        self.M_FID_1 = pd.DataFrame()
-        self.M_FID_2 = pd.DataFrame()
+        dist_error = pd.DataFrame(columns=f_names)
+        self.M_FID_1 = pd.DataFrame(columns=f_names)
+        self.M_FID_2 = pd.DataFrame(columns=f_names)
         for n in f_names:
             exec(n + "=[]")
             exec(n + "r=[]")
@@ -310,11 +320,12 @@ class PulseWaveAnal:
             self.M_FID_1[n] = temp_v
             self.M_FID_2[n] = temp_v
 
-        annot_error = pd.DataFrame()
+        annot_error = pd.DataFrame(columns=f_names)
         for n in fid_names:
             annot_error[n] = temp_v
 
         annot_error2 = copy.deepcopy(annot_error)
+        ppg_names={}
 
         for i in range(0, set_len):
             # Define sampling frequency, load filtered signal, 1st and 2nd derivative
@@ -327,7 +338,8 @@ class PulseWaveAnal:
 
             # Load annotated fiducial points
             self.name = input_sig['ppg_data']['name'][0, i][0]
-            annot_file = annot_path + '/' + self.name + '.mat'
+            ppg_names[i]=self.name
+            annot_file = annot_path + os.sep + self.name + '.mat'
             annot = scipy.io.loadmat(annot_file)
 
             # Get reference annotation
@@ -344,22 +356,24 @@ class PulseWaveAnal:
             s.ppg = ppg_v
 
             ## Preprocessing
-            sm_wins = {'ppg': 20, 'vpg': 10, 'apg': 10, 'jpg': 10}
-            prep = PP.Preprocess(fL=0.5000001, fH=10, order=4, sm_wins=sm_wins)
+            prep = PP.Preprocess()
 
             # Filter and calculate the PPG, PPG', PPG", and PPG'" signals
             s.filtering = True
             s.ppg, s.vpg, s.apg, s.jpg = prep.get_signals(s)
 
-            if compare:
-                ref2_fp, annot_diff, annot_err = self.get_annot_diff(s, ref_fp, self.annot_path2, self.name, fid_names, compare, plt_sig)
-                annot_error2.iloc[i] = annot_err
-                self.save_all_data(save, compare, dist_error, annot_error, annot_error2)
-            else:
-                det_fp, annot_diff = self.get_validation(s=s, ref_fp=ref_fp, plt_sig=True, correction=correction)
-                self.save_all_data(save, compare, dist_error, annot_error)
 
-            dist_error.iloc[i] = annot_diff
+            if compare:
+                ref2_fp, annot_diff, annot_err = self.get_annot_diff(s, ref_fp, self.annot_path2, self.name, fid_names, compare, plt_sig,dname,annot1, annot2)
+                dist_error.iloc[i] = annot_diff
+                annot_error2.iloc[i] = annot_err
+                self.M_FID_2.iloc[i] = ref2_fp[list(f_names)]
+                self.save_all_data(save, compare, dist_error, annot_error, annot_error2,dname, annot1,annot2)
+            else:
+                det_fp, annot_diff = self.get_validation(s=s, ref_fp=ref_fp, plt_sig=plt_sig, correction=correction,dname=dname,annot1=annot1, annot2=annot2)
+                dist_error.iloc[i] = annot_diff
+                self.M_FID_2.iloc[i] = det_fp[list(f_names)]
+                self.save_all_data(save, compare, dist_error, annot_error,annot_error2, dname, annot1, annot2)
 
             # Print distance error
             if prnt_e: self.print_error(annot_diff)
@@ -372,6 +386,33 @@ class PulseWaveAnal:
             exec("MAE['" + n + "'] = np.round(np.nanmean(np.absolute(dist_error." + n + ")),2)")
             exec("STD['" + n + "'] = np.round(np.nanstd(dist_error." + n + "), 2)")
             exec("BIAS['" + n + "'] = np.round(np.nanmean(dist_error." + n + "),2)")
+
+        # Insert statistics into the dataframe
+        dist_error.index = dist_error.index + 3
+        dist_error.loc[0] = MAE
+        dist_error.loc[1] = STD
+        dist_error.loc[2] = BIAS
+        dist_error=dist_error.sort_index()
+        dist_error = dist_error.rename({0: 'MAE'})
+        dist_error = dist_error.rename({1: 'STD'})
+        dist_error = dist_error.rename({2: 'BIAS'})
+        dist_error.index=dist_error.index.map(lambda x: ppg_names[x-3] if isinstance(x, int) else x)
+
+        # Save Results
+        date = datetime.now()
+        if compare:
+            fname=annot1+'-'+annot2
+        else:
+            fname=annot1+'-pyPPG'
+
+        path1='results'+os.sep+dname+os.sep+fname+'_diffs.csv'
+        dist_error.to_csv(path1, index=True)
+
+        path2 = 'results' + os.sep + dname + os.sep + fname + '_params.txt'
+        params='fH: '+str(prep.fH)+'\nfL: '+str(prep.fL)+'\norder: '+str(prep.order)+'\nsm_win: '+str(prep.sm_wins)
+        # Open the file in write mode ('w') and write the string
+        with open(path2, 'w') as file:
+            file.write(params)
 
         # Print results
         print('-------------------------------------------')
@@ -462,14 +503,53 @@ class PulseWaveAnal:
 
         return bm
 
+    ###########################################################################
+    ###################### Extract Pulse Wave Biomarkers  #####################
+    ###########################################################################
+    def extact_pw_feat(self, number_of_rec):
+
+        savingfolder = 'temp_dir' + os.sep + 'PW_anal_01'
+        all_fp = pd.DataFrame()
+        all_bm_vals = {}
+
+        for i in range(0, number_of_rec):
+            name = "single_pw_sample"
+
+            data_path = 'Single_PW' + os.sep + name + '.mat'
+            s, fp, bm = pwex.pw_extraction(data_path=data_path, filtering=True, fL=0, fH=12, order=4,
+                                           sm_wins={'ppg': 50, 'vpg': 10, 'apg': 10, 'jpg': 10}, correction=correction,
+                                           savefig=True, savingfolder=savingfolder, show_fig=False, print_flag=True)
+
+            all_fp = pd.concat([all_fp, fp])
+
+            for bm_key in bm.bm_vals.keys():
+                if i == 0:
+                    all_bm_vals[bm_key] = bm.bm_vals[bm_key]
+                else:
+                    all_bm_vals[bm_key] = pd.concat([all_bm_vals[bm_key], bm.bm_vals[bm_key]])
+
+        for bm_key in bm.bm_vals.keys():
+            all_bm_vals[bm_key].index = range(0, number_of_rec)
+
+        all_fp.index = range(0, number_of_rec)
+
+        bm_stats = get_statistics(all_fp.sp, all_fp.on, all_bm_vals)
+
+        BMs = Biomarkers(bm_defs=bm.bm_defs, bm_vals=all_bm_vals, bm_stats=bm_stats)
+        FPs = Fiducials(fp=all_fp)
+
+        ## Save data
+        save_data(s=s, fp=FPs, bm=BMs, savingformat='csv', savingfolder=savingfolder, print_flag=True)
+
 ###########################################################################
 ############################ MAIN PPG Analysis  ###########################
 ###########################################################################
 if __name__ == '__main__':
 
     # Flag for package usage
-    ppgbp=True     # validation of PPG-BP dataset
-    pw_ext=False     # extract features of pulse waves
+    ppgbp=True      # validation of PPG-BP dataset
+    pw_ext=False    # extract features of pulse waves
+    plts=True      # plot signal
 
     # Initialise the pulse wave package
     pwex = PulseWaveAnal()
@@ -478,52 +558,25 @@ if __name__ == '__main__':
     correction = pd.DataFrame()
     corr_on = ['on', 'dp', 'v', 'w', 'f']
     corr_off = ['dn']
+
     correction.loc[0, corr_on] = True
     correction.loc[0, corr_off] = False
 
+    date = datetime.now()
+    dname = str(date.year) + '_' + str(date.month) + '_' + str(date.day) + '_' + str(date.hour) + '_' + str(date.minute)
+    os.makedirs('results' + os.sep + dname, exist_ok=True)
+
     # Run PPG-BP Evaluation
     if  ppgbp:
-        pwex.run_ppg_bp_eval(compare=False, plt_sig=False, save=False, prnt_e=True, correction=correction)
+        pwex.run_ppg_bp_eval(compare=False, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG', annot2='PC', version='06', dname=dname)
+        pwex.run_ppg_bp_eval(compare=False, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='PC', annot2='MG', version='06', dname=dname)
+        pwex.run_ppg_bp_eval(compare=True, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG', annot2='PC', version='06', dname=dname)
 
     # Extract Pulse Wave Features
     if pw_ext:
-        savingfolder = 'temp_dir'+os.sep+'PW_anal_01'
-        all_fp = pd.DataFrame()
-        all_bm_vals = {}
-        names=[]
+        pwex.extact_pw_feat(number_of_rec=10)
 
-        number_of_rec=10
-
-        for i in range(0,number_of_rec):
-            name="single_pw_sample"
-
-            data_path = 'Single_PW'+os.sep+name+'.mat'
-            s, fp, bm = pwex.pw_extraction(data_path=data_path, filtering=True, fL=0, fH=12, order=4,
-                                            sm_wins={'ppg': 50, 'vpg': 10, 'apg': 10, 'jpg': 10}, correction = correction,
-                                            savefig = True, savingfolder = savingfolder, show_fig = False, print_flag = True)
-
-            all_fp = pd.concat([all_fp, fp])
-
-            for bm_key in bm.bm_vals.keys():
-                if i==0:
-                    all_bm_vals[bm_key]=bm.bm_vals[bm_key]
-                else:
-                    all_bm_vals[bm_key] = pd.concat([all_bm_vals[bm_key],bm.bm_vals[bm_key]])
-
-        for bm_key in bm.bm_vals.keys():
-            all_bm_vals[bm_key].index = range(0,number_of_rec)
-
-        all_fp.index = range(0,number_of_rec)
-
-        bm_stats=get_statistics(all_fp.sp, all_fp.on, all_bm_vals)
-
-        BMs = Biomarkers(bm_defs=bm.bm_defs, bm_vals=all_bm_vals, bm_stats=bm_stats)
-        FPs = Fiducials(fp=all_fp)
-
-        ## Save data
-        save_data(s=s, fp=FPs, bm=BMs, savingformat='csv', savingfolder=savingfolder, print_flag=True)
-
-        print('End of analysis!')
+    print('End of analysis!')
 
 
 

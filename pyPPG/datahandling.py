@@ -188,7 +188,7 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder
         root.destroy()
     else:
         screen_width = 1500
-        screen_height = 800
+        screen_height = 950
 
 
     # Define a scaling factor for the figure size (e.g., 0.8 for 80% of the screen size)
@@ -224,7 +224,10 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder
     end_sig = len(s.ppg)
     len_sig=end_sig-str_sig
     step_small = 1
-    step_big = step_small * 5
+    if len_sig/s.fs<10:
+        step_big = step_small * 1
+    else:
+        step_big = step_small * 5
 
     major_ticks_names = range(0, int(len_sig/s.fs),step_big)
     len_ticks_names=len(major_ticks_names)
