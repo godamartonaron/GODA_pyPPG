@@ -3,11 +3,12 @@ close all
 
 % Define folder
 input_folder='2023_12_16_22_4';
+input_folder='2023_12_18_1_46';
 
 % Set analysis: 
 %   detection vs reference (1), 
 %   reference_1 vs reference_2 (0)
-isdet=0;
+isdet=1;
 
 % Run Bland Altman 
 run_BA(input_folder,isdet)

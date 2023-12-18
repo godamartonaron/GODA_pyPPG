@@ -305,7 +305,7 @@ class PulseWaveAnal:
         if compare:
             f_names = fid_names[:]
         else:
-            f_names = fid_names[1:]
+            f_names = fid_names[:]
 
         dist_error = pd.DataFrame(columns=f_names)
         self.M_FID_1 = pd.DataFrame(columns=f_names)

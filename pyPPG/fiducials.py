@@ -1170,7 +1170,7 @@ class FpCollection:
                     else:
                         win_onl = fiducials.on[i]
 
-                    min_loc = np.argmax(self.ppg[fiducials.on[i]+win_onl:fiducials.on[i]+win_onr]) + fiducials.on[i]
+                    min_loc = np.argmin(self.ppg[fiducials.on[i]-win_onl:fiducials.on[i]+win_onr]) + fiducials.on[i]
                     if fiducials.on[i] != min_loc:
 
                         if fiducials.a[i] > self.fs*0.075:
