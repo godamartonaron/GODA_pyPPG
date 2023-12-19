@@ -287,7 +287,7 @@ class PulseWaveAnal:
     ########################## Run PPG-BP Evaluation  #########################
     ###########################################################################
 
-    def run_ppg_bp_eval(self, compare=False, plt_sig=False, save=False, prnt_e=True, correction=pd.DataFrame(), annot1='', annot2='', version='06', dname='YYYY_MM_DD_HH_MM'):
+    def run_ppg_bp_eval(self, compare=False, plt_sig=False, save=False, prnt_e=True, correction=pd.DataFrame(), annot1='', annot2='', version='VV', dname='YYYY_MM_DD_HH_MM'):
         # Define input directories and files
         ppg_sig_dir = 'PPG-BP_annot'
         ppg_file = os.sep+'PPG-BP_ref1.mat'
@@ -356,6 +356,8 @@ class PulseWaveAnal:
             s.ppg = ppg_v
 
             ## Preprocessing
+            # sm_wins = {'ppg': 50, 'vpg': 10, 'apg': 10, 'jpg': 10}
+            # prep = PP.Preprocess(fL=0, fH=12, order=4, sm_wins=sm_wins)
             prep = PP.Preprocess()
 
             # Filter and calculate the PPG, PPG', PPG", and PPG'" signals
@@ -378,23 +380,23 @@ class PulseWaveAnal:
             # Print distance error
             if prnt_e: self.print_error(annot_diff)
 
-        # Calculate Mean Absolute Error (MAE), Standard Deviation (STD), and Mean Error (BIAS)
+        # Calculate Mean Absolute Error (MAE), Standard Deviation (SD), and Mean Error (BIAS)
         MAE = {}
-        STD = {}
+        SD = {}
         BIAS = {}
         for n in f_names:
             exec("MAE['" + n + "'] = np.round(np.nanmean(np.absolute(dist_error." + n + ")),2)")
-            exec("STD['" + n + "'] = np.round(np.nanstd(dist_error." + n + "), 2)")
+            exec("SD['" + n + "'] = np.round(np.nanstd(dist_error." + n + "), 2)")
             exec("BIAS['" + n + "'] = np.round(np.nanmean(dist_error." + n + "),2)")
 
         # Insert statistics into the dataframe
         dist_error.index = dist_error.index + 3
         dist_error.loc[0] = MAE
-        dist_error.loc[1] = STD
+        dist_error.loc[1] = SD
         dist_error.loc[2] = BIAS
         dist_error=dist_error.sort_index()
         dist_error = dist_error.rename({0: 'MAE'})
-        dist_error = dist_error.rename({1: 'STD'})
+        dist_error = dist_error.rename({1: 'SD'})
         dist_error = dist_error.rename({2: 'BIAS'})
         dist_error.index=dist_error.index.map(lambda x: ppg_names[x-3] if isinstance(x, int) else x)
 
@@ -417,7 +419,7 @@ class PulseWaveAnal:
         # Print results
         print('-------------------------------------------')
         print('MAE', ': ', MAE)
-        print('STD', ': ', STD)
+        print('SD', ': ', SD)
         print('BIAS', ': ', BIAS)
         print('Program finished!')
 
@@ -506,16 +508,20 @@ class PulseWaveAnal:
     ###########################################################################
     ###################### Extract Pulse Wave Biomarkers  #####################
     ###########################################################################
-    def extact_pw_feat(self, number_of_rec):
+    def extact_pw_feat(self, datafolder, savingfolder):
 
         savingfolder = 'temp_dir' + os.sep + 'PW_anal_01'
+        datafolder='Single_PW'
         all_fp = pd.DataFrame()
         all_bm_vals = {}
+        script_dir = os.path.abspath(os.path.dirname(__file__))
+        abs_path_to_data=script_dir+os.sep+datafolder
+        all_pw = os.listdir(abs_path_to_data)
+        number_of_rec=len(all_pw)
+        for i in range(0,number_of_rec):
+            name = all_pw[i]
 
-        for i in range(0, number_of_rec):
-            name = "single_pw_sample"
-
-            data_path = 'Single_PW' + os.sep + name + '.mat'
+            data_path = 'Single_PW' + os.sep + name
             s, fp, bm = pwex.pw_extraction(data_path=data_path, filtering=True, fL=0, fH=12, order=4,
                                            sm_wins={'ppg': 50, 'vpg': 10, 'apg': 10, 'jpg': 10}, correction=correction,
                                            savefig=True, savingfolder=savingfolder, show_fig=False, print_flag=True)
@@ -547,9 +553,9 @@ class PulseWaveAnal:
 if __name__ == '__main__':
 
     # Flag for package usage
-    ppgbp=True      # validation of PPG-BP dataset
-    pw_ext=False    # extract features of pulse waves
-    plts=True      # plot signal
+    ppgbp=False      # validation of PPG-BP dataset
+    pw_ext=True    # extract features of pulse waves
+    plts=True       # plot signal
 
     # Initialise the pulse wave package
     pwex = PulseWaveAnal()
@@ -568,13 +574,15 @@ if __name__ == '__main__':
 
     # Run PPG-BP Evaluation
     if  ppgbp:
-        pwex.run_ppg_bp_eval(compare=False, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG', annot2='PC', version='06', dname=dname)
-        pwex.run_ppg_bp_eval(compare=False, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='PC', annot2='MG', version='06', dname=dname)
-        pwex.run_ppg_bp_eval(compare=True, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG', annot2='PC', version='06', dname=dname)
+        pwex.run_ppg_bp_eval(compare=False, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG', annot2='PC', version='final', dname=dname)
+        pwex.run_ppg_bp_eval(compare=False, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='PC', annot2='MG', version='final', dname=dname)
+        pwex.run_ppg_bp_eval(compare=True, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG', annot2='PC', version='final', dname=dname)
 
     # Extract Pulse Wave Features
     if pw_ext:
-        pwex.extact_pw_feat(number_of_rec=10)
+        savingfolder = 'temp_dir' + os.sep + 'PW_anal_01'
+        datafolder = 'Single_PW'
+        pwex.extact_pw_feat(datafolder, savingfolder)
 
     print('End of analysis!')
 

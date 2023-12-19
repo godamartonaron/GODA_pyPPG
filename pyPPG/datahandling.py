@@ -278,7 +278,7 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder
 
             if s_type[ind]=='jpg':
                 try:
-                    tmp_txt = 'MAE(STD):'+'\n'+str(subtext['mae'])+'('+str(subtext['std'])+')'
+                    tmp_txt = 'MAE(SD):'+'\n'+str(subtext['mae'])+'('+str(subtext['std'])+')'
                     plt.text(-.14, 0, tmp_txt, fontsize=legend_fontsize, transform=ax.transAxes, va='top', ha='left', weight='bold', color='w',
                              bbox={'facecolor': 'red', 'alpha': 0.5, 'edgecolor': 'black', 'pad': 5})
                 except:

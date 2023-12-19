@@ -459,6 +459,8 @@ stats.corrP = p(1,2);
 % stats.N = sum(data.mask);
 stats.N=length(data.maskedSet1);
 stats.SSE = sum((polyval(stats.polyCoefs,data.maskedSet1)-data.maskedSet2).^2);
+% MG modified on 18/12/2023
+stats.SSE = sum((data.maskedSet1-data.maskedSet2).^2);
 stats.RMSE = sqrt(stats.SSE/(stats.N-2));
 stats.slope = stats.polyCoefs(1);
 stats.intercept = stats.polyCoefs(2);
@@ -639,9 +641,9 @@ switch upper(params.baStatsMode)
 		plot(baAH,a(1:2),stats.differenceMean+[0 0],'k',"LineWidth",1.5)
 		plot(baAH,a(1:2),stats.differenceMean+stats.rpc*[1 1],':k',"LineWidth",1)
 		plot(baAH,a(1:2),stats.differenceMean-stats.rpc*[1 1],':k',"LineWidth",1)
-		text(a(2),stats.differenceMean+stats.rpc, [mynum2str(stats.differenceMean+stats.rpc,2) ' (+1.96STD)'],'Parent',baAH,'HorizontalAlignment','left','VerticalAlignment','bottom','fontsize',fontsize,'Tag','ULimLabel');
+		text(a(2),stats.differenceMean+stats.rpc, [mynum2str(stats.differenceMean+stats.rpc,2) ' (+1.96SD)'],'Parent',baAH,'HorizontalAlignment','left','VerticalAlignment','bottom','fontsize',fontsize,'Tag','ULimLabel');
 		text(a(2),stats.differenceMean,[mynum2str(stats.differenceMean,2) ' [p=' mynum2str(stats.differenceMeanP,2) ']'],'Parent',baAH,'HorizontalAlignment','left','VerticalAlignment','middle','fontsize',fontsize,'Tag','MeanLabel');
-		text(a(2),stats.differenceMean-stats.rpc, [mynum2str(stats.differenceMean-stats.rpc,2) ' (-1.96STD)'],'Parent',baAH,'HorizontalAlignment','left','VerticalAlignment','top','fontsize',fontsize,'Tag','LLimLabel');
+		text(a(2),stats.differenceMean-stats.rpc, [mynum2str(stats.differenceMean-stats.rpc,2) ' (-1.96SD)'],'Parent',baAH,'HorizontalAlignment','left','VerticalAlignment','top','fontsize',fontsize,'Tag','LLimLabel');
 		if ~isGaussian(stats) 
 			warning('Bland-Altman analysis is being performed using a Normal distribution assumptions, but the data does not appear to be normally distributed. Consider using a non-parametric analysis instead. See ''baStatsMode'' option for more details.')
 		end

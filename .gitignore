@@ -10,6 +10,7 @@ pyPPG/validation/temp_dir
 pyPPG/validation/Single_PW
 pyPPG/validation/results
 pyPPG/validation/BlandAltman/figures
+pyPPG/validation/AnnotTool
 
 
 # Byte-compiled / optimized / DLL files

@@ -4,6 +4,7 @@ close all
 % Define folder
 input_folder='2023_12_16_22_4';
 input_folder='2023_12_18_1_46';
+input_folder='2023_12_18_12_19';
 
 % Set analysis: 
 %   detection vs reference (1), 
@@ -26,13 +27,13 @@ function run_BA(input_folder,isdet)
     names=fps1.Properties.VariableNames;
     
     % % plot results 
-    plot_BA(fps1,fps2,isdet,names,output_folder);
+%     plot_BA(fps1,fps2,isdet,names,output_folder);
     
     % % crop BA plots
     crop_BA(names,output_folder);
     
     % merge BA plots
-    merge_BA(names,output_folder);
+%     merge_BA(names,output_folder);
 end
 
 function merge_BA(names,output_folder)
@@ -52,23 +53,15 @@ function merge_BA(names,output_folder)
     % Read all the images
     images = cell(1, length(names));
     for i = 1:length(names)
-        imData = imread(imageFiles{i});
-
-        % Define the region to crop (in the format [xmin, ymin, width, height])
-        crop_region = [720, 180, 4700, 3900];
-        cropped_image=imcrop(imData, crop_region);
-        imshow(cropped_image);
-
-        images{i} = cropped_image;
-
+        images{i} = imread(imageFiles{i});
     end
     
     % Create a montage with specified parameters
-    montage(images, 'Size', [5, 3], 'ThumbnailSize', [NaN NaN], 'BorderSize', [0, 0]);
+    MontageImage= montage(images, 'Size', [5, 3], 'ThumbnailSize', [NaN NaN], 'BorderSize', [0, 0]);
     
     % Save the composite image with high resolution
-    outputFile = ['figures\',output_folder,'\merged_BA.jpeg'];
-    print(gcf, outputFile, '-dpng', '-r4400'); % Adjust resolution as needed
+    outputFilePath = ['figures\',output_folder,'\merged_BA.jpeg'];
+    imwrite(resizedMontage.CData, outputFilePath);
 
 end
 
@@ -130,7 +123,8 @@ function crop_BA(names,folder_name)
         imData = imread(FilePath);
     
         % Define the region to crop (in the format [xmin, ymin, width, height])
-        crop_region = [1200, 200, 900, 720];
+        [xmin, ymin, width, height]=deal(1200, 200, 900, 720);
+        crop_region = [xmin, ymin, width, height];
     
         % Crop the specified region
         cropped_image = imcrop(imData, crop_region);
@@ -141,12 +135,22 @@ function crop_BA(names,folder_name)
         titlePosition = [imageSize(2)/2, imageSize(1)*0.025]; % Middle of the width, 2.5% from the top
 
         % Add the title using the text function
-        text(titlePosition(1), titlePosition(2), tmp_fp, Color='black', FontSize=20,FontWeight='bold');     
+        text(titlePosition(1), titlePosition(2), tmp_fp, Color='black', FontSize=20,FontWeight='bold');
+
+
+        % Specify the desired resolution (DPI)
+        desiredDPI = 300; % Adjust this value based on your requirements
+        
+        % Calculate the new pixel dimensions to achieve the desired DPI
+        pixelWidth = round(desiredDPI * width / 25.4);
+        pixelHeight = round(desiredDPI * height / 25.4);
+        
+        % Resize the cropped image to the desired pixel dimensions
+        resizedImage = imresize(cropped_image, [pixelHeight, pixelWidth]);
 
         % Save the figure with high quality and added bold text
         outputFilePath=string(strcat(output_folder,'\',tmp_fp,'.jpeg'));
-        print(gcf, outputFilePath, '-dpng', '-r1000', '-opengl');
-
+        imwrite(resizedImage, outputFilePath);
     end 
 end
 
@@ -174,7 +178,7 @@ function plot_BA(fps1,fps2,isdet,names,folder_name)
             label = {'Annotator 1','Annotator 2','ms'}; % Names of data sets
         end
         corrinfo = {'n','RMSE','r2','eq'};  % stats to display of correlation scatter plot
-        BAinfo = {'LOA(%)','n','RMSE'};     % stats to display on Bland-ALtman plot
+        BAinfo = {'n','RMSE'};     % stats to display on Bland-ALtman plot
         limits = 'auto';                    %'tight';%'tight';%'auto'; % how to set the axes limits
         colors = 'rbgmcky';                 % character codes
         colors = colors(1:length(states));
