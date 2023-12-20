@@ -345,7 +345,7 @@ def save_data(savingformat: str, savingfolder: str, print_flag=True, s={}, fp=pd
 
     savingfolder = savingfolder.replace('/', '\\')
 
-    if not(':' in savingfolder):
+    if not(':' in savingfolder) and savingfolder[0]!='/':
         relative_path=r'.'+os.sep
     else:
         relative_path=''
