@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyPPG.ppg_bm.derivs_ratios &mdash; pyPPG 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pyPPG
+              <img src="../../../_static/logo-hr.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyPPG</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/pyPPG_example.html">pyPPG example code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/PPG_anal.html">Comprehensive PPG Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/PZ_PPG.html">PhysioZoo PPG analysis</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyPPG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../pyPPG.html">pyPPG</a></li>
+      <li class="breadcrumb-item active">pyPPG.ppg_bm.derivs_ratios</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyPPG.ppg_bm.derivs_ratios</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pyPPG</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pyPPG.ppg_bm.bm_extraction</span> <span class="kn">import</span> <span class="n">get_biomarkers</span>
+
+<span class="c1">###########################################################################</span>
+<span class="c1">####################### Get Ratios of PPG Derivatives #####################</span>
+<span class="c1">###########################################################################</span>
+<div class="viewcode-block" id="get_derivs_ratios">
+<a class="viewcode-back" href="../../../pyPPG.ppg_bm.html#pyPPG.ppg_bm.derivs_ratios.get_derivs_ratios">[docs]</a>
+<span class="k">def</span> <span class="nf">get_derivs_ratios</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">,</span> <span class="n">fp</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">Fiducials</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function returns the biomarkers of Derivatives ratios.</span>
+
+<span class="sd">    :param s: object of PPG signal</span>
+<span class="sd">    :type s: pyPPG.PPG object</span>
+<span class="sd">    :param fp: object of fiducial points</span>
+<span class="sd">    :type fp: pyPPG.Fiducials object</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        - df_pw: data frame with onsets, offsets and peaks</span>
+<span class="sd">        - df_biomarkers: dictionary of biomarkers of Derivatives ratios</span>
+<span class="sd">        - biomarkers_lst: list a biomarkers with name, definition and unit</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">biomarkers_lst</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="p">[</span><span class="s2">&quot;Tu/Tpi&quot;</span><span class="p">,</span>       <span class="s2">&quot;Ratio of the u-point time vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tv/Tpi&quot;</span><span class="p">,</span>       <span class="s2">&quot;Ratio of the v-point time vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tw/Tpi&quot;</span><span class="p">,</span>       <span class="s2">&quot;Ratio of the w-point time vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Ta/Tpi&quot;</span><span class="p">,</span>       <span class="s2">&quot;Ratio of the a-point time vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tb/Tpi&quot;</span><span class="p">,</span>       <span class="s2">&quot;Ratio of the b-point time vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tc/Tpi&quot;</span><span class="p">,</span>       <span class="s2">&quot;Ratio of the c-point time vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Td/Tpi&quot;</span><span class="p">,</span>       <span class="s2">&quot;Ratio of the d-point time vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Te/Tpi&quot;</span><span class="p">,</span>       <span class="s2">&quot;Ratio of the e-point time vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Tf/Tpi&quot;</span><span class="p">,</span>       <span class="s2">&quot;Ratio of the f-point time vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;(Tu-Ta)/Tpi&quot;</span><span class="p">,</span>  <span class="s2">&quot;Ratio of the difference between the u-point time and a-point time vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;(Tv-Tb)/Tpi&quot;</span><span class="p">,</span>  <span class="s2">&quot;Ratio of the difference between the v-point time and b-point time vs. the pulse interval&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Au/Asp&quot;</span><span class="p">,</span>       <span class="s2">&quot;Ratio of the u-point amplitude vs. the systolic peak amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Av/Au&quot;</span><span class="p">,</span>        <span class="s2">&quot;Ratio of the v-point amplitude vs. the u-point amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Aw/Au&quot;</span><span class="p">,</span>        <span class="s2">&quot;Ratio of the w-point amplitude vs. the u-point amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Ab/Aa&quot;</span><span class="p">,</span>        <span class="s2">&quot;Ratio of the b-point amplitude vs. the a-point amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Ac/Aa&quot;</span><span class="p">,</span>        <span class="s2">&quot;Ratio of the c-point amplitude vs. the a-point amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Ad/Aa&quot;</span><span class="p">,</span>        <span class="s2">&quot;Ratio of the d-point amplitude vs. the a-point amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Ae/Aa&quot;</span><span class="p">,</span>        <span class="s2">&quot;Ratio of the e-point amplitude vs. the a-point amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Af/Aa&quot;</span><span class="p">,</span>        <span class="s2">&quot;Ratio of the f-point amplitude vs. the a-point amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;Ap2/Ap1&quot;</span><span class="p">,</span>      <span class="s2">&quot;Ratio of the p2-point amplitude vs. the p1-point amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;(Ac-Ab)/Aa&quot;</span><span class="p">,</span>   <span class="s2">&quot;Ratio of the difference between the b-point amplitude and c-point amplitude vs. the a-point amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;(Ad-Ab)/Aa&quot;</span><span class="p">,</span>   <span class="s2">&quot;Ratio of the difference between the b-point amplitude and d-point amplitude vs. the a-point amplitude&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;AGI&quot;</span><span class="p">,</span>          <span class="s2">&quot;Aging Index, (Ab-Ac-Ad-Ae)/Aa&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;AGImod&quot;</span><span class="p">,</span>       <span class="s2">&quot;Modified aging index, (Ab-Ac-Ad)/Aa&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;AGIinf&quot;</span><span class="p">,</span>       <span class="s2">&quot;Informal aging index, (Ab-Ae)/Aa&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;AI&quot;</span><span class="p">,</span>           <span class="s2">&quot;Augmentation index, (PPG(Tp2)-PPG(Tp1))/Asp&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;RIp1&quot;</span><span class="p">,</span>         <span class="s2">&quot;Reflection index of p1, Adp/(PPG(Tp1)-PPG(Tpi(0)))&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;RIp2&quot;</span><span class="p">,</span>         <span class="s2">&quot;Reflection index of p2, Adp/(PPG(p2)-PPG(Tpi(0)))&quot;</span><span class="p">,</span> <span class="s2">&quot;[%]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;SC&quot;</span><span class="p">,</span>           <span class="s2">&quot;Spring constant, PPG&#39;&#39;(Tsp)/((Asp-Au)/Asp)&quot;</span><span class="p">,</span> <span class="s2">&quot;[nu]&quot;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s2">&quot;IPAD&quot;</span><span class="p">,</span>         <span class="s2">&quot;Inflection point area plus normalised d-point amplitude, AUCdia/AUCsys+Ad/Aa&quot;</span><span class="p">,</span> <span class="s2">&quot;[nu]&quot;</span><span class="p">],</span>
+    <span class="p">]</span>
+
+    <span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;definition&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">]</span>
+    <span class="n">biomarkers_lst</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">biomarkers_lst</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+
+    <span class="n">df_pw</span><span class="p">,</span> <span class="n">df_biomarkers</span> <span class="o">=</span> <span class="n">get_biomarkers</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">biomarkers_lst</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df_pw</span><span class="p">,</span> <span class="n">df_biomarkers</span><span class="p">,</span> <span class="n">biomarkers_lst</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Marton A. GODA, PhD.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

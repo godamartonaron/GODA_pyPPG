@@ -508,21 +508,17 @@ class PulseWaveAnal:
     ###########################################################################
     ###################### Extract Pulse Wave Biomarkers  #####################
     ###########################################################################
-    def extact_pw_feat(self, datafolder, savingfolder):
+    def extract_pw_feat(self, datafolder, savingfolder,correction):
 
-        savingfolder = 'temp_dir' + os.sep + 'PW_anal_01'
-        datafolder='Single_PW'
         all_fp = pd.DataFrame()
         all_bm_vals = {}
-        script_dir = os.path.abspath(os.path.dirname(__file__))
-        abs_path_to_data=script_dir+os.sep+datafolder
-        all_pw = os.listdir(abs_path_to_data)
+        all_pw = os.listdir(datafolder)
         number_of_rec=len(all_pw)
         for i in range(0,number_of_rec):
             name = all_pw[i]
 
-            data_path = 'Single_PW' + os.sep + name
-            s, fp, bm = pwex.pw_extraction(data_path=data_path, filtering=True, fL=0, fH=12, order=4,
+            data_path = datafolder + os.sep + name
+            s, fp, bm = self.pw_extraction(data_path=data_path, filtering=True, fL=0, fH=12, order=4,
                                            sm_wins={'ppg': 50, 'vpg': 10, 'apg': 10, 'jpg': 10}, correction=correction,
                                            savefig=True, savingfolder=savingfolder, show_fig=False, print_flag=True)
 
@@ -582,7 +578,7 @@ if __name__ == '__main__':
     if pw_ext:
         savingfolder = 'temp_dir' + os.sep + 'PW_anal_01'
         datafolder = 'Single_PW'
-        pwex.extact_pw_feat(datafolder, savingfolder)
+        pwex.extract_pw_feat(datafolder, savingfolder,correction)
 
     print('End of analysis!')
 

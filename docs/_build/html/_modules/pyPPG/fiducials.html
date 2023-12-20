@@ -10,11 +10,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -30,7 +30,7 @@
           
           <a href="../../index.html" class="icon icon-home">
             pyPPG
-              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+              <img src="../../_static/logo-hr.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -48,7 +48,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/pyPPG_example.html">pyPPG example code</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/PPG_anal.html">Comprehensive PPG Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/PZ_PPG.html">PhysioZoo PPG morphological analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/PZ_PPG.html">PhysioZoo PPG analysis</a></li>
 </ul>
 
         </div>
@@ -86,7 +86,9 @@
 <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">kaiserord</span><span class="p">,</span> <span class="n">firwin</span><span class="p">,</span> <span class="n">filtfilt</span><span class="p">,</span> <span class="n">detrend</span><span class="p">,</span> <span class="n">periodogram</span><span class="p">,</span> <span class="n">lfilter</span><span class="p">,</span> <span class="n">find_peaks</span><span class="p">,</span> <span class="n">firls</span><span class="p">,</span> <span class="n">resample</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
 
-<div class="viewcode-block" id="FpCollection"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FpCollection">[docs]</a><span class="k">class</span> <span class="nc">FpCollection</span><span class="p">:</span>
+<div class="viewcode-block" id="FpCollection">
+<a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FpCollection">[docs]</a>
+<span class="k">class</span> <span class="nc">FpCollection</span><span class="p">:</span>
 
     <span class="c1">###########################################################################</span>
     <span class="c1">###################### Initialization of Fiducial Points ##################</span>
@@ -108,7 +110,9 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################ Get Fiducial Points ##########################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="FpCollection.get_fiducials"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FpCollection.get_fiducials">[docs]</a>    <span class="k">def</span> <span class="nf">get_fiducials</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">):</span>
+<div class="viewcode-block" id="FpCollection.get_fiducials">
+<a class="viewcode-back" href="../../pyPPG.html#pyPPG.fiducials.FpCollection.get_fiducials">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_fiducials</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="n">pyPPG</span><span class="o">.</span><span class="n">PPG</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;This function calculates the PPG Fiducial Points.</span>
 <span class="sd">            - Original signal: List of systolic peak, pulse onset, dicrotic notch, and diastolic peak</span>
 <span class="sd">            - 1st derivative: List of points of 1st maximum and minimum in 1st derivitive between the onset to onset intervals (u,v)</span>
@@ -168,6 +172,7 @@
         <span class="n">fiducials</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;off&#39;</span><span class="p">,</span> <span class="n">offsets</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">fiducials</span></div>
+
 
 
     <span class="c1">###########################################################################</span>
@@ -1249,7 +1254,7 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">win_onl</span> <span class="o">=</span> <span class="n">fiducials</span><span class="o">.</span><span class="n">on</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-                    <span class="n">min_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ppg</span><span class="p">[</span><span class="n">fiducials</span><span class="o">.</span><span class="n">on</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">win_onl</span><span class="p">:</span><span class="n">fiducials</span><span class="o">.</span><span class="n">on</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">win_onr</span><span class="p">])</span> <span class="o">+</span> <span class="n">fiducials</span><span class="o">.</span><span class="n">on</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">min_loc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ppg</span><span class="p">[</span><span class="n">fiducials</span><span class="o">.</span><span class="n">on</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">win_onl</span><span class="p">:</span><span class="n">fiducials</span><span class="o">.</span><span class="n">on</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">win_onr</span><span class="p">])</span> <span class="o">+</span> <span class="n">fiducials</span><span class="o">.</span><span class="n">on</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                     <span class="k">if</span> <span class="n">fiducials</span><span class="o">.</span><span class="n">on</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">min_loc</span><span class="p">:</span>
 
                         <span class="k">if</span> <span class="n">fiducials</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="o">*</span><span class="mf">0.075</span><span class="p">:</span>
@@ -1325,6 +1330,7 @@
                 <span class="k">pass</span>
 
         <span class="k">return</span> <span class="n">fiducials</span></div>
+
 </pre></div>
 
            </div>

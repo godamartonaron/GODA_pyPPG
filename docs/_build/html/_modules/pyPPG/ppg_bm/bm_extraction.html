@@ -151,123 +151,123 @@
 <span class="sd">        :returns my_funcs: a dictionary where the key is the name of the biomarker and the value is the function to call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">my_funcs</span> <span class="o">=</span> <span class="p">{</span><span class="c1">#PPG signal</span>
-                    <span class="s2">&quot;Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tpp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTpp</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tsys&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTsys</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tdia&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTdia</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tsp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTsp</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tdp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTdp</span><span class="p">(),</span>
-                    <span class="s2">&quot;deltaT&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_deltaT</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tsw10&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSystolicWidth_d_percent</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
-                    <span class="s2">&quot;Tsw25&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSystolicWidth_d_percent</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span>
-                    <span class="s2">&quot;Tsw33&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSystolicWidth_d_percent</span><span class="p">(</span><span class="mi">33</span><span class="p">),</span>
-                    <span class="s2">&quot;Tsw50&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSystolicWidth_d_percent</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
-                    <span class="s2">&quot;Tsw66&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSystolicWidth_d_percent</span><span class="p">(</span><span class="mi">66</span><span class="p">),</span>
-                    <span class="s2">&quot;Tsw75&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSystolicWidth_d_percent</span><span class="p">(</span><span class="mi">75</span><span class="p">),</span>
-                    <span class="s2">&quot;Tsw90&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSystolicWidth_d_percent</span><span class="p">(</span><span class="mi">90</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw10&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicWidth_d_percent</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw25&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicWidth_d_percent</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw33&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicWidth_d_percent</span><span class="p">(</span><span class="mi">33</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw50&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicWidth_d_percent</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw66&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicWidth_d_percent</span><span class="p">(</span><span class="mi">66</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw75&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicWidth_d_percent</span><span class="p">(</span><span class="mi">75</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw90&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicWidth_d_percent</span><span class="p">(</span><span class="mi">90</span><span class="p">),</span>
-                    <span class="s2">&quot;Tpw10&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSumSW_DW</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
-                    <span class="s2">&quot;Tpw25&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSumSW_DW</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span>
-                    <span class="s2">&quot;Tpw33&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSumSW_DW</span><span class="p">(</span><span class="mi">33</span><span class="p">),</span>
-                    <span class="s2">&quot;Tpw50&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSumSW_DW</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
-                    <span class="s2">&quot;Tpw66&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSumSW_DW</span><span class="p">(</span><span class="mi">66</span><span class="p">),</span>
-                    <span class="s2">&quot;Tpw75&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSumSW_DW</span><span class="p">(</span><span class="mi">75</span><span class="p">),</span>
-                    <span class="s2">&quot;Tpw90&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSumSW_DW</span><span class="p">(</span><span class="mi">90</span><span class="p">),</span>
-                    <span class="s2">&quot;Asp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSystolicPeak</span><span class="p">(),</span>
-                    <span class="s2">&quot;Adn&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDicroticNotchAmplitude</span><span class="p">(),</span>
-                    <span class="s2">&quot;Adp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicPeak</span><span class="p">(),</span>
-                    <span class="s2">&quot;Aoff&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPulseOffsetAmplitude</span><span class="p">(),</span>
-                    <span class="s2">&quot;AUCpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAUCpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;AUCsys&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAUCsys</span><span class="p">(),</span>
-                    <span class="s2">&quot;AUCdia&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAUCdia</span><span class="p">(),</span>
+                    <span class="s2">&quot;Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getTpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getTpp()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tsys&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getTsys()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdia&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getTdia()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tsp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getTsp()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getTdp()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;deltaT&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_deltaT()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tsw10&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSystolicWidth_d_percent(10)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tsw25&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSystolicWidth_d_percent(25)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tsw33&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSystolicWidth_d_percent(33)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tsw50&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSystolicWidth_d_percent(50)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tsw66&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSystolicWidth_d_percent(66)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tsw75&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSystolicWidth_d_percent(75)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tsw90&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSystolicWidth_d_percent(90)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw10&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getDiastolicWidth_d_percent(10)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw25&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getDiastolicWidth_d_percent(25)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw33&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getDiastolicWidth_d_percent(33)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw50&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getDiastolicWidth_d_percent(50)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw66&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getDiastolicWidth_d_percent(66)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw75&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getDiastolicWidth_d_percent(75)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw90&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getDiastolicWidth_d_percent(90)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw10&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSumSW_DW(10)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw25&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSumSW_DW(25)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw33&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSumSW_DW(33)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw50&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSumSW_DW(50)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw66&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSumSW_DW(66)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw75&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSumSW_DW(75)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw90&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSumSW_DW(90)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Asp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSystolicPeak()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Adn&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getDicroticNotchAmplitude()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Adp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getDiastolicPeak()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Aoff&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getPulseOffsetAmplitude()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;AUCpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getAUCpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;AUCsys&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getAUCsys()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;AUCdia&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getAUCdia()&quot;</span><span class="p">,</span>
 
                     <span class="c1"># Signal ratios</span>
-                    <span class="s2">&quot;IPR&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getIPR</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tsys/Tdia&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tsys_Tdia</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tpw25/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tpwx_Tpi</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span>
-                    <span class="s2">&quot;Tpw50/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tpwx_Tpi</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
-                    <span class="s2">&quot;Tpw75/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tpwx_Tpi</span><span class="p">(</span><span class="mi">75</span><span class="p">),</span>
-                    <span class="s2">&quot;Tpw25/Tsp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tpwx_Tsp</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span>
-                    <span class="s2">&quot;Tpw50/Tsp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tpwx_Tsp</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
-                    <span class="s2">&quot;Tpw75/Tsp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tpwx_Tsp</span><span class="p">(</span><span class="mi">75</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw10/Tsw10&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tdwx_Tswx</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw25/Tsw25&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tdwx_Tswx</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw33/Tsw33&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tdwx_Tswx</span><span class="p">(</span><span class="mi">33</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw50/Tsw50&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tdwx_Tswx</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw66/Tsw66&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tdwx_Tswx</span><span class="p">(</span><span class="mi">66</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw75/Tsw75&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tdwx_Tswx</span><span class="p">(</span><span class="mi">75</span><span class="p">),</span>
-                    <span class="s2">&quot;Tdw90/Tsw90&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tdwx_Tswx</span><span class="p">(</span><span class="mi">90</span><span class="p">),</span>
-                    <span class="s2">&quot;Tsp/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tsp_Tpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;Asp/Aoff&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Asp_Aoff</span><span class="p">(),</span>
-                    <span class="s2">&quot;Adp/Asp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Adp_Asp</span><span class="p">(),</span>
-                    <span class="s2">&quot;IPA&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getIPA</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tsp/Asp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tsp_Asp</span><span class="p">(),</span>
-                    <span class="s2">&quot;Asp/deltaT&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Asp_deltaT</span><span class="p">(),</span>
-                    <span class="s2">&quot;Asp/(Tpi-Tsp)&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Asp_TpiTsp</span><span class="p">(),</span>
+                    <span class="s2">&quot;IPR&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getIPR()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tsys/Tdia&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tsys_Tdia()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw25/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tpwx_Tpi(25)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw50/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tpwx_Tpi(50)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw75/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tpwx_Tpi(75)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw25/Tsp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tpwx_Tsp(25)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw50/Tsp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tpwx_Tsp(50)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tpw75/Tsp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tpwx_Tsp(75)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw10/Tsw10&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tdwx_Tswx(10)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw25/Tsw25&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tdwx_Tswx(25)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw33/Tsw33&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tdwx_Tswx(33)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw50/Tsw50&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tdwx_Tswx(50)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw66/Tsw66&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tdwx_Tswx(66)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw75/Tsw75&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tdwx_Tswx(75)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tdw90/Tsw90&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tdwx_Tswx(90)&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tsp/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tsp_Tpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Asp/Aoff&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Asp_Aoff()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Adp/Asp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Adp_Asp()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;IPA&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getIPA()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tsp/Asp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tsp_Asp()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Asp/deltaT&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Asp_deltaT()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Asp/(Tpi-Tsp)&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Asp_TpiTsp()&quot;</span><span class="p">,</span>
 
                     <span class="c1"># PPG derivatives</span>
-                    <span class="s2">&quot;u&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_u</span><span class="p">(),</span>
-                    <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_v</span><span class="p">(),</span>
-                    <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_w</span><span class="p">(),</span>
-                    <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">(),</span>
-                    <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">(),</span>
-                    <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">(),</span>
-                    <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">(),</span>
-                    <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">(),</span>
-                    <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_f</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tu&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tu</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tv&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tv</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tw&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tw</span><span class="p">(),</span>
-                    <span class="s2">&quot;Ta&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Ta</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tb&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tb</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tc&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tc</span><span class="p">(),</span>
-                    <span class="s2">&quot;Td&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Td</span><span class="p">(),</span>
-                    <span class="s2">&quot;Te&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Te</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tf&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tf</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tb-c&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tbc</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tb-d&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tbd</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tp1&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tp1</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tp2&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tp2</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tp1-dp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tp1_dp</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tp2-dp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_Tp2_dp</span><span class="p">(),</span>
+                    <span class="s2">&quot;u&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_u()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_v()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_w()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_a()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_b()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_c()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_d()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_e()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_f()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tu&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Tu()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tv&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Tv()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tw&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Tw()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Ta&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Ta()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tb&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Tb()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tc&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Tc()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Td&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Td()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Te&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Te()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tf&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Tf()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tb-c&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Tbc()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tb-d&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Tbd()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tp1&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Tp1()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tp2&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Tp2()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tp1-dp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Tp1_dp()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tp2-dp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_Tp2_dp()&quot;</span><span class="p">,</span>
 
                     <span class="c1"># Derivatives ratios</span>
-                    <span class="s2">&quot;Tu/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tu_Tpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tv/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tv_Tpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tw/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tw_Tpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;Ta/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Ta_Tpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tb/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tb_Tpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tc/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tc_Tpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;Td/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Td_Tpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;Te/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Te_Tpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;Tf/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Tf_Tpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;(Tu-Ta)/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_TuTa_Tpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;(Tv-Tb)/Tpi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_TvTb_Tpi</span><span class="p">(),</span>
-                    <span class="s2">&quot;Au/Asp&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Au_Asp</span><span class="p">(),</span>
-                    <span class="s2">&quot;Av/Au&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Av_Au</span><span class="p">(),</span>
-                    <span class="s2">&quot;Aw/Au&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Aw_Au</span><span class="p">(),</span>
-                    <span class="s2">&quot;Ab/Aa&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Ab_Aa</span><span class="p">(),</span>
-                    <span class="s2">&quot;Ac/Aa&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Ac_Aa</span><span class="p">(),</span>
-                    <span class="s2">&quot;Ad/Aa&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Ad_Aa</span><span class="p">(),</span>
-                    <span class="s2">&quot;Ae/Aa&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Ae_Aa</span><span class="p">(),</span>
-                    <span class="s2">&quot;Af/Aa&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Af_Aa</span><span class="p">(),</span>
-                    <span class="s2">&quot;Ap2/Ap1&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_Ap2_Ap1</span><span class="p">(),</span>
-                    <span class="s2">&quot;(Ac-Ab)/Aa&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_AcAb_Aa</span><span class="p">(),</span>
-                    <span class="s2">&quot;(Ad-Ab)/Aa&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ratio_AdAb_Aa</span><span class="p">(),</span>
-                    <span class="s2">&quot;AGI&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">getAGI</span><span class="p">(),</span>
-                    <span class="s2">&quot;AGImod&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">getAGImod</span><span class="p">(),</span>
-                    <span class="s2">&quot;AGIinf&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">getAGIinf</span><span class="p">(),</span>
-                    <span class="s2">&quot;AI&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAI</span><span class="p">(),</span>
-                    <span class="s2">&quot;RIp1&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getRIp2</span><span class="p">(),</span>
-                    <span class="s2">&quot;RIp2&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getRIp2</span><span class="p">(),</span>
-                    <span class="s2">&quot;SC&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSC</span><span class="p">(),</span>
-                    <span class="s2">&quot;IPAD&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">getIPAD</span><span class="p">(),</span>
+                    <span class="s2">&quot;Tu/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tu_Tpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tv/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tv_Tpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tw/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tw_Tpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Ta/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Ta_Tpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tb/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tb_Tpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tc/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tc_Tpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Td/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Td_Tpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Te/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Te_Tpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tf/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Tf_Tpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;(Tu-Ta)/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_TuTa_Tpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;(Tv-Tb)/Tpi&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_TvTb_Tpi()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Au/Asp&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Au_Asp()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Av/Au&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Av_Au()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Aw/Au&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Aw_Au()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Ab/Aa&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Ab_Aa()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Ac/Aa&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Ac_Aa()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Ad/Aa&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Ad_Aa()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Ae/Aa&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Ae_Aa()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Af/Aa&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Af_Aa()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Ap2/Ap1&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_Ap2_Ap1()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;(Ac-Ab)/Aa&quot;</span><span class="p">:</span> <span class="s2">&quot;self.get_ratio_AcAb_Aa()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;(Ad-Ab)/Aa&quot;</span><span class="p">:</span><span class="s2">&quot;self.get_ratio_AdAb_Aa()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;AGI&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getAGI()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;AGImod&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getAGImod()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;AGIinf&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getAGIinf()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;AI&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getAI()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;RIp1&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getRIp2()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;RIp2&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getRIp2()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;SC&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getSC()&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;IPAD&quot;</span><span class="p">:</span> <span class="s2">&quot;self.getIPAD()&quot;</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">my_funcs</span>
 
@@ -279,7 +279,11 @@
         <span class="n">biomarkers_vec</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">biomarker</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_biomarkers</span><span class="p">:</span>
-            <span class="n">func_to_call</span> <span class="o">=</span> <span class="n">my_funcs</span><span class="p">[</span><span class="n">biomarker</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">func_to_call</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">my_funcs</span><span class="p">[</span><span class="n">biomarker</span><span class="p">])</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">func_to_call</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
             <span class="n">biomarkers_vec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func_to_call</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">biomarkers_vec</span>
 
@@ -572,8 +576,7 @@
 
 <span class="sd">            :return: Diastolic Peak Amplitude biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">## temp solution 04/04/2023 --&gt; if DN==DP</span>
-        <span class="n">dp_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">+</span><span class="mi">20</span><span class="p">]</span>
+        <span class="n">dp_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="p">]</span>
         <span class="n">dia_peak</span> <span class="o">=</span> <span class="n">dp_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">dia_peak</span>
 
@@ -582,7 +585,6 @@
 
 <span class="sd">            :return: Pulse Offset Amplitude biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">offset_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">Aoff</span> <span class="o">=</span> <span class="n">offset_value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">onsets_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">Aoff</span>
@@ -1070,24 +1072,29 @@
 
 <span class="sd">            :return: Ae/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">a_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
         <span class="n">e_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
-        <span class="k">return</span> <span class="n">e_max</span> <span class="o">/</span> <span class="n">a_max</span>
+        <span class="n">ratio_Ae_Aa</span> <span class="o">=</span> <span class="n">e_max</span> <span class="o">/</span> <span class="n">a_max</span>
+        <span class="k">return</span> <span class="n">ratio_Ae_Aa</span>
 
     <span class="k">def</span> <span class="nf">get_ratio_Af_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; This function calculates the ratio of the f-point amplitude to the a-point amplitude.</span>
 
 <span class="sd">            :return: Af/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">a_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
         <span class="n">f_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_f</span><span class="p">()]</span>
-        <span class="k">return</span> <span class="n">f_min</span> <span class="o">/</span> <span class="n">a_max</span>
+        <span class="n">ratio_Af_Aa</span><span class="o">=</span><span class="n">f_min</span> <span class="o">/</span> <span class="n">a_max</span>
+        <span class="k">return</span> <span class="n">ratio_Af_Aa</span>
 
     <span class="k">def</span> <span class="nf">get_ratio_Ap2_Ap1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the p2-point amplitude to the p1-point amplitude.</span>
 
 <span class="sd">            :return: Ap2/Ap1 biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">Rp2p1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">]</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">Rp2p1</span>
 
@@ -1096,59 +1103,70 @@
 
 <span class="sd">            :return: (Ac-Ab)/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
         <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
         <span class="n">Ac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">Ac</span><span class="o">-</span><span class="n">Ab</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
+        <span class="n">ratio_AcAb_Aa</span><span class="o">=</span><span class="p">(</span><span class="n">Ac</span><span class="o">-</span><span class="n">Ab</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
+        <span class="k">return</span> <span class="n">ratio_AcAb_Aa</span>
 
     <span class="k">def</span> <span class="nf">get_ratio_AdAb_Aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the ratio of the difference between the b-point amplitude and d-point amplitude to the a-point amplitude.</span>
 
 <span class="sd">            :return: (Ad-Ab)/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
         <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
         <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">Ad</span><span class="o">-</span><span class="n">Ab</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
+        <span class="n">ratio_AdAb_Aa</span><span class="o">=</span><span class="p">(</span><span class="n">Ad</span> <span class="o">-</span> <span class="n">Ab</span><span class="p">)</span> <span class="o">/</span> <span class="n">Aa</span>
+        <span class="k">return</span> <span class="n">ratio_AdAb_Aa</span>
 
     <span class="k">def</span> <span class="nf">getAGI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Aging Index.</span>
 
 <span class="sd">            :return: (Ab-Ac-Ad-Ae)/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
         <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
         <span class="n">Ac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
         <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
         <span class="n">Ae</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">Ab</span><span class="o">-</span><span class="n">Ac</span><span class="o">-</span><span class="n">Ad</span><span class="o">-</span><span class="n">Ae</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
+        <span class="n">AGI</span> <span class="o">=</span> <span class="p">(</span><span class="n">Ab</span><span class="o">-</span><span class="n">Ac</span><span class="o">-</span><span class="n">Ad</span><span class="o">-</span><span class="n">Ae</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
+        <span class="k">return</span> <span class="n">AGI</span>
 
     <span class="k">def</span> <span class="nf">getAGImod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Modified Aging Index.</span>
 
 <span class="sd">            :return: (Ab-Ac-Ad)/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
         <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
         <span class="n">Ac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_c</span><span class="p">()]</span>
         <span class="n">Ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_d</span><span class="p">()]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">Ab</span><span class="o">-</span><span class="n">Ac</span><span class="o">-</span><span class="n">Ad</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
+        <span class="n">AGI_mod</span> <span class="o">=</span> <span class="p">(</span><span class="n">Ab</span> <span class="o">-</span> <span class="n">Ac</span> <span class="o">-</span> <span class="n">Ad</span><span class="p">)</span> <span class="o">/</span> <span class="n">Aa</span>
+        <span class="k">return</span> <span class="n">AGI_mod</span>
 
     <span class="k">def</span> <span class="nf">getAGIinf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Informal Aging Index.</span>
 
 <span class="sd">            :return: (Ab-Ae)/Aa biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">Aa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_a</span><span class="p">()]</span>
         <span class="n">Ab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_b</span><span class="p">()]</span>
         <span class="n">Ae</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_e</span><span class="p">()]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">Ab</span><span class="o">-</span><span class="n">Ae</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
+        <span class="n">AGI_inf</span><span class="o">=</span><span class="p">(</span><span class="n">Ab</span><span class="o">-</span><span class="n">Ae</span><span class="p">)</span><span class="o">/</span><span class="n">Aa</span>
+        <span class="k">return</span> <span class="n">AGI_inf</span>
 
     <span class="k">def</span> <span class="nf">getAI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; The function calculates the Augmentation Index, (PPG(Tp2) − PPG(Tp1))/Asp.</span>
 
 <span class="sd">            :return: AI biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">AI</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">])</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">peak_value</span>
         <span class="k">return</span> <span class="n">AI</span>
 
@@ -1157,6 +1175,7 @@
 
 <span class="sd">            :return: RIp1 biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">RIp1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicPeak</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">RIp1</span>
 
@@ -1165,6 +1184,7 @@
 
 <span class="sd">            :return: RIp2 biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">RIp2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiastolicPeak</span><span class="p">()</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">RIp2</span>
 
@@ -1173,6 +1193,7 @@
 
 <span class="sd">            :return: SC biomarker</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">ddxSPA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_apg</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">getTsp</span><span class="p">()</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)]</span>
         <span class="n">SPA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">getSystolicPeak</span><span class="p">()</span>
         <span class="n">MS</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_ppg</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">]</span>
@@ -1288,7 +1309,7 @@
 <span class="sd">    :type fp: pyPPG.Fiducials object</span>
 
 <span class="sd">    :return:</span>
-<span class="sd">        - df: data frame with onsets, offset and peaks</span>
+<span class="sd">        - df: data frame with onsets, offsets and peaks</span>
 <span class="sd">        - df_biomarkers: data frame with PPG signal biomarkers</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1296,7 +1317,7 @@
     <span class="n">ppg</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">ppg</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">DotMap</span><span class="p">()</span>
 
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;onset&#39;</span><span class="p">,</span><span class="s1">&#39;offset&#39;</span><span class="p">,</span><span class="s1">&#39;peak&#39;</span><span class="p">])</span>
     <span class="n">df_biomarkers</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">biomarkers_lst</span><span class="p">)</span>
     <span class="n">peaks</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">sp</span><span class="o">.</span><span class="n">values</span>
     <span class="n">onsets</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">values</span>
@@ -1336,12 +1357,13 @@
             <span class="n">next_peak_time</span> <span class="o">=</span> <span class="n">peaks</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">fs</span>
             <span class="n">next_peak_time</span> <span class="o">=</span> <span class="n">next_peak_time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">try</span><span class="p">:</span>
+                <span class="n">nan_fidu</span><span class="o">=</span><span class="n">temp_fiducials</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">temp_fiducials</span><span class="o">.</span><span class="n">isna</span><span class="p">())[</span><span class="mi">1</span><span class="p">]]</span>
+                <span class="n">temp_fiducials</span><span class="p">[</span><span class="n">nan_fidu</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="n">biomarkers_extractor</span> <span class="o">=</span> <span class="n">BmExctator</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">peak_value</span><span class="p">,</span> <span class="n">peak_time</span><span class="p">,</span> <span class="n">next_peak_value</span><span class="p">,</span> <span class="n">next_peak_time</span><span class="p">,</span> <span class="n">onsets_values</span><span class="p">,</span> <span class="n">onsets_times</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">biomarkers_lst</span><span class="p">,</span><span class="n">temp_fiducials</span><span class="p">)</span>
                 <span class="n">biomarkers_vec</span> <span class="o">=</span> <span class="n">biomarkers_extractor</span><span class="o">.</span><span class="n">get_biomarker_extract_func</span><span class="p">()</span>
                 <span class="n">lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">biomarkers_vec</span><span class="p">)</span>
-                <span class="c1">#df_biomarkers.loc[len(df_biomarkers.index)] = lst</span>
                 <span class="n">df_biomarkers</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">lst</span>
-                <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">({</span><span class="s1">&#39;onset&#39;</span><span class="p">:</span> <span class="n">onset</span><span class="p">,</span> <span class="s1">&#39;offset&#39;</span><span class="p">:</span> <span class="n">offset</span><span class="p">,</span> <span class="s1">&#39;peak&#39;</span><span class="p">:</span> <span class="n">peak</span><span class="p">},</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;onset&#39;</span><span class="p">:</span><span class="n">onset</span><span class="p">,</span> <span class="s1">&#39;offset&#39;</span><span class="p">:</span><span class="n">offset</span><span class="p">,</span> <span class="s1">&#39;peak&#39;</span><span class="p">:</span> <span class="n">peak</span><span class="p">}</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>

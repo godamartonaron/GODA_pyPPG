@@ -10,11 +10,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -30,7 +30,7 @@
           
           <a href="../../index.html" class="icon icon-home">
             pyPPG
-              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+              <img src="../../_static/logo-hr.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -48,7 +48,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/pyPPG_example.html">pyPPG example code</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/PPG_anal.html">Comprehensive PPG Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/PZ_PPG.html">PhysioZoo PPG morphological analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/PZ_PPG.html">PhysioZoo PPG analysis</a></li>
 </ul>
 
         </div>
@@ -87,7 +87,9 @@
 <span class="kn">from</span> <span class="nn">pyPPG.ppg_bm.derivs_ratios</span> <span class="kn">import</span> <span class="n">get_derivs_ratios</span>
 <span class="kn">from</span> <span class="nn">pyPPG.ppg_bm.statistics</span> <span class="kn">import</span> <span class="n">get_statistics</span>
 
-<div class="viewcode-block" id="BmCollection"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.biomarkers.BmCollection">[docs]</a><span class="k">class</span> <span class="nc">BmCollection</span><span class="p">:</span>
+<div class="viewcode-block" id="BmCollection">
+<a class="viewcode-back" href="../../pyPPG.html#pyPPG.biomarkers.BmCollection">[docs]</a>
+<span class="k">class</span> <span class="nc">BmCollection</span><span class="p">:</span>
 
     <span class="c1">###########################################################################</span>
     <span class="c1">######################## Initialization of Biomarkers #####################</span>
@@ -109,7 +111,9 @@
     <span class="c1">###########################################################################</span>
     <span class="c1">############################ Get PPG Biomarkers ###########################</span>
     <span class="c1">###########################################################################</span>
-<div class="viewcode-block" id="BmCollection.get_biomarkers"><a class="viewcode-back" href="../../pyPPG.html#pyPPG.biomarkers.BmCollection.get_biomarkers">[docs]</a>    <span class="k">def</span> <span class="nf">get_biomarkers</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get_stat</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="BmCollection.get_biomarkers">
+<a class="viewcode-back" href="../../pyPPG.html#pyPPG.biomarkers.BmCollection.get_biomarkers">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_biomarkers</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get_stat</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function retrieves the list of biomarkers, computes their values, and calculates associated statistics.</span>
 
@@ -126,10 +130,10 @@
         <span class="n">fp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fp</span>
 
         <span class="c1">## Get Biomarkers</span>
-        <span class="n">bm_ppg_sig</span><span class="p">,</span> <span class="n">def_ppg_sig</span> <span class="o">=</span> <span class="n">get_ppg_sig</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
-        <span class="n">bm_sig_ratios</span><span class="p">,</span> <span class="n">def_sig_ratios</span> <span class="o">=</span> <span class="n">get_sig_ratios</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
-        <span class="n">bm_ppg_derivs</span><span class="p">,</span> <span class="n">def_ppg_derivs</span> <span class="o">=</span> <span class="n">get_ppg_derivs</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
-        <span class="n">bm_derivs_ratios</span><span class="p">,</span> <span class="n">def_derivs_ratios</span> <span class="o">=</span> <span class="n">get_derivs_ratios</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+        <span class="n">pw_ppg_sig</span><span class="p">,</span> <span class="n">bm_ppg_sig</span><span class="p">,</span> <span class="n">def_ppg_sig</span> <span class="o">=</span> <span class="n">get_ppg_sig</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+        <span class="n">pw_sig_ratios</span><span class="p">,</span> <span class="n">bm_sig_ratios</span><span class="p">,</span> <span class="n">def_sig_ratios</span> <span class="o">=</span> <span class="n">get_sig_ratios</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+        <span class="n">pw_ppg_derivs</span><span class="p">,</span> <span class="n">bm_ppg_derivs</span><span class="p">,</span> <span class="n">def_ppg_derivs</span> <span class="o">=</span> <span class="n">get_ppg_derivs</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+        <span class="n">pw_derivs_ratios</span><span class="p">,</span> <span class="n">bm_derivs_ratios</span><span class="p">,</span> <span class="n">def_derivs_ratios</span> <span class="o">=</span> <span class="n">get_derivs_ratios</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
 
         <span class="n">bm_vals</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ppg_sig&#39;</span><span class="p">:</span> <span class="n">bm_ppg_sig</span> <span class="p">,</span> <span class="s1">&#39;sig_ratios&#39;</span><span class="p">:</span> <span class="n">bm_sig_ratios</span><span class="p">,</span> <span class="s1">&#39;ppg_derivs&#39;</span><span class="p">:</span> <span class="n">bm_ppg_derivs</span><span class="p">,</span> <span class="s1">&#39;derivs_ratios&#39;</span><span class="p">:</span> <span class="n">bm_derivs_ratios</span><span class="p">}</span>
         <span class="n">bm_defs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ppg_sig&#39;</span><span class="p">:</span> <span class="n">def_ppg_sig</span><span class="p">,</span> <span class="s1">&#39;sig_ratios&#39;</span><span class="p">:</span> <span class="n">def_sig_ratios</span><span class="p">,</span> <span class="s1">&#39;ppg_derivs&#39;</span><span class="p">:</span> <span class="n">def_ppg_derivs</span><span class="p">,</span> <span class="s1">&#39;derivs_ratios&#39;</span><span class="p">:</span> <span class="n">def_derivs_ratios</span><span class="p">}</span>
@@ -144,13 +148,16 @@
         <span class="n">BM_keys</span> <span class="o">=</span> <span class="n">bm_vals</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">BM_keys</span><span class="p">:</span>
             <span class="n">bm_vals</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">bm_vals</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">(</span><span class="s1">&#39;Index of pulse&#39;</span><span class="p">)</span>
+            <span class="n">bm_vals</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;TimeStamp&#39;</span><span class="p">,</span><span class="n">pw_ppg_sig</span><span class="o">.</span><span class="n">onset</span><span class="p">)</span>
             <span class="n">bm_defs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">bm_defs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">(</span><span class="s1">&#39;No. biomarkers&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">get_stat</span><span class="p">:</span> <span class="n">bm_stats</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">bm_stats</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">rename_axis</span><span class="p">(</span><span class="s1">&#39;Statistics&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">get_stat</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span><span class="p">,</span> <span class="n">bm_stats</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span></div></div>
+            <span class="k">return</span> <span class="n">bm_defs</span><span class="p">,</span> <span class="n">bm_vals</span></div>
+</div>
+
 </pre></div>
 
            </div>
