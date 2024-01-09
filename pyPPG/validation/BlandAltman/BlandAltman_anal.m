@@ -1,77 +1,51 @@
-clear all
-close all
+% The MIT License (MIT)
+% 
+% Copyright (c) 2023 Marton A. GODA, PhD.
+% 
+% Permission is hereby granted, free of charge, to any person obtaining a copy
+% of this software and associated documentation files (the "Software"), to deal
+% in the Software without restriction, including without limitation the rights
+% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+% copies of the Software, and to permit persons to whom the Software is
+% furnished to do so, subject to the following conditions:
+% 
+% The above copyright notice and this permission notice shall be included in all
+% copies or substantial portions of the Software.
+% 
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+% SOFTWARE.
 
-% Define folder
-input_folder='2023_12_16_22_4';
-input_folder='2023_12_18_1_46';
-input_folder='2023_12_18_12_19';
-
-% Set analysis: 
-%   detection vs reference (1), 
-%   reference_1 vs reference_2 (0)
-isdet=1;
-
-% Run Bland Altman 
-run_BA(input_folder,isdet)
-
-
-function run_BA(input_folder,isdet)
-    if isdet
-        output_folder=strcat(input_folder,'_DET-REF12');
+function BlandAltman_anal(results_date,detector)
+    % Set analysis: 
+    if detector=='MG_PC'
+        isdet=0;
     else
-        output_folder=strcat(input_folder,'_REF1-REF2');
+        isdet=1;
     end
     
     % Get fiducial data
-    [fps1,fps2]=get_fps(input_folder, isdet);
+    [fps1,fps2]=get_fps(results_date, isdet, detector);
     names=fps1.Properties.VariableNames;
     
-    % % plot results 
-%     plot_BA(fps1,fps2,isdet,names,output_folder);
+    % plot results 
+    output_folder=plot_BA(fps1,fps2,isdet,names,results_date, detector);
     
-    % % crop BA plots
-    crop_BA(names,output_folder);
-    
-    % merge BA plots
-%     merge_BA(names,output_folder);
+    % crop BA plots
+    crop_BA(names,results_date,output_folder);
 end
 
-function merge_BA(names,output_folder)
-   
-    imageFiles = cell(1, length(names));
-    for i = 1:length(names)
-        tmp_fp=names(i);
-            
-        % Full file path
-        Filename=strcat(tmp_fp,'.jpeg');
-        croppedFolder=strcat('figures\',output_folder,'\cropped');
-        FilePath = string(fullfile(croppedFolder, Filename));
-
-        imageFiles{i} = FilePath;
-    end
-    
-    % Read all the images
-    images = cell(1, length(names));
-    for i = 1:length(names)
-        images{i} = imread(imageFiles{i});
-    end
-    
-    % Create a montage with specified parameters
-    MontageImage= montage(images, 'Size', [5, 3], 'ThumbnailSize', [NaN NaN], 'BorderSize', [0, 0]);
-    
-    % Save the composite image with high resolution
-    outputFilePath = ['figures\',output_folder,'\merged_BA.jpeg'];
-    imwrite(resizedMontage.CData, outputFilePath);
-
-end
-
-function [fps1,fps2]=get_fps(output_folder,isdet)
+function [fps1,fps2]=get_fps(output_folder,isdet,detector)
     % Load data
     if isdet
-        load(strcat('..\results\',output_folder,'\MG-pyPPG.mat'))
-        load(strcat('..\results\',output_folder,'\PC-pyPPG.mat'))
+        load(strcat('..',filesep,'results',filesep,output_folder,filesep,detector,filesep,'MG_',detector,filesep,'MG_',detector,'.mat'))
+        load(strcat('..',filesep,'results',filesep,output_folder,filesep,detector,filesep,'PC_',detector,filesep,'PC_',detector,'.mat'))
     else 
-        load(strcat('..\results\',output_folder,'\MG-PC.mat'))
+        load(strcat('..',filesep,'results',filesep,output_folder,filesep,detector,filesep,'MG_PC.mat'))
     end
     
     % define annotated fiducial points
@@ -90,7 +64,7 @@ function [fps1,fps2]=get_fps(output_folder,isdet)
         ref_fps = array2table(tmp_fps, 'VariableNames', mg_fps.Properties.VariableNames);
         
         % define detected fiducial points
-        det_fps=struct2table(pyPPG_fps);
+        det_fps=eval(['struct2table(',detector,'_fps)']);
         det_fps.('dp')=[];
         
         tmp_fps=(det_fps{:,:} - ref_fps_on)+1;
@@ -104,11 +78,66 @@ function [fps1,fps2]=get_fps(output_folder,isdet)
     end
 end
 
-function crop_BA(names,folder_name)
+function output_folder=plot_BA(fps1,fps2,isdet,names,matlab_date,detector)
     % Check if the folder exists; if not, create it
-    output_folder=strcat('figures\',folder_name,'\cropped')
+    output_folder=strcat('..',filesep,'results',filesep,matlab_date,filesep,detector,filesep,'BlandAltman')
     if ~exist(output_folder, 'dir')
         mkdir(output_folder);
+    end
+
+    output_folder2=strcat(output_folder,filesep,'origin')
+    if ~exist(output_folder2, 'dir')
+        mkdir(output_folder2);
+    end
+
+    for i = 1:length(names)
+        FID_f=i;
+        states = names(FID_f);
+        
+        %% Example 1
+        % data1
+        data1(1:height(fps1),:,1:length(FID_f)) =  NaN;
+        data1(1:height(fps1),:,1:length(FID_f)) =  table2array(fps1(:,FID_f));
+        
+        % data2
+        data2(1:height(fps2),:,1:length(FID_f)) =  NaN;
+        data2(1:height(fps2),:,1:length(FID_f)) =  table2array(fps2(:,FID_f));
+        
+        % BA plot paramters
+        tit = strcat(states); % figure title
+        gnames = {states}; % names of groups in data {dimension 1 and 2}
+        
+        if isdet
+            label = {'Reference',detector,'ms'}; % Names of data sets
+        else
+            label = {'MG','PC','ms'}; % Names of data sets
+        end
+        corrinfo = {'n','RMSE','r2','eq'};  % stats to display of correlation scatter plot
+        BAinfo = {'n','RMSE'};     % stats to display on Bland-ALtman plot
+        limits = 'auto';                    %'tight';%'tight';%'auto'; % how to set the axes limits
+        colors = 'rbgmcky';                 % character codes
+        colors = colors(1:length(states));
+        
+        % Generate figure with symbols
+        [cr, fig, statsStruct] = BlandAltman_func(data1, data2,label,tit,gnames,'corrInfo',corrinfo,'baInfo',BAinfo,'axesLimits',limits,'colors',colors,'markerSize',4,'showFitCI',' on');
+        
+        % Full file path
+        outputFilename=strcat(states,'.jpeg');
+        outputFilePath = string(fullfile(output_folder2,outputFilename));
+
+        % Save figure
+        saveas(gcf, outputFilePath);
+
+        % Close the figure
+        close(gcf);
+    end
+end
+
+function crop_BA(names,folder_name,output_folder)
+    % Check if the folder exists; if not, create it
+    output_folder2=strcat(output_folder,filesep,'cropped')
+    if ~exist(output_folder2, 'dir')
+        mkdir(output_folder2);
     end
 
     for i=1:length(names)
@@ -116,7 +145,7 @@ function crop_BA(names,folder_name)
     
         % Full file path
         Filename=strcat(tmp_fp,'.jpeg');
-        originFolder=strcat('figures\',folder_name,'\origin');
+        originFolder=strcat(output_folder,filesep,'origin');
         FilePath = string(fullfile(originFolder, Filename));
     
         % Read the image file using imread
@@ -149,58 +178,8 @@ function crop_BA(names,folder_name)
         resizedImage = imresize(cropped_image, [pixelHeight, pixelWidth]);
 
         % Save the figure with high quality and added bold text
-        outputFilePath=string(strcat(output_folder,'\',tmp_fp,'.jpeg'));
+        outputFilePath=string(strcat(output_folder2,filesep,tmp_fp,'.jpeg'));
         imwrite(resizedImage, outputFilePath);
     end 
 end
 
-function plot_BA(fps1,fps2,isdet,names,folder_name)
-    for i = 1:length(names)
-        FID_f=i;
-        states = names(FID_f);
-        
-        %% Example 1
-        % data1
-        data1(1:height(fps1),:,1:length(FID_f)) =  NaN;
-        data1(1:height(fps1),:,1:length(FID_f)) =  table2array(fps1(:,FID_f));
-        
-        % data2
-        data2(1:height(fps2),:,1:length(FID_f)) =  NaN;
-        data2(1:height(fps2),:,1:length(FID_f)) =  table2array(fps2(:,FID_f));
-        
-        % BA plot paramters
-        tit = strcat(states); % figure title
-        gnames = {states}; % names of groups in data {dimension 1 and 2}
-        
-        if isdet
-            label = {'Reference','pyPPG','ms'}; % Names of data sets
-        else
-            label = {'Annotator 1','Annotator 2','ms'}; % Names of data sets
-        end
-        corrinfo = {'n','RMSE','r2','eq'};  % stats to display of correlation scatter plot
-        BAinfo = {'n','RMSE'};     % stats to display on Bland-ALtman plot
-        limits = 'auto';                    %'tight';%'tight';%'auto'; % how to set the axes limits
-        colors = 'rbgmcky';                 % character codes
-        colors = colors(1:length(states));
-        
-        % Generate figure with symbols
-        [cr, fig, statsStruct] = BlandAltman_func(data1, data2,label,tit,gnames,'corrInfo',corrinfo,'baInfo',BAinfo,'axesLimits',limits,'colors',colors,'markerSize',4,'showFitCI',' on');
-        
-        % Check if the folder exists; if not, create it
-        output_folder=strcat('figures\',folder_name,'\origin')
-        if ~exist(output_folder, 'dir')
-            mkdir(output_folder);
-        end
-        
-        % Full file path
-        outputFilename=strcat(states,'.jpeg')
-        outputFilePath = string(fullfile(output_folder,outputFilename));
-
-        % Save figure
-        saveas(gcf, outputFilePath);
-
-        % Close the figure
-        close(gcf);
-
-    end
-end

@@ -286,12 +286,12 @@ data.mask = isfinite(data.set1) & isnumeric(data.set1) & isfinite(data.set2) & i
 data.maskedSet1 = data.set1(data.mask);
 data.maskedSet2 = data.set2(data.mask);
 AE=abs(data.maskedSet1-data.maskedSet2);
-MAE=mean(AE)
+MAE=mean(AE);
 
 % data.maskedSet1=data.maskedSet1(find(prctile(AE,99)>AE));
 % data.maskedSet2=data.maskedSet2(find(prctile(AE,99)>AE));
 AE2=abs(data.maskedSet1-data.maskedSet2);
-MAE2=mean(AE2)
+MAE2=mean(AE2);
 
 
 params = ResolveLabels(params,label);

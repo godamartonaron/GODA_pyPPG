@@ -229,7 +229,11 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder
     else:
         step_big = step_small * 5
 
-    major_ticks_names = range(0, int(len_sig/s.fs),step_big)
+    len_sig_sec=int(len_sig / s.fs)
+    if len_sig_sec<1:
+        len_sig_sec=1
+
+    major_ticks_names = range(0,len_sig_sec,step_big)
     len_ticks_names=len(major_ticks_names)
     major_diff=len_sig/len_ticks_names
     minor_diff = len_sig / len_ticks_names / step_big
@@ -313,7 +317,7 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder
 
         os.makedirs(tmp_dir, exist_ok=True)
 
-        canvas.print_png((tmp_dir+'%s_btwn_%s-%s.png') % (s.name,s.start_sig,s.end_sig))
+        canvas.print_png((tmp_dir+'%s_btwn_%s-%s.png') % (s.name,str_sig,end_sig))
         if print_flag: print('Figure has been saved in the "'+tmp_dir+'".')
 
     return canvas
