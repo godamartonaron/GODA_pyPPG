@@ -143,7 +143,7 @@ class PulseWaveAnal:
                                 marker_size=90, facecolor=False, subtext=subtext)
 
         if compare:
-            title = 'Ref.1 & Ref.2'
+            title = annot1+' & '+annot2
             savingfolder = 'results'+os.sep+dname+os.sep+annot1+'_'+annot2
         else:
             title = annot1+' & '+detector
@@ -438,7 +438,7 @@ class PulseWaveAnal:
                 self.save_all_data(save, compare, dist_error, annot_error, annot_error2,dname, annot1,annot2)
                 detector_dir = ''
             else:
-                det_fp, annot_diff = self.get_validation(s=s, ref_fp=ref_fp, plt_sig=plt_sig, correction=correction,dname=dname,annot1=annot1, annot2=annot2)
+                det_fp, annot_diff = self.get_validation(s=s, ref_fp=ref_fp, plt_sig=plt_sig, correction=correction,dname=dname,annot1=annot1, annot2=annot2, detector='pyPPG')
                 det_fps.iloc[i] = det_fp[list(fp_names)]
                 dist_error.iloc[i] = annot_diff
                 self.M_FID_2.iloc[i] = det_fp[list(fp_names)]
@@ -706,16 +706,16 @@ class PulseWaveAnal:
     ###########################################################################
     ########################### Evaluation of PPG-BP  #########################
     ###########################################################################
-    def eval_PPG_BP(self,plts,correction,dname):
-        os.makedirs('results' + os.sep + dname, exist_ok=True, prnt=False)
+    def eval_PPG_BP(self,plts,correction,dname,prnt):
+        os.makedirs('results' + os.sep + dname, exist_ok=True)
 
         # Run PPG-BP Evaluation
         self.run_ppg_bp_eval(compare=False, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG',
-                             annot2='PC', version='final', dname=dname, prnt=False)
+                             annot2='PC', version='final', dname=dname, prnt=prnt)
         self.run_ppg_bp_eval(compare=False, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='PC',
-                             annot2='MG', version='final', dname=dname, prnt=False)
+                             annot2='MG', version='final', dname=dname, prnt=prnt)
         self.run_ppg_bp_eval(compare=True, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG',
-                             annot2='PC', version='final', dname=dname, prnt=False)
+                             annot2='PC', version='final', dname=dname, prnt=prnt)
 
     ###########################################################################
     ######################## Extract Pulse Wave Features  #####################

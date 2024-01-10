@@ -22,10 +22,10 @@
 
 function BlandAltman_anal(results_date,detector)
     % Set analysis: 
-    if detector=='MG_PC'
-        isdet=0;
-    else
+    if (detector=="pyPPG" || detector=="PPGFeat" || detector=="PulseAnal")
         isdet=1;
+    else
+        isdet=0;
     end
     
     % Get fiducial data
