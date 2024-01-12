@@ -345,7 +345,7 @@ class PulseWaveAnal:
     ########################## Run PPG-BP Evaluation  #########################
     ###########################################################################
 
-    def run_ppg_bp_eval(self, compare=False, plt_sig=False, save=False, prnt_e=True, correction=pd.DataFrame(), annot1='', annot2='', version='VV', dname='YYYY_MM_DD_HH_MM', prnt=False):
+    def run_ppg_bp_eval(self, compare=False, plt_sig=False, save=False, prnt_e=True, correction=pd.DataFrame(), annot1='', annot2='', version='VV', dname='YYYY_MM_DD_HH_MM', prnt=False, package=''):
         # Define input directories and files
         ppg_sig_dir = 'PPG-BP_annot'
         ppg_file = os.sep+'PPG-BP_ref1.mat'
@@ -473,7 +473,11 @@ class PulseWaveAnal:
 
         # Get the version using pkg_resources
         package_name = 'pyPPG'
-        pyPPG_version = pkg_resources.get_distribution(package_name).version
+        if len(package)==0:
+            pyPPG_version = pkg_resources.get_distribution(package_name).version
+        else:
+            pyPPG_version = package
+
         params = 'pyPPG version: ' + pyPPG_version + '\nfH: ' + str(prep.fH) + ' Hz\nfL: ' + str(prep.fL) + ' Hz\norder: ' + str(prep.order) + '\nsm_win: ' + str(prep.sm_wins)  + corr_txt
 
         path = 'results' + os.sep + dname + os.sep + 'ppg_IDs.csv'
@@ -706,16 +710,16 @@ class PulseWaveAnal:
     ###########################################################################
     ########################### Evaluation of PPG-BP  #########################
     ###########################################################################
-    def eval_PPG_BP(self,plts,correction,dname,prnt):
+    def eval_PPG_BP(self,plts=False, correction=pd.DataFrame(), dname = 'YYYY_MM_DD_HH_MM',prnt=False, package=''):
         os.makedirs('results' + os.sep + dname, exist_ok=True)
 
         # Run PPG-BP Evaluation
         self.run_ppg_bp_eval(compare=False, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG',
-                             annot2='PC', version='final', dname=dname, prnt=prnt)
+                             annot2='PC', version='final', dname=dname, prnt=prnt,package=package)
         self.run_ppg_bp_eval(compare=False, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='PC',
-                             annot2='MG', version='final', dname=dname, prnt=prnt)
+                             annot2='MG', version='final', dname=dname, prnt=prnt,package=package)
         self.run_ppg_bp_eval(compare=True, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG',
-                             annot2='PC', version='final', dname=dname, prnt=prnt)
+                             annot2='PC', version='final', dname=dname, prnt=prnt,package=package)
 
     ###########################################################################
     ######################## Extract Pulse Wave Features  #####################
