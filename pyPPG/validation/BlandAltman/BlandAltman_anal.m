@@ -30,7 +30,13 @@ function BlandAltman_anal(results_date,detector)
     
     % Get fiducial data
     [fps1,fps2]=get_fps(results_date, isdet, detector);
-    names=fps1.Properties.VariableNames;
+    all_names=fps1.Properties.VariableNames;
+    names=[];
+    for n=all_names
+        if ~isnan(min(fps1.(string(n))))
+            names=[names,n];
+        end
+    end
     
     % plot results 
     output_folder=plot_BA(fps1,fps2,isdet,names,results_date, detector);
@@ -90,22 +96,32 @@ function output_folder=plot_BA(fps1,fps2,isdet,names,matlab_date,detector)
         mkdir(output_folder2);
     end
 
-    for i = 1:length(names)
-        FID_f=i;
-        states = names(FID_f);
-        
+    if detector=="MG_PC"
+        range=20;
+    elseif detector=="pyPPG"
+        range=50;
+    elseif detector=="PulseAnal"
+        range=100;
+    elseif detector=="PPGFeat"
+        range=250;
+    else
+        range=120;
+    end
+
+
+    for fp_state = names        
         %% Example 1
         % data1
-        data1(1:height(fps1),:,1:length(FID_f)) =  NaN;
-        data1(1:height(fps1),:,1:length(FID_f)) =  table2array(fps1(:,FID_f));
+        data1(1:height(fps1),:,:) =  NaN;
+        data1(1:height(fps1),:,:) =  table2array(fps1(:,fp_state));
         
         % data2
-        data2(1:height(fps2),:,1:length(FID_f)) =  NaN;
-        data2(1:height(fps2),:,1:length(FID_f)) =  table2array(fps2(:,FID_f));
+        data2(1:height(fps2),:,:) =  NaN;
+        data2(1:height(fps2),:,:) =  table2array(fps2(:,fp_state));
         
         % BA plot paramters
-        tit = strcat(states); % figure title
-        gnames = {states}; % names of groups in data {dimension 1 and 2}
+        tit = strcat(fp_state); % figure title
+        gnames = {fp_state}; % names of groups in data {dimension 1 and 2}
         
         if isdet
             label = {'Reference',detector,'ms'}; % Names of data sets
@@ -116,13 +132,13 @@ function output_folder=plot_BA(fps1,fps2,isdet,names,matlab_date,detector)
         BAinfo = {'n','RMSE'};     % stats to display on Bland-ALtman plot
         limits = 'auto';                    %'tight';%'tight';%'auto'; % how to set the axes limits
         colors = 'rbgmcky';                 % character codes
-        colors = colors(1:length(states));
+        colors = colors(1:length(fp_state));
         
         % Generate figure with symbols
-        [cr, fig, statsStruct] = BlandAltman_func(data1, data2,label,tit,gnames,'corrInfo',corrinfo,'baInfo',BAinfo,'axesLimits',limits,'colors',colors,'markerSize',4,'showFitCI',' on');
+        [cr, fig, statsStruct] = BlandAltman_func(data1, data2,label,tit,gnames,'corrInfo',corrinfo,'baInfo',BAinfo,'axesLimits',limits,'colors',colors,'markerSize',4,'showFitCI',' on', 'range',range);
         
         % Full file path
-        outputFilename=strcat(states,'.jpeg');
+        outputFilename=strcat(fp_state,'.jpeg');
         outputFilePath = string(fullfile(output_folder2,outputFilename));
 
         % Save figure

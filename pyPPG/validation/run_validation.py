@@ -3,7 +3,6 @@ import pandas as pd
 from datetime import datetime
 import subprocess
 import os
-import inspect
 
 def run_matlab_script(script_folder, script, param1,param2):
     if param2=='':
@@ -49,6 +48,9 @@ if __name__ == '__main__':
     # Run Bland-Altman analysis
     script_folder = current_directory+os.sep+'BlandAltman'
     scipt='BlandAltman_anal'
+    run_matlab_script(script_folder, scipt, dname, 'MG_PC')
     run_matlab_script(script_folder, scipt, dname, 'pyPPG')
+    run_matlab_script(script_folder, scipt, dname, 'PPGFeat')
+    run_matlab_script(script_folder, scipt, dname, 'PulseAnal')
 
     print('End of PPG Analysis and Benchmarking!')

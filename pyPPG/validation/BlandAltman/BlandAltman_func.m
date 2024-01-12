@@ -239,6 +239,7 @@ while length(varargin)>i
 		case 'BAYLIMMODE', params.baYLimMode = val;
 		case 'PROCESSCORRELATIONONLY', params.processCorrelationOnly = val;
 		case 'LEGEND', params.Legend = val;
+        case 'RANGE', params.range = val;
 		otherwise
 			error(['Unknown parameter name ' parameter])
 	end % of swich statement
@@ -630,7 +631,7 @@ xlabel(baAH,params.meanLabel); ylabel(baAH,params.deltaLabel);
 if strcmpi(params.baYLimMode,'Squared') 
 	a = [params.axesLimits(1:2) [-1 1]*abs(params.axesLimits(2)-params.axesLimits(1))/2];
     %%LOA
-    a = [params.axesLimits(1:2) [-1 1]*50];
+    a = [params.axesLimits(1:2) [-1 1]*params.range];
 	axis(baAH, a);
 else
 	a = axis(baAH);
