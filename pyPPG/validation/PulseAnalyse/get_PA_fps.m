@@ -36,7 +36,8 @@ function get_PA_fps(results_date)
         PC_PulseAnal_diff.(fieldNames{i}) = [];
     end
     
-    for tmp_name=["MG","PC"]
+    for tmp_name=[{"MG"},{"PC"}]
+        tmp_name=tmp_name{1};
         ref_fps=eval([char(tmp_name),'_fps']);
     
         for i=1:length(ppg_data)
