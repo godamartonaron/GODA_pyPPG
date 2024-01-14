@@ -22,7 +22,7 @@
 
 function BlandAltman_anal(results_date,detector)
     % Set analysis: 
-    if (detector=="pyPPG" || detector=="PPGFeat" || detector=="PulseAnal")
+    if strcmp(detector, "pyPPG") || strcmp(detector, "PPGFeat") || strcmp(detector, "PulseAnal")
         isdet=1;
     else
         isdet=0;
@@ -33,7 +33,7 @@ function BlandAltman_anal(results_date,detector)
     all_names=fps1.Properties.VariableNames;
     names=[];
     for n=all_names
-        if ~isnan(min(fps1.(string(n))))
+        if ~isnan(min(fps1.(n{1})))
             names=[names,n];
         end
     end
@@ -56,10 +56,10 @@ function [fps1,fps2]=get_fps(output_folder,isdet,detector)
     
     % define annotated fiducial points
     mg_fps=struct2table(MG_fps);
-    mg_fps.('dp')=[];
-    
+    mg_fps = removevars(mg_fps, 'dp');
+
     pc_fps=struct2table(PC_fps);
-    pc_fps.('dp')=[];
+    pc_fps = removevars(pc_fps, 'dp');
 
     if isdet
         tmp_fps=(mg_fps{:,:} + pc_fps{:,:}) / 2;

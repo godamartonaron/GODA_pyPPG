@@ -50,22 +50,22 @@ class PulseWaveAnal:
                 if eval("ref_" + n + ".size") > 1 and n != 'on':
                     exec("ref_" + n + "=  np.array(ref_" + n + "[0])")
                     exec("error['" + n + "'] =1")
-                    print('\n'+n + ' error: ', name)
+                    #print('\n'+n + ' error: ', name)
                 elif eval("ref_" + n + ".size") < 1 and n != 'on':
                     exec("ref_" + n + "= np.array(np.NaN)")
                     exec("error['" + n + "'] =1")
-                    print(n + ' error: ', name)
+                    #print(n + ' error: ', name)
             except:
                 pass
 
         if ref_on.size > 2:
             exec("error['on']=1")
-            print('on error: ', name)
+            #print('on error: ', name)
             exec("ref_on = ref_on[0:2]")
 
         if ref_on.size < 2:
             exec("error['on']=1")
-            print('on error: ', name)
+            #print('on error: ', name)
             exec("ref_on = np.squeeze([ref_on,ref_on])")
 
         ref_fp= {}
@@ -161,9 +161,11 @@ class PulseWaveAnal:
     ###########################################################################
     ########################### Print Distance Error ##########################
     ###########################################################################
-    def print_error(self, d_error):
+    def print_error(self, d_error,lable1,annot2,numel):
         # Print distance error
-        print('\n', self.name, ' DIFF:')
+        print()
+        atype=(lable1 + '-' + annot2).replace(' ', '')
+        print(atype,' ' + str(numel + 1) + '/219' + ', ID: ',self.name, '\ndifferences:')
 
         # Replace float values with integers in the dictionary
         for key, value in d_error.items():
@@ -435,6 +437,8 @@ class PulseWaveAnal:
                 self.M_FID_2.iloc[i] = ref2_fp[list(fp_names)]
                 self.save_all_data(save, compare, dist_error, annot_error, annot_error2,dname, annot1,annot2)
                 detector_dir = ''
+                lable1 = annot1
+                lable2 = annot2
             else:
                 det_fp, annot_diff = self.get_validation(s=s, ref_fp=ref_fp, plt_sig=plt_sig, correction=correction,dname=dname,annot1=annot1, annot2=annot2, detector='pyPPG')
                 det_fps.iloc[i] = det_fp[list(fp_names)]
@@ -442,9 +446,11 @@ class PulseWaveAnal:
                 self.M_FID_2.iloc[i] = det_fp[list(fp_names)]
                 self.save_all_data(save, compare, dist_error, annot_error,annot_error2, dname, annot1, annot2)
                 detector_dir='pyPPG'+os.sep
+                lable1 = annot1
+                lable2 = 'pyPPG'
 
             # Print distance error
-            if prnt_e: self.print_error(annot_diff)
+            if prnt_e: self.print_error(annot_diff,lable1,lable2,i)
 
         if compare:
             filename=annot1+'_'+annot2
@@ -538,7 +544,7 @@ class PulseWaveAnal:
 
                 n = 0
                 for ID in ppg_IDs:
-                    print(annotator + '-' +detector+' '+ str(n + 1) + '/219' + ': ' + ID)
+                    print(annotator + '-' +detector+' '+ str(n + 1) + '/219' + ', ID: ' + ID)
                     # Plot fiducial points
                     tmp_mat_name = ID + '.mat'
                     path = sigs_dir + tmp_mat_name
