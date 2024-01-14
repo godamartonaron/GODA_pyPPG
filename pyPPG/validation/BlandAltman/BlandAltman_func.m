@@ -455,24 +455,7 @@ end
 [r, p] = corrcoef(data.maskedSet1,data.maskedSet2); 
 stats.r=r(1,2);
 stats.r2 = stats.r^2;
-% Octave vs. Matlab 
-try
-    stats.rho = spearman(data.maskedSet1, data.maskedSet2);
-    % Calculate the p-value
-    n = length(data.maskedSet1);
-    t = abs(stats.rho * sqrt((n - 2) / (1 - stats.rho^2)));
-    df=n-2;
-
-    % Calculate the CDF of the Student's t-distribution
-    integrand = @(x) (1 / beta(df/2, 0.5)) * (1 + (x.^2 / df)).^(-0.5 * (df + 1));
-    p0 = integral(integrand, -Inf, t / sqrt(df), 'ArrayValued', true);
-    
-    % Adjust for two-tailed test
-    p0 = 0.5 * (1 + sign(t) * p0);
-    stats.rhoP = 2 * (1 - p0);
-catch
-    [stats.rho, stats.rhoP] = corr(data.maskedSet1,data.maskedSet2,'type','Spearman');
-end
+[stats.rho, stats.rhoP] = corr(data.maskedSet1,data.maskedSet2,'type','Spearman');
 
 stats.corrP = p(1,2);
 % stats.N = sum(data.mask);
@@ -540,11 +523,7 @@ end
 %% Display the correlation analyssis results
 function DisplayCorrelationStats(cAH, params, stats)
 x = linspace(params.axesLimits(1), params.axesLimits(2), 100);
-try
-    [y, delta] = polyconf(stats.polyCoefs, x, stats.polyFitStruct,'simopt','on');
-catch
-    [y, delta] = myPolyconf(stats.polyCoefs, x, stats.polyFitStruct);
-end
+[y, delta] = polyconf(stats.polyCoefs, x, stats.polyFitStruct,'simopt','on');
 plot(cAH, x, y,	'-k');
 if strcmpi(params.showFitCI,'on')
 	plot(cAH, x, y+delta, '-', 'Color', 0.3*[1 1 1]);
@@ -584,9 +563,7 @@ end
 FontSize = 15;
 text(params.axesLimits(1),params.axesLimits(4),corrtext,'HorizontalAlignment','left', ...
      'VerticalAlignment','top','parent',cAH,'tag','CorrInfoText','FontSize',FontSize);
-try
-    addlistener(cAH.XRuler,'MarkedClean',@(src,event)updateCorrAxesCallback(src,event) );
-end
+addlistener(cAH.XRuler,'MarkedClean',@(src,event)updateCorrAxesCallback(src,event) );
 
 %% Callback function to keep results in place if the Correlation plot axis limits change
 function updateCorrAxesCallback(ah, ~)
