@@ -42,7 +42,7 @@ function get_PPGFeat_fps(results_date)
     filename='start_sig.csv';
     
     % Use xlsread to read the data into a matrix
-    win_start = table2array(readtable(filename));
+    win_start = csvread(filename);
     
     %%
     % File name of fiducial points
@@ -105,7 +105,8 @@ function get_PPGFeat_fps(results_date)
     PPGFeat_fps_copy=PPGFeat_fps;
     
     %%
-    for tmp_name=["MG","PC"]
+    for tmp_name=[{"MG"},{"PC"}]
+        tmp_name=tmp_name{1};
         % Calculate the difference
         ref_fps=eval([char(tmp_name),'_fps']);
         PPGFeat_fps=PPGFeat_fps_copy;

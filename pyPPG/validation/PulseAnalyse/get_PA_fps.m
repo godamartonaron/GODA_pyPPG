@@ -138,10 +138,10 @@ function [ppg,vpg,apg,jpg]=get_signals(signal,Fs)
     B = 1/win*ones(win,1);
     filt_sig_MAFcb2=filtfilt(B,1,filt_sig_cb2);
     ppg=filt_sig_MAFcb2;
-    %%
 
-    med_max = median(findpeaks(ppg,'MinPeakDistance',Fs/2));
-    med_min = median(-findpeaks(-ppg,'MinPeakDistance',Fs/2));
+    %% 
+    med_max = median(findpeaks(ppg-min(ppg),'MinPeakDistance',Fs/2));
+    med_min = median(-findpeaks(ppg-min(ppg),'MinPeakDistance',Fs/2));
     norm_factor=(med_max-med_min);
 
     vpg = diff(ppg);
