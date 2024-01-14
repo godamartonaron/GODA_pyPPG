@@ -335,7 +335,6 @@ class PulseWaveAnal:
             with open(path2, 'w') as file:
                 file.write(params)
 
-
         if prnt:
             # Print results
             print('-------------------------------------------')
@@ -502,6 +501,7 @@ class PulseWaveAnal:
         for annotator in ['MG','PC']:
             name=annotator+'_'+detector
             input_filename = tmp_dir + name+os.sep+name + '.mat'
+            print(input_filename)
             tmp_data=scipy.io.loadmat(input_filename,matlab_compatible=True)
 
             # get distance error
@@ -576,12 +576,16 @@ class PulseWaveAnal:
             ref_fps.to_csv(csv_file1, index=True)
             det_fps.to_csv(csv_file2, index=True)
 
+        self.get_mean_results(tmp_dir, detector)
+    def get_mean_results(self, tmp_dir,detector):
         MG_diff_path = tmp_dir + 'MG_' + detector +os.sep + 'MG_' + detector + '_diffs.csv'
         PC_diff_path = tmp_dir + 'PC_' + detector +os.sep + 'PC_' + detector + '_diffs.csv'
-        MG_diff=pd.read_csv(MG_diff_path, sep=',').head(3)
+        MG_diff = pd.read_csv(MG_diff_path, sep=',').head(3)
         PC_diff = pd.read_csv(PC_diff_path, sep=',').head(3)
 
-        mean_diff=(MG_diff[list(fp_names)]+PC_diff[list(fp_names)])/2
+        fp_names=list(MG_diff.keys())[1:]
+
+        mean_diff=(MG_diff[fp_names]+PC_diff[fp_names])/2
         row_names = MG_diff['Unnamed: 0'].tolist()
         mean_diff.insert(0, 'Stats', row_names)
 
@@ -719,13 +723,18 @@ class PulseWaveAnal:
     def eval_PPG_BP(self,plts=False, correction=pd.DataFrame(), dname = 'YYYY_MM_DD_HH_MM',prnt=False, package=''):
         os.makedirs('results' + os.sep + dname, exist_ok=True)
 
-        # Run PPG-BP Evaluation
+        # Run Evaluation PPG-BP annotations
+        self.run_ppg_bp_eval(compare=True, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG',
+                             annot2='PC', version='final', dname=dname, prnt=prnt,package=package)
+
+        # Run Evaluation PPG-BP pyPPG detection
         self.run_ppg_bp_eval(compare=False, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG',
                              annot2='PC', version='final', dname=dname, prnt=prnt,package=package)
         self.run_ppg_bp_eval(compare=False, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='PC',
                              annot2='MG', version='final', dname=dname, prnt=prnt,package=package)
-        self.run_ppg_bp_eval(compare=True, plt_sig=plts, save=True, prnt_e=True, correction=correction, annot1='MG',
-                             annot2='PC', version='final', dname=dname, prnt=prnt,package=package)
+
+        tmp_dir='results' + os.sep + dname + os.sep+ 'pyPPG' +os.sep
+        self.get_mean_results(tmp_dir, 'pyPPG')
 
     ###########################################################################
     ######################## Extract Pulse Wave Features  #####################
@@ -763,9 +772,8 @@ if __name__ == '__main__':
     pwex.eval_PPG_BP(plts=False, correction=correction, dname=dname)
 
     # Run Benchmarking
-    pwex.benchmark_PPG_BP(detector='PPGFeat', dname='2024_1_7_16_1',plt=False, prnt=False)
-    pwex.benchmark_PPG_BP(detector='pyPPG', dname='2024_1_7_16_1',plt=False, prnt=False)
-    pwex.benchmark_PPG_BP(detector='PulseAnal', dname='2024_1_7_16_1',plt=False, prnt=False)
+    pwex.benchmark_PPG_BP(detector='PPGFeat', dname=dname, plt=False, prnt=False)
+    pwex.benchmark_PPG_BP(detector='PulseAnal', dname=dname, plt=False, prnt=False)
 
     # Extract Pulse Wave Features
     #pwex.pw_extraction(correction=correction)
