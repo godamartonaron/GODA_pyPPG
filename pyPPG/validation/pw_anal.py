@@ -501,8 +501,8 @@ class PulseWaveAnal:
         for annotator in ['MG','PC']:
             name=annotator+'_'+detector
             input_filename = tmp_dir + name+os.sep+name + '.mat'
-            print(input_filename)
             tmp_data=scipy.io.loadmat(input_filename,matlab_compatible=True)
+            print(input_filename)
 
             # get distance error
             diff_name = name + '_diff'
@@ -510,6 +510,8 @@ class PulseWaveAnal:
             flat_diffs  = raw_diffs.flatten()
             dist_error = pd.DataFrame(flat_diffs.tolist(), columns=raw_diffs.dtype.names)
             dist_error = dist_error.applymap(lambda x: np.squeeze(x))
+
+            print(dist_error)
 
             # get detection
             det_name = detector + '_fps'
