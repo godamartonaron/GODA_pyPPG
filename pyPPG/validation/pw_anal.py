@@ -284,7 +284,7 @@ class PulseWaveAnal:
         ref1_fp = ref_fp
 
         annot_file2 = annot_path2 + os.sep + name + '.mat'
-        annotf2 = scipy.io.loadmat(annot_file2)
+        annotf2 = scipy.io.loadmat(annot_file2,matlab_compatible=True)
 
         ref2_fp, annot_err = self.get_ref_fp(name, s.fs, fid_names, annotf2)
         ref2_fp = pd.DataFrame(ref2_fp, index=[0])
@@ -352,7 +352,7 @@ class PulseWaveAnal:
         annot_path = ppg_sig_dir+os.sep+annot1+version+'_PPG-BP_annot'+os.sep+'merged'
         self.annot_path2 = ppg_sig_dir + os.sep+annot2+version+'_PPG-BP_annot'+os.sep+'merged'
         sig_path = ppg_sig_dir + ppg_file
-        input_sig = scipy.io.loadmat(sig_path)
+        input_sig = scipy.io.loadmat(sig_path,matlab_compatible=True)
 
         # Define output variables
         self.OutData = {}
@@ -394,10 +394,10 @@ class PulseWaveAnal:
             ppg_v = np.squeeze(ppg_v)
 
             # Load annotated fiducial points
-            self.name = input_sig['ppg_data']['name'][0, i][0]
+            self.name = ''.join(input_sig['ppg_data']['name'][0, i][0])
             ppg_IDs[i]=self.name
             annot_file = annot_path + os.sep + self.name + '.mat'
-            annot = scipy.io.loadmat(annot_file)
+            annot = scipy.io.loadmat(annot_file,matlab_compatible=True)
 
             # Get reference annotation
             ref_fp, error = self.get_ref_fp(self.name, fs, fp_names, annot)
@@ -414,8 +414,6 @@ class PulseWaveAnal:
             s.ppg = ppg_v
 
             ## Preprocessing
-            # sm_wins = {'ppg': 50, 'vpg': 10, 'apg': 10, 'jpg': 10}
-            # prep = PP.Preprocess(fL=0, fH=12, order=4, sm_wins=sm_wins)
             prep = PP.Preprocess()
 
             # Filter and calculate the PPG, PPG', PPG", and PPG'" signals
@@ -498,7 +496,7 @@ class PulseWaveAnal:
         for annotator in ['MG','PC']:
             name=annotator+'_'+detector
             input_filename = tmp_dir + name+os.sep+name + '.mat'
-            tmp_data=scipy.io.loadmat(input_filename)
+            tmp_data=scipy.io.loadmat(input_filename,matlab_compatible=True)
 
             # get distance error
             diff_name = name + '_diff'
@@ -544,17 +542,19 @@ class PulseWaveAnal:
                     # Plot fiducial points
                     tmp_mat_name = ID + '.mat'
                     path = sigs_dir + tmp_mat_name
-                    sc = scipy.io.loadmat(path)
+                    sc = scipy.io.loadmat(path,matlab_compatible=True)
                     keys = list(sc.keys())[3:]
                     s = DotMap((key, sc[key][0]) for key in keys)
+                    s.name=''.join(s.name)
                     plt_sig = 1
                     r = dict(reference.iloc[n].apply(pd.to_numeric, errors='coerce').astype('Int32'))
                     ref_fp = pd.DataFrame([{key: np.NaN if pd.isna(value) else value for key, value in r.items()}])
                     d = dict(detection.iloc[n].apply(pd.to_numeric, errors='coerce').astype('Int32'))
                     det_fp = pd.DataFrame([{key: np.NaN if pd.isna(value) else value for key, value in d.items()}])
-                    if plt_sig: self.plot_pulse_wave(s=s, fp1=ref_fp, fp2=det_fp, d_error=dist_error.iloc[n].to_dict(),
-                                                     compare=False, show_fig=False, dname=dname, annot1=annotator, annot2='',
-                                                     detector=detector)
+                    if plt_sig:
+                        self.plot_pulse_wave(s=s, fp1=ref_fp, fp2=det_fp, d_error=dist_error.iloc[n].to_dict(), compare=False,
+                            show_fig=False, dname=dname, annot1=annotator, annot2='', detector=detector)
+
                     n = n + 1
 
             detector_dir=detector+os.sep
