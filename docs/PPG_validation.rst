@@ -18,7 +18,7 @@ Our objectives are to:
 
 Download and extract the manual annotations of fiducial points by accessing the provided link: `PPG-BP manual annotations <https://github.com/godamartonaron/GODA_pyPPG/raw/main/pyPPG/validation/PPG-BP_annot.zip>`__.
 
-Additionally, acquire and extract the MATLAB codes essential for evaluating *PPGFeat* and *PulseAnalyse* by using the following link: `PPG-BP manual annotations <https://github.com/godamartonaron/GODA_pyPPG/raw/main/pyPPG/validation/MATLAB_codes.zip>`__.
+Additionally, acquire and extract the MATLAB codes essential for evaluating *PPGFeat* and *PulseAnalyse* by using the following link: `MATLAB codes <https://github.com/godamartonaron/GODA_pyPPG/raw/main/pyPPG/validation/MATLAB_codes.zip>`__.
 
 Ensure that you place the extracted contents in the designated folder associated with this script.
 
