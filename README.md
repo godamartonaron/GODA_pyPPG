@@ -59,6 +59,9 @@ mne == 1.5.0
 
 All the python requirements are installed when the toolbox is installed, so there is no need for any additional commands.
 
+## Validation and Benchmarking:
+For more details see the [Validation and Benchmarking](https://pyppg.readthedocs.io/en/latest/PPG_validation.html)
+
 ## Documentation:
 https://pyppg.readthedocs.io/en/latest/
 
@@ -67,8 +70,10 @@ https://pyppg.readthedocs.io/en/latest/
     - An open-source algorithmic ***pyPPG*** toolbox, which loads a PPG signal, preprocesses it, segments individual pulse waves, identifies fiducial points, and calculates a set of biomarkers. This can be used within your own data analysis code using the ***pyPPG*** API.
 2. **Databases**
     - The ***pyPPG*** signal analysis is based on the following datasets:
-      - [BIDMC Dataset](https://physionet.org/content/bidmc/1.0.0/)
+      - [PPG-BP Dataset](https://figshare.com/articles/dataset/PPG-BP_Database_zip/5459299)
       - [MESA Dataset](https://sleepdata.org/datasets/mesa)
+      - [BIDMC Dataset](https://physionet.org/content/bidmc/1.0.0/)
+      
     - Further PPG datasets:
       - [Collection of Peter Charlton](https://peterhcharlton.github.io/post/ppg_datasets/)
       - [Collection of Physionet](https://physionet.org/content/?topic=ppg)

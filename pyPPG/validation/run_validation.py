@@ -1,18 +1,13 @@
 import pyPPG.validation.pw_anal as PW
 import pandas as pd
 from datetime import datetime
-import subprocess
 import os
 
-def run_matlab_script(script_folder, script, param1,param2):
-    if param2=='':
-        command = ['matlab', '-batch', f"eval('cd(\'\'{script_folder}\'\'); {script}(''{param1}'')')"]
-    else:
-        command = ['matlab', '-batch', f"eval('cd(\'\'{script_folder}\'\'); {script}(''{param1}'',''{param2}'')')"]
-    subprocess.run(command, shell=False)
 
-if __name__ == '__main__':
-
+###########################################################################
+################################# VALIDATION ##############################
+###########################################################################
+def ppg_valiadtion():
     # Initialise the pulse wave package
     pwex = PW.PulseWaveAnal()
 
@@ -34,12 +29,12 @@ if __name__ == '__main__':
     current_directory = os.getcwd()
     script_folder = current_directory+os.sep+'PPGFeat'
     scipt='get_PPGFeat_fps'
-    run_matlab_script(script_folder,scipt,dname,'')
+    pwex.run_matlab_script(script_folder,scipt,dname,'')
 
     # Command to run MATLAB script for PPGFeat
     script_folder = current_directory+os.sep+'PulseAnalyse'
     scipt='get_PA_fps'
-    run_matlab_script(script_folder,scipt,dname,'')
+    pwex.run_matlab_script(script_folder,scipt,dname,'')
 
     # Run Benchmarking
     pwex.benchmark_PPG_BP(detector='PPGFeat', dname=dname, plt=True, prnt=False)
@@ -48,9 +43,15 @@ if __name__ == '__main__':
     # Run Bland-Altman analysis
     script_folder = current_directory+os.sep+'BlandAltman'
     scipt='BlandAltman_anal'
-    run_matlab_script(script_folder, scipt, dname, 'MG_PC')
-    run_matlab_script(script_folder, scipt, dname, 'pyPPG')
-    run_matlab_script(script_folder, scipt, dname, 'PPGFeat')
-    run_matlab_script(script_folder, scipt, dname, 'PulseAnal')
+    pwex.run_matlab_script(script_folder, scipt, dname, 'MG_PC')
+    pwex.run_matlab_script(script_folder, scipt, dname, 'pyPPG')
+    pwex.run_matlab_script(script_folder, scipt, dname, 'PPGFeat')
+    pwex.run_matlab_script(script_folder, scipt, dname, 'PulseAnal')
 
     print('End of PPG Analysis and Benchmarking!')
+
+###########################################################################
+############################### RUN VALIDATION ############################
+###########################################################################
+if __name__ == "__main__":
+    ppg_valiadtion()

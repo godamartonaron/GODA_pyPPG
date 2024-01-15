@@ -313,7 +313,11 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">step_big</span> <span class="o">=</span> <span class="n">step_small</span> <span class="o">*</span> <span class="mi">5</span>
 
-    <span class="n">major_ticks_names</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">len_sig</span><span class="o">/</span><span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">),</span><span class="n">step_big</span><span class="p">)</span>
+    <span class="n">len_sig_sec</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">len_sig</span> <span class="o">/</span> <span class="n">s</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">len_sig_sec</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">len_sig_sec</span><span class="o">=</span><span class="mi">1</span>
+
+    <span class="n">major_ticks_names</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">len_sig_sec</span><span class="p">,</span><span class="n">step_big</span><span class="p">)</span>
     <span class="n">len_ticks_names</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">major_ticks_names</span><span class="p">)</span>
     <span class="n">major_diff</span><span class="o">=</span><span class="n">len_sig</span><span class="o">/</span><span class="n">len_ticks_names</span>
     <span class="n">minor_diff</span> <span class="o">=</span> <span class="n">len_sig</span> <span class="o">/</span> <span class="n">len_ticks_names</span> <span class="o">/</span> <span class="n">step_big</span>
@@ -397,7 +401,7 @@
 
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="n">canvas</span><span class="o">.</span><span class="n">print_png</span><span class="p">((</span><span class="n">tmp_dir</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_btwn_</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">.png&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">s</span><span class="o">.</span><span class="n">start_sig</span><span class="p">,</span><span class="n">s</span><span class="o">.</span><span class="n">end_sig</span><span class="p">))</span>
+        <span class="n">canvas</span><span class="o">.</span><span class="n">print_png</span><span class="p">((</span><span class="n">tmp_dir</span><span class="o">+</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">_btwn_</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">.png&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">str_sig</span><span class="p">,</span><span class="n">end_sig</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">print_flag</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Figure has been saved in the &quot;&#39;</span><span class="o">+</span><span class="n">tmp_dir</span><span class="o">+</span><span class="s1">&#39;&quot;.&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">canvas</span></div>
@@ -432,7 +436,7 @@
 
     <span class="n">savingfolder</span> <span class="o">=</span> <span class="n">savingfolder</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="s1">&#39;:&#39;</span> <span class="ow">in</span> <span class="n">savingfolder</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="s1">&#39;:&#39;</span> <span class="ow">in</span> <span class="n">savingfolder</span><span class="p">)</span> <span class="ow">and</span> <span class="n">savingfolder</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;/&#39;</span><span class="p">:</span>
         <span class="n">relative_path</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">relative_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span>

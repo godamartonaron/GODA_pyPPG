@@ -17,6 +17,8 @@ from datetime import datetime
 import pkg_resources
 
 import json
+
+import subprocess
 class PulseWaveAnal:
 
     ###########################################################################
@@ -30,7 +32,6 @@ class PulseWaveAnal:
             - extract the pulse wave biomarkers    
 
         """
-
 
     ###########################################################################
     ###################### Get Reference Fiducial Points ######################
@@ -748,6 +749,17 @@ class PulseWaveAnal:
     ###########################################################################
     def run_benchmarking(self,detector, dname, plt, prnt):
         self.benchmark_PPG_BP(detector, dname, plt, prnt)
+
+    ###########################################################################
+    ######################  Function to run MATLAB scripts  ###################
+    ###########################################################################
+    def run_matlab_script(script_folder, script, param1, param2):
+        if param2 == '':
+            command = ['matlab', '-batch', f"eval('cd(\'\'{script_folder}\'\'); {script}(''{param1}'')')"]
+        else:
+            command = ['matlab', '-batch', f"eval('cd(\'\'{script_folder}\'\'); {script}(''{param1}'',''{param2}'')')"]
+        subprocess.run(command, shell=False)
+
 
 ###########################################################################
 ############################ MAIN PPG Analysis  ###########################

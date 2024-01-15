@@ -13,6 +13,8 @@ Welcome to pyPPG's documentation!
    :caption: Contents:
 
    modules
+   Filters
+   PPG_validation.rst
 
 .. toctree::
    :maxdepth: 1

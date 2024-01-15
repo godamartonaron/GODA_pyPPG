@@ -72,6 +72,13 @@ mne == 1.5.0
 
 All the python requirements are installed when the toolbox is installed, so there is no need for any additional commands.
 
+
+Validation and Benchmarking:
+-----------------------------
+
+For more details see the `Validation and Benchmarking <https://pyppg.readthedocs.io/en/latest/PPG_validation.html>`__
+
+
 Documentation:
 --------------
 
@@ -88,8 +95,9 @@ The main components:
 
    -  The **pyPPG** signal analysis is based on the following datasets:
 
-      -  `BIDMC Dataset <https://physionet.org/content/bidmc/1.0.0/>`__
+      -  `PPG-BP Dataset <https://figshare.com/articles/dataset/PPG-BP_Database_zip/5459299>`__
       -  `MESA Dataset <https://sleepdata.org/datasets/mesa>`__
+      -  `BIDMC Dataset <https://physionet.org/content/bidmc/1.0.0/>`__
 
    -  Further PPG datasets:
 
