@@ -9,11 +9,11 @@ Welcome to pyPPG's documentation!
 .. include:: README.rst
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
-   modules
-   Filters
+   modules.rst
+   Filters.rst
    PPG_validation.rst
 
 .. toctree::

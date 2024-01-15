@@ -98,7 +98,7 @@ Extract other fiducial points:
 Benchmarking:
 --------------
 
-* Benchmark the results *PPGFeat* and *PulseAnalyse* with *pyPPG*
+* Compare the results of *PPGFeat* and *PulseAnalyse* with *pyPPG*
 
 .. code-block:: python
 

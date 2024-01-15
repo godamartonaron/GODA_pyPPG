@@ -59,13 +59,13 @@ mne == 1.5.0
 
 All the python requirements are installed when the toolbox is installed, so there is no need for any additional commands.
 
-## Validation and Benchmarking:
+## Validation and Benchmarking
 For more details see the [Validation and Benchmarking](https://pyppg.readthedocs.io/en/latest/PPG_validation.html)
 
-## Documentation:
+## Documentation
 https://pyppg.readthedocs.io/en/latest/
 
-## The main components:
+## The main components
 1. **Software**
     - An open-source algorithmic ***pyPPG*** toolbox, which loads a PPG signal, preprocesses it, segments individual pulse waves, identifies fiducial points, and calculates a set of biomarkers. This can be used within your own data analysis code using the ***pyPPG*** API.
 2. **Databases**
