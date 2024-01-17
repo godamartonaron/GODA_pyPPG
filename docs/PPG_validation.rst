@@ -30,7 +30,7 @@ Import Python packages:
 
 .. code-block:: python
 
-    pip install pyPPG==1.0.66
+    pip install pyPPG==1.0.67
 
 * Import required components from pyPPG
 

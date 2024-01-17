@@ -747,13 +747,13 @@ class PulseWaveAnal:
     ###########################################################################
     #############################  Run Benchmarking  ##########################
     ###########################################################################
-    def run_benchmarking(self,detector, dname, plt, prnt):
+    def run_benchmarking(self, detector, dname, plt, prnt):
         self.benchmark_PPG_BP(detector, dname, plt, prnt)
 
     ###########################################################################
     ######################  Function to run MATLAB scripts  ###################
     ###########################################################################
-    def run_matlab_script(script_folder, script, param1, param2):
+    def run_matlab_script(self, script_folder, script, param1, param2):
         if param2 == '':
             command = ['matlab', '-batch', f"eval('cd(\'\'{script_folder}\'\'); {script}(''{param1}'')')"]
         else:

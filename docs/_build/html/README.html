@@ -99,7 +99,7 @@
 <li><p><em>.edf</em>: The <a class="reference external" href="https://www.edfplus.info/">European Data Format</a> is supported, and it applies ‘Pleth’ channel by default. However, if using a different channel name, then the user needs to define it themselves.</p></li>
 </ul>
 </li>
-<li><p><strong>Preprocessing</strong>: The raw signal is filtered to remove unwanted noise and artifacts. Subsequently, the signal is resampled to 75 Hz.</p></li>
+<li><p><strong>Preprocessing</strong>: The raw PPG signal is filtered to remove noise and artifacts. Subsequently, the first, second, and third derivatives (PPG’, PPG’’, and PPG’”) of the PPG signal are computed and filtered. The resampling of the filtered PPG signal to 75 Hz is specifically performed for systolic peak detection.</p></li>
 <li><p><strong>Pulse wave segmentation</strong>: The toolbox employs a peak detector to identify the systolic peaks. It uses an <a class="reference external" href="https://arxiv.org/abs/2307.10398">improved version</a> of a beat detection algorithm originally proposed in <a class="reference external" href="https://doi.org/10.1109/TBME.2005.855725">(Aboy et al. 2005)</a>. Based on the peak locations, the toolbox also detects the pulse onsets and offsets, which indicate the start and end of the PPG pulse waves.</p></li>
 <li><p><strong>Fiducial points identification</strong>: For each pulse wave, the toolbox detects a set of fiducial points.</p></li>
 <li><p><strong>Biomarker engineering</strong>: Based on the fiducial points, a set of 74 PPG digital biomarkers (<em>i.e.</em> pulse wave features) are calculated.</p></li>
@@ -130,7 +130,8 @@ code</a> and <a class="reference external" href="https://www.youtube.com/watch?v
 </section>
 <section id="validation-and-benchmarking">
 <h2>Validation and Benchmarking<a class="headerlink" href="#validation-and-benchmarking" title="Link to this heading"></a></h2>
-<p>For more details see the <a class="reference external" href="https://pyppg.readthedocs.io/en/latest/PPG_validation.html">Validation and Benchmarking</a></p>
+<p>For more details see the <a class="reference external" href="https://pyppg.readthedocs.io/en/latest/PPG_validation.html">Validation and Benchmarking</a>
+The fiducial point annotations and benchmarking results are accessible at 10.5281/zenodo.10523285.</p>
 </section>
 <section id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>

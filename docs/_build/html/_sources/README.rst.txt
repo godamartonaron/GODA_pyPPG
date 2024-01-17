@@ -25,7 +25,7 @@ The following steps are implemented in the **pyPPG** toolbox:
    -  *.csv*: This format stores raw PPG signal data with comma separation. Similar to .txt, the sampling frequency must be provided as an input parameter to the script using 'fs'.
    -  *.edf*: The `European Data Format <https://www.edfplus.info/>`__ is supported, and it applies 'Pleth' channel by default. However, if using a different channel name, then the user needs to define it themselves.
 
-2. **Preprocessing**: The raw signal is filtered to remove unwanted noise and artifacts. Subsequently, the signal is resampled to 75 Hz.
+2. **Preprocessing**: The raw PPG signal is filtered to remove noise and artifacts. Subsequently, the first, second, and third derivatives (PPG', PPG'', and PPG'") of the PPG signal are computed and filtered. The resampling of the filtered PPG signal to 75 Hz is specifically performed for systolic peak detection.
 3. **Pulse wave segmentation**: The toolbox employs a peak detector to identify the systolic peaks. It uses an `improved version <https://arxiv.org/abs/2307.10398>`__ of a beat detection algorithm originally proposed in `(Aboy et al. 2005) <https://doi.org/10.1109/TBME.2005.855725>`__. Based on the peak locations, the toolbox also detects the pulse onsets and offsets, which indicate the start and end of the PPG pulse waves.
 4. **Fiducial points identification**: For each pulse wave, the toolbox detects a set of fiducial points.
 5. **Biomarker engineering**: Based on the fiducial points, a set of 74 PPG digital biomarkers (*i.e.* pulse wave features) are calculated.
@@ -77,7 +77,7 @@ Validation and Benchmarking
 -----------------------------
 
 For more details see the `Validation and Benchmarking <https://pyppg.readthedocs.io/en/latest/PPG_validation.html>`__
-
+The fiducial point annotations and benchmarking results are accessible at 10.5281/zenodo.10523285.
 
 Documentation
 --------------
