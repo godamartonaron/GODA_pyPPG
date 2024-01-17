@@ -61,6 +61,7 @@ All the python requirements are installed when the toolbox is installed, so ther
 
 ## Validation and Benchmarking
 For more details see the [Validation and Benchmarking](https://pyppg.readthedocs.io/en/latest/PPG_validation.html)
+
 The fiducial point annotations and benchmarking results are accessible at [10.5281/zenodo.10523285](https://zenodo.org/records/10523285).
 
 ## Documentation
