@@ -203,7 +203,3 @@ epub_exclude_files = ['search.html']
 todo_include_todos = True
 
 autodoc_member_order = 'bysource'
-
-# Google Analytics tracking
-html_theme = 'custom_layout'
-html_theme_path = ['_googleanal']
