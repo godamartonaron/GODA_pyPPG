@@ -205,7 +205,9 @@ todo_include_todos = True
 autodoc_member_order = 'bysource'
 
 # Google Analytics tracking
+html_theme_googleanal = 'analytics'
+html_theme_path_googleanal = ['_includes']
 # html_theme = 'analytics'
 # html_theme_path = ['_includes']
 
-html_js_files = ['_static/analytics.js']
+#html_js_files = ['_static/analytics.js']
