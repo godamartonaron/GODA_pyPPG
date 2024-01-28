@@ -26,8 +26,3 @@ exclude_patterns = []
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
-
-
-# Google Analytics tracking
-html_theme = ['_analitics']
-html_theme_path = ['docs/_includes']
