@@ -60,7 +60,7 @@ def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel=
     if sig_path.rfind('/')>0:
         start_c = sig_path.rfind('/')+1
     else:
-        start_c = sig_path.rfind('\\')
+        start_c = sig_path.rfind('\\')+1
 
     stop_c=sig_path.rfind('.')
     rec_name=sig_path[start_c:stop_c]
