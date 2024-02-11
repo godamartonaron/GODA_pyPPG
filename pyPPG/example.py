@@ -17,8 +17,8 @@ import scipy.io
 ###########################################################################
 def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFrame(), process_type="both", channel="Pleth",
                 filtering=True, fL=0.5000001, fH=12, order=4, sm_wins={'ppg':50,'vpg':10,'apg':10,'jpg':10}, correction=pd.DataFrame(),
-                savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="both", print_flag=True, use_tk=False, check_ppg_len=True,
-                saved_fiducials="", savedata=True):
+                plotfig=True, savingfolder="temp_dir", savefig=True, show_fig=True, savingformat="both", print_flag=True, use_tk=False,
+                check_ppg_len=True, saved_fiducials="", savedata=True):
     '''
     This is an example code for PPG analysis. The main parts:
         1) Loading a raw PPG signal: various file formats such as .mat, .csv, .txt, or .edf.
@@ -63,6 +63,8 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
     :type sm_wins: dict
     :param correction: DataFrame where the key is the name of the fiducial points and the value is bool
     :type correction: DataFrame
+    :param plotfig: a bool for plot figure
+    :type plotfig: bool
     :param savingfolder: location of the saved data
     :type savingfolder: str
     :param savefig: a bool for current figure saving
@@ -142,7 +144,7 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
         if print_flag: print('Mean PPG SQI: ', ppgSQI, '%')
 
     ## Plot fiducial points
-        plot_fiducials(s=s, fp=fp, savefig=savefig, savingfolder=savingfolder, show_fig=show_fig, print_flag=print_flag, use_tk=use_tk)
+        if plotfig: plot_fiducials(s=s, fp=fp, savefig=savefig, savingfolder=savingfolder, show_fig=show_fig, print_flag=print_flag, use_tk=use_tk)
 
     ## Load saved fiducial points from MATLAB struct
     if ".mat" in saved_fiducials:

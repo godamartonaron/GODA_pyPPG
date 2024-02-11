@@ -43,6 +43,8 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">pyPPG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Filters.html">Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PPG_validation.html">Validation and Benchmarking</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
 <ul>
@@ -141,7 +143,7 @@
     <span class="k">if</span> <span class="n">sig_path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
         <span class="n">start_c</span> <span class="o">=</span> <span class="n">sig_path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">start_c</span> <span class="o">=</span> <span class="n">sig_path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">start_c</span> <span class="o">=</span> <span class="n">sig_path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
 
     <span class="n">stop_c</span><span class="o">=</span><span class="n">sig_path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
     <span class="n">rec_name</span><span class="o">=</span><span class="n">sig_path</span><span class="p">[</span><span class="n">start_c</span><span class="p">:</span><span class="n">stop_c</span><span class="p">]</span>
@@ -322,6 +324,7 @@
     <span class="n">major_diff</span><span class="o">=</span><span class="n">len_sig</span><span class="o">/</span><span class="n">len_ticks_names</span>
     <span class="n">minor_diff</span> <span class="o">=</span> <span class="n">len_sig</span> <span class="o">/</span> <span class="n">len_ticks_names</span> <span class="o">/</span> <span class="n">step_big</span>
     <span class="n">major_ticks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">str_sig</span><span class="p">,</span> <span class="n">end_sig</span><span class="p">,</span> <span class="n">major_diff</span><span class="p">)</span>
+    <span class="n">major_ticks</span> <span class="o">=</span> <span class="n">major_ticks</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">len_ticks_names</span><span class="p">]</span>
     <span class="n">minor_ticks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">str_sig</span><span class="p">,</span> <span class="n">end_sig</span><span class="p">,</span> <span class="n">minor_diff</span><span class="p">)</span>
 
     <span class="n">sig_names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;ppg&#39;</span><span class="p">,</span><span class="s1">&#39;vpg&#39;</span><span class="p">,</span><span class="s1">&#39;apg&#39;</span><span class="p">,</span><span class="s1">&#39;jpg&#39;</span><span class="p">)</span>
@@ -388,7 +391,7 @@
             <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time [s]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">major_ticks</span><span class="p">,</span><span class="n">major_ticks_names</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">major_ticks</span><span class="p">,</span> <span class="n">major_ticks_names</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">show_fig</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="s1">&#39;:&#39;</span> <span class="ow">in</span> <span class="n">savingfolder</span><span class="p">):</span>

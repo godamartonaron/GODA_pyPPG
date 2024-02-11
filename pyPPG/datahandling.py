@@ -238,6 +238,7 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder
     major_diff=len_sig/len_ticks_names
     minor_diff = len_sig / len_ticks_names / step_big
     major_ticks = np.arange(str_sig, end_sig, major_diff)
+    major_ticks = major_ticks[0:len_ticks_names]
     minor_ticks = np.arange(str_sig, end_sig, minor_diff)
 
     sig_names=('ppg','vpg','apg','jpg')
@@ -304,7 +305,7 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder
             plt.yticks([])
 
     plt.xlabel('Time [s]', fontsize=20)
-    plt.xticks(major_ticks,major_ticks_names, fontsize=20)
+    plt.xticks(major_ticks, major_ticks_names, fontsize=20)
     if show_fig: plt.show()
 
     if not(':' in savingfolder):
