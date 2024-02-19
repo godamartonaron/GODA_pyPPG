@@ -325,7 +325,7 @@ else % units also provided
 	params.d1Label = [label{1} ' (' units ')'];
 	params.d2Label = [label{2} ' (' units ')'];
 	if strcmpi(params.data1TreatmentMode,'Compare')
-		params.meanLabel = ['Mean ' label{1} ' & ' label{2} ' (' units ')'];
+		params.meanLabel = ['Mean of ' label{1} ' & ' label{2} ' (' units ')'];
 	else
 		params.meanLabel = [label{1} ' (' units ')'];
 	end

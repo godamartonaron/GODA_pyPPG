@@ -124,7 +124,7 @@ function output_folder=plot_BA(fps1,fps2,isdet,names,matlab_date,detector)
         gnames = {fp_state}; % names of groups in data {dimension 1 and 2}
         
         if isdet
-            label = {'Reference',detector,'ms'}; % Names of data sets
+            label = {detector,'Reference','ms'}; % Names of data sets
         else
             label = {'MG','PC','ms'}; % Names of data sets
         end
@@ -135,7 +135,7 @@ function output_folder=plot_BA(fps1,fps2,isdet,names,matlab_date,detector)
         colors = colors(1:length(fp_state));
         
         % Generate figure with symbols
-        [cr, fig, statsStruct] = BlandAltman_func(data1, data2,label,tit,gnames,'corrInfo',corrinfo,'baInfo',BAinfo,'axesLimits',limits,'colors',colors,'markerSize',4,'showFitCI',' on', 'range',range);
+        [cr, fig, statsStruct] = BlandAltman_func(data1,data2,label,tit,gnames,'corrInfo',corrinfo,'baInfo',BAinfo,'axesLimits',limits,'colors',colors,'markerSize',4,'showFitCI',' on', 'range',range);
         
         % Full file path
         outputFilename=strcat(fp_state,'.jpeg');
