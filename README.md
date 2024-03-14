@@ -5,7 +5,7 @@ A toolbox for finger photoplethysmogram (PPG) analysis, including beat detection
 
 If you use the pyPPG resource, please cite:
 
-Goda, M. A., Charlton, P. H., & Behar, J. A. (2023). ***pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis***. arXiv preprint arXiv:2309.13767., [(The preprint is available HERE)](https://arxiv.org/abs/2309.13767)
+Goda, M. A., Charlton, P. H., & Behar, J. A. (2023). ***pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis***. DOI 10.1088/1361-6579/ad33a2, [(THE ACCEPTED MANUSCRIPT IS AVAILABLE HERE)](https://iopscience.iop.org/article/10.1088/1361-6579/ad33a2)
 
 ## Introduction
 ***pyPPG*** is a standardised toolbox to analyze long-term finger PPG recordings in real-time. The toolbox extracts state-of-the-art PPG biomarkers (_i.e._ pulse wave features) from PPG signals. The algorithms implemented in the *pyPPG* toolbox have been validated on freely available PPG databases.
