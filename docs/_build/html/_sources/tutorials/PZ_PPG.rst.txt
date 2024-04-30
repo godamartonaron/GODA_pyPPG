@@ -5,7 +5,7 @@ In this tutorial you will learn how to use **PhysioZoo PPG** to calculate morpho
 
 If you use the pyPPG resource, please cite:
 
-Goda, M. A., Charlton, P. H., & Behar, J. A. (2023). **pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis**. arXiv preprint arXiv:2309.13767., (`The preprint is available HERE <https://arxiv.org/abs/2309.13767>`__)
+Goda, M. A., Charlton, P. H., & Behar, J. A. (2023). **pyPPG: A Python toolbox for comprehensive photoplethysmography signal analysis**. arXiv preprint arXiv:2309.13767., (`THE ACCEPTED MANUSCRIPT IS AVAILABLE HERE <https://iopscience.iop.org/article/10.1088/1361-6579/ad33a2>`__)
 
 .. image:: PZ-PPG_video.png
    :alt: PhysioZoo PPG
