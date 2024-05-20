@@ -173,8 +173,6 @@ def use_template(wave, annotation: list, fs: int):
         # normal beat is less than the reasonable percentage of all beats
         if (n / (n + invalidn)) < normal_beat_percent_threshold:
             valid = 0
-        else:
-            valid = 0
     else:
         valid=0
 
