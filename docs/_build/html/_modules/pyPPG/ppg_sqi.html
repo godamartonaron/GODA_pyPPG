@@ -43,6 +43,8 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">pyPPG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Filters.html">Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PPG_validation.html">Validation and Benchmarking</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">tutorials:</span></p>
 <ul>
@@ -256,8 +258,6 @@
         <span class="n">d1</span> <span class="o">=</span> <span class="n">d1</span><span class="o">/</span><span class="n">n</span>
         <span class="c1"># normal beat is less than the reasonable percentage of all beats</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">invalidn</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">normal_beat_percent_threshold</span><span class="p">:</span>
-            <span class="n">valid</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">else</span><span class="p">:</span>
             <span class="n">valid</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">valid</span><span class="o">=</span><span class="mi">0</span>
