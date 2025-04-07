@@ -437,7 +437,7 @@ def save_data(savingformat: str, savingfolder: str, print_flag=True, s={}, fp=pd
             tmp_df_defs_and_stats=pd.concat([tmp_df_defs2, tmp_df_stat2], axis=1)
             savemat(file_name, {key: tmp_df_defs_and_stats.to_records(index=True)})
 
-    if savingformat != "csv" and savingformat != "mat" and savingformat != "both":
+    if savingformat != "csv" and savingformat != "mat" and savingformat != "both" and savingformat!="none":
         raise('The file format is not suported for data saving! You can use "mat" or "csv" file formats.')
 
     if print_flag: print('Results have been saved into the "'+tmp_dir+'".')

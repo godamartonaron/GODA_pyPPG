@@ -43,7 +43,7 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
     :type end_sig: int
     :param fiducials: DataFrame of the fiducial points
     :type fiducials: pyPPG.Fiducials DataFrame
-    :param process_type: the type of the process, which can be "fiducials", "biomarkers", or "both"
+    :param process_type: the type of the process, which can be "fiducials", "biomarkers", "both", or "only_sig"
     :type process_type: str
     :param channel: channel of the .edf file
     :type channel: channel of the .edf file
@@ -71,7 +71,7 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
     :type savefig: bool
     :param show_fig: a bool for show figure
     :type show_fig: bool
-    :param savingformat: file format of the saved date, the provided file formats .mat, .csv, or both
+    :param savingformat: file format of the saved date, the provided file formats ".mat", ".csv", "both", or "none"
     :type savingformat: str
     :param print_flag: a bool for print message
     :type print_flag: bool
@@ -98,6 +98,7 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
     '''
 
     ## Loading a raw PPG signal
+    fs=200
     signal = load_data(data_path=data_path, fs=fs, start_sig=start_sig, end_sig=end_sig, channel=channel, use_tk=True, print_flag=print_flag)
 
     ## Preprocessing
@@ -120,61 +121,68 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
     ## Create a PPG class
     s = PPG(s=signal, check_ppg_len=check_ppg_len)
 
-    ## Get Fiducial points
-    if process_type == 'fiducials' or process_type == 'both':
-        # Initialise the fiducials package
-        fpex = FP.FpCollection(s=s)
+    ## Save signal
+    if process_type == "only_sig":
+        file_names = save_data(savingformat=savingformat, savingfolder=savingfolder, print_flag=print_flag, s=s)
+    else:
+        ## Get Fiducial points
+        if process_type == 'fiducials' or process_type == 'both':
+            # Initialise the fiducials package
+            fpex = FP.FpCollection(s=s)
 
-        # Extract fiducial points
-        fiducials = fpex.get_fiducials(s=s)
-        if print_flag: print("Fiducial points:\n", fiducials + s.start_sig)
+            # Extract fiducial points
+            fiducials = fpex.get_fiducials(s=s)
+            fiducials = fiducials.applymap(lambda x: np.nan if pd.isna(x) else x)
+            if print_flag: print("Fiducial points:\n", fiducials + s.start_sig)
 
-        # Create a fiducials class
-        fp = Fiducials(fp=fiducials)
+            # Create a fiducials class
+            fp = Fiducials(fp=fiducials)
 
-        # Save data
-        if savedata:
-            fp_new = Fiducials(fp=fp.get_fp() + s.start_sig)
-            file_names=save_data(savingformat=savingformat, savingfolder=savingfolder, print_flag=print_flag, s=s, fp=fp_new)
+            # Save data
+            if savedata:
+                fp_new = Fiducials(fp=fp.get_fp() + s.start_sig)
+                file_names=save_data(savingformat=savingformat, savingfolder=savingfolder, print_flag=print_flag, s=s, fp=fp_new)
 
-    ## PPG SQI
+        ## PPG SQI
 
-        # Calculate SQI
-        ppgSQI = round(np.mean(SQI.get_ppgSQI(ppg=s.ppg, fs=s.fs, annotation=fp.sp)) * 100, 2)
-        if print_flag: print('Mean PPG SQI: ', ppgSQI, '%')
+            # Calculate SQI
+            ppgSQI = round(np.mean(SQI.get_ppgSQI(ppg=s.ppg, fs=s.fs, annotation=fp.sp)) * 100, 2)
+            if print_flag: print('Mean PPG SQI: ', ppgSQI, '%')
 
-    ## Plot fiducial points
-        if plotfig: plot_fiducials(s=s, fp=fp, savefig=savefig, savingfolder=savingfolder, show_fig=show_fig, print_flag=print_flag, use_tk=use_tk)
+        ## Plot fiducial points
+            if plotfig: plot_fiducials(s=s, fp=fp, savefig=savefig, savingfolder=savingfolder, show_fig=show_fig, print_flag=print_flag, use_tk=use_tk)
 
-    ## Load saved fiducial points from MATLAB struct
-    if ".mat" in saved_fiducials:
-        tmp_fp1 = load_fiducials(saved_fiducials=saved_fiducials)
-        tmp_fp2 = tmp_fp1[(tmp_fp1['on']>= s.start_sig) & (tmp_fp1['off']<= s.end_sig)]
-        fiducials = tmp_fp2-s.start_sig
-        fiducials.index =range(0,len(fiducials))
+        ## Load saved fiducial points from MATLAB struct
+        saved_fiducials='D:/ALL_DATA/Uni/Subjects/ITK_Adjunktus/HAIFA/TECHNION-BME/Research/PPG/GODA_pyPPG/pyPPG/temp_dir/Fiducial_points/BK_txt_bvp_Fiducials_btwn_0-15360.mat'
+        if ".mat" in saved_fiducials:
+            tmp_fp1 = load_fiducials(saved_fiducials=saved_fiducials)
+            tmp_fp2 = tmp_fp1[(tmp_fp1['on']>= s.start_sig) & (tmp_fp1['off']<= s.end_sig)]
+            fiducials = tmp_fp2-s.start_sig
+            fiducials = fiducials.drop('Index of pulse', axis=1)
+            fiducials.index =range(0,len(fiducials))
 
         ## Get Biomarkers and Statistics
-    if (process_type == 'biomarkers' or process_type == 'both') and len(fiducials)>0:
-        # Initialise the biomarkers package
-        fp = Fiducials(fp=fiducials)
+        if (process_type == 'biomarkers' or process_type == 'both') and len(fiducials)>0:
+            # Initialise the biomarkers package
+            fp = Fiducials(fp=fiducials)
 
-        bmex = BM.BmCollection(s=s, fp=fp)
+            bmex = BM.BmCollection(s=s, fp=fp)
 
-        # Extract biomarkers
-        bm_defs, bm_vals, bm_stats = bmex.get_biomarkers()
+            # Extract biomarkers
+            bm_defs, bm_vals, bm_stats = bmex.get_biomarkers()
 
-        if print_flag:
-            tmp_keys = bm_stats.keys()
-            print('Statistics of the biomarkers:')
-            for i in tmp_keys: print(i, '\n', bm_stats[i])
+            if print_flag:
+                tmp_keys = bm_stats.keys()
+                print('Statistics of the biomarkers:')
+                for i in tmp_keys: print(i, '\n', bm_stats[i])
 
-        # Create a biomarkers class
-        bm = Biomarkers(bm_defs=bm_defs, bm_vals=bm_vals, bm_stats=bm_stats)
+            # Create a biomarkers class
+            bm = Biomarkers(bm_defs=bm_defs, bm_vals=bm_vals, bm_stats=bm_stats)
 
-        # Save data
-        if savedata:
-            fp_new = Fiducials(fp=fp.get_fp() + s.start_sig)
-            file_names=save_data(savingformat=savingformat, savingfolder=savingfolder, print_flag=print_flag, s=s, fp=fp_new, bm=bm)
+            # Save data
+            if savedata:
+                fp_new = Fiducials(fp=fp.get_fp() + s.start_sig)
+                file_names=save_data(savingformat=savingformat, savingfolder=savingfolder, print_flag=print_flag, s=s, fp=fp_new, bm=bm)
 
     if print_flag: print('Program finished')
 

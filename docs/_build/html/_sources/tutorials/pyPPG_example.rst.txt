@@ -13,7 +13,7 @@ Download and install Python 3.10 on your computer or server by visiting the offi
 
 **Step 2**: Download the Sample PPG Data
 
-You can use the sample PPG data by downloading it from the following link: `Sample PPG data <https://github.com/aim-lab/GODA_pyPPG/tree/main/sample_data>`__.
+You can use the sample PPG data by downloading it from the following link: `Sample PPG data <https://github.com/godamartonaron/GODA_pyPPG/tree/main/sample_data>`__.
 
 **Step 3**: Create and Activate a Virtual Environment
 

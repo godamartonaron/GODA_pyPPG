@@ -1282,6 +1282,6 @@ def get_biomarkers(s: pyPPG.PPG, fp: pyPPG.Fiducials, biomarkers_lst):
                 df.loc[i] = {'onset':onset, 'offset':offset, 'peak': peak}
             except:
                 pass
-        else:
-            print("no more peaks")
+        # else:
+        #     print("no more peaks")
     return df, df_biomarkers
