@@ -23,6 +23,7 @@ Welcome to pyPPG's documentation!
    tutorials/pyPPG_example.rst
    tutorials/PPG_anal.rst
    tutorials/PZ_PPG.rst
+   tutorials/PPG_ML.rst
 
 Indices and tables
 ==================
