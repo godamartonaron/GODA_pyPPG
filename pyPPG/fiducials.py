@@ -62,7 +62,8 @@ class FpCollection:
         n=0
         for temp_val in (onsets,peaks,dicroticnotch,diastolicpeak):
             ppg_fp[keys[n]] = dummy
-            ppg_fp[keys[n]][0:len(temp_val)]=temp_val
+#            ppg_fp[keys[n]][0:len(temp_val)]=temp_val
+            ppg_fp.loc[0:len(temp_val)-1, keys[n]] = temp_val
             n=n+1
 
         fiducials=pd.DataFrame()
@@ -70,7 +71,8 @@ class FpCollection:
             for key in list(temp_sig.keys()):
                 fiducials[key] = dummy
                 temp_val = temp_sig[key].values
-                fiducials[key][0:len(temp_val)]=temp_val
+#                fiducials[key][0:len(temp_val)]=temp_val
+                fiducials.loc[:len(temp_val) - 1, key] = temp_val
 
         # Correct Fiducial Points
         fiducials=self.correct_fiducials(fiducials, s.correction)
@@ -1170,7 +1172,7 @@ class FpCollection:
                     else:
                         win_onl = fiducials.on[i]
 
-                    min_loc = np.argmin(self.ppg[fiducials.on[i]-win_onl:fiducials.on[i]+win_onr]) + fiducials.on[i]
+                    min_loc = np.argmax(self.ppg[fiducials.on[i]+win_onl:fiducials.on[i]+win_onr]) + fiducials.on[i]
                     if fiducials.on[i] != min_loc:
 
                         if fiducials.a[i] > self.fs*0.075:
@@ -1189,19 +1191,23 @@ class FpCollection:
                     min_dn = find_peaks(-temp_segment)[0] + fiducials.sp[i]
                     diff_dn = abs(min_dn - fiducials.dp[i])
                     if len(min_dn) > 0 and diff_dn > round(self.fs / 100):
-                        fiducials.dn[i] = min_dn
+#                        fiducials.dn[i] = min_dn
+                        fiducials.loc[i, 'dn'] = min_dn
                         try:
                             strt_dn = int(fiducials.sp[i])
                             stp_dn = int(fiducials.f[i])
-                            fiducials.dn[i] = find_peaks(-self.ppg[strt_dn:stp_dn])[0][-1] + strt_dn
+#                            fiducials.dn[i] = find_peaks(-self.ppg[strt_dn:stp_dn])[0][-1] + strt_dn
+                            fiducials.loc[i, 'dn'] = find_peaks(-self.ppg[strt_dn:stp_dn])[0][-1] + strt_dn
                             if fiducials.dn[i] > min_dn:
-                                fiducials.dn[i] = min_dn
+#                                fiducials.dn[i] = min_dn
+                                fiducials.loc[i, 'dn'] = min_dn
                         except:
                             strt_dn = fiducials.e[i]
                             stp_dn = fiducials.f[i]
                             fiducials.dn[i] = np.argmin(self.jpg[strt_dn:stp_dn]) + strt_dn
                             if fiducials.dn[i] > min_dn:
-                                fiducials.dn[i] = min_dn
+#                                fiducials.dn[i] = min_dn
+                                fiducials.loc[i, 'dn'] = min_dn
 
                 except:
                     pass
