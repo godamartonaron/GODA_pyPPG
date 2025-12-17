@@ -143,7 +143,7 @@ class FpCollection:
         w = fs * win_sec                                    #window length(number of samples)
         win_starts = np.array(list(range(0,len(x),round(0.8*w))))
         win_starts = win_starts[0:min(np.where([win_starts >= len(x) - w])[1])]
-        win_starts = np.insert(win_starts,len(win_starts), len(x) + 1 - w)
+        win_starts = np.insert(win_starts,len(win_starts), len(x) - w)
 
         # before pre-processing
         hr_win=0  #the estimated systolic peak-to-peak distance, initially it is 0
@@ -156,12 +156,11 @@ class FpCollection:
 
         # detect peaks in windows
         all_p4 = []
-        all_hr = np.empty(len(win_starts)-1)
-        all_hr [:] = np.NaN
+        all_hr = np.full_like(win_starts, np.nan)
         hr_past = 0 # the actual heart rate
         hrvi = 0    # heart rate variability index
 
-        for win_no in range(0,len(win_starts) - 1):
+        for win_no in range(0,len(win_starts)):
             curr_els = range(win_starts[win_no],win_starts[win_no] + w)
             curr_x = x[curr_els]
 
