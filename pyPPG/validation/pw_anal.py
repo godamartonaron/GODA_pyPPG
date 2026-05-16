@@ -14,7 +14,7 @@ from dotmap import DotMap
 from scipy.signal import filtfilt, find_peaks
 from pyPPG.ppg_bm.statistics import get_statistics
 from datetime import datetime
-import pkg_resources
+from importlib.metadata import PackageNotFoundError, version as package_version
 
 import json
 
@@ -53,7 +53,7 @@ class PulseWaveAnal:
                     exec("error['" + n + "'] =1")
                     #print('\n'+n + ' error: ', name)
                 elif eval("ref_" + n + ".size") < 1 and n != 'on':
-                    exec("ref_" + n + "= np.array(np.NaN)")
+                    exec("ref_" + n + "= np.array(np.nan)")
                     exec("error['" + n + "'] =1")
                     #print(n + ' error: ', name)
             except:
@@ -374,7 +374,7 @@ class PulseWaveAnal:
             exec(n + "r=[]")
             exec("dist_" + n + "=[]")
             temp_v = np.empty(set_len)
-            temp_v[:] = np.NaN
+            temp_v[:] = np.nan
             dist_error[n] = temp_v
             ref1_fps[n] = temp_v
             ref2_fps[n] = temp_v
@@ -475,10 +475,13 @@ class PulseWaveAnal:
             det_fps.to_csv(csv_file2, index=True)
             corr_txt = '\ncorrection: '+ str(correction.to_dict()).replace("{0:", "").replace("},", ",").replace("}}", "}")
 
-        # Get the version using pkg_resources
+        # Get the installed package version for benchmark output.
         package_name = 'pyPPG'
         if len(package)==0:
-            pyPPG_version = pkg_resources.get_distribution(package_name).version
+            try:
+                pyPPG_version = package_version(package_name)
+            except PackageNotFoundError:
+                pyPPG_version = 'unknown'
         else:
             pyPPG_version = package
 
@@ -509,21 +512,21 @@ class PulseWaveAnal:
             raw_diffs = tmp_data[diff_name]
             flat_diffs  = raw_diffs.flatten()
             dist_error = pd.DataFrame(flat_diffs.tolist(), columns=raw_diffs.dtype.names)
-            dist_error = dist_error.applymap(lambda x: np.squeeze(x))
+            dist_error = dist_error.apply(lambda col: col.map(lambda x: np.squeeze(x)))
 
             # get detection
             det_name = detector + '_fps'
             raw_dets = tmp_data[det_name]
             flat_dets  = raw_dets.flatten()
             detection = pd.DataFrame(flat_dets.tolist(), columns=raw_dets.dtype.names)
-            detection = detection.applymap(lambda x: np.squeeze(x))
+            detection = detection.apply(lambda col: col.map(lambda x: np.squeeze(x)))
 
             # get annotation
             ref_name = annotator + '_fps'
             raw_refs = tmp_data[ref_name]
             flat_refs  = raw_refs.flatten()
             reference = pd.DataFrame(flat_refs.tolist(), columns=raw_refs.dtype.names)
-            reference = reference.applymap(lambda x: np.squeeze(x))
+            reference = reference.apply(lambda col: col.map(lambda x: np.squeeze(x)))
 
             # load PPG IDs
             fp_names=raw_diffs.dtype.names
@@ -554,9 +557,9 @@ class PulseWaveAnal:
                     s.name=''.join(s.name)
                     plt_sig = 1
                     r = dict(reference.iloc[n].apply(pd.to_numeric, errors='coerce').astype('Int32'))
-                    ref_fp = pd.DataFrame([{key: np.NaN if pd.isna(value) else value for key, value in r.items()}])
+                    ref_fp = pd.DataFrame([{key: np.nan if pd.isna(value) else value for key, value in r.items()}])
                     d = dict(detection.iloc[n].apply(pd.to_numeric, errors='coerce').astype('Int32'))
-                    det_fp = pd.DataFrame([{key: np.NaN if pd.isna(value) else value for key, value in d.items()}])
+                    det_fp = pd.DataFrame([{key: np.nan if pd.isna(value) else value for key, value in d.items()}])
                     if plt_sig:
                         self.plot_pulse_wave(s=s, fp1=ref_fp, fp2=det_fp, d_error=dist_error.iloc[n].to_dict(), compare=False,
                             show_fig=False, dname=dname, annot1=annotator, annot2='', detector=detector)
@@ -790,7 +793,6 @@ if __name__ == '__main__':
     #pwex.pw_extraction(correction=correction)
 
     print('End of analysis!')
-
 
 
 

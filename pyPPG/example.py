@@ -132,7 +132,7 @@ def ppg_example(data_path="", fs=0, start_sig=0, end_sig=-1, fiducials=pd.DataFr
 
             # Extract fiducial points
             fiducials = fpex.get_fiducials(s=s)
-            fiducials = fiducials.applymap(lambda x: np.nan if pd.isna(x) else x)
+            fiducials = fiducials.apply(lambda col: col.map(lambda x: np.nan if pd.isna(x) else x))
             if print_flag: print("Fiducial points:\n", fiducials + s.start_sig)
 
             # Create a fiducials class

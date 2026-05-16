@@ -5,13 +5,18 @@ import scipy.io
 import numpy as np
 import pandas as pd
 from dotmap import DotMap
-from tkinter import filedialog
 import mne
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import os
-import tkinter as tk
-from tkinter import simpledialog
 from scipy.io import savemat
+
+try:
+    from tkinter import filedialog, simpledialog
+    import tkinter as tk
+except Exception:
+    filedialog = None
+    simpledialog = None
+    tk = None
 
 ###########################################################################
 ####################### Data Acquisition from Files #######################
@@ -53,6 +58,8 @@ def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel=
     """
 
     if data_path=="":
+        if filedialog is None:
+            raise ImportError("Tkinter is required for interactive file selection; pass data_path instead.")
         sig_path = filedialog.askopenfilename(title='Select SIGNAL file', filetypes=[("Input Files", ".mat .csv .edf .pkl .txt")])
     else:
         sig_path=data_path
@@ -107,7 +114,10 @@ def load_data(data_path = "", fs = np.nan, start_sig = 0, end_sig = -1, channel=
             sig = -input_sig.get_data().squeeze()
         except:
             try:
-                if use_tk: input_name = simpledialog.askstring("Input", "Define the PPG channel name:")
+                if use_tk and simpledialog is not None:
+                    input_name = simpledialog.askstring("Input", "Define the PPG channel name:")
+                else:
+                    input_name = channel
                 input_sig = mne.io.read_raw_edf(sig_path, include=input_name)
                 sig = -input_sig.get_data().squeeze()
             except:
@@ -181,7 +191,7 @@ def plot_fiducials(s: pyPPG.PPG, fp: pyPPG.Fiducials, savefig=True, savingfolder
     """
 
     # Create a hidden root window to get screen dimensions
-    if use_tk:
+    if use_tk and tk is not None:
         root = tk.Tk()
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
@@ -466,4 +476,3 @@ def load_fiducials(saved_fiducials=""):
     except:
         print('Invalid field name. The supported MATLAB field name for fiducial points is "PPG_fiducials".')
         return
-

@@ -1,7 +1,64 @@
 import numpy as np
 from dotmap import DotMap
-from scipy.signal import filtfilt
 from scipy import signal
+
+
+def _as_finite_1d(values):
+    x = np.asarray(values, dtype=np.float64).reshape(-1)
+    if x.size == 0:
+        return x
+    finite = np.isfinite(x)
+    if finite.all():
+        return x
+    if not finite.any():
+        return np.zeros_like(x)
+    indices = np.arange(x.size)
+    x[~finite] = np.interp(indices[~finite], indices[finite], x[finite])
+    return x
+
+
+def _safe_cutoff(value, fs, *, low=False):
+    nyquist = float(fs) / 2.0
+    if nyquist <= 0:
+        raise ValueError("Sampling frequency should be strictly positive")
+    cutoff = float(value)
+    if low:
+        return max(0.0, min(cutoff, nyquist * 0.95))
+    return max(1e-6, min(cutoff, nyquist * 0.95))
+
+
+def _zero_phase_sos_filter(x, fs, fL, fH, order):
+    x = _as_finite_1d(x)
+    if x.size < 4:
+        return x
+
+    high = _safe_cutoff(fH, fs)
+    if fL == 0:
+        sos = signal.cheby2(order, 20, high, btype="lowpass", fs=fs, output="sos")
+    else:
+        low = _safe_cutoff(fL, fs, low=True)
+        if high <= low:
+            return x - np.nanmedian(x)
+        sos = signal.cheby2(order, 20, [low, high], btype="bandpass", fs=fs, output="sos")
+
+    return signal.sosfiltfilt(sos, x)
+
+
+def _window_samples(fs, milliseconds):
+    win = int(round(float(fs) * float(milliseconds) / 1000.0))
+    return max(1, win)
+
+
+def _moving_average_zero_phase(x, win):
+    x = _as_finite_1d(x)
+    if win <= 1 or x.size < 3:
+        return x
+    kernel = np.ones(win, dtype=np.float64) / float(win)
+    padlen = 3 * (max(len(kernel), 1) - 1)
+    if x.size <= padlen:
+        return np.convolve(x, kernel, mode="same")
+    return signal.filtfilt(kernel, [1.0], x)
+
 
 class Preprocess:
 
@@ -50,40 +107,31 @@ class Preprocess:
             fH = self.fH
             order = self.order
 
-            if fL==0:
-                b,a = signal.cheby2(order, 20, [fH], 'low', fs=s.fs)
-            else:
-                b, a = signal.cheby2(order, 20, [fL,fH], 'bandpass', fs=s.fs)
-
-            ppg_cb2 = filtfilt(b, a, s.v)
+            ppg_cb2 = _zero_phase_sos_filter(s.v, s.fs, fL, fH, order)
 
             if s.fs >= 75:
-                win = round(s.fs * self.sm_wins['ppg']/1000)
-                B = 1 / win * np.ones(win)
-                ppg = filtfilt(B, 1, ppg_cb2)
+                win = _window_samples(s.fs, self.sm_wins['ppg'])
+                ppg = _moving_average_zero_phase(ppg_cb2, win)
             else:
                 ppg=ppg_cb2
         else:
-            ppg=s.v
+            ppg=_as_finite_1d(s.v)
 
         if s.fs >= 150 and s.filtering:
             ## PPG' filtering
-            win = round(s.fs * self.sm_wins['vpg']/1000)
-            B1 = 1 / win * np.ones(win)
+            win = _window_samples(s.fs, self.sm_wins['vpg'])
             dx = np.gradient(ppg)
-            vpg = filtfilt(B1, 1, dx)
+            vpg = _moving_average_zero_phase(dx, win)
 
             ## PPG" filtering
-            win = round(s.fs * self.sm_wins['apg']/1000)
-            B2 = 1 / win * np.ones(win)
+            win = _window_samples(s.fs, self.sm_wins['apg'])
             ddx = np.gradient(vpg)
-            apg = filtfilt(B2, 1, ddx)
+            apg = _moving_average_zero_phase(ddx, win)
 
             ## PPG'" filtering
-            win = round(s.fs * self.sm_wins['jpg']/1000)
-            B3 = 1 / win * np.ones(win)
+            win = _window_samples(s.fs, self.sm_wins['jpg'])
             dddx = np.gradient(apg)
-            jpg = filtfilt(B3, 1, dddx)
+            jpg = _moving_average_zero_phase(dddx, win)
         else:
             vpg = np.gradient(ppg)
             apg = np.gradient(vpg)

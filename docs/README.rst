@@ -42,9 +42,9 @@ The toolbox identifies individual pulse waves in a PPG signal by identifying **s
 Installation
 ------------
 
-Available on pip, with the command: **pip install pyPPG**
+For this fork, install from the repository root: **pip install .**
 
-pip project: https://pypi.org/project/pyPPG/
+The upstream release remains available on pip: **pip install pyPPG**
 
 For more details see the `pyPPG example
 code <https://pyppg.readthedocs.io/en/latest/tutorials/pyPPG_example.html>`__ and `pyPPG YouTube video <https://www.youtube.com/watch?v=5VoMQ3FNjrM>`__
@@ -55,21 +55,57 @@ Requirements
 Python Requirements:
 ~~~~~~~~~~~~~~~~~~~~
 
-Python == 3.10
+Python >= 3.10
 
-scipy == 1.9.1
+numpy >= 1.26, < 3
 
-numpy == 1.23.2
+scipy >= 1.10
 
-dotmap == 1.3.30
+pandas >= 2.0
 
-pandas == 1.5.0
+dotmap >= 1.3.30
 
-wfdb == 4.0.0
+matplotlib >= 3.6
 
-mne == 1.5.0
+mne >= 1.5
 
 All the python requirements are installed when the toolbox is installed, so there is no need for any additional commands.
+
+Modernized array API and high-rate PPG
+--------------------------------------
+
+This fork adds a programmatic array API:
+
+.. code-block:: python
+
+   from pyPPG import process_ppg_array
+
+   result = process_ppg_array(
+       ppg_values,
+       fs=1000,
+       high_fs_strategy="native",
+       polarity="normal",
+   )
+
+   fiducials = result.fiducials.get_fp()
+
+High sampling frequency PPG can run at the original sampling rate with
+numerically stable SOS filters, or it can be analyzed after polyphase
+resampling:
+
+.. code-block:: python
+
+   result = process_ppg_array(
+       ppg_values,
+       fs=1000,
+       high_fs_strategy="resample",
+       target_fs=125,
+   )
+
+   fiducials_at_input_fs = result.fiducials_original_fs
+
+Use ``polarity="inverted"`` for sensors where cardiac pulses are
+negative-going.
 
 
 Validation and Benchmarking

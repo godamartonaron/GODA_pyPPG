@@ -24,6 +24,14 @@ pyPPG.preproc
    :undoc-members:
    :show-inheritance:
 
+pyPPG.pipeline
+----------------
+
+.. automodule:: pyPPG.pipeline
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pyPPG.fiducials
 -----------------
 

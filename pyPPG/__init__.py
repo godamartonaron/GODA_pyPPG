@@ -173,3 +173,8 @@ class Biomarkers:
                 bm[i]=getattr(self, i, None)
 
             return pd.DataFrame(bm)
+
+
+from pyPPG.pipeline import PPGAnalysisResult, process_ppg_array
+
+__all__ = ["PPG", "Fiducials", "Biomarkers", "PPGAnalysisResult", "process_ppg_array"]

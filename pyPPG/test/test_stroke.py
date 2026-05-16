@@ -1,3 +1,7 @@
+import unittest
+
+raise unittest.SkipTest("Legacy stroke script requires a local external database path.")
+
 from pyPPG.example import*
 from dotmap import DotMap
 import matplotlib.pyplot as plt

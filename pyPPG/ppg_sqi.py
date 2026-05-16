@@ -22,14 +22,24 @@ def get_ppgSQI(ppg: list, fs: int, annotation: list):
     - Python implementation: Márton Áron Goda, PhD, November 11, 2022.
     '''
 
-    Fs = fs
+    ppg = np.asarray(ppg, dtype=np.float64).reshape(-1)
+    Fs = int(round(fs))
+    annotation = np.asarray(annotation, dtype=np.float64).reshape(-1)
+    annotation = annotation[np.isfinite(annotation)]
+    annotation = annotation[(annotation > 0) & (annotation <= len(ppg))]
+    annotation = annotation.astype(int)
+    if len(annotation) < 2:
+        return np.full(0, np.nan)
     # Create PPG template
-    t,v = use_template(ppg, annotation-1, fs)
+    template_result = use_template(ppg, annotation - 1, fs)
+    if template_result is None:
+        return np.full(max(0, len(annotation) - 1), np.nan)
+    t, v = template_result
 
     c1 = np.empty(len(annotation)-1)
-    c1[:] = np.NaN
+    c1[:] = np.nan
     psqi = np.empty(len(annotation)-1)
-    psqi[:] = np.NaN
+    psqi[:] = np.nan
 
     for j in range (0,len(annotation) - 1):
         # Calculate correlation coefficients based on the template length

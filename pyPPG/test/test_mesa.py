@@ -1,3 +1,7 @@
+import unittest
+
+raise unittest.SkipTest("Legacy MESA script requires a local external database path.")
+
 from pyPPG.example import*
 
 DB_dir='C:/DataBase/MESA/EDF/'
@@ -36,7 +40,7 @@ for id in IDs:
         try:
             sqi =  round(np.mean(SQI.get_ppgSQI(s.get_s()[tmp_sig].values, s.fs, fiducials[key]- s.start_sig)) * 100, 2)
         except:
-            sqi = np.NAN
+            sqi = np.nan
 
         # Update the DataFrame at the specified cell
         SQI_mat.at[row_index, column_name] = sqi
