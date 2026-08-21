@@ -141,8 +141,13 @@ class FpCollection:
         up = self.set_beat_detection()                 #settings
         win_sec=10
         w = fs * win_sec                                    #window length(number of samples)
+        if len(x) < w:
+            raise ValueError(
+                f"The fixed {win_sec}-second detector window requires at least {w} "
+                f"samples after resampling to {fs} Hz; received {len(x)}."
+            )
         win_starts = np.array(list(range(0,len(x),round(0.8*w))))
-        win_starts = win_starts[0:min(np.where([win_starts >= len(x) - w])[1])]
+        win_starts = win_starts[win_starts <= len(x) - w]
         win_starts = np.insert(win_starts,len(win_starts), len(x) + 1 - w)
 
         # before pre-processing
@@ -155,7 +160,7 @@ class FpCollection:
             return peaks, onsets
 
         # detect peaks in windows
-        all_p4 = []
+        all_p4 = np.array([], dtype=int)
         all_hr = np.empty(len(win_starts)-1)
         all_hr [:] = np.NaN
         hr_past = 0 # the actual heart rate
